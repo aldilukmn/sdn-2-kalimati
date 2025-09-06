@@ -15,7 +15,7 @@ export default function Kelas5({}) {
       <div className="flex w-full my-10 items-center justify-between gap-10">
         <Link
           href="/"
-          className="bg-blue-400 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-all duration-300 text-sm md:text-base"
+          className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-all duration-300 text-sm md:text-base"
         >
           <span className="font-semibold">&lt;</span> Kembali
         </Link>
