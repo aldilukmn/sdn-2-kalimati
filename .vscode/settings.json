@@ -16,5 +16,9 @@
       "createTheme(?:<\\w+>)?\\s*\\(([^)]*)\\)",
       "{?\\s?[\\w].*:\\s*?[\"'`]([^\"'`]*).*?,?\\s?}?"
     ]
+  ],
+  "editor.selectionHighlight": false,
+  "editor.dropIntoEditor.preferences": [
+    
   ]
 }

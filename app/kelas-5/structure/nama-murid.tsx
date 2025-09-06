@@ -15,7 +15,7 @@ export default function NamaMurid() {
   return (
     <div>
       <div className="flex flex-col py-6 overflow-x-auto">
-        <h1 className="text-xl font-bold mb-6 text-center">Daftar Nama Murid Kelas 5</h1>
+        <h1 className="text-xl font-bold mb-6 text-center tracking-wider">Daftar Nama Murid</h1>
         <Table striped hoverable>
           <TableHead>
             <TableHeadCell>No</TableHeadCell>
