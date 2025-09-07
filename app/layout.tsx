@@ -19,13 +19,6 @@ export const metadata: Metadata = {
     description: "Aplikasi Informasi UPTD SD Negeri 2 Kalimati Kecamatan Jatibarang Kabupaten Indramayu",
     url: "https://sdn2kalimati.vercel.app",
     siteName: "SDN 2 Kalimati",
-    images: [
-      {
-        url: "https://sdn-2-kalimati.vercel.app/logo-2-kalimati.png",
-        width: 200,
-        height: 150,
-      },
-    ],
     locale: "id_ID",
     type: "website",
   }
