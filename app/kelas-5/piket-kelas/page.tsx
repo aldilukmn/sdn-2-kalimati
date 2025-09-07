@@ -1,5 +1,14 @@
 import Link from "next/link";
 
+const jadwalPiket = [
+  { hari: "Senin", nama: ["Amelia Putri Purwanto", "Saiful Bahri", "Widiasih"] },
+  { hari: "Selasa", nama: ["Abyan Bagas Pradipta", "Waina Maulana", "Nadia Safwatul Rolisa"] },
+  { hari: "Rabu", nama: ["Desi Wulan Dari", "Celena Claudiah Anggita Putri", "Sapta Maulana", "Andika"] },
+  { hari: "Kamis", nama: ["Afika Naila", "Tubagus Angke", "Syahrul Ramadhan"] },
+  { hari: "Jum'at", nama: ["Jum'at Bersih"] },
+  { hari: "Sabtu", nama: ["Maftukhatus Sa'adah", "Kholifah", "Diah Indah", "Widia Tamara"] },
+]
+
 export default function PiketKelas() {
   return (
     <div className="flex flex-col md:mx-20 mx-5 min-h-screen">
@@ -16,8 +25,20 @@ export default function PiketKelas() {
           </h2>
         </div>
       </div>
-      <div className="w-full flex flex-wrap gap-4">
-        <p>Piket Kelas akan segera hadir di halaman ini. Mohon bersabar dan cek kembali nanti!</p>
+      <div className="w-full grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-10 mb-10 text-center md:text-xl">
+        {jadwalPiket.map((item, index) => (
+          <div
+            key={index}
+            className="bg-white border border-gray-200 rounded-lg overflow-hidden shadow-lg p-4 transition duration-200 hover:-translate-y-1 hover:scale-105"
+          >
+            <h4 className="font-bold text-lg mb-2 underline">{item.hari}</h4>
+            <ul className=" text-gray-700 list-none">
+              {item.nama.map((nama, i) => (
+                <li className='mb-2' key={i}>{nama}</li>
+              ))}
+            </ul>
+          </div>
+        ))}
       </div>
     </div>
   );

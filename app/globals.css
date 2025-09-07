@@ -1,6 +1,9 @@
 @import "tailwindcss";
 @plugin "flowbite-react/plugin/tailwindcss";
 @source "../.flowbite-react/class-list.json";
+@import 'primereact/resources/themes/lara-light-blue/theme.css';  
+@import 'primereact/resources/primereact.min.css';  
+@import 'primeicons/primeicons.css';
 
 :root {
   --background: linear-gradient(135deg, #e9f4ff, #e0f2fe, #afe3ff);
@@ -26,4 +29,27 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-poppins);
+}
+
+.p-organizationchart-node-content {
+  background: transparent !important;
+  box-shadow: none !important;
+  border: none !important;
+  padding: 0 !important; /* optional kalau mau rapet */
+}
+
+.p-organizationchart-lines {
+          border-top: 3px solid #000 !important;
+        }
+.p-organizationchart-lines .p-organizationchart-line-left {
+  border-right: 3px solid #000 !important;
+}
+.p-organizationchart-lines .p-organizationchart-line-right {
+  border-left: 3px solid #000 !important;
+}
+.p-organizationchart-lines .p-organizationchart-line-down {
+  border-top: 3px solid #000 !important;
+}
+.p-organizationchart-lines .p-organizationchart-line-up {
+  border-top: 3px solid #000 !important;
 }

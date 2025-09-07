@@ -1,6 +1,85 @@
+"use client"
 import Link from "next/link";
+import { OrganizationChart } from 'primereact/organizationchart';
+import { useState } from 'react';
 
 export default function StrukturOrganisasi() {
+const [data] = useState([
+        {
+            expanded: true,
+            type: 'person',
+            className: 'bg-indigo-500 text-white',
+            style: { borderRadius: '12px' },
+            data: {
+                image: 'https://primefaces.org/cdn/primereact/images/avatar/amyelsner.png',
+                name: 'Amy Elsner',
+                title: 'CEO'
+            },
+            children: [
+                {
+                    expanded: true,
+                    type: 'person',
+                    className: 'bg-purple-500 text-white',
+                    style: { borderRadius: '12px' },
+                    data: {
+                        image: 'https://primefaces.org/cdn/primereact/images/avatar/annafali.png',
+                        name: 'Anna Fali',
+                        title: 'CMO'
+                    },
+                    children: [
+                        {
+                            label: 'Sales',
+                            className: 'bg-purple-500 text-white',
+                            style: { borderRadius: '12px' }
+                        },
+                        {
+                            label: 'Marketing',
+                            className: 'bg-purple-500 text-white',
+                            style: { borderRadius: '12px' }
+                        }
+                    ]
+                },
+                {
+                    expanded: true,
+                    type: 'person',
+                    className: 'bg-teal-500 text-white',
+                    style: { borderRadius: '12px' },
+                    data: {
+                        image: 'https://primefaces.org/cdn/primereact/images/avatar/stephenshaw.png',
+                        name: 'Stephen Shaw',
+                        title: 'CTO'
+                    },
+                    children: [
+                        {
+                            label: 'Development',
+                            className: 'bg-teal-500 text-white',
+                            style: { borderRadius: '12px' }
+                        },
+                        {
+                            label: 'UI/UX Design',
+                            className: 'bg-teal-500 text-white',
+                            style: { borderRadius: '12px' }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]);
+
+  const nodeTemplate = (node:any) => {
+        if (node.type === 'person') {
+          return (
+              <div className={`flex flex-col items-center p-3 shadow-md ${node.className || ""}`} style={node.style}>
+                <img alt={node.data.name} src={node.data.image} className="mb-3 w-20" />
+                <span className="font-bold mb-2">{node.data.name}</span>
+                <span>{node.data.title}</span>
+              </div>
+            );
+        }
+
+        return node.label;
+    };
+  
   return (
     <div className="flex flex-col md:mx-20 mx-5 min-h-screen">
       <div className="flex w-full my-10 items-center justify-between gap-10">
@@ -16,8 +95,8 @@ export default function StrukturOrganisasi() {
           </h2>
         </div>
       </div>
-      <div className="w-full flex flex-wrap gap-4">
-        <p>Struktur organisasi akan segera hadir di halaman ini. Mohon bersabar dan cek kembali nanti!</p>
+      <div className="card overflow-x-auto">
+            <OrganizationChart value={data} nodeTemplate={nodeTemplate} />
       </div>
     </div>
   );
