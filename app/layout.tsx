@@ -22,8 +22,8 @@ export const metadata: Metadata = {
     images: [
       {
         url: "https://sdn-2-kalimati.vercel.app/logo-2-kalimati.png",
-        width: 800,
-        height: 600,
+        width: 200,
+        height: 150,
       },
     ],
     locale: "id_ID",
