@@ -14,7 +14,22 @@ export const metadata: Metadata = {
   icons: {
     icon: "https://res.cloudinary.com/dhtfq9yw8/image/upload/v1717920310/uptd%20sdn%202%20kalimati/svg/vapqm0latukpxjjawzfu.svg",
   },
-};
+  openGraph: {
+    title: "SDN 2 Kalimati",
+    description: "Aplikasi Informasi UPTD SD Negeri 2 Kalimati Kecamatan Jatibarang Kabupaten Indramayu",
+    url: "https://sdn2kalimati.vercel.app",
+    siteName: "SDN 2 Kalimati",
+    images: [
+      {
+        url: "https://sdn-2-kalimati.vercel.app/logo-2-kalimati.png",
+        width: 800,
+        height: 600,
+      },
+    ],
+    locale: "id_ID",
+    type: "website",
+  }
+}
 
 export default function RootLayout({
   children,
