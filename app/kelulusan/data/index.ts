@@ -1,0 +1,135 @@
+interface dataKelulusanType {
+  nomorPeserta: string,
+  nisn: string,
+  nama: string,
+  status: string,
+}
+
+export const dataKelulusan: dataKelulusanType[] = [
+  {
+    nomorPeserta: "02-18-0351-001",
+    nisn: "3143101958",
+    nama: "Siti Khoriyah",
+    status: "LULUS",
+  },
+  {
+    nomorPeserta: "02-18-0351-002",
+    nisn: "3133412297",
+    nama: "Afra Nayla Arkana",
+    status: "LULUS",
+  },
+  {
+    nomorPeserta: "02-18-0351-003",
+    nisn: "3147713644",
+    nama: "Putri Amelia",
+    status: "LULUS",
+  },
+  {
+    nomorPeserta: "02-18-0351-004",
+    nisn: "3141417080",
+    nama: "Rifaldi Saputra",
+    status: "LULUS",
+  },
+  {
+    nomorPeserta: "02-18-0351-005",
+    nisn: "0149413358",
+    nama: "Laura Marga Retha",
+    status: "LULUS",
+  },
+  {
+    nomorPeserta: "02-18-0351-006",
+    nisn: "0148300301",
+    nama: "Nayla Rosy",
+    status: "LULUS",
+  },
+  {
+    nomorPeserta: "02-18-0351-007",
+    nisn: "0132657173",
+    nama: "Zalza Azzahra",
+    status: "LULUS",
+  },
+  {
+    nomorPeserta: "02-18-0351-008",
+    nisn: "3138861883",
+    nama: "Ayyash Qeis Abymael",
+    status: "LULUS",
+  },
+  {
+    nomorPeserta: "02-18-0351-009",
+    nisn: "3140152010",
+    nama: "Abdullah Fiqih",
+    status: "LULUS",
+  },
+  {
+    nomorPeserta: "02-18-0351-010",
+    nisn: "3141417080",
+    nama: "Dhafitha Talita Zahra",
+    status: "LULUS",
+  },
+  {
+    nomorPeserta: "02-18-0351-011",
+    nisn: "0146242263",
+    nama: "Chandy Rahmat",
+    status: "LULUS",
+  },
+  {
+    nomorPeserta: "02-18-0351-012",
+    nisn: "3141681669",
+    nama: "Silvina Mahgdalena",
+    status: "LULUS",
+  },
+      {
+    nomorPeserta: "02-18-0351-013",
+    nisn: "3131814811",
+    nama: "Zahratun Nisa",
+    status: "LULUS",
+  },
+  {
+    nomorPeserta: "02-18-0351-014",
+    nisn: "3140518274",
+    nama: "Panzi Kusuma Putra Mulya",
+    status: "LULUS",
+  },
+  {
+    nomorPeserta: "02-18-0351-015",
+    nisn: "3132558553",
+    nama: "Fifi Jannuba 'Arifah",
+    status: "LULUS",
+  },
+  {
+    nomorPeserta: "02-18-0351-016",
+    nisn: "3134284332",
+    nama: "Lutfi Ardiansyah Syamsuri",
+    status: "LULUS",
+  },
+  {
+    nomorPeserta: "02-18-0351-017",
+    nisn: "3130246982",
+    nama: "Haiqal Afrizal Sofyan",
+    status: "LULUS",
+  },
+  {
+    nomorPeserta: "02-18-0351-018",
+    nisn: "3133559964",
+    nama: "Al Jefri",
+    status: "LULUS",
+  },
+    {
+    nomorPeserta: "02-18-0351-019",
+    nisn: "3142726268",
+    nama: "Badriyya Shaliha Abdulloh",
+    status: "LULUS",
+  },
+  {
+    nomorPeserta: "02-18-0351-020",
+    nisn: "3144357617",
+    nama: "Rafika Rahmawati",
+    status: "LULUS",
+  },
+  {
+    nomorPeserta: "02-18-0351-021", 
+    nisn: "3145352175",
+    nama: "Abdul Kharis",
+    status: "LULUS",
+  },
+];

@@ -15,13 +15,15 @@ export default function Menu() {
           cursorCharacter="|"
         />
       </h1>
-      <div className='bg-white grid md:grid-cols-6 grid-cols-3 px-5 py-4 gap-5 rounded-lg shadow-lg items-center lg:text-lg font-medium'>
-        {
+      {/* <div className='card grid md:grid-cols-6 grid-cols-3 px-5 py-4 gap-5 rounded-lg shadow-lg items-center lg:text-lg font-medium'> */}
+      {/* <div className='card flex px-5 py-4 gap-5 rounded-lg shadow-lg items-center lg:text-lg font-medium'> */}
+        {/* {
           kelas.map((item) => (
-            <Link key={item.href} href={item.href} className='bg-blue-500 text-white px-4 py-2 rounded-lg transition-all duration-200 ease-in-out hover:-translate-y-1 hover:scale-110 hover:bg-blue-600'>{item.label}</Link>
+            <Link key={item.href} href={item.href} className='class-card'>{item.label}</Link>
           ))
-        }
-      </div>
+        } */}
+        <Link href="/kelulusan" className='class-card font-semibold'>Cek Kelulusan</Link>
+      {/* </div> */}
     </div>
   );
 }

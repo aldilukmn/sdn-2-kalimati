@@ -42,7 +42,7 @@ export default function RootLayout({
         <link rel="icon" href="https://res.cloudinary.com/dhtfq9yw8/image/upload/v1717920310/uptd%20sdn%202%20kalimati/svg/vapqm0latukpxjjawzfu.svg" />
       </head>
       <body
-        className={`${poppins} antialiased`}
+        className={`${poppins} antialiased bg-white`}
       >
         {children}
       </body>
