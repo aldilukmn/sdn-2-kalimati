@@ -171,7 +171,7 @@ body {
 .back-button {
   display: inline-flex;
 
-  cursor: pointer
+  cursor: pointer;
 
   align-items: center;
 

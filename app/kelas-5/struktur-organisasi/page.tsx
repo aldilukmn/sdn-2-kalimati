@@ -1,6 +1,5 @@
 "use client"
 import Link from "next/link";
-import { OrganizationChart } from 'primereact/organizationchart';
 import { useState } from 'react';
 
 export default function StrukturOrganisasi() {
@@ -96,7 +95,7 @@ const [data] = useState([
         </div>
       </div>
       <div className="card overflow-x-auto">
-            <OrganizationChart value={data} nodeTemplate={nodeTemplate} />
+            {/* <OrganizationChart value={data} nodeTemplate={nodeTemplate} /> */}
       </div>
     </div>
   );
