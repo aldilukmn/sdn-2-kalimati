@@ -1,4 +1,4 @@
-// // "use client"
+// "use client"
 // import Link from "next/link";
 // import { useState } from 'react';
 
@@ -100,3 +100,11 @@
 //     </div>
 //   );
 // }
+
+export default function StrukturOrganisasi() {
+  return (
+    <div>
+      Struktur Organisasi
+    </div>
+  );
+}
