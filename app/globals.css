@@ -3,12 +3,35 @@
 @source "../.flowbite-react/class-list.json";
 
 :root {
-  --background: linear-gradient(135deg, #e9f4ff, #e0f2fe, #afe3ff);
+  --background:
+    radial-gradient(
+      circle at top left,
+      rgba(59, 130, 246, 0.12),
+      transparent 35%
+    ),
+    radial-gradient(
+      circle at bottom right,
+      rgba(96, 165, 250, 0.1),
+      transparent 35%
+    ),
+    linear-gradient(180deg, #f8fbff 0%, #eef6ff 45%, #dbeafe 100%);
+
   --foreground: #171717;
-  --font-poppins: 'Poppins', Arial, Helvetica, sans-serif;
-  --card-bg: rgba(255,255,255,0.7);
-  --card-border: rgba(0,0,0,0.08);
-  --card-shadow: rgba(0,0,0,0.08);
+
+  --card-bg: rgba(255, 255, 255, 0.72);
+
+  --card-border: rgba(59, 130, 246, 0.4);
+
+  --card-shadow: rgba(59, 130, 246, 0.08);
+
+  --class-card-bg: linear-gradient(
+    130deg,
+    rgba(219, 234, 254, 0.92),
+    rgba(177, 212, 255, 0.72)
+  );
+
+  --class-card-shadow: 0px 5px 30px rgba(59, 130, 246, 0.12);
+  --back-button-bg: linear-gradient(135deg, #2563eb, #4f46e5);
 }
 
 @theme inline {
@@ -20,27 +43,27 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: radial-gradient(circle at top left,
-      rgba(59,130,246,0.25),
-      transparent 35%),
-
-    radial-gradient(circle at bottom right,
-      rgba(99,102,241,0.25),
-      transparent 35%),
-
-    linear-gradient(
-      180deg,
-      #020617 0%,
-      #081225 40%,
-      #0f172a 100%
-    );
+    --background:
+      radial-gradient(
+        circle at top left,
+        rgba(59, 130, 246, 0.25),
+        transparent 35%
+      ),
+      radial-gradient(
+        circle at bottom right,
+        rgba(99, 102, 241, 0.25),
+        transparent 35%
+      ),
+      linear-gradient(180deg, #020617 0%, #081225 40%, #0f172a 100%);
     --foreground: #ededed;
-    --card-bg: rgba(15,23,42,0.72);
-    --card-border: rgba(255,255,255,0.08);
-    --card-shadow: rgba(59,130,246,0.15);
+    --card-bg: rgba(15, 23, 42, 0.72);
+    --card-border: rgba(255, 255, 255, 0.08);
+    --card-shadow: rgba(59, 130, 246, 0.15);
+    --class-card-bg: linear-gradient(135deg, #2563eb, #4f46e5);
+    --class-card-shadow: 0px 10px 20px rgba(70, 132, 255, 0.12);
+    --back-button-bg: rgba(255, 255, 255, 0.06);
   }
 }
-
 
 body {
   background: var(--background);
@@ -60,8 +83,7 @@ body {
 
   backdrop-filter: blur(12px);
 
-  box-shadow:
-    0 0 30px var(--card-shadow);
+  box-shadow: 0 0 30px var(--card-shadow);
 
   transition: all 0.3s ease;
 }
@@ -76,14 +98,13 @@ body {
 
   letter-spacing: 3px;
 
-  background: var(--card-bg);
+  background: var(--class-card-bg);
 
   border: 1px solid var(--card-border);
 
   backdrop-filter: blur(14px);
 
-  box-shadow:
-    0 0 30px var(--card-shadow);
+  box-shadow: var(--class-card-shadow);
 
   overflow: hidden;
 
@@ -102,12 +123,11 @@ body {
   position: absolute;
   inset: 0;
 
-  background:
-    linear-gradient(
-      135deg,
-      rgba(59,130,246,0.16),
-      transparent 70%
-    );
+  background: linear-gradient(
+    135deg,
+    rgba(59, 130, 246, 0.16),
+    transparent 70%
+  );
 
   opacity: 0;
 
@@ -118,11 +138,9 @@ body {
 .class-card:hover {
   transform: translateY(-6px);
 
-  border-color:
-    rgba(59,130,246,0.4);
+  border-color: rgba(59, 130, 246, 0.4);
 
-  box-shadow:
-    0 0 40px rgba(59,130,246,0.22);
+  box-shadow: 0 0 40px rgba(59, 130, 246, 0.22);
 }
 
 .class-card:hover::before {
@@ -161,7 +179,7 @@ body {
 
   line-height: 1.6;
 
-  color: rgba(255,255,255,0.7);
+  color: rgba(255, 255, 255, 0.7);
 
   position: relative;
 
@@ -181,11 +199,9 @@ body {
 
   border-radius: 14px;
 
-  background:
-    rgba(255,255,255,0.06);
+  background: var(--back-button-bg);
 
-  border:
-    1px solid rgba(255,255,255,0.08);
+  border: 1px solid rgba(255, 255, 255, 0.08);
 
   color: white;
 
@@ -193,32 +209,21 @@ body {
 
   backdrop-filter: blur(10px);
 
-  transition:
-    all 0.3s ease;
+  transition: all 0.3s ease;
 }
 
 .back-button:hover {
   transform: translateY(-2px);
 
-  background:
-    rgba(59,130,246,0.15);
+  background: rgba(59, 130, 246, 0.15);
 
-  border-color:
-    rgba(59,130,246,0.35);
+  border-color: rgba(59, 130, 246, 0.35);
 
-  box-shadow:
-    0 0 20px rgba(59,130,246,0.25);
+  box-shadow: 0 0 20px rgba(59, 130, 246, 0.25);
 }
 
 .glow-button {
-  background:
-    linear-gradient(
-      135deg,
-      #2563eb,
-      #4f46e5
-    );
-
-  cursor: pointer;
+  background: linear-gradient(135deg, #2563eb, #4f46e5);
 
   color: white;
 
@@ -228,20 +233,19 @@ body {
 
   font-weight: 600;
 
-  box-shadow:
-    0 0 10px rgba(59,130,246,0.35);
+  box-shadow: 0 0 5px rgba(59, 130, 246, 0.35);
 
-  transition:
-    all 0.3s ease;
+  transition: all 0.3s ease;
 }
 
-.glow-button:hover {
+.glow-button:hover:not(:disabled) {
   transform: translateY(-2px);
 
-  box-shadow:
-    0 0 10px rgba(59,130,246,0.5);
+  box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
 
   filter: brightness(1.05);
+
+  cursor: pointer;
 }
 
 .p-organizationchart-node-content {
@@ -252,8 +256,8 @@ body {
 }
 
 .p-organizationchart-lines {
-          border-top: 3px solid #000 !important;
-        }
+  border-top: 3px solid #000 !important;
+}
 .p-organizationchart-lines .p-organizationchart-line-left {
   border-right: 3px solid #000 !important;
 }

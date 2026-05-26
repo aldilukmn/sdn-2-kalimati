@@ -7,6 +7,12 @@ interface dataKelulusanType {
 
 export const dataKelulusan: dataKelulusanType[] = [
   {
+    nomorPeserta: "02-18-0351-000",
+    nisn: "1234567890",
+    nama: "SDN 2 Kalimati",
+    status: "LULUS",
+  },
+  {
     nomorPeserta: "02-18-0351-001",
     nisn: "3143101958",
     nama: "Siti Khoriyah",
