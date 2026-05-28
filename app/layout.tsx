@@ -47,7 +47,7 @@ export default function RootLayout({
           href="https://res.cloudinary.com/dhtfq9yw8/image/upload/v1717920310/uptd%20sdn%202%20kalimati/svg/vapqm0latukpxjjawzfu.svg"
         />
       </head>
-      <body className={`${poppins} antialiased`}>
+      <body className={`${poppins.className} antialiased`}>
         <ThemeProvider>
           <div className="min-h-screen">{children}</div>
         </ThemeProvider>
