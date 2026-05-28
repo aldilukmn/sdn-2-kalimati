@@ -205,12 +205,8 @@ export default function HasilTKA() {
 
               <div>
                 <h2 className="text-lg md:text-2xl font-bold text-blue-400">
-                  Hasil Tes Kemampuan Akademik
+                  Data Hasil Tes
                 </h2>
-
-                <p className="text-sm md:text-base opacity-70">
-                  Data Hasil Ujian
-                </p>
               </div>
             </div>
 
