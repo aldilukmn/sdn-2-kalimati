@@ -34,11 +34,26 @@
   --back-button-bg: linear-gradient(135deg, #2563eb, #4f46e5);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+html.dark {
+  --background:
+    radial-gradient(
+      circle at top left,
+      rgba(59, 130, 246, 0.25),
+      transparent 35%
+    ),
+    radial-gradient(
+      circle at bottom right,
+      rgba(99, 102, 241, 0.25),
+      transparent 35%
+    ),
+    linear-gradient(180deg, #020617 0%, #081225 40%, #0f172a 100%);
+  --foreground: #ededed;
+  --card-bg: rgba(15, 23, 42, 0.72);
+  --card-border: rgba(255, 255, 255, 0.08);
+  --card-shadow: rgba(59, 130, 246, 0.15);
+  --class-card-bg: linear-gradient(135deg, #2563eb, #4f46e5);
+  --class-card-shadow: 0px 10px 20px rgba(70, 132, 255, 0.12);
+  --back-button-bg: rgba(255, 255, 255, 0.06);
 }
 
 @media (prefers-color-scheme: dark) {

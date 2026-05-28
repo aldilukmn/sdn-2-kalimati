@@ -7,7 +7,7 @@ import { useState } from "react";
 import { kelas } from "./data/kelas";
 
 const buttonClassName =
-  "cursor-pointer flex items-center gap-1 border px-4 py-2 rounded-lg bg-blue-500 hover:bg-blue-600 duration-300 text-white dark:bg-blue-800 dark:hover:bg-blue-700 dark:border-blue-900 font-semibold tracking-widest";
+  "cursor-pointer flex items-center gap-1 border px-4 py-2 rounded-lg bg-blue-500 hover:bg-blue-600 duration-300 text-white dark:bg-blue-800 dark:hover:bg-blue-700 dark:border-blue-900 font-semibold tracking-widest border-blue-500/50 dark:border-blue-800/50";
 
 const navigationLinks = [
   { href: "/kelulusan", label: "Cek Kelulusan", disabled: true },
@@ -23,7 +23,7 @@ export default function Menu() {
     setTimeout(() => setShowNotif(false), 10000);
   };
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen gap-10">
+    <div className="flex flex-col items-center justify-center min-h-screen gap-10 relative">
       <img
         src="https://res.cloudinary.com/dhtfq9yw8/image/upload/v1717920310/uptd%20sdn%202%20kalimati/svg/vapqm0latukpxjjawzfu.svg"
         alt="logo-sekolah"
@@ -106,7 +106,7 @@ export default function Menu() {
 
             <p className="text-sm text-yellow-800 dark:text-yellow-50 mb-6 leading-relaxed">
               Hasil kelulusan akan segera diumumkan. Silahkan kembali lagi
-              nanti. Terima kasih atas kesabaran kamu.
+              nanti. Terima kasih atas kesabaranmu.
             </p>
 
             <button

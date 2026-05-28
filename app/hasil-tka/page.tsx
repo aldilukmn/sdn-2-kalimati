@@ -36,12 +36,12 @@ export default function HasilTKA() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center gap-5 md:gap-10 px-5 my-5 xl:my-10">
+    <div className="flex flex-col items-center justify-center gap-5 md:gap-10 px-5 my-5 xl:my-8">
       <Link
         href="/"
         className="self-start mb-5 flex items-center gap-2 text-gray-600 hover:text-gray-800 transition-colors"
       >
-        <button className="cursor-pointer flex items-center gap-1 border px-4 py-2 rounded-lg text-sm bg-blue-500 hover:bg-blue-600 duration-300 text-white dark:bg-blue-800 dark:hover:bg-blue-700 dark:border-blue-900">
+        <button className="cursor-pointer flex items-center gap-1 border px-4 py-2 rounded-lg text-sm bg-blue-500 hover:bg-blue-600 duration-300 text-white dark:bg-blue-800 dark:hover:bg-blue-700 dark:border-blue-800/50 border-blue-500/50">
           <ArrowBigLeft size={18} />
           <span className="text-xs md:text-sm">Kembali</span>
         </button>
@@ -218,8 +218,11 @@ export default function HasilTKA() {
               <div
                 className="
                   rounded-2xl
-                  bg-white/5
-                  border border-white/5
+                  bg-blue-500/5
+                  dark:bg-white/5
+                  border
+                  border-blue-500/50
+                  dark:border-white/5
                   p-4
                 "
               >
@@ -229,9 +232,12 @@ export default function HasilTKA() {
 
               <div
                 className="
-                  rounded-2xl
-                  bg-white/5
-                  border border-white/5
+                   rounded-2xl
+                  bg-blue-500/5
+                  dark:bg-white/5
+                  border
+                  border-blue-500/50
+                  dark:border-white/5
                   p-4
                 "
               >
@@ -242,8 +248,11 @@ export default function HasilTKA() {
               <div
                 className="
                   rounded-2xl
-                  bg-white/5
-                  border border-white/5
+                  bg-blue-500/5
+                  dark:bg-white/5
+                  border
+                  border-blue-500/50
+                  dark:border-white/5
                   p-4
                 "
               >
@@ -254,8 +263,11 @@ export default function HasilTKA() {
               <div
                 className="
                   rounded-2xl
-                  bg-white/5
-                  border border-white/5
+                  bg-blue-500/5
+                  dark:bg-white/5
+                  border
+                  border-blue-500/50
+                  dark:border-white/5
                   p-4
                 "
               >
@@ -270,9 +282,12 @@ export default function HasilTKA() {
 
               <div
                 className="
-                  rounded-2xl
-                  bg-white/5
-                  border border-white/5
+                   rounded-2xl
+                  bg-blue-500/5
+                  dark:bg-white/5
+                  border
+                  border-blue-500/50
+                  dark:border-white/5
                   p-4
                 "
               >
