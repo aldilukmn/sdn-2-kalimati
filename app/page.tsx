@@ -29,7 +29,7 @@ export default function Menu() {
         alt="logo-sekolah"
         className="lg:max-w-[20%] max-w-[35%] h-auto"
       />
-      <h1 className="xl:text-7xl lg:text-5xl md:text-3xl text-2xl font-bold md:tracking-widest">
+      <h1 className="xl:text-5xl lg:text-3xl text-2xl font-bold md:tracking-widest">
         <TextType
           text={[
             "Selamat Datang di",
@@ -90,7 +90,8 @@ export default function Menu() {
             bg-yellow-400
             dark:bg-yellow-600
             p-8
-            max-w-sm
+            max-w-xs
+            md:max-w-sm
             text-center
             shadow-2xl
             animate-in
@@ -106,7 +107,7 @@ export default function Menu() {
 
             <p className="text-sm text-yellow-800 dark:text-yellow-50 mb-6 leading-relaxed">
               Hasil kelulusan akan segera diumumkan. Silahkan kembali lagi
-              nanti. Terima kasih atas kesabaranmu.
+              nanti. Terima kasih atas kesabaranmu. 😊
             </p>
 
             <button

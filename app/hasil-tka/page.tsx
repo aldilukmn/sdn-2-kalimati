@@ -4,6 +4,7 @@ import Link from "next/link";
 import { ArrowBigLeft, Search, AlertCircle, Loader } from "lucide-react";
 import { useState } from "react";
 import { dataTKA, getGrade } from "./data";
+import DataField from '../components/DataField';
 
 export default function HasilTKA() {
   const [nama, setNama] = useState("");
@@ -171,7 +172,7 @@ export default function HasilTKA() {
             className="
               mt-6
               rounded-3xl
-              border border-blue-400/20
+              border border-blue-400/30
               bg-gradient-to-br
               from-blue-500/10
               to-cyan-500/5
@@ -204,10 +205,10 @@ export default function HasilTKA() {
 
               <div>
                 <h2 className="text-lg md:text-2xl font-bold text-blue-400">
-                  Hasil Tes
+                  Hasil Tes Kemampuan Akademik
                 </h2>
 
-                <p className="text-sm md:text-lg opacity-70">
+                <p className="text-sm md:text-base opacity-70">
                   Data Hasil Ujian
                 </p>
               </div>
@@ -215,91 +216,24 @@ export default function HasilTKA() {
 
             {/* Data */}
             <div className="space-y-4">
-              <div
-                className="
-                  rounded-2xl
-                  bg-blue-500/5
-                  dark:bg-white/5
-                  border
-                  border-blue-500/50
-                  dark:border-white/5
-                  p-4
-                "
-              >
-                <p className="text-sm opacity-60 mb-1">Nomor Peserta</p>
-                <h3 className="font-semibold text-lg">{hasil.nomorPeserta}</h3>
-              </div>
+              <div className="space-y-4">
+                <DataField label="Nomor Peserta" value={hasil.nomorPeserta} />
 
-              <div
-                className="
-                   rounded-2xl
-                  bg-blue-500/5
-                  dark:bg-white/5
-                  border
-                  border-blue-500/50
-                  dark:border-white/5
-                  p-4
-                "
-              >
-                <p className="text-sm opacity-60 mb-1">NISN</p>
-                <h3 className="font-semibold text-lg">{hasil.nisn}</h3>
-              </div>
+                <DataField label="NISN" value={hasil.nisn} />
 
-              <div
-                className="
-                  rounded-2xl
-                  bg-blue-500/5
-                  dark:bg-white/5
-                  border
-                  border-blue-500/50
-                  dark:border-white/5
-                  p-4
-                "
-              >
-                <p className="text-sm opacity-60 mb-1">Nama Lengkap</p>
-                <h3 className="font-semibold text-lg">{hasil.nama}</h3>
-              </div>
+                <DataField label="Nama Lengkap" value={hasil.nama} />
 
-              <div
-                className="
-                  rounded-2xl
-                  bg-blue-500/5
-                  dark:bg-white/5
-                  border
-                  border-blue-500/50
-                  dark:border-white/5
-                  p-4
-                "
-              >
-                <p className="text-sm opacity-60 mb-1">Nilai Matematika</p>
-                <h3 className="font-semibold text-lg">
-                  {hasil.nilaiMatematika}{" "}
-                  <span className="text-sm text-yellow-400">
-                    ({getGrade(hasil.nilaiMatematika)})
-                  </span>
-                </h3>
-              </div>
+                <DataField
+                  label="Nilai Matematika"
+                  value={hasil.nilaiMatematika}
+                  grade={getGrade(hasil.nilaiMatematika)}
+                />
 
-              <div
-                className="
-                   rounded-2xl
-                  bg-blue-500/5
-                  dark:bg-white/5
-                  border
-                  border-blue-500/50
-                  dark:border-white/5
-                  p-4
-                "
-              >
-                <p className="text-sm opacity-60 mb-1">
-                  Nilai Bahasa Indonesia
-                </p>
-                <h3 className="font-semibold text-lg">
-                  {hasil.nilaiBahasaIndonesia}{" "}
-                  <span className="text-sm text-yellow-400">
-                    ({getGrade(hasil.nilaiBahasaIndonesia)})
-                  </span>
-                </h3>
+                <DataField
+                  label="Nilai Bahasa Indonesia"
+                  value={hasil.nilaiBahasaIndonesia}
+                  grade={getGrade(hasil.nilaiBahasaIndonesia)}
+                />
               </div>
             </div>
           </div>
