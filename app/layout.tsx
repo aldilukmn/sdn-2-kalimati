@@ -19,7 +19,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "SDN 2 Kalimati",
     description:
-      "Aplikasi Informasi UPTD SD Negeri 2 Kalimati Kecamatan Jatibarang Kabupaten Indramayu",
+      "Website UPTD SD Negeri 2 Kalimati Kecamatan Jatibarang Kabupaten Indramayu",
     url: "https://sdn2kalimati.vercel.app",
     siteName: "SDN 2 Kalimati",
     images: [
