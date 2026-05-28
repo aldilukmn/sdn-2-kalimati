@@ -68,7 +68,7 @@ export const dataKelulusan: dataKelulusanType[] = [
   },
   {
     nomorPeserta: "02-18-0351-010",
-    nisn: "3141417080",
+    nisn: "3150473887",
     nama: "Dhafitha Talita Zahra",
     status: "LULUS",
   },

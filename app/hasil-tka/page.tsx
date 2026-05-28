@@ -3,16 +3,15 @@
 import Link from "next/link";
 import { ArrowBigLeft, Search, AlertCircle, Loader } from "lucide-react";
 import { useState } from "react";
-import { dataKelulusan } from "./data";
-import confetti from "canvas-confetti";
+import { dataTKA, getGrade } from "./data";
 
-export default function Kelulusan() {
-  const [nisn, setNisn] = useState("");
+export default function HasilTKA() {
+  const [nama, setNama] = useState("");
   const [hasil, setHasil] = useState<any>(null);
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  const cekKelulusan = async () => {
+  const cekHasil = async () => {
     setError("");
     setHasil(null);
     setIsLoading(true);
@@ -20,23 +19,14 @@ export default function Kelulusan() {
     // Simulasi loading delay
     await new Promise((resolve) => setTimeout(resolve, 1500));
 
-    const siswa = dataKelulusan.find((item) => item.nisn === nisn);
+    const siswa = dataTKA.find((item) =>
+      item.nama.toLowerCase().includes(nama.toLowerCase()),
+    );
 
     setIsLoading(false);
 
     if (siswa) {
       setHasil(siswa);
-      confetti({
-        particleCount: 150,
-        spread: 120,
-        startVelocity: 40,
-        scalar: 1.2,
-        ticks: 200,
-        origin: {
-          x: 0.5,
-          y: 0.6,
-        },
-      });
     } else {
       setError("Data tidak ditemukan");
       setTimeout(() => {
@@ -47,7 +37,6 @@ export default function Kelulusan() {
 
   return (
     <div className="flex flex-col items-center justify-center gap-5 md:gap-10 px-5 my-5 xl:my-10">
-      {/* Tombol kembali */}
       <Link
         href="/"
         className="self-start mb-5 flex items-center gap-2 text-gray-600 hover:text-gray-800 transition-colors"
@@ -58,7 +47,6 @@ export default function Kelulusan() {
         </button>
       </Link>
 
-      {/* Card utama */}
       <div
         className="
         card
@@ -67,28 +55,27 @@ export default function Kelulusan() {
         text-center
       "
       >
-        <div className="text-6xl mb-5">🎓</div>
+        <div className="text-4xl md:text-6xl mb-5">📝</div>
 
-        <h1 className="text-3xl font-bold">Cek Kelulusan</h1>
+        <h1 className="text-2xl md:text-3xl font-bold">Hasil TKA</h1>
 
-        <p className="opacity-70 mt-2 mb-8">
-          Masukkan NISN untuk melihat hasil kelulusan
+        <p className="text-sm md:text-base opacity-70 mt-2 mb-8">
+          Masukkan nama untuk melihat hasil tes
         </p>
 
         {/* Input */}
+        {/* <div className="flex items-center rounded-md bg-white pl-3 outline-1-outline-offset-1 mb-4 outline-gray-300 focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-blue-600 dark:outline-gray-600 dark:focus-within:outline-blue-600 dark:bg-gray-800"> */}
         <input
-          type="text"
-          placeholder="Masukkan NISN"
-          maxLength={10}
-          value={nisn}
-          onChange={(e) => {
-            const value = e.target.value.replace(/\D/g, "");
-            setNisn(value);
-          }}
           onKeyDown={(e) => {
-            if (e.key === "Enter" && nisn && !isLoading) {
-              cekKelulusan();
+            if (e.key === "Enter" && nama && !isLoading) {
+              cekHasil();
             }
+          }}
+          type="text"
+          placeholder="Masukkan Nama Kamu"
+          value={nama}
+          onChange={(e) => {
+            setNama(e.target.value);
           }}
           className="
             w-full
@@ -105,11 +92,10 @@ export default function Kelulusan() {
             dark:bg-gray-800
           "
         />
-
-        {/* Tombol cek */}
+        {/* </div> */}
         <button
-          onClick={cekKelulusan}
-          disabled={!nisn || isLoading}
+          onClick={cekHasil}
+          disabled={!nama || isLoading}
           className="
               glow-button
               w-full
@@ -131,10 +117,33 @@ export default function Kelulusan() {
           ) : (
             <>
               <Search size={18} />
-              Cek Kelulusan
+              Cek Hasil
             </>
           )}
         </button>
+
+        {/* Tombol cek */}
+
+        {/* Loading */}
+        {isLoading && (
+          <div
+            className="
+            mt-5
+            rounded-2xl
+            bg-blue-500/15
+            border border-blue-500/20
+            p-4
+            gap-2
+            flex
+            items-center
+            justify-center
+            animate-pulse
+          "
+          >
+            <Loader size={18} className="animate-spin" />
+            <p>Mencari data siswa...</p>
+          </div>
+        )}
 
         {/* Error */}
         {error && (
@@ -156,41 +165,20 @@ export default function Kelulusan() {
           </div>
         )}
 
-        {/* Loading */}
-        {isLoading && (
-          <div
-            className="
-            mt-5
-            rounded-2xl
-            bg-blue-500/15
-            border border-blue-500/20
-            p-4
-            gap-2
-            flex
-            items-center
-            justify-center
-            animate-pulse
-          "
-          >
-            <Loader size={18} className="animate-spin" />
-            <p>Mencari data Anda...</p>
-          </div>
-        )}
-
         {/* Hasil */}
         {hasil && (
           <div
             className="
               mt-6
               rounded-3xl
-              border border-green-400/20
+              border border-blue-400/20
               bg-gradient-to-br
-              from-green-500/10
-              to-emerald-500/5
+              from-blue-500/10
+              to-cyan-500/5
               p-6
               text-left
               backdrop-blur-xl
-              shadow-[0_0_25px_rgba(34,197,94,0.15)]
+              shadow-[0_0_25px_rgba(59,130,246,0.15)]
               animate-in
               fade-in
               zoom-in-95
@@ -204,23 +192,23 @@ export default function Kelulusan() {
                   h-12
                   w-12
                   rounded-2xl
-                  bg-green-500/20
+                  bg-blue-500/20
                   flex
                   items-center
                   justify-center
                   text-2xl
                 "
               >
-                🎓
+                📊
               </div>
 
               <div>
-                <h2 className="text-2xl font-bold text-green-400">
-                  {hasil.status}
+                <h2 className="text-lg md:text-2xl font-bold text-blue-400">
+                  Hasil Tes
                 </h2>
 
-                <p className="text-sm opacity-70">
-                  Selamat atas kelulusan Anda
+                <p className="text-sm md:text-lg opacity-70">
+                  Data Hasil Ujian
                 </p>
               </div>
             </div>
@@ -236,7 +224,6 @@ export default function Kelulusan() {
                 "
               >
                 <p className="text-sm opacity-60 mb-1">Nomor Peserta</p>
-
                 <h3 className="font-semibold text-lg">{hasil.nomorPeserta}</h3>
               </div>
 
@@ -248,8 +235,19 @@ export default function Kelulusan() {
                   p-4
                 "
               >
-                <p className="text-sm opacity-60 mb-1">Nama Lengkap</p>
+                <p className="text-sm opacity-60 mb-1">NISN</p>
+                <h3 className="font-semibold text-lg">{hasil.nisn}</h3>
+              </div>
 
+              <div
+                className="
+                  rounded-2xl
+                  bg-white/5
+                  border border-white/5
+                  p-4
+                "
+              >
+                <p className="text-sm opacity-60 mb-1">Nama Lengkap</p>
                 <h3 className="font-semibold text-lg">{hasil.nama}</h3>
               </div>
 
@@ -261,9 +259,32 @@ export default function Kelulusan() {
                   p-4
                 "
               >
-                <p className="text-sm opacity-60 mb-1">NISN</p>
+                <p className="text-sm opacity-60 mb-1">Nilai Matematika</p>
+                <h3 className="font-semibold text-lg">
+                  {hasil.nilaiMatematika}{" "}
+                  <span className="text-sm text-yellow-400">
+                    ({getGrade(hasil.nilaiMatematika)})
+                  </span>
+                </h3>
+              </div>
 
-                <h3 className="font-semibold text-lg">{hasil.nisn}</h3>
+              <div
+                className="
+                  rounded-2xl
+                  bg-white/5
+                  border border-white/5
+                  p-4
+                "
+              >
+                <p className="text-sm opacity-60 mb-1">
+                  Nilai Bahasa Indonesia
+                </p>
+                <h3 className="font-semibold text-lg">
+                  {hasil.nilaiBahasaIndonesia}{" "}
+                  <span className="text-sm text-yellow-400">
+                    ({getGrade(hasil.nilaiBahasaIndonesia)})
+                  </span>
+                </h3>
               </div>
             </div>
           </div>
