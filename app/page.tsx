@@ -5,7 +5,7 @@ import TextType from "./reactbits/Text-Type/TextType";
 import { useState, useEffect } from "react";
 
 const buttonClassName =
-  "cursor-pointer flex items-center gap-1 border px-4 py-2 rounded-lg bg-blue-500 hover:bg-blue-600 duration-300 text-white dark:bg-blue-800 dark:hover:bg-blue-700 dark:border-blue-900 font-semibold tracking-widest border-blue-500/50 dark:border-blue-800/50";
+  "cursor-pointer flex items-center gap-1 border px-4 py-2 rounded-lg bg-blue-500 hover:bg-blue-600 duration-300 text-white dark:bg-blue-800 dark:hover:bg-blue-700 dark:border-blue-900 font-semibold md:tracking-widest border-blue-500/50 dark:border-blue-800/50";
 
 const navigationLinks = [
   { href: "/kelulusan", label: "Cek Kelulusan", disabled: true },
@@ -102,7 +102,14 @@ export default function Menu() {
             <Link key={item.href} href={item.href} className='class-card'>{item.label}</Link>
           ))
         } */}
-      <div className="card max-w-lg grid md:grid-cols-2 grid-cols-2 gap-5 py-10 items-center text-sm md:text-base text-center">
+      <div
+        className="card max-w-lg grid md:grid-cols-2 grid-cols-2 gap-5 py-10 items-center text-sm md:text-base text-center"
+        style={
+          {
+            "--card-padding": "20px",
+          } as React.CSSProperties
+        }
+      >
         {navigationLinks.map((link) => {
           // Gunakan state isGraduationButtonEnabled untuk tombol kelulusan
           const isDisabled =
@@ -119,7 +126,11 @@ export default function Menu() {
               {link.label}
             </button>
           ) : (
-            <Link key={link.href} href={link.href} className={`${buttonClassName}`}>
+            <Link
+              key={link.href}
+              href={link.href}
+              className={`${buttonClassName}`}
+            >
               {link.label}
             </Link>
           );
