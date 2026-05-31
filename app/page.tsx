@@ -90,7 +90,7 @@ export default function Menu() {
             "Kecamatan Jatibarang",
           ]}
           typingSpeed={75}
-          pauseDuration={1500}
+          pauseDuration={700}
           showCursor={true}
           cursorCharacter="|"
         />
