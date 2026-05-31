@@ -7,10 +7,14 @@ import { dataKelulusan } from "./data";
 import confetti from "canvas-confetti";
 
 export default function Kelulusan() {
-  const [nisn, setNisn] = useState("");
+  const [nama, setNama] = useState("");
   const [hasil, setHasil] = useState<any>(null);
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+
+  const siswa = dataKelulusan.find((item) =>
+    item.nama.toLowerCase().includes(nama.toLowerCase()),
+  );
 
   const cekKelulusan = async () => {
     setError("");
@@ -19,8 +23,6 @@ export default function Kelulusan() {
 
     // Simulasi loading delay
     await new Promise((resolve) => setTimeout(resolve, 1500));
-
-    const siswa = dataKelulusan.find((item) => item.nisn === nisn);
 
     setIsLoading(false);
 
@@ -52,7 +54,7 @@ export default function Kelulusan() {
         href="/"
         className="self-start mb-5 flex items-center gap-2 text-gray-600 hover:text-gray-800 transition-colors"
       >
-        <button className="cursor-pointer flex items-center gap-1 border px-4 py-2 rounded-lg text-sm bg-blue-500 hover:bg-blue-600 duration-300 text-white dark:bg-blue-800 dark:hover:bg-blue-700 dark:border-blue-900">
+        <button className="cursor-pointer flex items-center gap-1 border px-4 py-2 rounded-lg text-sm bg-blue-500 hover:bg-blue-600 duration-300 text-white dark:bg-blue-800 dark:hover:bg-blue-700 dark:border-blue-800/50 border-blue-500/50">
           <ArrowBigLeft size={18} />
           <span className="text-xs md:text-sm">Kembali</span>
         </button>
@@ -78,15 +80,15 @@ export default function Kelulusan() {
         {/* Input */}
         <input
           type="text"
-          placeholder="Masukkan NISN"
+          placeholder="Masukkan Nama Kamu"
           maxLength={10}
-          value={nisn}
+          value={nama}
           onChange={(e) => {
-            const value = e.target.value.replace(/\D/g, "");
-            setNisn(value);
+            const value = e.target.value.replace(/[^a-zA-Z]/g, "");
+            setNama(value);
           }}
           onKeyDown={(e) => {
-            if (e.key === "Enter" && nisn && !isLoading) {
+            if (e.key === "Enter" && nama && !isLoading) {
               cekKelulusan();
             }
           }}
@@ -109,7 +111,7 @@ export default function Kelulusan() {
         {/* Tombol cek */}
         <button
           onClick={cekKelulusan}
-          disabled={!nisn || isLoading}
+          disabled={!nama || isLoading}
           className="
               glow-button
               w-full
