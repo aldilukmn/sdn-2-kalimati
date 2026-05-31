@@ -102,7 +102,7 @@ export default function Menu() {
             <Link key={item.href} href={item.href} className='class-card'>{item.label}</Link>
           ))
         } */}
-      <div className="card max-w-lg grid md:grid-cols-3 grid-cols-2 gap-5 py-10 items-center text-sm md:text-base text-center">
+      <div className="card max-w-lg grid md:grid-cols-2 grid-cols-2 gap-5 py-10 items-center text-sm md:text-base text-center">
         {navigationLinks.map((link) => {
           // Gunakan state isGraduationButtonEnabled untuk tombol kelulusan
           const isDisabled =
