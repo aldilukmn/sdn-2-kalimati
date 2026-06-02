@@ -232,8 +232,10 @@ export default function Kelulusan() {
               <div
                 className="
                   rounded-2xl
-                  bg-white/5
-                  border border-white/5
+                  bg-green-500/10
+                  border-green-500/40
+                  dark:bg-white/5
+                  border dark:border-white/5
                   p-4
                 "
               >
@@ -245,8 +247,10 @@ export default function Kelulusan() {
               <div
                 className="
                   rounded-2xl
-                  bg-white/5
-                  border border-white/5
+                  bg-green-500/10
+                  border-green-500/40
+                  dark:bg-white/5
+                  border dark:border-white/5
                   p-4
                 "
               >
@@ -258,8 +262,10 @@ export default function Kelulusan() {
               <div
                 className="
                   rounded-2xl
-                  bg-white/5
-                  border border-white/5
+                  dark:bg-white/5
+                  bg-green-500/10
+                  border-green-500/40
+                  border dark:border-white/5
                   p-4
                 "
               >
