@@ -74,14 +74,14 @@ export default function Kelulusan() {
         <h1 className="text-3xl font-bold">Cek Kelulusan</h1>
 
         <p className="opacity-70 mt-2 mb-8">
-          Masukkan NISN untuk melihat hasil kelulusan
+          Masukkan Nama untuk melihat hasil kelulusan
         </p>
 
         {/* Input */}
         <input
           type="text"
           placeholder="Masukkan Nama Kamu"
-          maxLength={10}
+          maxLength={50}
           value={nama}
           onChange={(e) => {
             const value = e.target.value.replace(/[^a-zA-Z]/g, "");
