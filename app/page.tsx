@@ -254,7 +254,7 @@ export default function Menu() {
 
               {/* Tanggal pengumuman */}
               <p className="text-xs md:text-sm text-amber-800 dark:text-yellow-100 mb-6 font-semibold">
-                📅 Selasa, 2 Juni 2026 - Pukul 09:00 WIB
+                📅 Selasa, 2 Juni 2026 - Pukul 11:00 WIB
               </p>
 
               <button
