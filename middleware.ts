@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-// Tanggal dan jam kelulusan: 02 Juni 2026 jam 9 pagi
-const GRADUATION_ANNOUNCEMENT_DATE = new Date(2026, 5, 2, 12, 0, 0); // Juni adalah bulan ke-5 (0-indexed)
+// Tanggal dan jam kelulusan: 02 Juni 2026 jam 12 siang
+const GRADUATION_ANNOUNCEMENT_DATE = new Date(Date.UTC(2026, 5, 2, 12, 0, 0)); // 12:00 WIB = 05:00 UTC
 
 export function middleware(request: NextRequest) {
   const now = new Date();

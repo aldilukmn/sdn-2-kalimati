@@ -13,8 +13,8 @@ const navigationLinks = [
   // { href: "/ppdb-online", label: "PPDB Online", disabled: false },
 ];
 
-// Tanggal dan jam kelulusan: 02 Juni 2026 jam 9 pagi
-const GRADUATION_ANNOUNCEMENT_DATE = new Date(2026, 5, 2, 12, 0, 0); // Juni adalah bulan ke-5 (0-indexed)
+// Tanggal dan jam kelulusan: 02 Juni 2026 jam 12 siang
+const GRADUATION_ANNOUNCEMENT_DATE = new Date(Date.UTC(2026, 5, 2, 5, 0, 0)); // 12:00 WIB = 05:00 UTC
 
 export default function Menu() {
   const [showNotif, setShowNotif] = useState(false);
