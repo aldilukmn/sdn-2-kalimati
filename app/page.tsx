@@ -14,7 +14,7 @@ const navigationLinks = [
 ];
 
 // Tanggal dan jam kelulusan: 02 Juni 2026 jam 9 pagi
-const GRADUATION_ANNOUNCEMENT_DATE = new Date(2026, 5, 2, 9, 0, 0); // Juni adalah bulan ke-5 (0-indexed)
+const GRADUATION_ANNOUNCEMENT_DATE = new Date(2026, 5, 2, 10, 0, 0); // Juni adalah bulan ke-5 (0-indexed)
 
 export default function Menu() {
   const [showNotif, setShowNotif] = useState(false);

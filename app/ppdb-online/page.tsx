@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 interface FormData {
   // Data Calon Peserta Didik
@@ -64,6 +64,19 @@ export default function PpdbOnline() {
 
   const [showWali, setShowWali] = useState(false);
   const [currentStep, setCurrentStep] = useState(1);
+  const [canSubmit, setCanSubmit] = useState(false);
+
+  useEffect(() => {
+    if (currentStep === 3) {
+      const timer = setTimeout(() => {
+        setCanSubmit(true);
+      }, 100);
+
+      return () => clearTimeout(timer);
+    }
+
+    setCanSubmit(false);
+  }, [currentStep]);
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -77,13 +90,13 @@ export default function PpdbOnline() {
     }));
   };
 
-const handleSubmit = (e: React.FormEvent) => {
-  e.preventDefault();
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
 
-  console.count("SUBMIT");
+    console.count("SUBMIT");
 
-  alert("TES");
-};
+    alert("TES");
+  };
 
   const InputField = ({
     label,
@@ -519,12 +532,14 @@ const handleSubmit = (e: React.FormEvent) => {
                 Selanjutnya →
               </button>
             ) : (
-              <button
-                type="submit"
-                className="flex-1 py-3 px-4 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-lg transition dark:bg-green-700 dark:hover:bg-green-600"
-              >
-                ✓ Kirim Formulir
-              </button>
+              canSubmit && (
+                <button
+                  type="submit"
+                  className="flex-1 py-3 px-4 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-lg transition dark:bg-green-700 dark:hover:bg-green-600"
+                >
+                  ✓ Kirim Formulir
+                </button>
+              )
             )}
           </div>
         </form>
