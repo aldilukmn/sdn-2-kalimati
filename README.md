@@ -1,5 +1,15 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+## Fitur Utama
+
+### Dashboard Admin (`/dashboard`)
+Dashboard admin untuk mengelola data pendaftar online dengan fitur:
+- **Tampilkan Daftar Pendaftar**: Menampilkan semua data pendaftar dalam format tabel
+- **Cetak Formulir**: Klik ikon printer untuk mencetak formulir pendaftar
+- **Validasi Data**: Klik ikon lingkaran untuk mengubah status validasi
+- **Statistik**: Menampilkan total pendaftar, yang tervalidasi, dan belum tervalidasi
+- **Proteksi**: Hanya bisa diakses dengan login (auto-redirect ke home jika belum login)
+
 ## Getting Started
 
 First, run the development server:

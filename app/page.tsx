@@ -10,6 +10,7 @@ const buttonClassName =
 const navigationLinks = [
   { href: "/kelulusan", label: "Cek Kelulusan", disabled: true },
   { href: "/hasil-tka", label: "Cek Hasil TKA", disabled: false },
+  // { href: "/login", label: "Login", disabled: false },
   // { href: "/ppdb-online", label: "PPDB Online", disabled: false },
 ];
 

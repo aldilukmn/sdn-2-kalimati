@@ -40,14 +40,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
         <link
           rel="icon"
           href="https://res.cloudinary.com/dhtfq9yw8/image/upload/v1717920310/uptd%20sdn%202%20kalimati/svg/vapqm0latukpxjjawzfu.svg"
         />
       </head>
-      <body className={`${poppins.className} antialiased`}>
+      <body
+        className={`${poppins.className} antialiased`}
+        suppressHydrationWarning
+      >
         <ThemeProvider>
           <div className="min-h-screen">{children}</div>
         </ThemeProvider>
