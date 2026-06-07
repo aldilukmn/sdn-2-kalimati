@@ -15,4 +15,14 @@ export default class RegistrationService {
   static async getById(id: string) {
     return await api(`/registration/${id}`);
   }
+
+  static async updateValidation(
+    id: string,
+    status: "validated" | "unvalidated"
+  ) {
+    return await api(`/registration/${id}`, {
+      method: "PATCH",
+      body: JSON.stringify({ status }),
+    });
+  }
 }

@@ -26,7 +26,7 @@ const getPreferredTheme = (): ThemeMode => {
 };
 
 export default function ThemeProvider({ children }: { children?: ReactNode }) {
-  const [theme, setTheme] = useState<ThemeMode>("light");
+  const [theme, setTheme] = useState<ThemeMode | null>(null);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -37,7 +37,7 @@ export default function ThemeProvider({ children }: { children?: ReactNode }) {
   }, []);
 
   useEffect(() => {
-    if (!mounted) return;
+    if (!mounted || !theme) return;
 
     const root = document.documentElement;
     root.classList.toggle("dark", theme === "dark");
@@ -45,13 +45,13 @@ export default function ThemeProvider({ children }: { children?: ReactNode }) {
   }, [theme, mounted]);
 
   const buttonStyles =
-    theme === "light"
+    theme !== "dark"
       ? "inline-flex items-center gap-2 rounded-full border border-slate-700/80 bg-slate-950/95 px-3 py-2 text-sm font-semibold text-white shadow-sm transition duration-300 hover:bg-slate-800"
       : "inline-flex items-center gap-2 rounded-full border border-slate-300/70 bg-white/90 px-3 py-2 text-sm font-semibold text-slate-900 shadow-sm transition duration-300 hover:bg-slate-100";
 
   return (
     <>
-      {mounted && (
+      {mounted && theme && (
         <div className="absolute top-5 right-4 z-50 pointer-events-auto">
           <button
             type="button"

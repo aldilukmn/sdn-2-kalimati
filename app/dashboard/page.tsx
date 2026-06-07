@@ -2,9 +2,10 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Printer, CheckCircle2, Circle, LogOut } from "lucide-react";
+import { Printer, CheckCircle2, Circle, LogOut, Loader2 } from "lucide-react";
 import RegistrationService from "@/services/registration.service";
 import AuthService from "@/services/auth.service";
+import Pagination from "@/app/components/Pagination";
 
 interface Address {
   street?: string;
@@ -133,7 +134,10 @@ export default function Dashboard() {
   const [registrants, setRegistrants] = useState<Registrant[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [validated, setValidated] = useState<Set<string>>(new Set());
+  const [validating, setValidating] = useState<Set<string>>(new Set());
+  const [currentPage, setCurrentPage] = useState(1);
+  const [logoutLoading, setLogoutLoading] = useState(false);
+  const itemsPerPage = 5;
 
   useEffect(() => {
     const fetchRegistrants = async () => {
@@ -148,7 +152,7 @@ export default function Dashboard() {
         };
 
         if (error.status === 401) {
-          router.replace("/");
+          router.replace("/login");
           return;
         }
 
@@ -161,25 +165,52 @@ export default function Dashboard() {
     fetchRegistrants();
   }, [router]);
 
-  const handleValidate = (id: string) => {
-    setValidated((prev) => {
-      const newSet = new Set(prev);
-      if (newSet.has(id)) {
-        newSet.delete(id);
-      } else {
-        newSet.add(id);
+  const handleValidate = async (id: string, currentStatus?: string) => {
+    try {
+      setValidating((prev) => new Set(prev).add(id));
+
+      const newStatus =
+        currentStatus === "validated" ? "unvalidated" : "validated";
+
+      await RegistrationService.updateValidation(id, newStatus);
+
+      setRegistrants((prev) =>
+        prev.map((reg) =>
+          reg._id === id || reg.id === id ? { ...reg, status: newStatus } : reg,
+        ),
+      );
+    } catch (err) {
+      const error = err as Error & {
+        status?: number;
+      };
+
+      if (error.status === 401) {
+        router.replace("/");
+        return;
       }
-      return newSet;
-    });
+
+      setError(error.message || "Gagal memperbarui status validasi");
+    } finally {
+      setValidating((prev) => {
+        const newSet = new Set(prev);
+        newSet.delete(id);
+        return newSet;
+      });
+    }
   };
 
   const handleLogout = async () => {
     try {
+      setLogoutLoading(true);
       await AuthService.logout();
     } catch (err) {
       console.error("Logout error:", err);
+      setError(err instanceof Error ? err.message : "Gagal logout");
     } finally {
+      // Clear session data regardless of success/failure
       sessionStorage.removeItem("user_session");
+      sessionStorage.removeItem("user_identifier");
+      document.cookie = "user_session=; path=/; max-age=0";
       router.replace("/login");
     }
   };
@@ -232,8 +263,11 @@ export default function Dashboard() {
             <div class="logo">
               <img src="/cop-sekolah.png" alt="Logo Sekolah" />
             </div>
-            <div style="padding: 20px; margin-top: 20px; font-weight: bold; font-size: 16px; text-decoration: underline; text-underline-offset: 6px;">
-              FORMULIR PENDAFTARAN ONLINE
+            <div style="padding-top: 20px; margin-top: 20px; font-weight: bold; font-size: 16px;">
+              FORMULIR PENDAFTARAN PESERTA DIDIK BARU
+            </div>
+            <div style="font-weight: bold; font-size: 15px; padding-bottom: 20px;">
+              TAHUN AJARAN 2026/2027
             </div>
           </div>
 
@@ -409,6 +443,7 @@ export default function Dashboard() {
     if (printWindow) {
       printWindow.document.write(printContent);
       printWindow.document.close();
+      printWindow.document.title = `${registrationNumber}-${fullName}`;
       printWindow.print();
     }
   };
@@ -426,6 +461,11 @@ export default function Dashboard() {
     );
   }
 
+  const totalPages = Math.ceil(registrants.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const paginatedRegistrants = registrants.slice(startIndex, endIndex);
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-20 px-4">
       <div className="max-w-7xl mx-auto">
@@ -441,11 +481,18 @@ export default function Dashboard() {
           </div>
           <button
             onClick={handleLogout}
-            className="flex items-center gap-2 px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors dark:bg-red-700 dark:hover:bg-red-800"
+            disabled={logoutLoading}
+            className="flex items-center gap-2 px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors dark:bg-red-700 dark:hover:bg-red-800 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
             title="Logout"
           >
-            <LogOut size={20} />
-            <span className="text-sm font-medium">Logout</span>
+            {logoutLoading ? (
+              <Loader2 size={20} className="animate-spin" />
+            ) : (
+              <LogOut size={20} />
+            )}
+            <span className="text-sm font-medium">
+              {logoutLoading ? "Logout..." : "Logout"}
+            </span>
           </button>
         </div>
 
@@ -471,7 +518,7 @@ export default function Dashboard() {
               Tervalidasi
             </div>
             <div className="text-3xl font-bold text-green-600 dark:text-green-400">
-              {validated.size}
+              {registrants.filter((r) => r.status === "validated").length}
             </div>
           </div>
           <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
@@ -479,7 +526,7 @@ export default function Dashboard() {
               Belum Divalidasi
             </div>
             <div className="text-3xl font-bold text-amber-600 dark:text-amber-400">
-              {registrants.length - validated.size}
+              {registrants.filter((r) => r.status === "unvalidated").length}
             </div>
           </div>
         </div>
@@ -504,6 +551,9 @@ export default function Dashboard() {
                       Tanggal Daftar
                     </th>
                     <th className="px-6 py-4 text-left text-sm font-semibold">
+                      Tanggal Validasi
+                    </th>
+                    <th className="px-6 py-4 text-left text-sm font-semibold">
                       Nama Lengkap
                     </th>
                     <th className="px-6 py-4 text-left text-sm font-semibold">
@@ -521,7 +571,7 @@ export default function Dashboard() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
-                  {registrants.map((registrant, index) => (
+                  {paginatedRegistrants.map((registrant, index) => (
                     <tr
                       key={registrant._id || registrant.id}
                       className="hover:bg-blue-50 dark:hover:bg-gray-700/50 transition-colors"
@@ -532,6 +582,9 @@ export default function Dashboard() {
                       <td className="px-6 py-4 text-sm text-gray-600 dark:text-gray-300">
                         {formatCreatedDate(registrant.createdAt)}
                       </td>
+                      <td className="px-6 py-4 text-sm text-gray-600 dark:text-gray-300">
+                        {formatCreatedDate(registrant.updatedAt)}
+                      </td>
                       <td className="px-6 py-4 text-sm font-medium text-gray-900 dark:text-white">
                         {registrant.student?.fullName || "-"}
                       </td>
@@ -539,14 +592,14 @@ export default function Dashboard() {
                         {registrant.contactPhoneNumber || "-"}
                       </td>
                       <td className="px-6 py-4 text-sm text-gray-600 dark:text-gray-300 max-w-xs truncate">
-                        {registrant.student?.address?.street
+                      {registrant.student?.address?.street
                           ? `${registrant.student.address.street}, ${registrant.student.address.village || ""} ${registrant.student.address.district || ""}`
                           : "-"}
                       </td>
                       <td className="px-6 py-4 text-center">
                         <button
                           onClick={() => handlePrint(registrant)}
-                          className="inline-flex items-center justify-center p-2 text-blue-600 hover:bg-blue-100 rounded-lg transition-colors dark:text-blue-400 dark:hover:bg-blue-900/30"
+                          className="inline-flex items-center justify-center p-2 text-blue-600 hover:bg-blue-100 rounded-lg transition-colors dark:text-blue-400 dark:hover:bg-blue-900/30 cursor-pointer"
                           title="Cetak Formulir"
                         >
                           <Printer size={20} />
@@ -556,23 +609,35 @@ export default function Dashboard() {
                         <button
                           onClick={() =>
                             handleValidate(
-                              registrant._id || registrant.id || "",
+                              registrant._id as string,
+                              registrant.status,
                             )
                           }
-                          className={`inline-flex items-center justify-center p-2 rounded-lg transition-colors ${
-                            validated.has(registrant._id || registrant.id || "")
-                              ? "text-green-600 bg-green-100 dark:text-green-400 dark:bg-green-900/30"
-                              : "text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700/50"
+                          disabled={validating.has(registrant._id as string)}
+                          className={`inline-flex items-center justify-center p-2 rounded-lg transition-all duration-300 ${
+                            validating.has(registrant._id as string)
+                              ? "cursor-not-allowed opacity-75"
+                              : "cursor-pointer"
+                          } ${
+                            registrant.status === "validated"
+                              ? validating.has(registrant._id as string)
+                                ? "text-green-600 bg-green-100 dark:text-green-400 dark:bg-green-900/30 animate-pulse"
+                                : "text-green-600 bg-green-100 dark:text-green-400 dark:bg-green-900/30 hover:scale-110"
+                              : validating.has(registrant._id as string)
+                                ? "text-blue-600 bg-blue-100 dark:text-blue-400 dark:bg-blue-900/30 animate-pulse"
+                                : "text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700/50 hover:scale-110"
                           }`}
                           title={
-                            validated.has(registrant._id || registrant.id || "")
-                              ? "Batalkan Validasi"
-                              : "Validasi Data"
+                            validating.has(registrant._id as string)
+                              ? "Sedang memproses..."
+                              : registrant.status === "validated"
+                                ? "Data Tervalidasi"
+                                : "Data Belum Tervalidasi"
                           }
                         >
-                          {validated.has(
-                            registrant._id || registrant.id || "",
-                          ) ? (
+                          {validating.has(registrant._id as string) ? (
+                            <Loader2 size={20} className="animate-spin" />
+                          ) : registrant.status === "validated" ? (
                             <CheckCircle2 size={20} />
                           ) : (
                             <Circle size={20} />
@@ -586,6 +651,17 @@ export default function Dashboard() {
             </div>
           )}
         </div>
+
+        {/* Pagination */}
+        {registrants.length > 0 && (
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={setCurrentPage}
+            itemsPerPage={itemsPerPage}
+            totalItems={registrants.length}
+          />
+        )}
 
         {/* Info */}
         <div className="mt-8 p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg">

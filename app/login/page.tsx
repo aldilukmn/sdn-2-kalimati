@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowBigLeft } from 'lucide-react';
+import { ArrowBigLeft } from "lucide-react";
 import Link from "next/link";
 import { FormEvent, useState } from "react";
 import AuthService from "@/services/auth.service";
@@ -13,24 +13,27 @@ export default function LoginPage() {
   const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
   const [message, setMessage] = useState("");
 
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
 
-const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
-  event.preventDefault();
+    try {
+      const response = await AuthService.login(identifier, password);
 
-  try {
-    const response = await AuthService.login(identifier, password);
+      setStatus("success");
+      setMessage(response.status.message);
 
-    setStatus("success");
-    setMessage(response.status.message);
-    sessionStorage.setItem("user_session", response.result);
+      // Set token to both sessionStorage and cookie
+      sessionStorage.setItem("user_session", response.result);
+      sessionStorage.setItem("user_identifier", identifier);
+      document.cookie = `user_session=${response.result}; path=/; max-age=86400`;
 
-    router.push("/dashboard");
-  } catch (error) {
-    setStatus("error");
+      router.push("/dashboard");
+    } catch (error) {
+      setStatus("error");
 
-    setMessage(error instanceof Error ? error.message : "Login gagal");
-  }
-};
+      setMessage(error instanceof Error ? error.message : "Login gagal");
+    }
+  };
 
   return (
     <div className="flex flex-col items-center justify-center gap-5 md:gap-10 px-5 my-5 xl:my-10">
@@ -51,43 +54,45 @@ const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
             className="mx-auto mb-6 h-20 w-20 object-contain"
           />
           <h1 className="text-3xl font-bold tracking-tight text-slate-900 dark:text-slate-100">
-            Masuk ke Akun
+            Masuk ke Admin
           </h1>
           <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">
-            Gunakan NISN atau Email dan kata sandi Anda untuk masuk.
+            Gunakan Username dan Password Anda untuk masuk.
           </p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-5">
           <div>
             <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-200">
-              NISN / Email
+              Username
             </label>
             <input
               type="text"
+              required
               value={identifier}
               onChange={(event) => setIdentifier(event.target.value)}
-              placeholder="Masukkan NISN atau Email"
+              placeholder="Masukkan Username"
               className="w-full rounded-2xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none transition duration-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:focus:border-blue-400 dark:focus:ring-blue-500/30"
             />
           </div>
 
           <div>
             <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-200">
-              Kata Sandi
+              Password
             </label>
             <input
               type="password"
+              required
               value={password}
               onChange={(event) => setPassword(event.target.value)}
-              placeholder="Masukkan kata sandi"
+              placeholder="Masukkan Password"
               className="w-full rounded-2xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none transition duration-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:focus:border-blue-400 dark:focus:ring-blue-500/30"
             />
           </div>
 
           <button
             type="submit"
-            className="w-full rounded-2xl bg-blue-600 px-5 py-3 text-sm font-semibold text-white transition duration-200 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400/50"
+            className="w-full rounded-2xl bg-blue-600 px-5 py-3 text-sm font-semibold text-white transition duration-200 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400/50 cursor-pointer"
           >
             Masuk
           </button>
@@ -104,7 +109,7 @@ const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
             {message}
           </div>
         )}
-
+        {/* 
         <div className="mt-8 flex items-center justify-between text-sm text-slate-600 dark:text-slate-300">
           <Link
             href="/"
@@ -113,7 +118,7 @@ const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
             Kembali ke Beranda
           </Link>
           <span>Butuh bantuan? Hubungi admin sekolah.</span>
-        </div>
+        </div> */}
       </div>
     </div>
   );

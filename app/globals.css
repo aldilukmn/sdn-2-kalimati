@@ -263,3 +263,14 @@ body {
 .p-organizationchart-lines .p-organizationchart-line-up {
   border-top: 3px solid #000 !important;
 }
+
+/* Dark mode select styling */
+html.dark select option {
+  background-color: rgba(59, 130, 246, 0.25);
+  color: #ffffff;
+}
+
+html.dark select option:checked {
+  background: linear-gradient(#2563eb, #2563eb);
+  background-color: #2563eb;
+}

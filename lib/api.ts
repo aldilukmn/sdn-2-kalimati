@@ -25,11 +25,25 @@ export const api = async (
     }
   );
 
-  const result = await response.json();
+  let result: any;
+  
+  try {
+    result = await response.json();
+  } catch (err) {
+    const responseText = await response.clone().text();
+    console.error("Response text:", responseText);
+    const error = new Error(
+      `API Error: ${response.status} ${response.statusText}`
+    ) as Error & {
+      status?: number;
+    };
+    error.status = response.status;
+    throw error;
+  }
 
   if (!response.ok) {
     const error = new Error(
-      result?.status?.message
+      result?.status?.message || result?.message || `HTTP ${response.status}`
     ) as Error & {
       status?: number;
     };
