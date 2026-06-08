@@ -25,4 +25,8 @@ export default class RegistrationService {
       body: JSON.stringify({ status }),
     });
   }
+
+  static async totalRegistrations() {
+    return await api("/registration/count");
+  }
 }

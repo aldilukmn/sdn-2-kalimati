@@ -5,6 +5,7 @@ import RegistrationService from "@/services/registration.service";
 import { useRouter } from "next/navigation";
 import { ArrowBigLeft, ArrowLeft, ArrowRight } from "lucide-react";
 import LoadingModal from "@/app/components/LoadingModal";
+import RegistrationCounter from "@/app/components/RegistrationCounter";
 import Link from "next/link";
 
 interface InputFieldProps {
@@ -64,7 +65,7 @@ const InputField = memo(
 
     return (
       <div className="flex flex-col gap-2">
-        <label className="text-sm font-semibold text-gray-700 dark:text-gray-300">
+        <label className="text-sm font-semibold ">
           {label}
           {required && <span className="text-red-500 ml-1">*</span>}
         </label>
@@ -77,7 +78,7 @@ const InputField = memo(
           required={required}
           maxLength={maxLength}
           inputMode={numericOnly ? "numeric" : undefined}
-          className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:text-white transition placeholder-gray-400 dark:placeholder-gray-500"
+          className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:border-gray-600 transition placeholder-gray-400 dark:placeholder-gray-500"
         />
       </div>
     );
@@ -96,7 +97,7 @@ const SelectField = memo(
     onChange,
   }: SelectFieldProps) => (
     <div className="flex flex-col gap-2">
-      <label className="text-sm font-semibold text-gray-700 dark:text-gray-300">
+      <label className="text-sm font-semibold">
         {label}
         {required && <span className="text-red-500 ml-1">*</span>}
       </label>
@@ -105,7 +106,7 @@ const SelectField = memo(
         value={value}
         onChange={onChange}
         required={required}
-        className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:text-white transition cursor-pointer"
+        className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:border-gray-600  transition cursor-pointer"
       >
         <option value="" disabled>
           -- Pilih --
@@ -358,6 +359,8 @@ export default function PpdbOnline() {
       <div className="w-full max-w-5xl">
         {/* Header */}
         <div className="text-center mb-8">
+          {/* Registration Counter */}
+          <RegistrationCounter />
           <h1 className="text-3xl md:text-4xl font-bold mb-2">
             Formulir Pendaftaran SPMB
           </h1>
@@ -410,7 +413,10 @@ export default function PpdbOnline() {
                 </div>
 
                 {/* Label */}
-                <span className="text-xs md:text-sm font-semibold text-center">
+                <span
+                  data-label
+                  className="text-xs md:text-sm font-semibold text-center"
+                >
                   {step === 1
                     ? "Data Peserta"
                     : step === 2
@@ -602,25 +608,27 @@ export default function PpdbOnline() {
                     maxLength={1}
                   />
                 </div>
-                <InputField
-                  label="Nomor HP Orang Tua"
-                  name="contactPhoneNumber"
-                  type="tel"
-                  required
-                  placeholder="08xxxxxxxxxx"
-                  value={formData.contactPhoneNumber}
-                  onChange={handleChange}
-                  maxLength={15}
-                  numericOnly={true}
-                />
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <InputField
+                    label="Nomor HP Orang Tua"
+                    name="contactPhoneNumber"
+                    type="tel"
+                    required
+                    placeholder="08xxxxxxxxxx"
+                    value={formData.contactPhoneNumber}
+                    onChange={handleChange}
+                    maxLength={15}
+                    numericOnly={true}
+                  />
 
-                <InputField
-                  label="Asal TK/RA"
-                  name="kindergartenOrigin"
-                  placeholder="Nama TK/RA atau Tidak Sekolah TK/RA"
-                  value={formData.student.kindergartenOrigin}
-                  onChange={handleChange}
-                />
+                  <InputField
+                    label="Asal TK/RA"
+                    name="kindergartenOrigin"
+                    placeholder="Nama TK/RA atau Tidak Sekolah TK/RA"
+                    value={formData.student.kindergartenOrigin}
+                    onChange={handleChange}
+                  />
+                </div>
               </div>
             </div>
           )}
@@ -630,7 +638,7 @@ export default function PpdbOnline() {
             <div className="card rounded-lg shadow-lg p-6 md:p-8 space-y-8">
               {/* Data Ayah */}
               <div>
-                <h2 className="text-2xl font-bold dark:text-white mb-6 pb-3 border-b-2 border-blue-600">
+                <h2 className="text-2xl font-bold mb-6 pb-3 border-b-2 border-blue-600">
                   Data Ayah
                 </h2>
 
@@ -721,7 +729,7 @@ export default function PpdbOnline() {
 
               {/* Data Ibu */}
               <div>
-                <h2 className="text-2xl font-bold dark:text-white mb-6 pb-3 border-b-2 border-blue-600">
+                <h2 className="text-2xl font-bold mb-6 pb-3 border-b-2 border-blue-600">
                   Data Ibu
                 </h2>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:space-y-6">
@@ -813,7 +821,7 @@ export default function PpdbOnline() {
           {/* Step 3: Data Wali */}
           {currentStep === 3 && (
             <div className="card rounded-lg shadow-lg p-6 md:p-8">
-              <h2 className="text-2xl font-bold dark:text-white mb-6 pb-3 border-b-2 border-blue-600">
+              <h2 className="text-2xl font-bold mb-6 pb-3 border-b-2 border-blue-600">
                 C. Data Wali (Jika Ada)
               </h2>
 
@@ -825,7 +833,7 @@ export default function PpdbOnline() {
                     onChange={(e) => setShowWali(e.target.checked)}
                     className="w-5 h-5 text-blue-600 rounded focus:ring-2 focus:ring-blue-500 cursor-pointer"
                   />
-                  <span className="text-sm font-semibold dark:text-gray-300">
+                  <span className="text-sm font-semibold">
                     Saya memiliki wali (jika tidak ada, abaikan bagian ini)
                   </span>
                 </label>
@@ -872,7 +880,7 @@ export default function PpdbOnline() {
               disabled={currentStep === 1}
               className={`flex flex-1 justify-center items-center py-3 px-4 rounded-lg font-semibold transition ${
                 currentStep === 1
-                  ? "bg-gray-300 text-gray-500 cursor-not-allowed dark:bg-gray-700"
+                  ? "bg-gray-300 text-gray-500 cursor-not-allowed"
                   : "bg-gray-500 hover:bg-gray-600 text-white dark:bg-gray-600 dark:hover:bg-gray-500 cursor-pointer"
               }`}
             >
