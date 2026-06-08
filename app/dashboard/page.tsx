@@ -224,6 +224,9 @@ export default function Dashboard() {
       ? `${address.street || ""} RT/RW ${address.rt || ""}/${address.rw || ""} ${address.village || ""} ${address.district || ""} ${address.postalCode || ""}`
       : "-";
     const phone = registrant.contactPhoneNumber || "-";
+    const childOrder = registrant.student?.childOrder ?? 1;
+    const siblings = Number(registrant.student?.numberOfSiblings ?? 0);
+    const totalChildren = siblings + 1;
 
     const printContent = `
       <html>
@@ -318,7 +321,11 @@ export default function Dashboard() {
             <div class="field-row">
               <div class="field">
                 <div class="field-label">Saudara Kandung:</div>
-                <div class="field-value">Anak ke-${registrant.student?.childOrder} dari ${registrant.student?.numberOfSiblings} bersaudara</div>
+                <div class="field-value">${
+                  siblings === 0
+                    ? "Anak Tunggal"
+                    : `Anak ke-${childOrder} dari ${totalChildren} bersaudara`
+                }</div>
               </div>
               <div class="field">
                 <div class="field-label">No. HP Orang Tua:</div>

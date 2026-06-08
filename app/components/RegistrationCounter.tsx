@@ -2,21 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Users, TrendingUp } from "lucide-react";
-import RegistrationService from '@/services/registration.service';
-
-interface CounterResponse {
-  status: {
-    code: number;
-    response: string;
-  };
-  result?: {
-    total?: number;
-  };
-  data?: {
-    totalRegistrations?: number;
-    count?: number;
-  };
-}
+import RegistrationService from "@/services/registration.service";
 
 export default function RegistrationCounter() {
   const [count, setCount] = useState<number | null>(null);
@@ -26,8 +12,8 @@ export default function RegistrationCounter() {
     const fetchCount = async () => {
       try {
         setIsLoading(true);
-        const response = await RegistrationService.totalRegistrations(); 
-        const total =  response.result?.total as number
+        const response = await RegistrationService.totalRegistrations();
+        const total = response.result?.total as number;
         setCount(total);
       } catch (error) {
         console.error("Error fetching registration count:", error);
@@ -66,7 +52,7 @@ export default function RegistrationCounter() {
 
             <div>
               <p className="text-sm md:text-base font-medium text-blue-100 mb-1">
-                Jumlah Pendaftar PPDB Online
+                Jumlah Pendaftar
               </p>
               <p className="text-2xl md:text-3xl font-bold text-white">
                 {isLoading ? (

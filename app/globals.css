@@ -2,6 +2,9 @@
 @plugin "flowbite-react/plugin/tailwindcss";
 @source "../.flowbite-react/class-list.json";
 
+/* Konfigurasi Tailwind v4 untuk menggunakan mode class, bukan media query bawaan OS */
+/* @custom-variant dark (&:is(.dark, .dark *)); */
+
 :root {
   --background:
     radial-gradient(
@@ -15,6 +18,10 @@
       transparent 35%
     ),
     linear-gradient(180deg, #f8fbff 0%, #eef6ff 45%, #dbeafe 100%);
+
+  --gray-100: #f3f4f6;
+  --green-400: #31C48D;
+  --green-500: #0E9F6E;
 
   --foreground: #171717;
 
@@ -266,11 +273,47 @@ body {
 
 /* Dark mode select styling */
 html.dark select option {
-  background-color: rgba(59, 130, 246, 0.25);
+  background-color: #1e293b; /* Solid color required, transparent doesn't work well on native select dropdowns */
   color: #ffffff;
 }
 
 html.dark select option:checked {
-  background: linear-gradient(#2563eb, #2563eb);
+  background: #2563eb;
   background-color: #2563eb;
+}
+
+#data-pendaftaran {
+  color: #4b5563;
+}
+
+html.dark #data-pendaftaran {
+  color: #d1d5db;
+}
+
+html.dark #back-to-home {
+  background: white;
+  color: #1f2937;
+}
+
+html.dark #back-to-home:hover {
+  background: var(--gray-100);
+}
+
+#back-to-home:hover {
+  background: var(--gray-100);
+  border-color: var(--gray-100);
+}
+
+#back-to-home {
+  background: white;
+  color: #1f2937;
+  border-color: white;
+}
+
+#registration-success {
+  color: var(--green-500);
+}
+
+html.dark #registration-success {
+  color: var(--green-400);
 }

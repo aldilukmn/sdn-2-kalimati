@@ -151,7 +151,7 @@ const TextAreaField = memo(({
 ));
 TextAreaField.displayName = "TextAreaField";
 
-export default function PpdbOnline() {
+export default function Sp() {
   const [formData, setFormData] = useState<RegistrationForm>({
     fullName: "",
     nisn: "",
