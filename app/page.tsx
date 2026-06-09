@@ -3,15 +3,16 @@
 import Link from "next/link";
 import TextType from "./reactbits/Text-Type/TextType";
 import { useState, useEffect } from "react";
+import { GraduationCap, FileText, UserPlus } from 'lucide-react';
 
 const buttonClassName =
-  "cursor-pointer flex items-center gap-1 border px-4 py-2 rounded-lg bg-blue-500 hover:bg-blue-600 duration-300 text-white dark:bg-blue-800 dark:hover:bg-blue-700 dark:border-blue-900 font-semibold md:tracking-widest border-blue-500/50 dark:border-blue-800/50";
+  "cursor-pointer flex items-center gap-1 border px-7 gap-2 py-3 items-center justify-center rounded-lg duration-300 text-white text-md md:text-lg bg-blue-700 hover:bg-blue-800 font-semibold md:tracking-wide border-blue-700 hover:border-blue-800 flex flex-col md:flex-row";
 
 const navigationLinks = [
-  { href: "/kelulusan", label: "Cek Kelulusan", disabled: true },
-  { href: "/hasil-tka", label: "Cek Hasil TKA", disabled: false },
+  { href: "/kelulusan", label: "Cek Kelulusan", disabled: true, icon: GraduationCap },
+  { href: "/hasil-tka", label: "Cek Hasil TKA", disabled: false, icon: FileText },
   // { href: "/login", label: "Login", disabled: false },
-  { href: "/spmb-online", label: "SPMB Online", disabled: false },
+  { href: "/spmb", label: "Daftar SPMB", disabled: false, icon: UserPlus },
 ];
 
 // Tanggal dan jam kelulusan: 02 Juni 2026 jam 9 pagi
@@ -81,7 +82,7 @@ export default function Menu() {
       <img
         src="https://res.cloudinary.com/dhtfq9yw8/image/upload/v1717920310/uptd%20sdn%202%20kalimati/svg/vapqm0latukpxjjawzfu.svg"
         alt="logo-sekolah"
-        className="lg:max-w-[20%] max-w-[35%] h-auto"
+        className="md:max-w-[20%] max-w-[30%] h-auto"
       />
       <h1 className="xl:text-5xl lg:text-3xl text-2xl font-bold md:tracking-widest">
         <TextType
@@ -104,7 +105,7 @@ export default function Menu() {
           ))
         } */}
       <div
-        className="card max-w-lg grid md:grid-cols-2 grid-cols-2 gap-5 py-10 items-center text-sm md:text-base text-center"
+        className="grid md:grid-cols-3 grid-cols-2 gap-5 md:py-10 items-center text-sm md:text-base text-center mx-5 md:mx-0"
         style={
           {
             "--card-padding": "20px",
@@ -118,21 +119,25 @@ export default function Menu() {
               ? !isGraduationButtonEnabled
               : link.disabled;
 
+          const Icon = link.icon;
+
           return isDisabled ? (
             <button
               key={link.href}
               onClick={handleKelulusanClick}
               className={`${buttonClassName}`}
             >
-              {link.label}
+              <Icon size={18} />
+              <span>{link.label}</span>
             </button>
           ) : (
             <Link
               key={link.href}
               href={link.href}
               className={`${buttonClassName}`}
-            >
-              {link.label}
+              >
+              <Icon size={25} />
+              <span>{link.label}</span>
             </Link>
           );
         })}

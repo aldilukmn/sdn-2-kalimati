@@ -19,9 +19,15 @@
     ),
     linear-gradient(180deg, #f8fbff 0%, #eef6ff 45%, #dbeafe 100%);
 
+  --blue-400: #76a9fa;
+  --blue-500: #3f83f8;
+  --blue-600: #1c64f2;
+  --blue-700: #1e429f;
+  --blue-800: #1e429f;
   --gray-100: #f3f4f6;
-  --green-400: #31C48D;
-  --green-500: #0E9F6E;
+  --gray-700: #374151;
+  --green-400: #31c48d;
+  --green-500: #0e9f6e;
 
   --foreground: #171717;
 
@@ -316,4 +322,12 @@ html.dark #back-to-home:hover {
 
 html.dark #registration-success {
   color: var(--green-400);
+}
+
+#color-placeholder {
+  color: var(--gray-700);
+}
+
+html.dark #color-placeholder {
+  color: var(--gray-100);
 }

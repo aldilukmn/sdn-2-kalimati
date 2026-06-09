@@ -1,4 +1,4 @@
-export default function SpmbOnlineLayout({
+export default function SpmbLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;

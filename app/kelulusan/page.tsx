@@ -1,10 +1,11 @@
 "use client";
 
-import Link from "next/link";
-import { ArrowBigLeft, Search, AlertCircle, Loader } from "lucide-react";
+
+import { Search, AlertCircle, Loader } from "lucide-react";
 import { useState } from "react";
 import { dataKelulusan } from "./data";
 import confetti from "canvas-confetti";
+import BackButton from '../components/BackButton';
 
 export default function Kelulusan() {
   const [nama, setNama] = useState("");
@@ -50,16 +51,7 @@ export default function Kelulusan() {
   return (
     <div className="flex flex-col items-center justify-center gap-5 md:gap-10 px-5 my-5 xl:my-10">
       {/* Tombol kembali */}
-      <Link
-        href="/"
-        className="self-start mb-5 flex items-center gap-2 text-gray-600 hover:text-gray-800 transition-colors"
-      >
-        <button className="cursor-pointer flex items-center gap-1 border px-4 py-2 rounded-lg text-sm bg-blue-500 hover:bg-blue-600 duration-300 text-white dark:bg-blue-800 dark:hover:bg-blue-700 dark:border-blue-800/50 border-blue-500/50">
-          <ArrowBigLeft size={18} />
-          <span className="text-xs md:text-sm">Kembali</span>
-        </button>
-      </Link>
-
+      <BackButton />
       {/* Card utama */}
       <div
         className="
@@ -92,19 +84,18 @@ export default function Kelulusan() {
               cekKelulusan();
             }
           }}
+          id="color-placeholder"
           className="
             w-full
             px-4
             py-3
             rounded-2xl
-            bg-white/10
             outline-1
             mb-4
             outline-gray-600
             focus:outline-blue-500
             dark:outline-gray-600
-            dark:focus:outline-blue-500
-            dark:bg-gray-800
+            dark:focus:outline-blue-500ay-800
           "
         />
 
