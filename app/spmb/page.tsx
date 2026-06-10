@@ -3,10 +3,9 @@
 import { useEffect, useState, memo } from "react";
 import RegistrationService from "@/services/registration.service";
 import { useRouter } from "next/navigation";
-import { ArrowBigLeft, ArrowLeft, ArrowRight } from "lucide-react";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 import LoadingModal from "@/app/components/LoadingModal";
 import RegistrationCounter from "@/app/components/RegistrationCounter";
-import Link from "next/link";
 import RegistrationCard from "@/app/components/RegistrationCard";
 import BackButton from '../components/BackButton';
 import DatePickerField from "@/app/components/DatePickerField";
