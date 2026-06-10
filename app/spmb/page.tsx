@@ -6,7 +6,7 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 import LoadingModal from "@/app/components/LoadingModal";
 import RegistrationCounter from "@/app/components/RegistrationCounter";
 import RegistrationCard from "@/app/components/RegistrationCard";
-import BackButton from '../components/BackButton';
+import BackButton from "../components/BackButton";
 import DatePickerField from "@/app/components/DatePickerField";
 
 interface InputFieldProps {
@@ -205,7 +205,9 @@ export default function Spmb() {
   const [modalStatus, setModalStatus] = useState<
     "loading" | "success" | "error"
   >("loading");
-  const [registrationNumber, setRegistrationNumber] = useState<string | null>(null);
+  const [registrationNumber, setRegistrationNumber] = useState<string | null>(
+    null,
+  );
 
   useEffect(() => {
     if (currentStep === 3) {
@@ -359,9 +361,7 @@ export default function Spmb() {
               Data pendaftaran Anda telah tersimpan. Silakan unduh kartu bukti
               pendaftaran di bawah ini.
             </p>
-            <RegistrationCard
-              name={formData.student.fullName}
-            />
+            <RegistrationCard name={formData.student.fullName} />
           </div>
         ) : (
           <>
@@ -609,6 +609,7 @@ export default function Spmb() {
                       <InputField
                         label="Jumlah Saudara Kandung"
                         name="numberOfSiblings"
+                        required
                         placeholder="1, 2, 3, dst (isi 0 jika tidak ada)"
                         value={formData.student.numberOfSiblings}
                         onChange={handleChange}
@@ -628,7 +629,6 @@ export default function Spmb() {
                         maxLength={15}
                         numericOnly={true}
                       />
-
                       <InputField
                         label="Asal TK/RA"
                         name="kindergartenOrigin"
@@ -951,9 +951,7 @@ export default function Spmb() {
                   Data dengan tanda bintang merah (
                   <span className="text-red-500">*</span>) wajib diisi
                 </li>
-                <li>
-                  Simpan kartu pendaftaran untuk referensi Anda
-                </li>
+                <li>Simpan kartu pendaftaran untuk referensi Anda</li>
               </ul>
             </div>
           </>
