@@ -284,8 +284,8 @@ html.dark select option {
 }
 
 html.dark select option:checked {
-  background: #2563eb;
-  background-color: #2563eb;
+  background: var(--blue-600);
+  background-color: var(--blue-600);
 }
 
 #data-pendaftaran {
@@ -330,4 +330,14 @@ html.dark #registration-success {
 
 html.dark #color-placeholder {
   color: var(--gray-100);
+}
+
+html.dark #bg-date-picker {
+  background-color: #1e293b; /* Solid color required, transparent doesn't work well on native select dropdowns */
+  color: #ffffff;
+}
+
+#bg-date-picker {
+  background-color: white;
+  color: var(--gray-700);
 }

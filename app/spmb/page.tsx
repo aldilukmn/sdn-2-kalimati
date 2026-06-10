@@ -9,6 +9,7 @@ import RegistrationCounter from "@/app/components/RegistrationCounter";
 import Link from "next/link";
 import RegistrationCard from "@/app/components/RegistrationCard";
 import BackButton from '../components/BackButton';
+import DatePickerField from "@/app/components/DatePickerField";
 
 interface InputFieldProps {
   label: string;
@@ -508,10 +509,9 @@ export default function Spmb() {
                         value={formData.student.birthPlace}
                         onChange={handleChange}
                       />
-                      <InputField
+                      <DatePickerField
                         label="Tanggal Lahir"
                         name="birthDate"
-                        type="date"
                         required
                         value={formData.student.birthDate}
                         onChange={handleChange}
