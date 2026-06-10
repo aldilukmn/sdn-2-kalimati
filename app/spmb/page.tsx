@@ -326,7 +326,7 @@ export default function Spmb() {
       const response = await RegistrationService.create(formData);
       if (response) {
         setIsRegistered(true);
-       }
+      }
       setModalStatus("success");
       setTimeout(() => {
         setIsLoading(false);
@@ -499,6 +499,7 @@ export default function Spmb() {
                         placeholder="Nama kota/kabupaten"
                         value={formData.student.birthPlace}
                         onChange={handleChange}
+                        nameOnly={true}
                       />
                       <DatePickerField
                         label="Tanggal Lahir"
