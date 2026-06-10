@@ -197,17 +197,15 @@ export default function Spmb() {
       phoneNumber: "",
     },
   });
-  const [showWali, setShowWali] = useState(false);
-  const [currentStep, setCurrentStep] = useState(1);
-  const [canSubmit, setCanSubmit] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [showWali, setShowWali] = useState<boolean>(false);
+  const [currentStep, setCurrentStep] = useState<number>(1);
+  const [canSubmit, setCanSubmit] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [modalStatus, setModalStatus] = useState<
     "loading" | "success" | "error"
   >("loading");
-  const [registrationNumber, setRegistrationNumber] = useState<string | null>(
-    null,
-  );
+  const [isRegistered, setIsRegistered] = useState<boolean>(false);
 
   useEffect(() => {
     if (currentStep === 3) {
@@ -325,7 +323,10 @@ export default function Spmb() {
     setError(null);
 
     try {
-      await RegistrationService.create(formData);
+      const response = await RegistrationService.create(formData);
+      if (response) {
+        setIsRegistered(true);
+       }
       setModalStatus("success");
       setTimeout(() => {
         setIsLoading(false);
@@ -346,7 +347,7 @@ export default function Spmb() {
     <div className="min-h-screen flex flex-col items-center justify-center gap-5 md:gap-10 px-5 my-5 xl:my-10">
       <BackButton />
       <div className="w-full max-w-5xl">
-        {registrationNumber ? (
+        {isRegistered ? (
           <div className="flex flex-col items-center justify-center w-full py-16 md:py-0">
             <h2
               id="registration-success"
