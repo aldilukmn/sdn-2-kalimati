@@ -5,12 +5,8 @@ import { toPng } from 'html-to-image';
 import Link from 'next/link';
 import RegistrationService from '@/services/registration.service';
 
-interface RegistrationCardProps {
-  registrationNumber: string;
-  name: string;
-}
 
-export default function RegistrationCard({ registrationNumber, name }: RegistrationCardProps) {
+export default function RegistrationCard({name}: {name: string}) {
   const cardRef = useRef<HTMLDivElement>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [count, setCount] = useState<number | null>(null);
@@ -23,7 +19,9 @@ export default function RegistrationCard({ registrationNumber, name }: Registrat
           const total = response.result?.total as number;
           setCount(total);
         } catch (error) {
-          console.error("Error fetching registration count:", error);
+          if (error instanceof Error) { 
+            console.error("Error fetching registration count:", error);
+          }
           setCount(0);
         } finally {
           setIsLoading(false);
@@ -76,7 +74,7 @@ export default function RegistrationCard({ registrationNumber, name }: Registrat
           />
           <div>
             <h3 className="font-bold text-lg leading-tight">
-              UPTD SD Negeri 2 Kalimati
+              UPTD SDN 2 Kalimati
             </h3>
             <p className="text-blue-200 text-xs font-medium tracking-wide">
               Bukti Pendaftaran SPMB

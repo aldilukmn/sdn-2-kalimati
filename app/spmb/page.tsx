@@ -2,7 +2,6 @@
 
 import { useEffect, useState, memo } from "react";
 import RegistrationService from "@/services/registration.service";
-import { useRouter } from "next/navigation";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import LoadingModal from "@/app/components/LoadingModal";
 import RegistrationCounter from "@/app/components/RegistrationCounter";
@@ -67,7 +66,7 @@ const InputField = memo(
 
     return (
       <div className="flex flex-col gap-2">
-        <label className="text-sm font-semibold ">
+        <label className="text-sm font-semibold">
           {label}
           {required && <span className="text-red-500 ml-1">*</span>}
         </label>
@@ -207,7 +206,6 @@ export default function Spmb() {
     "loading" | "success" | "error"
   >("loading");
   const [registrationNumber, setRegistrationNumber] = useState<string | null>(null);
-  const router = useRouter();
 
   useEffect(() => {
     if (currentStep === 3) {
@@ -325,18 +323,8 @@ export default function Spmb() {
     setError(null);
 
     try {
-      const response = await RegistrationService.create(formData);
+      await RegistrationService.create(formData);
       setModalStatus("success");
-
-      if (response?.registrationNumber) {
-        setRegistrationNumber(response.registrationNumber);
-      } else if (response?.data?.registrationNumber) {
-        setRegistrationNumber(response.data.registrationNumber);
-      } else {
-        setRegistrationNumber(`REG-${Math.floor(1000 + Math.random() * 9000)}`);
-      }
-
-      // Tampilkan success modal selama 2 detik sebelum menampilkan kartu
       setTimeout(() => {
         setIsLoading(false);
       }, 2000);
@@ -345,11 +333,9 @@ export default function Spmb() {
         err instanceof Error ? err.message : "Terjadi kesalahan saat mendaftar";
       setError(errorMessage);
       setModalStatus("error");
-
       // Tampilkan error modal selama 2 detik
       setTimeout(() => {
         setIsLoading(false);
-        // alert(`Error: ${errorMessage}`);
       }, 2000);
     }
   };
@@ -360,15 +346,20 @@ export default function Spmb() {
       <div className="w-full max-w-5xl">
         {registrationNumber ? (
           <div className="flex flex-col items-center justify-center w-full py-16 md:py-0">
-            <h2 id="registration-success" className="text-2xl md:text-3xl font-bold mb-2">
+            <h2
+              id="registration-success"
+              className="text-2xl md:text-3xl font-bold mb-2"
+            >
               Pendaftaran Berhasil!
             </h2>
-            <p id="data-pendaftaran" className="mb-8 text-center max-w-md text-sm md:text-base ">
+            <p
+              id="data-pendaftaran"
+              className="mb-8 text-center max-w-md text-sm md:text-base "
+            >
               Data pendaftaran Anda telah tersimpan. Silakan unduh kartu bukti
               pendaftaran di bawah ini.
             </p>
             <RegistrationCard
-              registrationNumber={registrationNumber}
               name={formData.student.fullName}
             />
           </div>
@@ -378,10 +369,10 @@ export default function Spmb() {
             <div className="text-center mb-8">
               {/* Registration Counter */}
               <RegistrationCounter />
-              <h1 className="text-3xl md:text-4xl font-bold mb-2">
+              <h1 className="text-2xl md:text-4xl font-bold mb-2">
                 Formulir Pendaftaran SPMB
               </h1>
-              <p className="dark:text-gray-400">
+              <p id="sub-paragraph" className="text-sm md:text-base">
                 Isi semua data dengan lengkap dan benar
               </p>
             </div>
@@ -450,7 +441,7 @@ export default function Spmb() {
               {/* Step 1: Data Calon Peserta Didik */}
               {currentStep === 1 && (
                 <div className="card rounded-lg shadow-lg">
-                  <h2 className="text-2xl font-bold mb-6 pb-3 border-b-2 border-blue-600">
+                  <h2 className="text-lg md:text-2xl font-bold mb-6 pb-3 border-b-2 border-blue-600">
                     Data Calon Peserta Didik
                   </h2>
 
@@ -618,7 +609,7 @@ export default function Spmb() {
                       <InputField
                         label="Jumlah Saudara Kandung"
                         name="numberOfSiblings"
-                        placeholder="2, 3, 4, dst (isi 0 jika tidak ada)"
+                        placeholder="1, 2, 3, dst (isi 0 jika tidak ada)"
                         value={formData.student.numberOfSiblings}
                         onChange={handleChange}
                         numericOnly={true}
@@ -655,7 +646,7 @@ export default function Spmb() {
                 <div className="card rounded-lg shadow-lg p-6 md:p-8 space-y-8">
                   {/* Data Ayah */}
                   <div>
-                    <h2 className="text-2xl font-bold mb-6 pb-3 border-b-2 border-blue-600">
+                    <h2 className="text-lg md:text-2xl font-bold mb-6 pb-3 border-b-2 border-blue-600">
                       Data Ayah
                     </h2>
 
@@ -746,7 +737,7 @@ export default function Spmb() {
 
                   {/* Data Ibu */}
                   <div>
-                    <h2 className="text-2xl font-bold mb-6 pb-3 border-b-2 border-blue-600">
+                    <h2 className="text-lg md:text-2xl font-bold mb-6 pb-3 border-b-2 border-blue-600">
                       Data Ibu
                     </h2>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:space-y-6">
@@ -821,7 +812,8 @@ export default function Spmb() {
                         name="motherMonthlyIncome"
                         required
                         options={[
-                          "Kurang dari Rp 1.000.000",
+                          "Kurang dari Rp 500.000",
+                          "Rp 500.000 - Rp 1.000.000",
                           "Rp 1.000.000 - Rp 2.000.000",
                           "Rp 2.000.000 - Rp 3.000.000",
                           "Rp 3.000.000 - Rp 5.000.000",
@@ -838,7 +830,7 @@ export default function Spmb() {
               {/* Step 3: Data Wali */}
               {currentStep === 3 && (
                 <div className="card rounded-lg shadow-lg p-6 md:p-8">
-                  <h2 className="text-2xl font-bold mb-6 pb-3 border-b-2 border-blue-600">
+                  <h2 className="text-lg md:text-2xl font-bold mb-6 pb-3 border-b-2 border-blue-600">
                     C. Data Wali (Jika Ada)
                   </h2>
 
@@ -901,7 +893,8 @@ export default function Spmb() {
                       : "bg-gray-500 hover:bg-gray-600 text-white dark:bg-gray-600 dark:hover:bg-gray-500 cursor-pointer"
                   }`}
                 >
-                  <ArrowLeft /> <span className="ml-2">Sebelumnya</span>
+                  <ArrowLeft />{" "}
+                  <span className="text-sm md:text-base ml-2">Sebelumnya</span>
                 </button>
 
                 {currentStep < 3 ? (
@@ -910,7 +903,10 @@ export default function Spmb() {
                     onClick={() => setCurrentStep(currentStep + 1)}
                     className="flex flex-1 justify-center items-center py-3 px-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition dark:bg-blue-700 dark:hover:bg-blue-600 cursor-pointer"
                   >
-                    <span className="mr-2">Selanjutnya</span> <ArrowRight />
+                    <span className="text-sm md:text-base mr-2">
+                      Selanjutnya
+                    </span>{" "}
+                    <ArrowRight />
                   </button>
                 ) : (
                   canSubmit && (
@@ -926,12 +922,16 @@ export default function Spmb() {
                       {isLoading ? (
                         <>
                           <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                          <span>Mengirim...</span>
+                          <span className="text-sm md:text-base">
+                            Mengirim...
+                          </span>
                         </>
                       ) : (
                         <>
                           <span>✓</span>
-                          <span>Kirim Formulir</span>
+                          <span className="text-sm md:text-base">
+                            Kirim Formulir
+                          </span>
                         </>
                       )}
                     </button>
@@ -952,7 +952,7 @@ export default function Spmb() {
                   <span className="text-red-500">*</span>) wajib diisi
                 </li>
                 <li>
-                  Simpan bukti konfirmasi pendaftaran untuk referensi Anda
+                  Simpan kartu pendaftaran untuk referensi Anda
                 </li>
               </ul>
             </div>

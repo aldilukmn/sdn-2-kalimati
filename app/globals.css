@@ -25,6 +25,9 @@
   --blue-700: #1e429f;
   --blue-800: #1e429f;
   --gray-100: #f3f4f6;
+  --gray-400: #99A1AF;
+  --gray-500: #6A7282;
+  --gray-600: #4A5565;
   --gray-700: #374151;
   --green-400: #31c48d;
   --green-500: #0e9f6e;
@@ -340,4 +343,12 @@ html.dark #bg-date-picker {
 #bg-date-picker {
   background-color: white;
   color: var(--gray-700);
+}
+
+html.dark #sub-paragraph {
+  color: var(--gray-500);
+}
+
+#sub-paragraph {
+  color: var(--gray-600);
 }
