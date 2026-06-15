@@ -4,7 +4,7 @@ export default class RegistrationService {
   static async getAll() {
     return await api("/registration");
   }
-
+  
   static async create(data: RegistrationForm) {
     return await api("/registration", {
       method: "POST",

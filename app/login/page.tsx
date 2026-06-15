@@ -1,10 +1,10 @@
 "use client";
 
-import { ArrowBigLeft } from "lucide-react";
-import Link from "next/link";
 import { FormEvent, useState } from "react";
 import AuthService from "@/services/auth.service";
 import { useRouter } from "next/navigation";
+import BackButton from "../components/BackButton";
+import { Card } from "flowbite-react";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -36,24 +36,16 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center gap-5 md:gap-10 px-5 my-5 xl:my-10">
-      <Link
-        href="/"
-        className="self-start mb-5 flex items-center gap-2 text-gray-600 hover:text-gray-800 transition-colors"
-      >
-        <button className="cursor-pointer flex items-center gap-1 border px-4 py-2 rounded-lg text-sm bg-blue-500 hover:bg-blue-600 duration-300 text-white dark:bg-blue-800 dark:hover:bg-blue-700 dark:border-blue-800/50 border-blue-500/50">
-          <ArrowBigLeft size={18} />
-          <span className="text-xs md:text-sm">Kembali</span>
-        </button>
-      </Link>
-      <div className="w-full max-w-lg rounded-[32px] border border-slate-200/60 bg-white/90 p-8 shadow-2xl backdrop-blur-xl dark:border-slate-700/60 dark:bg-slate-900/90">
-        <div className="mb-8 text-center">
+    <div className="flex flex-col items-center justify-center gap-5 md:gap-10 px-5 py-7 xl:py-10">
+      <BackButton />
+      <Card className="w-full max-w-lg rounded-xl border border-slate-200/60 shadow-md backdrop-blur-sm dark:border-slate-700/60 dark:bg-gray-800">
+        <div className="mb-4 text-center">
           <img
             src="https://res.cloudinary.com/dhtfq9yw8/image/upload/v1717920310/uptd%20sdn%202%20kalimati/svg/vapqm0latukpxjjawzfu.svg"
             alt="Logo SDN 2 Kalimati"
             className="mx-auto mb-6 h-20 w-20 object-contain"
           />
-          <h1 className="text-3xl font-bold tracking-tight text-slate-900 dark:text-slate-100">
+          <h1 className="text-3xl font-bold tracking-tight text-gray-800 dark:text-gray-200">
             Masuk ke Admin
           </h1>
           <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">
@@ -72,7 +64,7 @@ export default function LoginPage() {
               value={identifier}
               onChange={(event) => setIdentifier(event.target.value)}
               placeholder="Masukkan Username"
-              className="w-full rounded-2xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none transition duration-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:focus:border-blue-400 dark:focus:ring-blue-500/30"
+              className="w-full rounded-2xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm text-gray-900 outline-none transition duration-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100 dark:focus:border-blue-400 dark:focus:ring-blue-500/30"
             />
           </div>
 
@@ -92,7 +84,12 @@ export default function LoginPage() {
 
           <button
             type="submit"
-            className="w-full rounded-2xl bg-blue-600 px-5 py-3 text-sm font-semibold text-white transition duration-200 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400/50 cursor-pointer"
+            className={`w-full rounded-2xl bg-blue-600 px-5 py-3 text-sm font-semibold text-white transition duration-200 hover:bg-blue-700 focus:outline-none cursor-pointer ${
+              !identifier || !password
+                ? "opacity-50 disabled:cursor-not-allowed"
+                : ""
+            }`}
+            disabled={!identifier || !password}
           >
             Masuk
           </button>
@@ -119,7 +116,7 @@ export default function LoginPage() {
           </Link>
           <span>Butuh bantuan? Hubungi admin sekolah.</span>
         </div> */}
-      </div>
+      </Card>
     </div>
   );
 }

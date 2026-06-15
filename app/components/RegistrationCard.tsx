@@ -111,7 +111,7 @@ export default function RegistrationCard({name}: {name: string}) {
       <div className="flex flex-col sm:flex-row gap-3 w-full max-w-sm mt-4">
         <button
           onClick={handleDownload}
-          className="flex-1 bg-green-500 hover:bg-green-600 text-white font-semibold py-3 px-4 rounded-xl shadow-lg transition-all flex items-center justify-center gap-2 border border-green-400/50 cursor-pointer text-sm"
+          className="flex-1 bg-green-500 hover:bg-green-600 text-white font-semibold py-3 px-4 rounded-xl shadow-lg flex items-center justify-center gap-2 cursor-pointer text-sm transition duration-200 dark:bg-green-500 dark:hover:bg-green-600 dark:border-green-500"
         >
           <svg
             className="w-5 h-5"
@@ -131,7 +131,7 @@ export default function RegistrationCard({name}: {name: string}) {
         <Link
           id="back-to-home"
           href="/"
-          className="flex-1 font-semibold py-3 px-4 rounded-xl shadow-md transition-all flex items-center justify-center gap-2 border text-center text-sm"
+          className="flex-1 font-semibold py-3 px-4 rounded-xl shadow-md flex items-center justify-center gap-2 text-center text-sm bg-gray-100 hover:bg-gray-200 transition duration-200 border border-gray-300 cursor-pointer text-gray-800 dark:bg-gray-600 dark:hover:bg-gray-500 dark:border-gray-600 dark:text-gray-200"
         >
           Kembali ke Beranda
         </Link>

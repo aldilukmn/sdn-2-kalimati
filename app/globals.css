@@ -25,9 +25,9 @@
   --blue-700: #1e429f;
   --blue-800: #1e429f;
   --gray-100: #f3f4f6;
-  --gray-400: #99A1AF;
-  --gray-500: #6A7282;
-  --gray-600: #4A5565;
+  --gray-400: #99a1af;
+  --gray-500: #6a7282;
+  --gray-600: #4a5565;
   --gray-700: #374151;
   --green-400: #31c48d;
   --green-500: #0e9f6e;
@@ -74,28 +74,12 @@ html.dark {
 
 /* Remove conflicting media query - use html.dark class instead */
 
-body {
+/* html {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-poppins);
   background-attachment: fixed;
-}
-
-.card {
-  padding: var(--card-padding, 30px);
-
-  background: var(--card-bg);
-
-  border: 1px solid var(--card-border);
-
-  border-radius: 24px;
-
-  backdrop-filter: blur(12px);
-
-  box-shadow: 0 0 30px var(--card-shadow);
-
-  transition: all 0.3s ease;
-}
+} */
 
 /* Card Menu Kelulusan */
 .class-card {
@@ -241,18 +225,18 @@ body {
   border-radius: 18px;
 
   font-weight: 600;
-
+/* 
   box-shadow: 0 0 5px rgba(59, 130, 246, 0.35);
 
-  transition: all 0.3s ease;
+  transition: all 0.3s ease; */
 }
 
 .glow-button:hover:not(:disabled) {
-  transform: translateY(-2px);
+  /* transform: translateY(-2px); */
 
   box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
 
-  filter: brightness(1.05);
+  /* filter: brightness(1.05); */
 
   cursor: pointer;
 }
@@ -281,74 +265,3 @@ body {
 }
 
 /* Dark mode select styling */
-html.dark select option {
-  background-color: #1e293b; /* Solid color required, transparent doesn't work well on native select dropdowns */
-  color: #ffffff;
-}
-
-html.dark select option:checked {
-  background: var(--blue-600);
-  background-color: var(--blue-600);
-}
-
-#data-pendaftaran {
-  color: #4b5563;
-}
-
-html.dark #data-pendaftaran {
-  color: #d1d5db;
-}
-
-html.dark #back-to-home {
-  background: white;
-  color: #1f2937;
-}
-
-html.dark #back-to-home:hover {
-  background: var(--gray-100);
-}
-
-#back-to-home:hover {
-  background: var(--gray-100);
-  border-color: var(--gray-100);
-}
-
-#back-to-home {
-  background: white;
-  color: #1f2937;
-  border-color: white;
-}
-
-#registration-success {
-  color: var(--green-500);
-}
-
-html.dark #registration-success {
-  color: var(--green-400);
-}
-
-#color-placeholder {
-  color: var(--gray-700);
-}
-
-html.dark #color-placeholder {
-  color: var(--gray-100);
-}
-
-html.dark #bg-date-picker {
-  background-color: #1e293b; /* Solid color required, transparent doesn't work well on native select dropdowns */
-  color: #ffffff;
-}
-
-#bg-date-picker {
-  background-color: white;
-  color: var(--gray-700);
-}
-
-html.dark #sub-paragraph {
-  color: var(--gray-500);
-}
-
-#sub-paragraph {
-  color: var(--gray-600);
-}

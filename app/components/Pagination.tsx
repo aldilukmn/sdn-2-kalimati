@@ -68,7 +68,7 @@ export default function Pagination({
   const endItem = Math.min(currentPage * itemsPerPage, totalItems);
 
   return (
-    <div className="flex flex-col items-center gap-4 mt-8">
+    <div className="flex flex-col items-center gap-4 mt-8 text-gray-900 dark:text-gray-200">
       <div className="flex items-center justify-center gap-2">
         <button
           onClick={handlePreviousPage}

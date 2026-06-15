@@ -1,11 +1,11 @@
 "use client";
 
-import Link from "next/link";
-import { ArrowBigLeft, Search, AlertCircle, Loader } from "lucide-react";
+import { Search, AlertCircle, Loader } from "lucide-react";
 import { useState } from "react";
 import { dataTKA, getGrade } from "./data";
-import DataField from '../components/DataField';
-import BackButton from '../components/BackButton';
+import DataField from "../components/DataField";
+import BackButton from "../components/BackButton";
+import { Card } from "flowbite-react";
 
 export default function HasilTKA() {
   const [nama, setNama] = useState("");
@@ -38,21 +38,23 @@ export default function HasilTKA() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center gap-5 md:gap-10 px-5 my-5 xl:my-8">
+    <div className="flex flex-col items-center justify-center gap-5 md:gap-10 px-5 py-7 xl:py-10">
       <BackButton />
-      <div
+      <Card
         className="
-        card
+        mt-10
         w-full
         max-w-md
         text-center
       "
       >
-        <div className="text-4xl md:text-6xl mb-5">📝</div>
+        <div className="text-4xl md:text-6xl">📝</div>
 
-        <h1 className="text-2xl md:text-3xl font-bold">Hasil TKA</h1>
+        <h1 className="text-xl md:text-2xl font-bold text-gray-800 dark:text-gray-200">
+          Hasil TKA
+        </h1>
 
-        <p className="text-sm md:text-base opacity-70 mt-2 mb-8">
+        <p className="text-sm md:text-base opacity-70 mb-3 text-gray-600 dark:text-gray-300">
           Masukkan nama untuk melihat hasil tes
         </p>
 
@@ -72,16 +74,7 @@ export default function HasilTKA() {
           }}
           id="color-placeholder"
           className="
-            w-full
-            px-4
-            py-3
-            rounded-2xl
-            outline-1
-            mb-4
-            outline-gray-600
-            focus:outline-blue-500
-            dark:outline-gray-600
-            dark:focus:outline-blue-500
+            w-full rounded-2xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm text-gray-900 outline-none transition duration-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100 dark:focus:border-blue-400 dark:focus:ring-blue-500/30
           "
         />
         {/* </div> */}
@@ -96,7 +89,6 @@ export default function HasilTKA() {
               items-center
               justify-center
               gap-2
-
               disabled:opacity-50
               disabled:cursor-not-allowed
             "
@@ -225,7 +217,7 @@ export default function HasilTKA() {
             </div>
           </div>
         )}
-      </div>
+      </Card>
     </div>
   );
 }

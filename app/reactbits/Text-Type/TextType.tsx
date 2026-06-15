@@ -174,20 +174,20 @@ const TextType = ({
     Component,
     {
       ref: containerRef,
-      className: `text-type ${className}`,
-      ...props
+      className: `inline-block whitespace-pre-wrap text-gray-500 dark:text-gray-300 ${className}`,
+      ...props,
     },
-    <span className="text-type__content gradient-text text-stroke">
+    <span className="text-type__content text-stroke bg-gradient-to-t from-[#1e429f] to-[#1c64f2] bg-clip-text text-transparent dark:from-[#76a9fa] dark:to-[#3f83f8]">
       {displayedText}
     </span>,
     showCursor && (
       <span
         ref={cursorRef}
-        className={`text-type__cursor ${cursorClassName} ${shouldHideCursor ? 'text-type__cursor--hidden' : ''}`}
+        className={`text-type__cursor ${cursorClassName} ${shouldHideCursor ? "text-type__cursor--hidden" : ""}`}
       >
         {cursorCharacter}
       </span>
-    )
+    ),
   );
 };
 

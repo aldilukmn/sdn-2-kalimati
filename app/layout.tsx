@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
-import ThemeProvider from "./theme-provider";
 import "./globals.css";
 
 const poppins = Poppins({
@@ -51,9 +50,13 @@ export default function RootLayout({
         className={`${poppins.className} antialiased`}
         suppressHydrationWarning
       >
-        <ThemeProvider>
-          <div className="min-h-screen">{children}</div>
-        </ThemeProvider>
+        {/* <ThemeProvider> */}
+        <div
+          className="min-h-screen bg-[radial-gradient(circle_at_top_left,rgba(59,130,246,0.12),transparent_35%),radial-gradient(circle_at_bottom_right,rgba(96,165,250,0.1),transparent_35%),linear-gradient(180deg,#f8fbff_0%,#eef6ff_45%,#dbeafe_100%)] dark:bg-[radial-gradient(circle_at_top_left,rgba(96,165,250,0.12),transparent_35%),radial-gradient(circle_at_bottom_right,rgba(59,130,246,0.1),transparent_35%),linear-gradient(180deg,#0f172a_0%,#111827_45%,#1e293b_100%)]" 
+        >
+          {children}
+        </div>
+        {/* </ThemeProvider> */}
       </body>
     </html>
   );

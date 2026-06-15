@@ -1,0 +1,71 @@
+"use client";
+
+import { Card } from "flowbite-react";
+import InputField from "@/app/components/form/InputField";
+
+interface GuardianDataStepProps {
+  formData: RegistrationForm;
+  showWali: boolean;
+  setShowWali: (show: boolean) => void;
+  onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => void;
+}
+
+export default function GuardianDataStep({
+  formData,
+  showWali,
+  setShowWali,
+  onChange,
+}: GuardianDataStepProps) {
+  return (
+    <Card className="dark:bg-gray-800">
+      <h2 className="text-lg md:text-2xl font-bold mb-6 pb-3 border-b-2 border-gray-300 text-gray-800 dark:text-gray-200">
+        Data Wali (Jika Ada)
+      </h2>
+
+      <div className="mb-2">
+        <label className="flex items-center gap-3 cursor-pointer">
+          <input
+            type="checkbox"
+            checked={showWali}
+            onChange={(e) => setShowWali(e.target.checked)}
+            className="w-5 h-5 text-blue-600 rounded focus:ring-2 focus:ring-blue-500 cursor-pointer"
+          />
+          <span className="text-sm font-semibold text-gray-700 dark:text-gray-200">
+            Saya memiliki wali (jika tidak ada, abaikan bagian ini)
+          </span>
+        </label>
+      </div>
+
+      {showWali && (
+        <div className="space-y-6 p-6 rounded-lg">
+          <InputField
+            label="Nama Wali"
+            name="guardian.name"
+            placeholder="Nama lengkap wali"
+            value={formData.guardian.name}
+            onChange={onChange}
+            nameOnly
+          />
+          <InputField
+            label="Hubungan dengan Anak"
+            name="guardian.relationship"
+            placeholder="Contoh: Kakek, Nenek, Paman, Bibi, dll"
+            value={formData.guardian.relationship}
+            onChange={onChange}
+            nameOnly
+          />
+          <InputField
+            label="Nomor HP Wali"
+            name="guardian.phoneNumber"
+            type="tel"
+            placeholder="08xxxxxxxxxx"
+            value={formData.guardian.phoneNumber}
+            onChange={onChange}
+            numericOnly
+            maxLength={15}
+          />
+        </div>
+      )}
+    </Card>
+  );
+}

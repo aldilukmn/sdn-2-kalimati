@@ -24,7 +24,7 @@ export default function LoadingModal({
 
       {/* Modal Container */}
       <div className="absolute inset-0 flex items-center justify-center p-4">
-        <div className="relative bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-8 md:p-12 max-w-md w-full transform transition-all duration-300">
+        <div className="relative bg-gray-100 dark:bg-gray-800 rounded-2xl shadow-2xl p-8 md:p-12 max-w-md w-full transform transition-all duration-300">
           {/* Animated Border Accent */}
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-1 bg-gradient-to-r from-transparent via-blue-500 to-transparent rounded-full animate-pulse" />
 
@@ -61,12 +61,12 @@ export default function LoadingModal({
             </div>
 
             {/* Title */}
-            <h2 className="text-xl md:text-2xl font-bold text-gray-800 dark:text-white">
+            <h2 className="text-xl md:text-2xl font-bold text-gray-800 dark:text-gray-200 animate-fade-in">
               {title}
             </h2>
 
             {/* Message dengan animasi fade-in */}
-            <p className="text-gray-600 dark:text-gray-300 text-sm md:text-base leading-relaxed animate-pulse">
+            <p className="text-gray-600 dark:text-gray-200 text-sm md:text-base leading-relaxed animate-pulse">
               {message}
             </p>
 

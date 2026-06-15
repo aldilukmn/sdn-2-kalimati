@@ -1,11 +1,11 @@
 "use client";
 
-
 import { Search, AlertCircle, Loader } from "lucide-react";
 import { useState } from "react";
 import { dataKelulusan } from "./data";
 import confetti from "canvas-confetti";
-import BackButton from '../components/BackButton';
+import BackButton from "../components/BackButton";
+import { Card } from "flowbite-react";
 
 export default function Kelulusan() {
   const [nama, setNama] = useState("");
@@ -49,23 +49,25 @@ export default function Kelulusan() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center gap-5 md:gap-10 px-5 my-5 xl:my-10">
+    <div className="flex flex-col items-center justify-center gap-5 md:gap-10 px-5 py-7 xl:py-10">
       {/* Tombol kembali */}
       <BackButton />
       {/* Card utama */}
-      <div
+      <Card
         className="
+        mt-10
         card
         w-full
         max-w-md
         text-center
+        dark:bg-gray-800
       "
       >
-        <div className="text-6xl mb-5">🎓</div>
-
-        <h1 className="text-3xl font-bold">Cek Kelulusan</h1>
-
-        <p className="opacity-70 mt-2 mb-8">
+        <div className="text-6xl">🎓</div>
+        <h1 className="text-xl md:text-2xl font-bold text-gray-800 dark:text-gray-200">
+          Cek Kelulusan
+        </h1>
+        <p className="text-sm md:text-base opacity-70 mb-3 text-gray-600 dark:text-gray-300">
           Masukkan Nama untuk melihat hasil kelulusan
         </p>
 
@@ -86,16 +88,7 @@ export default function Kelulusan() {
           }}
           id="color-placeholder"
           className="
-            w-full
-            px-4
-            py-3
-            rounded-2xl
-            outline-1
-            mb-4
-            outline-gray-600
-            focus:outline-blue-500
-            dark:outline-gray-600
-            dark:focus:outline-blue-500ay-800
+            w-full rounded-2xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm text-gray-900 outline-none transition duration-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100 dark:focus:border-blue-400 dark:focus:ring-blue-500/30
           "
         />
 
@@ -111,7 +104,6 @@ export default function Kelulusan() {
               items-center
               justify-center
               gap-2
-
               disabled:opacity-50
               disabled:cursor-not-allowed
             "
@@ -124,7 +116,7 @@ export default function Kelulusan() {
           ) : (
             <>
               <Search size={18} />
-              Cek Kelulusan
+              Cek Hasil
             </>
           )}
         </button>
@@ -267,7 +259,7 @@ export default function Kelulusan() {
             </div>
           </div>
         )}
-      </div>
+      </Card>
     </div>
   );
 }

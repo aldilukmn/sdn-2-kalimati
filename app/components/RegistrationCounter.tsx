@@ -58,7 +58,7 @@ export default function RegistrationCounter() {
                 {isLoading ? (
                   <span className="inline-block w-12 h-8 bg-blue-400/30 rounded animate-pulse" />
                 ) : (
-                  `${count?.toLocaleString("id-ID")} ${count === 1 ? "Siswa/i" : "Siswa/i"}`
+                  `${count?.toLocaleString("id-ID")} ${count === 1 ? "Murid" : "Murid"}`
                 )}
               </p>
             </div>

@@ -1,6 +1,7 @@
 .text-type {
   display: inline-block;
   white-space: pre-wrap;
+  color: #99a1af
 }
 
 .text-type__cursor {
@@ -11,20 +12,4 @@
 
 .text-type__cursor--hidden {
   display: none;
-}
-
-.gradient-text {
-  background: linear-gradient(0deg, #1e429f, #1c64f2);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  color: transparent;
-}
-
-html.dark .gradient-text {
-  background: linear-gradient(0deg, #76a9fa, #3f83f8);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  color: transparent;
 }
