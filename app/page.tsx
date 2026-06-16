@@ -7,7 +7,7 @@ import TextType from "./reactbits/Text-Type/TextType";
 import GraduationCountdownModal from "./components/GraduationCountdownModal";
 
 const buttonClassName =
-  "cursor-pointer flex flex-col md:flex-row items-center justify-center gap-2 border border-blue-700 px-7 py-3 rounded-lg bg-blue-700 text-white text-md md:text-lg font-semibold md:tracking-wide duration-300 hover:bg-blue-800 hover:border-blue-800";
+  "cursor-pointer flex flex-col md:flex-row items-center justify-center gap-2 border border-blue-700 px-7 py-3 rounded-lg bg-blue-700 text-white text-xs md:text-lg font-semibold md:tracking-wide duration-300 hover:bg-blue-800 hover:border-blue-800";
 
 const navigationLinks = [
   { href: "/kelulusan", label: "Cek Kelulusan", disabled: true, icon: GraduationCap },
