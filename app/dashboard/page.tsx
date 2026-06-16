@@ -599,7 +599,7 @@ export default function Dashboard() {
                         {registrant.contactPhoneNumber || "-"}
                       </td>
                       <td className="px-6 py-4 text-sm text-gray-600 dark:text-gray-300 max-w-xs truncate">
-                      {registrant.student?.address?.street
+                        {registrant.student?.address?.street
                           ? `${registrant.student.address.street}, ${registrant.student.address.village || ""} ${registrant.student.address.district || ""}`
                           : "-"}
                       </td>
@@ -664,7 +664,7 @@ export default function Dashboard() {
           <Pagination
             currentPage={currentPage}
             totalPages={totalPages}
-            onPageChange={setCurrentPage}
+            onPageChange={(page) => setCurrentPage(page)}
             itemsPerPage={itemsPerPage}
             totalItems={registrants.length}
           />

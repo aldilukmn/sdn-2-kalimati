@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import { GraduationCap, FileText, UserPlus } from "lucide-react";
+import { GraduationCap, FileText, UserPlus, Gamepad2 } from "lucide-react";
 import TextType from "./reactbits/Text-Type/TextType";
 import GraduationCountdownModal from "./components/GraduationCountdownModal";
 
@@ -13,6 +13,7 @@ const navigationLinks = [
   { href: "/kelulusan", label: "Cek Kelulusan", disabled: true, icon: GraduationCap },
   { href: "/hasil-tka", label: "Cek Hasil TKA", disabled: false, icon: FileText },
   { href: "/spmb", label: "Daftar SPMB", disabled: false, icon: UserPlus },
+  { href: "/game-interaktif", label: "Game Interaktif", disabled: false, icon: Gamepad2 },
 ];
 
 const GRADUATION_ANNOUNCEMENT_DATE = new Date(Date.UTC(2026, 5, 2, 5, 0, 0)); // 12:00 WIB = 05:00 UTC
@@ -71,7 +72,7 @@ export default function Menu() {
         alt="logo-sekolah"
         className="md:max-w-[20%] max-w-[30%] h-auto"
       />
-      <h1 className="xl:text-7xl lg:text-5xl text-3xl font-bold md:tracking-widest">
+      <h1 className="md:text-5xl text-2xl font-bold md:tracking-widest">
         <TextType
           text={[
             "Selamat Datang di",
@@ -85,7 +86,7 @@ export default function Menu() {
         />
       </h1>
       <div
-        className="grid md:grid-cols-3 grid-cols-2 gap-5 md:py-10 items-center text-sm md:text-base text-center mx-5 md:mx-0"
+        className="grid md:grid-cols-2 lg:grid-cols-4 grid-cols-2 gap-5 md:py-10 items-center text-sm md:text-base text-center mx-5 md:mx-0"
         style={{ "--card-padding": "20px" } as React.CSSProperties}
       >
         {navigationLinks.map((link) => {
