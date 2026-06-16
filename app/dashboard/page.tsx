@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Printer, CheckCircle2, Circle, LogOut, Loader2 } from "lucide-react";
+import { Printer, CheckCircle2, Circle, LogOut, Loader2, Pencil, RefreshCw } from "lucide-react";
 import RegistrationService from "@/services/registration.service";
 import AuthService from "@/services/auth.service";
 import Pagination from "@/app/components/Pagination";
@@ -61,15 +61,15 @@ interface Registrant {
   updatedAt?: string;
 }
 
-interface ApiResponse {
-  status: {
-    code: number;
-    response: string;
-  };
-  message?: string;
-  result?: Registrant[];
-  data?: Registrant[];
-}
+// interface ApiResponse {
+//   status: {
+//     code: number;
+//     response: string;
+//   };
+//   message?: string;
+//   result?: Registrant[];
+//   data?: Registrant[];
+// }
 
 const formatBirthDate = (date: Date | string | undefined): string => {
   if (!date) return "-";
@@ -137,33 +137,37 @@ export default function Dashboard() {
   const [validating, setValidating] = useState<Set<string>>(new Set());
   const [currentPage, setCurrentPage] = useState(1);
   const [logoutLoading, setLogoutLoading] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
   const itemsPerPage = 5;
 
-  useEffect(() => {
-    const fetchRegistrants = async () => {
-      try {
-        const response = await RegistrationService.getAll();
-
-        const data = response.result || response.data || [];
-        setRegistrants(data);
-      } catch (err) {
-        const error = err as Error & {
-          status?: number;
-        };
-
-        if (error.status === 401) {
-          router.replace("/login");
-          return;
-        }
-
-        setError(error.message || "Gagal memuat data pendaftar");
-      } finally {
-        setLoading(false);
+  const fetchRegistrants = async (isRefresh?: boolean) => {
+    try {
+      const response = await RegistrationService.getAll();
+      const data = response.result || response.data || [];
+      setRegistrants(data);
+    } catch (err) {
+      const error = err as Error & { status?: number };
+      if (error.status === 401) {
+        router.replace("/login");
+        return;
       }
-    };
+      setError(error.message || "Gagal memuat data pendaftar");
+    } finally {
+      if (isRefresh) setRefreshing(false);
+      setLoading(false);
+    }
+  };
 
+  useEffect(() => {
     fetchRegistrants();
+    const interval = setInterval(() => fetchRegistrants(), 30000);
+    return () => clearInterval(interval);
   }, [router]);
+
+  const handleRefresh = () => {
+    setRefreshing(true);
+    fetchRegistrants(true);
+  };
 
   const handleValidate = async (id: string, currentStatus?: string) => {
     try {
@@ -172,7 +176,7 @@ export default function Dashboard() {
       const newStatus =
         currentStatus === "validated" ? "unvalidated" : "validated";
 
-      await RegistrationService.updateValidation(id, newStatus);
+      await RegistrationService.updateData(id, { status: newStatus });
 
       setRegistrants((prev) =>
         prev.map((reg) =>
@@ -486,21 +490,34 @@ export default function Dashboard() {
               Kelola data pendaftar dan validasi formulir
             </p>
           </div>
-          <button
-            onClick={handleLogout}
-            disabled={logoutLoading}
-            className="flex items-center gap-2 px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors dark:bg-red-700 dark:hover:bg-red-800 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
-            title="Logout"
-          >
-            {logoutLoading ? (
-              <Loader2 size={20} className="animate-spin" />
-            ) : (
-              <LogOut size={20} />
-            )}
-            <span className="text-sm font-medium">
-              {logoutLoading ? "Logout..." : "Logout"}
-            </span>
-          </button>
+          <div className="flex items-center gap-3">
+            <button
+              onClick={handleRefresh}
+              disabled={refreshing}
+              className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 border border-gray-300 dark:border-gray-600 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+              title="Perbarui Data"
+            >
+              <RefreshCw size={20} className={refreshing ? "animate-spin" : ""} />
+              <span className="text-sm font-medium hidden sm:inline">
+                {refreshing ? "Memuat..." : "Refresh"}
+              </span>
+            </button>
+            <button
+              onClick={handleLogout}
+              disabled={logoutLoading}
+              className="flex items-center gap-2 px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors dark:bg-red-700 dark:hover:bg-red-800 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+              title="Logout"
+            >
+              {logoutLoading ? (
+                <Loader2 size={20} className="animate-spin" />
+              ) : (
+                <LogOut size={20} />
+              )}
+              <span className="text-sm font-medium">
+                {logoutLoading ? "Logout..." : "Logout"}
+              </span>
+            </button>
+          </div>
         </div>
 
         {/* Error Alert */}
@@ -512,7 +529,7 @@ export default function Dashboard() {
 
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+          <div className="border border-blue-500/40 bg-blue-500/5 px-5 py-6 rounded-xl duration-300 hover:bg-blue-500/10 hover:border-blue-500/60 hover:shadow-md hover:shadow-blue-500/10 shadow">
             <div className="text-sm font-semibold text-gray-600 dark:text-gray-400 mb-2">
               Total Pendaftar
             </div>
@@ -520,7 +537,7 @@ export default function Dashboard() {
               {registrants.length}
             </div>
           </div>
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+          <div className="border border-emerald-500/40 bg-emerald-500/5 px-5 py-6 rounded-xl duration-300 hover:bg-emerald-500/10 hover:border-emerald-500/60 hover:shadow-md hover:shadow-emerald-500/10 shadow">
             <div className="text-sm font-semibold text-gray-600 dark:text-gray-400 mb-2">
               Tervalidasi
             </div>
@@ -528,7 +545,7 @@ export default function Dashboard() {
               {registrants.filter((r) => r.status === "validated").length}
             </div>
           </div>
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+          <div className="border border-yellow-500/40 bg-yellow-500/5 px-5 py-6 rounded-xl duration-300 hover:bg-yellow-500/10 hover:border-yellow-500/60 hover:shadow-md hover:shadow-yellow-500/10 shadow">
             <div className="text-sm font-semibold text-gray-600 dark:text-gray-400 mb-2">
               Belum Divalidasi
             </div>
@@ -539,9 +556,9 @@ export default function Dashboard() {
         </div>
 
         {/* Table */}
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden">
+        <div className="rounded-lg shadow overflow-hidden">
           {registrants.length === 0 ? (
-            <div className="p-8 text-center">
+            <div className="border border-indigo-500/40 bg-indigo-500/5 px-5 py-6 rounded-xl duration-300 hover:bg-indigo-500/10 hover:border-indigo-500/60 hover:shadow-md hover:shadow-indigo-500/10 text-center">
               <p className="text-gray-500 dark:text-gray-400">
                 Belum ada data pendaftar
               </p>
@@ -550,7 +567,7 @@ export default function Dashboard() {
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>
-                  <tr className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white">
+                  <tr className="bg-blue-600 text-white">
                     <th className="px-6 py-4 text-left text-sm font-semibold">
                       No. Pendaftaran
                     </th>
@@ -558,7 +575,7 @@ export default function Dashboard() {
                       Tanggal Daftar
                     </th>
                     <th className="px-6 py-4 text-left text-sm font-semibold">
-                      Tanggal Validasi
+                      Tanggal Update
                     </th>
                     <th className="px-6 py-4 text-left text-sm font-semibold">
                       Nama Lengkap
@@ -570,14 +587,14 @@ export default function Dashboard() {
                       Alamat
                     </th>
                     <th className="px-6 py-4 text-center text-sm font-semibold">
-                      Cetak
+                      Aksi
                     </th>
                     <th className="px-6 py-4 text-center text-sm font-semibold">
                       Validasi
                     </th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
+                <tbody className="divide-y bg-white divide-gray-200 dark:divide-gray-700">
                   {paginatedRegistrants.map((registrant, index) => (
                     <tr
                       key={registrant._id || registrant.id}
@@ -603,13 +620,24 @@ export default function Dashboard() {
                           ? `${registrant.student.address.street}, ${registrant.student.address.village || ""} ${registrant.student.address.district || ""}`
                           : "-"}
                       </td>
-                      <td className="px-6 py-4 text-center">
+                      <td className="px-6 py-4 text-center flex">
                         <button
                           onClick={() => handlePrint(registrant)}
                           className="inline-flex items-center justify-center p-2 text-blue-600 hover:bg-blue-100 rounded-lg transition-colors dark:text-blue-400 dark:hover:bg-blue-900/30 cursor-pointer"
                           title="Cetak Formulir"
                         >
                           <Printer size={20} />
+                        </button>
+                        <button
+                          onClick={() =>
+                            router.push(
+                              `/dashboard/edit/${registrant._id || registrant.id}`,
+                            )
+                          }
+                          className="inline-flex items-center justify-center p-2 text-indigo-600 hover:bg-indigo-100 rounded-lg transition-colors dark:text-indigo-400 dark:hover:bg-indigo-900/30 cursor-pointer"
+                          title="Edit Data"
+                        >
+                          <Pencil size={20} />
                         </button>
                       </td>
                       <td className="px-6 py-4 text-center">
@@ -671,7 +699,7 @@ export default function Dashboard() {
         )}
 
         {/* Info */}
-        <div className="mt-8 p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg">
+        <div className="mt-8 p-4 bg-blue-100 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg shadow">
           <p className="text-sm text-blue-900 dark:text-blue-200">
             <span className="font-semibold">💡 Tips:</span> Klik ikon printer
             untuk mencetak formulir pendaftar, dan klik ikon lingkaran untuk

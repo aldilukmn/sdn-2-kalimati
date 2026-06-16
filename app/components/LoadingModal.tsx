@@ -7,6 +7,9 @@ interface LoadingModalProps {
   title?: string;
   message?: string;
   status?: "loading" | "success" | "error";
+  loadingText?: string;
+  successText?: string;
+  errorText?: string;
 }
 
 export default function LoadingModal({
@@ -14,6 +17,9 @@ export default function LoadingModal({
   title = "Memproses Pendaftaran",
   message = "Mohon tunggu, data Anda sedang diproses...",
   status = "loading",
+  loadingText = "Jangan tutup halaman ini",
+  successText = "Pendaftaran berhasil!",
+  errorText = "Terjadi kesalahan",
 }: LoadingModalProps) {
   if (!isOpen) return null;
 
@@ -87,9 +93,9 @@ export default function LoadingModal({
 
             {/* Additional info text */}
             <p className="text-xs text-gray-500 dark:text-gray-400 mt-4">
-              {status === "loading" && "Jangan tutup halaman ini"}
-              {status === "success" && "Pendaftaran berhasil!"}
-              {status === "error" && "Terjadi kesalahan"}
+              {status === "loading" && loadingText}
+              {status === "success" && successText}
+              {status === "error" && errorText}
             </p>
           </div>
 

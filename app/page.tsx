@@ -2,28 +2,14 @@
 
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import { GraduationCap, FileText, UserPlus, Gamepad2 } from "lucide-react";
 import TextType from "./reactbits/Text-Type/TextType";
 import GraduationCountdownModal from "./components/GraduationCountdownModal";
+import { navigationLinks } from './data/data.navigate';
 
 const buttonClassName =
   "cursor-pointer flex flex-col md:flex-row items-center justify-center gap-2 border border-blue-700 px-7 py-3 rounded-lg bg-blue-700 text-white text-xs md:text-lg font-semibold md:tracking-wide duration-300 hover:bg-blue-800 hover:border-blue-800";
 
-const navigationLinks = [
-  { href: "/kelulusan", label: "Cek Kelulusan", disabled: true, icon: GraduationCap },
-  { href: "/hasil-tka", label: "Cek Hasil TKA", disabled: false, icon: FileText },
-  { href: "/spmb", label: "Daftar SPMB", disabled: false, icon: UserPlus },
-  { href: "/game-interaktif", label: "Game Interaktif", disabled: false, icon: Gamepad2 },
-];
-
 const GRADUATION_ANNOUNCEMENT_DATE = new Date(Date.UTC(2026, 5, 2, 5, 0, 0)); // 12:00 WIB = 05:00 UTC
-
-interface Countdown {
-  days: number;
-  hours: number;
-  minutes: number;
-  seconds: number;
-}
 
 export default function Menu() {
   const [showNotif, setShowNotif] = useState(false);
