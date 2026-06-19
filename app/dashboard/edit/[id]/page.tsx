@@ -20,6 +20,7 @@ const emptyForm: RegistrationForm = {
   contactPhoneNumber: "",
   father: { name: "", birthYear: "", occupation: "", education: "", monthlyIncome: "", nik: "" },
   mother: { name: "", birthYear: "", occupation: "", education: "", monthlyIncome: "", nik: "" },
+  hasGuardian: false,
   guardian: { name: "", relationship: "", phoneNumber: "" },
 };
 
@@ -27,7 +28,6 @@ export default function EditRegistration() {
   const params = useParams();
   const router = useRouter();
   const [formData, setFormData] = useState<RegistrationForm>(emptyForm);
-  const [showWali, setShowWali] = useState(false);
   const [registrationInfo, setRegistrationInfo] = useState<{
     number: string; status: string;
   } | null>(null);
@@ -52,9 +52,8 @@ export default function EditRegistration() {
         const mother = data.mother || {};
         const guardian = data.guardian;
 
-        setShowWali(data.hasGuardian === true);
-
         setFormData({
+          hasGuardian: data.hasGuardian === true,
           student: {
             fullName: student.fullName || "",
             nisn: student.nisn || "",
@@ -114,7 +113,11 @@ export default function EditRegistration() {
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>,
   ) => {
-    const { name, value } = e.target;
+    const target = e.target;
+    const { name } = target;
+    const value = target instanceof HTMLInputElement && target.type === "checkbox"
+      ? target.checked
+      : target.value;
     const keys = name.split(".");
     setFormData((prev) => {
       const newFormData = { ...prev };
@@ -140,9 +143,10 @@ export default function EditRegistration() {
         father: formData.father,
         mother: formData.mother,
         contactPhoneNumber: formData.contactPhoneNumber,
+        hasGuardian: formData.hasGuardian,
       };
 
-      if (showWali) {
+      if (formData.hasGuardian) {
         payload.guardian = formData.guardian;
       }
 
@@ -227,14 +231,10 @@ export default function EditRegistration() {
             <div className="space-y-6">
               <StudentDataStep formData={formData} onChange={handleChange} />
               <ParentDataStep formData={formData} onChange={handleChange} />
-              {showWali && (
-                <GuardianDataStep
-                  formData={formData}
-                  showWali={showWali}
-                  setShowWali={setShowWali}
-                  onChange={handleChange}
-                />
-              )}
+              <GuardianDataStep
+                formData={formData}
+                onChange={handleChange}
+              />
 
               <div className="flex justify-end pt-4">
                 <button

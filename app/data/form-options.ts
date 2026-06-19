@@ -22,6 +22,7 @@ export const EDUCATION_OPTIONS = [
 ];
 
 export const INCOME_OPTIONS = [
+  "Tidak Berpenghasilan",
   "Kurang dari Rp 500.000",
   "Rp 500.000 - Rp 1.000.000",
   "Rp 1.000.000 - Rp 2.000.000",

@@ -2,10 +2,20 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Printer, CheckCircle2, Circle, LogOut, Loader2, Pencil, RefreshCw } from "lucide-react";
+import {
+  Printer,
+  CheckCircle2,
+  Circle,
+  LogOut,
+  Loader2,
+  Pencil,
+  RefreshCw,
+  Download,
+} from "lucide-react";
 import RegistrationService from "@/services/registration.service";
 import AuthService from "@/services/auth.service";
 import Pagination from "@/app/components/Pagination";
+import { exportRegistrantsToCSV } from "@/lib/export-csv";
 
 interface Address {
   street?: string;
@@ -60,16 +70,6 @@ interface Registrant {
   createdAt?: string;
   updatedAt?: string;
 }
-
-// interface ApiResponse {
-//   status: {
-//     code: number;
-//     response: string;
-//   };
-//   message?: string;
-//   result?: Registrant[];
-//   data?: Registrant[];
-// }
 
 const formatBirthDate = (date: Date | string | undefined): string => {
   if (!date) return "-";
@@ -490,34 +490,21 @@ export default function Dashboard() {
               Kelola data pendaftar dan validasi formulir
             </p>
           </div>
-          <div className="flex items-center gap-3">
-            <button
-              onClick={handleRefresh}
-              disabled={refreshing}
-              className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 border border-gray-300 dark:border-gray-600 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
-              title="Perbarui Data"
-            >
-              <RefreshCw size={20} className={refreshing ? "animate-spin" : ""} />
-              <span className="text-sm font-medium hidden sm:inline">
-                {refreshing ? "Memuat..." : "Refresh"}
-              </span>
-            </button>
-            <button
-              onClick={handleLogout}
-              disabled={logoutLoading}
-              className="flex items-center gap-2 px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors dark:bg-red-700 dark:hover:bg-red-800 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
-              title="Logout"
-            >
-              {logoutLoading ? (
-                <Loader2 size={20} className="animate-spin" />
-              ) : (
-                <LogOut size={20} />
-              )}
-              <span className="text-sm font-medium">
-                {logoutLoading ? "Logout..." : "Logout"}
-              </span>
-            </button>
-          </div>
+          <button
+            onClick={handleLogout}
+            disabled={logoutLoading}
+            className="flex items-center gap-2 px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors dark:bg-red-700 dark:hover:bg-red-800 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+            title="Logout"
+          >
+            {logoutLoading ? (
+              <Loader2 size={20} className="animate-spin" />
+            ) : (
+              <LogOut size={20} />
+            )}
+            <span className="text-sm font-medium">
+              {logoutLoading ? "Logout..." : "Logout"}
+            </span>
+          </button>
         </div>
 
         {/* Error Alert */}
@@ -553,6 +540,30 @@ export default function Dashboard() {
               {registrants.filter((r) => r.status === "unvalidated").length}
             </div>
           </div>
+        </div>
+
+        <div className="flex items-center gap-3 mb-8 justify-end flex-wrap">
+          <button
+            onClick={() => exportRegistrantsToCSV(registrants)}
+            className="flex items-center gap-2 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg transition-colors dark:bg-emerald-700 dark:hover:bg-emerald-800 cursor-pointer"
+            title="Export ke Excel"
+          >
+            <Download size={20} />
+            <span className="text-sm font-medium hidden sm:inline">
+              Export Excel
+            </span>
+          </button>
+          <button
+            onClick={handleRefresh}
+            disabled={refreshing}
+            className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 border border-gray-300 dark:border-gray-600 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+            title="Perbarui Data"
+          >
+            <RefreshCw size={20} className={refreshing ? "animate-spin" : ""} />
+            <span className="text-sm font-medium hidden sm:inline">
+              {refreshing ? "Memuat..." : "Refresh"}
+            </span>
+          </button>
         </div>
 
         {/* Table */}
@@ -594,7 +605,7 @@ export default function Dashboard() {
                     </th>
                   </tr>
                 </thead>
-                <tbody className="divide-y bg-white divide-gray-200 dark:divide-gray-700">
+                <tbody className="divide-y bg-white divide-gray-200 dark:divide-gray-700 dark:bg-gray-800">
                   {paginatedRegistrants.map((registrant, index) => (
                     <tr
                       key={registrant._id || registrant.id}

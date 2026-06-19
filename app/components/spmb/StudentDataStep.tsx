@@ -52,7 +52,7 @@ export default function StudentDataStep({ formData, onChange }: StudentDataStepP
             numericOnly
           />
           <InputField
-            label="Nomor Kartu Keluarga (KK)"
+            label="KK (Nomor Kartu Keluarga)"
             name="student.noKk"
             required
             placeholder="Nomor KK (16 digit)"

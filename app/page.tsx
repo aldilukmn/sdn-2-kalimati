@@ -72,7 +72,7 @@ export default function Menu() {
         />
       </h1>
       <div
-        className="grid md:grid-cols-2 lg:grid-cols-4 grid-cols-2 gap-5 md:py-10 items-center text-sm md:text-base text-center mx-5 md:mx-0"
+        className="grid md:grid-cols-2 lg:grid-cols-3 grid-cols-2 gap-5 md:py-10 items-center text-sm md:text-base text-center mx-5 md:mx-0"
         style={{ "--card-padding": "20px" } as React.CSSProperties}
       >
         {navigationLinks.map((link) => {

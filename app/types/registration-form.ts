@@ -44,6 +44,7 @@ interface RegistrationForm {
     }
 
   // Data Wali
+  hasGuardian: boolean;
   guardian: {
     name: string;
     relationship: string;

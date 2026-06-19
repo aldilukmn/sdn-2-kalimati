@@ -5,15 +5,11 @@ import InputField from "@/app/components/form/InputField";
 
 interface GuardianDataStepProps {
   formData: RegistrationForm;
-  showWali: boolean;
-  setShowWali: (show: boolean) => void;
   onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => void;
 }
 
 export default function GuardianDataStep({
   formData,
-  showWali,
-  setShowWali,
   onChange,
 }: GuardianDataStepProps) {
   return (
@@ -26,8 +22,9 @@ export default function GuardianDataStep({
         <label className="flex items-center gap-3 cursor-pointer">
           <input
             type="checkbox"
-            checked={showWali}
-            onChange={(e) => setShowWali(e.target.checked)}
+            name="hasGuardian"
+            checked={formData.hasGuardian}
+            onChange={onChange}
             className="w-5 h-5 text-blue-600 rounded focus:ring-2 focus:ring-blue-500 cursor-pointer"
           />
           <span className="text-sm font-semibold text-gray-700 dark:text-gray-200">
@@ -36,7 +33,7 @@ export default function GuardianDataStep({
         </label>
       </div>
 
-      {showWali && (
+      {formData.hasGuardian && (
         <div className="space-y-6 p-6 rounded-lg">
           <InputField
             label="Nama Wali"

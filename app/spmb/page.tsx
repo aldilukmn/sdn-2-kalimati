@@ -51,6 +51,7 @@ const initialFormData: RegistrationForm = {
     monthlyIncome: "",
     nik: "",
   },
+  hasGuardian: false,
   guardian: {
     name: "",
     relationship: "",
@@ -60,7 +61,6 @@ const initialFormData: RegistrationForm = {
 
 export default function Spmb() {
   const [formData, setFormData] = useState<RegistrationForm>(initialFormData);
-  const [showWali, setShowWali] = useState<boolean>(false);
   const [currentStep, setCurrentStep] = useState<number>(1);
   const [canSubmit, setCanSubmit] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -81,7 +81,11 @@ export default function Spmb() {
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
   ) => {
-    const { name, value } = e.target;
+    const target = e.target;
+    const { name } = target;
+    const value = target instanceof HTMLInputElement && target.type === "checkbox"
+      ? target.checked
+      : target.value;
     const keys = name.split(".");
 
     setFormData((prev) => {
@@ -214,8 +218,6 @@ export default function Spmb() {
               {currentStep === 3 && (
                 <GuardianDataStep
                   formData={formData}
-                  showWali={showWali}
-                  setShowWali={setShowWali}
                   onChange={handleChange}
                 />
               )}
