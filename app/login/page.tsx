@@ -22,12 +22,19 @@ export default function LoginPage() {
       setStatus("success");
       setMessage(response.status.message);
 
-      // Set token to both sessionStorage and cookie
-      sessionStorage.setItem("user_session", response.result);
-      sessionStorage.setItem("user_identifier", identifier);
-      document.cookie = `user_session=${response.result}; path=/; max-age=86400`;
+      const token = response.result?.token || response.result;
+      const role = response.result?.role || "admin";
 
-      router.push("/dashboard");
+      sessionStorage.setItem("user_session", token);
+      sessionStorage.setItem("user_identifier", identifier);
+      sessionStorage.setItem("user_role", role);
+      document.cookie = `user_session=${token}; path=/; max-age=86400`;
+
+      if (role === "guru") {
+        router.push("/presensi");
+      } else {
+        router.push("/dashboard");
+      }
     } catch (error) {
       setStatus("error");
 

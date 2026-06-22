@@ -11,6 +11,7 @@ import {
   Pencil,
   RefreshCw,
   Download,
+  ClipboardCheck,
 } from "lucide-react";
 import RegistrationService from "@/services/registration.service";
 import AuthService from "@/services/auth.service";
@@ -551,6 +552,16 @@ export default function Dashboard() {
             <Download size={20} />
             <span className="text-sm font-medium hidden sm:inline">
               Export Excel
+            </span>
+          </button>
+          <button
+            onClick={() => router.push("/presensi")}
+            className="flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition-colors dark:bg-indigo-700 dark:hover:bg-indigo-800 cursor-pointer"
+            title="Rekap Presensi"
+          >
+            <ClipboardCheck size={20} />
+            <span className="text-sm font-medium hidden sm:inline">
+              Presensi
             </span>
           </button>
           <button

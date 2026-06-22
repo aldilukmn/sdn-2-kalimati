@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Dashboard Admin - SDN 2 Kalimati",
-  description: "Dashboard admin untuk mengelola data pendaftar dan presensi",
+  title: "Presensi Siswa - SDN 2 Kalimati",
+  description: "Input presensi siswa harian",
 };
 
-export default function DashboardLayout({
+export default function PresensiLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
