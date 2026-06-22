@@ -179,7 +179,7 @@ export function exportRegistrantsToCSV(registrants: Registrant[]): void {
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
   a.href = url;
-  a.download = `data-pendaftar-spmb-${new Date().toISOString().slice(0, 10)}.csv`;
+  a.download = `data-pendaftar-pmb-${new Date().toISOString().slice(0, 10)}.csv`;
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);

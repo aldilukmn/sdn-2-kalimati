@@ -5,9 +5,9 @@ import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, Loader2, Save } from "lucide-react";
 import RegistrationService from "@/services/registration.service";
-import StudentDataStep from "@/app/components/spmb/StudentDataStep";
-import ParentDataStep from "@/app/components/spmb/ParentDataStep";
-import GuardianDataStep from "@/app/components/spmb/GuardianDataStep";
+import StudentDataStep from "@/app/components/pmb/StudentDataStep";
+import ParentDataStep from "@/app/components/pmb/ParentDataStep";
+import GuardianDataStep from "@/app/components/pmb/GuardianDataStep";
 import LoadingModal from "@/app/components/LoadingModal";
 
 const emptyForm: RegistrationForm = {

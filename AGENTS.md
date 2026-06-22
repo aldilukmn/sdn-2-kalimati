@@ -20,7 +20,7 @@ No linter, formatter, typecheck, or test scripts exist.
 | Path | Purpose |
 |------|---------|
 | `/` | Homepage with nav links |
-| `/spmb` | Student registration (3-step form) |
+| `/pmb` | Student registration (3-step form) |
 | `/kelulusan` | Graduation check (gated until Jun 2, 2026 12:00 WIB) |
 | `/hasil-tka` | TKA test results lookup |
 | `/kelas-5` | Class 5 info (schedule, piket, org structure) |

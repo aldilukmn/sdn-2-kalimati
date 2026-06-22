@@ -8,9 +8,9 @@ import LoadingModal from "@/app/components/LoadingModal";
 import RegistrationCounter from "@/app/components/RegistrationCounter";
 import RegistrationCard from "@/app/components/RegistrationCard";
 import BackButton from "@/app/components/BackButton";
-import StudentDataStep from "@/app/components/spmb/StudentDataStep";
-import ParentDataStep from "@/app/components/spmb/ParentDataStep";
-import GuardianDataStep from "@/app/components/spmb/GuardianDataStep";
+import StudentDataStep from "@/app/components/pmb/StudentDataStep";
+import ParentDataStep from "@/app/components/pmb/ParentDataStep";
+import GuardianDataStep from "@/app/components/pmb/GuardianDataStep";
 
 const initialFormData: RegistrationForm = {
   student: {
@@ -59,7 +59,7 @@ const initialFormData: RegistrationForm = {
   },
 };
 
-export default function Spmb() {
+export default function Pmb() {
   const [formData, setFormData] = useState<RegistrationForm>(initialFormData);
   const [currentStep, setCurrentStep] = useState<number>(1);
   const [canSubmit, setCanSubmit] = useState<boolean>(false);
@@ -153,7 +153,7 @@ export default function Spmb() {
             <div className="text-center mb-8">
               <RegistrationCounter />
               <h1 className="text-2xl md:text-4xl font-bold mb-2 text-gray-800 dark:text-gray-200">
-                Formulir Pendaftaran SPMB
+                Formulir Pendaftaran PMB
               </h1>
               <p className="text-sm md:text-base text-gray-600 dark:text-gray-400">
                 Isi semua data dengan lengkap dan benar

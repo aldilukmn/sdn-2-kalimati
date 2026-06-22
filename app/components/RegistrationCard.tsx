@@ -48,7 +48,7 @@ export default function RegistrationCard({name}: {name: string}) {
       
       const link = document.createElement('a');
       link.href = dataUrl;
-      link.download = `SPMB26-SD-${String(count || 0).padStart(3, "0")}`;
+      link.download = `PMB26-SD-${String(count || 0).padStart(3, "0")}`;
       link.click();
     } catch (error) {
       console.error('Error generating image:', error);
@@ -77,7 +77,7 @@ export default function RegistrationCard({name}: {name: string}) {
               UPTD SDN 2 Kalimati
             </h3>
             <p className="text-blue-200 text-xs font-medium tracking-wide">
-              Bukti Pendaftaran SPMB
+              Bukti Pendaftaran PMB
             </p>
           </div>
         </div>
@@ -88,7 +88,7 @@ export default function RegistrationCard({name}: {name: string}) {
               Nomor Pendaftaran
             </p>
             <p className="text-2xl font-mono font-bold tracking-widest text-white">
-              SPMB26-SD-{String(count || 0).padStart(3, "0")}
+              PMB26-SD-{String(count || 0).padStart(3, "0")}
             </p>
           </div>
 
@@ -108,7 +108,7 @@ export default function RegistrationCard({name}: {name: string}) {
       </div>
 
       {/* Action Buttons */}
-      <div className="flex flex-col sm:grid sm:grid-cols-3 gap-3 w-full max-w-sm mt-4">
+      <div className="grid grid-cols-2 gap-3 w-full max-w-sm">
         <div className="flex col-span-2 gap-3">
           <button
             onClick={handleDownload}
@@ -144,7 +144,7 @@ export default function RegistrationCard({name}: {name: string}) {
         <Link
           id="back-to-home"
           href="/"
-          className="w-full font-semibold py-3 px-4 rounded-xl shadow-md flex items-center justify-center gap-2 text-center text-sm bg-gray-100 hover:bg-gray-200 transition duration-200 border border-gray-300 cursor-pointer text-gray-800 dark:bg-gray-600 dark:hover:bg-gray-500 dark:border-gray-600 dark:text-gray-200"
+          className="w-full col-span-2 font-semibold py-3 px-4 rounded-xl shadow-md flex items-center justify-center gap-2 text-center text-sm bg-gray-100 hover:bg-gray-200 transition duration-200 border border-gray-300 cursor-pointer text-gray-800 dark:bg-gray-600 dark:hover:bg-gray-500 dark:border-gray-600 dark:text-gray-200"
         >
           Kembali ke Beranda
         </Link>
