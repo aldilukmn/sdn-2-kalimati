@@ -30,31 +30,44 @@ function decodeJWTPayload(token: string) {
   }
 }
 
+function isTokenExpired(token: string): boolean {
+  const payload = decodeJWTPayload(token);
+  if (!payload) return true;
+  if (!payload.exp) return false;
+  return payload.exp * 1000 < Date.now();
+}
+
+function redirectToLogin(request: NextRequest) {
+  const response = NextResponse.redirect(new URL("/login", request.url));
+  response.cookies.set("user_session", "", { path: "/", maxAge: 0 });
+  return response;
+}
+
 export function proxy(request: NextRequest) {
   const now = new Date();
   const pathname = request.nextUrl.pathname;
 
   const token = request.cookies.get("user_session")?.value;
 
-  // Proteksi dashboard — blokir guru, redirect jika cookie corrupted
+  // Proteksi dashboard — blokir guru, expired, corrupted
   if (pathname.startsWith("/dashboard")) {
-    if (!token) {
-      return NextResponse.redirect(new URL("/login", request.url));
+    if (!token || isTokenExpired(token)) {
+      return redirectToLogin(request);
     }
 
     const payload = decodeJWTPayload(token);
     if (!payload) {
-      return NextResponse.redirect(new URL("/login", request.url));
+      return redirectToLogin(request);
     }
     if (payload.role === "guru") {
       return NextResponse.redirect(new URL("/presensi", request.url));
     }
   }
 
-  // Proteksi presensi (halaman input, bukan rekap publik)
+  // Proteksi presensi — cek token + expired
   if (pathname === "/presensi") {
-    if (!token) {
-      return NextResponse.redirect(new URL("/login", request.url));
+    if (!token || isTokenExpired(token)) {
+      return redirectToLogin(request);
     }
   }
 
