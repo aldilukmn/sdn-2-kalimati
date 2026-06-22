@@ -6,7 +6,6 @@ import {
   Printer,
   CheckCircle2,
   Circle,
-  LogOut,
   Loader2,
   Pencil,
   RefreshCw,
@@ -14,8 +13,8 @@ import {
   ClipboardCheck,
 } from "lucide-react";
 import RegistrationService from "@/services/registration.service";
-import AuthService from "@/services/auth.service";
 import Pagination from "@/app/components/Pagination";
+import LogoutButton from "@/app/components/LogoutButton";
 import { exportRegistrantsToCSV } from "@/lib/export-csv";
 
 interface Address {
@@ -137,7 +136,6 @@ export default function Dashboard() {
   const [error, setError] = useState<string | null>(null);
   const [validating, setValidating] = useState<Set<string>>(new Set());
   const [currentPage, setCurrentPage] = useState(1);
-  const [logoutLoading, setLogoutLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   const itemsPerPage = 5;
 
@@ -203,23 +201,6 @@ export default function Dashboard() {
       });
     }
   };
-
-  const handleLogout = async () => {
-    try {
-      setLogoutLoading(true);
-      await AuthService.logout();
-    } catch (err) {
-      console.error("Logout error:", err);
-      setError(err instanceof Error ? err.message : "Gagal logout");
-    } finally {
-      // Clear session data regardless of success/failure
-      sessionStorage.removeItem("user_session");
-      sessionStorage.removeItem("user_identifier");
-      document.cookie = "user_session=; path=/; max-age=0";
-      router.replace("/login");
-    }
-  };
-
   const handlePrint = (registrant: Registrant) => {
     const fullName = registrant.student?.fullName || "-";
     const registrationNumber = registrant.registrationNumber || "-";
@@ -491,21 +472,7 @@ export default function Dashboard() {
               Kelola data pendaftar dan validasi formulir
             </p>
           </div>
-          <button
-            onClick={handleLogout}
-            disabled={logoutLoading}
-            className="flex items-center gap-2 px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors dark:bg-red-700 dark:hover:bg-red-800 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
-            title="Logout"
-          >
-            {logoutLoading ? (
-              <Loader2 size={20} className="animate-spin" />
-            ) : (
-              <LogOut size={20} />
-            )}
-            <span className="text-sm font-medium">
-              {logoutLoading ? "Logout..." : "Logout"}
-            </span>
-          </button>
+          <LogoutButton />
         </div>
 
         {/* Error Alert */}

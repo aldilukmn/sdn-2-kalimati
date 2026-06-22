@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 import {
   Loader2,
   Save,
-  LogOut,
   CheckCircle2,
   AlertCircle,
   UserCheck,
@@ -16,8 +15,8 @@ import {
 import { Card } from "flowbite-react";
 import BackButton from "../components/BackButton";
 import { getSiswaByKelas, daftarKelas } from "../data/siswa";
+import LogoutButton from "../components/LogoutButton";
 import PresensiService from "@/services/presensi.service";
-import AuthService from "@/services/auth.service";
 
 const STATUS_LABEL: Record<string, string> = {
   hadir: "Hadir",
@@ -52,7 +51,6 @@ export default function PresensiPage() {
   } | null>(null);
   const [isExisting, setIsExisting] = useState(false);
   const [fetching, setFetching] = useState(false);
-  const [logoutLoading, setLogoutLoading] = useState(false);
 
   const role =
     typeof window !== "undefined"
@@ -64,21 +62,6 @@ export default function PresensiPage() {
       router.replace("/login");
     }
   }, [role, router]);
-
-  const handleLogout = async () => {
-    try {
-      setLogoutLoading(true);
-      await AuthService.logout();
-    } catch {
-      // proceed with local logout regardless
-    } finally {
-      sessionStorage.removeItem("user_session");
-      sessionStorage.removeItem("user_identifier");
-      sessionStorage.removeItem("user_role");
-      document.cookie = "user_session=; path=/; max-age=0";
-      router.replace("/login");
-    }
-  };
 
   const loadSiswa = () => {
     const siswaList = getSiswaByKelas(kelas);
@@ -188,18 +171,7 @@ export default function PresensiPage() {
     <div className="flex flex-col items-center justify-start gap-6 px-4 py-7 xl:py-10 min-h-screen">
       <div className="flex items-center justify-between w-full max-w-4xl">
         <BackButton />
-        <button
-          onClick={handleLogout}
-          disabled={logoutLoading}
-          className="flex items-center gap-2 px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg text-sm font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
-        >
-          {logoutLoading ? (
-            <Loader2 size={16} className="animate-spin" />
-          ) : (
-            <LogOut size={16} />
-          )}
-          <span>{logoutLoading ? "Logout..." : "Logout"}</span>
-        </button>
+        <LogoutButton />
       </div>
 
       <Card className="w-full max-w-4xl">
