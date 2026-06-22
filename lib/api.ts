@@ -1,14 +1,21 @@
 import { API_URL } from "./constants";
 
+function getCookie(name: string): string | null {
+  const match = document.cookie.match(
+    new RegExp(`(^| )${name}=([^;]+)`)
+  );
+  return match ? decodeURIComponent(match[2]) : null;
+}
+
 export const api = async (
   endpoint: string,
   options: RequestInit = {}
 ) => {
   const token =
     typeof window !== "undefined"
-      ? sessionStorage.getItem(
+      ? (sessionStorage.getItem(
           "user_session"
-        )
+        ) || getCookie("user_session"))
       : null;
 
   const response = await fetch(
