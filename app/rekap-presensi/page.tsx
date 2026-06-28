@@ -11,45 +11,45 @@ import {
   CalendarDays,
 } from "lucide-react";
 import { Card } from "flowbite-react";
-import PresensiService from "@/services/presensi.service";
-import { getSiswaByKelas, daftarKelas } from "@/app/data/siswa";
+import TableSkeleton from "@/app/components/TableSkeleton";
+import StudentAttendanceService from "@/services/student-attendance.service";
 import { exportPresensiToCSV } from "@/lib/export-presensi-csv";
 import BackButton from "../components/BackButton";
+import Pagination from "@/app/components/Pagination";
+
+const GRADES = ["1", "2", "3", "4", "5", "6"];
 
 export default function RekapPresensi() {
-  const [kelas, setKelas] = useState("1");
-  const [bulan, setBulan] = useState(new Date().getMonth() + 1);
-  const [tahun, setTahun] = useState(new Date().getFullYear());
-  const [dataPresensi, setDataPresensi] = useState<any[]>([]);
+  const [grade, setGrade] = useState("1");
+
+  const [month, setMonth] = useState(new Date().getMonth() + 1);
+  const [year, setYear] = useState(new Date().getFullYear());
+  const [dataPresensi, setDataPresensi] = useState<StudentAttendanceType[]>([]);
+  const [siswaList, setSiswaList] = useState<MasterStudentType[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
 
-  const siswaList = getSiswaByKelas(kelas);
+  const fetchSiswa = async () => {
+    try {
+      const response = await StudentAttendanceService.getStudentsByGrade(grade);
+      const data = response.data || response.result || [];
+      setSiswaList(data);
+    } catch {
+      setSiswaList([]);
+    }
+  };
 
   const fetchAllPresensi = async () => {
     try {
-      const allData = [];
-      for (const siswa of siswaList) {
-        try {
-          const response = await PresensiService.getRekapByNisn(
-            siswa.nisn,
-            bulan,
-            tahun
-          );
-          const data = response.result || response.data || [];
-          for (const d of data) {
-            allData.push({
-              ...d,
-              nama: siswa.nama,
-              nisn: siswa.nisn,
-              kelas: siswa.kelas,
-            });
-          }
-        } catch {
-          // skip siswa without data
-        }
-      }
-      setDataPresensi(allData);
+      const response = await StudentAttendanceService.getReportByGrade(
+        grade,
+        month,
+        year,
+      );
+      const data = response.data || response.result || [];
+      setDataPresensi(data);
     } catch {
       setError("Gagal memuat data presensi");
     } finally {
@@ -60,27 +60,29 @@ export default function RekapPresensi() {
   useEffect(() => {
     setLoading(true);
     setError(null);
+    setCurrentPage(1);
+    fetchSiswa();
     fetchAllPresensi();
-  }, [kelas, bulan, tahun]);
+  }, [grade, month, year]);
 
   const handleExport = () => {
     const rows = dataPresensi.map((d) => ({
-      nisn: d.nisn,
-      nama: d.nama,
-      kelas: d.kelas,
-      tanggal: d.tanggal,
+      studentId: d.studentId,
+      name: d.name,
+      grade: d.grade,
+      date: d.date,
       status: d.status,
     }));
-    exportPresensiToCSV(rows, `kelas-${kelas}-bulan-${bulan}`);
+    exportPresensiToCSV(rows, `grade-${grade}-month-${month}`);
   };
 
   const countByStatus = (status: string) =>
     dataPresensi.filter((d) => d.status === status).length;
 
-  const totalHari = dataPresensi.length;
+  const totalHari = new Set(dataPresensi.map((d) => d.date)).size;
 
-  const getStudentStats = (nisn: string) => {
-    const studentData = dataPresensi.filter((d) => d.nisn === nisn);
+  const getStudentStats = (studentId: string) => {
+    const studentData = dataPresensi.filter((d) => d.studentId === studentId);
     return {
       total: studentData.length,
       hadir: studentData.filter((d) => d.status === "hadir").length,
@@ -90,10 +92,15 @@ export default function RekapPresensi() {
     };
   };
 
+  const totalPages = Math.ceil(siswaList.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const paginatedSiswa = siswaList.slice(startIndex, startIndex + itemsPerPage);
+
   return (
     <div className="flex flex-col items-center justify-start gap-6 px-4 py-7 xl:py-10 min-h-screen">
-      <BackButton />
-
+      <div className="w-full max-w-6xl">
+        <BackButton />
+      </div>
       <Card className="w-full max-w-6xl">
         <div className="text-center mb-6">
           <div className="text-4xl md:text-5xl mb-3">📊</div>
@@ -111,13 +118,13 @@ export default function RekapPresensi() {
               Kelas
             </label>
             <select
-              value={kelas}
-              onChange={(e) => setKelas(e.target.value)}
+              value={grade}
+              onChange={(e) => setGrade(e.target.value)}
               className="rounded-xl border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100"
             >
-              {daftarKelas.map((k) => (
-                <option key={k} value={k}>
-                  Kelas {k}
+              {GRADES.map((g) => (
+                <option key={g} value={g}>
+                  Kelas {g}
                 </option>
               ))}
             </select>
@@ -127,8 +134,8 @@ export default function RekapPresensi() {
               Bulan
             </label>
             <select
-              value={bulan}
-              onChange={(e) => setBulan(Number(e.target.value))}
+              value={month}
+              onChange={(e) => setMonth(Number(e.target.value))}
               className="rounded-xl border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100"
             >
               {Array.from({ length: 12 }, (_, i) => (
@@ -145,8 +152,8 @@ export default function RekapPresensi() {
               Tahun
             </label>
             <select
-              value={tahun}
-              onChange={(e) => setTahun(Number(e.target.value))}
+              value={year}
+              onChange={(e) => setYear(Number(e.target.value))}
               className="rounded-xl border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100"
             >
               {[2025, 2026, 2027].map((t) => (
@@ -175,17 +182,42 @@ export default function RekapPresensi() {
         )}
 
         {loading ? (
-          <div className="flex items-center justify-center py-12">
-            <div className="text-center">
-              <div className="inline-block animate-spin rounded-full h-10 w-10 border-b-2 border-blue-600"></div>
-              <p className="mt-3 text-sm text-gray-500 dark:text-gray-400">
-                Memuat data presensi...
-              </p>
-            </div>
-          </div>
+          <TableSkeleton
+            headers={["No", "Nama", "Hadir", "Sakit", "Izin", "Alpha", "Kehadiran"]}
+            rows={5}
+          >
+            {() => (
+              <>
+                <td className="px-4 py-3">
+                  <div className="h-4 w-4 bg-gray-200 dark:bg-gray-700 rounded" />
+                </td>
+                <td className="px-4 py-3">
+                  <div className="h-4 w-48 bg-gray-200 dark:bg-gray-700 rounded" />
+                </td>
+                <td className="px-4 py-3">
+                  <div className="h-4 w-8 bg-gray-200 dark:bg-gray-700 rounded mx-auto" />
+                </td>
+                <td className="px-4 py-3">
+                  <div className="h-4 w-8 bg-gray-200 dark:bg-gray-700 rounded mx-auto" />
+                </td>
+                <td className="px-4 py-3">
+                  <div className="h-4 w-8 bg-gray-200 dark:bg-gray-700 rounded mx-auto" />
+                </td>
+                <td className="px-4 py-3">
+                  <div className="h-4 w-8 bg-gray-200 dark:bg-gray-700 rounded mx-auto" />
+                </td>
+                <td className="px-4 py-3">
+                  <div className="flex items-center gap-2 justify-center">
+                    <div className="h-2 w-20 bg-gray-200 dark:bg-gray-700 rounded-full" />
+                    <div className="h-4 w-8 bg-gray-200 dark:bg-gray-700 rounded" />
+                  </div>
+                </td>
+              </>
+            )}
+          </TableSkeleton>
         ) : (
           <>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
+            {/* <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
               <div className="border border-blue-500/40 bg-blue-500/5 px-4 py-3 rounded-xl text-center">
                 <div className="text-xs font-semibold text-gray-600 dark:text-gray-400">
                   Total Presensi
@@ -218,7 +250,7 @@ export default function RekapPresensi() {
                   {countByStatus("alpha")}
                 </div>
               </div>
-            </div>
+            </div> */}
 
             <div className="overflow-x-auto rounded-xl border border-slate-200 dark:border-gray-700">
               {siswaList.length === 0 ? (
@@ -229,32 +261,46 @@ export default function RekapPresensi() {
                 <table className="w-full">
                   <thead>
                     <tr className="bg-blue-600 text-white">
-                      <th className="px-4 py-3 text-left text-xs font-semibold">No</th>
-                      <th className="px-4 py-3 text-left text-xs font-semibold">Nama</th>
-                      <th className="px-4 py-3 text-center text-xs font-semibold">Hadir</th>
-                      <th className="px-4 py-3 text-center text-xs font-semibold">Sakit</th>
-                      <th className="px-4 py-3 text-center text-xs font-semibold">Izin</th>
-                      <th className="px-4 py-3 text-center text-xs font-semibold">Alpha</th>
-                      <th className="px-4 py-3 text-center text-xs font-semibold">Kehadiran</th>
+                      <th className="px-4 py-3 text-left text-xs font-semibold">
+                        No
+                      </th>
+                      <th className="px-4 py-3 text-left text-xs font-semibold">
+                        Nama
+                      </th>
+                      <th className="px-4 py-3 text-center text-xs font-semibold">
+                        Hadir
+                      </th>
+                      <th className="px-4 py-3 text-center text-xs font-semibold">
+                        Sakit
+                      </th>
+                      <th className="px-4 py-3 text-center text-xs font-semibold">
+                        Izin
+                      </th>
+                      <th className="px-4 py-3 text-center text-xs font-semibold">
+                        Alpha
+                      </th>
+                      <th className="px-4 py-3 text-center text-xs font-semibold">
+                        Kehadiran
+                      </th>
                     </tr>
                   </thead>
                   <tbody className="divide-y bg-white divide-gray-200 dark:divide-gray-700 dark:bg-gray-800">
-                    {siswaList.map((siswa, i) => {
-                      const stats = getStudentStats(siswa.nisn);
+                    {paginatedSiswa.map((siswa, i) => {
+                      const stats = getStudentStats(siswa.studentId);
                       const persentase =
                         stats.total > 0
                           ? Math.round((stats.hadir / stats.total) * 100)
                           : 0;
                       return (
                         <tr
-                          key={siswa.nisn}
+                          key={siswa.studentId}
                           className="hover:bg-blue-50 dark:hover:bg-gray-700/50 transition-colors"
                         >
                           <td className="px-4 py-3 text-sm text-gray-500 dark:text-gray-400">
-                            {i + 1}
+                            {startIndex + i + 1}
                           </td>
                           <td className="px-4 py-3 text-sm font-medium text-gray-900 dark:text-white">
-                            {siswa.nama}
+                            {siswa.name}
                           </td>
                           <td className="px-4 py-3 text-sm text-center text-green-600 dark:text-green-400 font-medium">
                             {stats.hadir}
@@ -289,8 +335,20 @@ export default function RekapPresensi() {
               )}
             </div>
 
+            {siswaList.length > itemsPerPage && (
+              <div className="mt-6">
+                <Pagination
+                  currentPage={currentPage}
+                  totalPages={totalPages}
+                  onPageChange={setCurrentPage}
+                  itemsPerPage={itemsPerPage}
+                  totalItems={siswaList.length}
+                />
+              </div>
+            )}
+
             <div className="mt-4 text-xs text-gray-500 dark:text-gray-400 text-right">
-              Total data: {totalHari} hari
+              Total hari: {totalHari} hari
             </div>
           </>
         )}

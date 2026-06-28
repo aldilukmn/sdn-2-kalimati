@@ -152,7 +152,7 @@ export default function EditRegistration() {
 
       await RegistrationService.updateData(params.id as string, payload);
       setModalStatus("success");
-      setTimeout(() => router.push("/dashboard"), 1500);
+      setTimeout(() => router.push("/data-pendaftar"), 1500);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Gagal menyimpan perubahan");
       setModalStatus("error");
@@ -174,7 +174,7 @@ export default function EditRegistration() {
         <div className="text-center">
           <p className="text-red-600 mb-4">{error}</p>
           <Link
-            href="/dashboard"
+            href="/data-pendaftar"
             className="text-blue-600 hover:underline cursor-pointer"
           >
             Kembali ke Dashboard
@@ -188,7 +188,7 @@ export default function EditRegistration() {
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-20 px-4">
       <div className="max-w-4xl mx-auto">
         <Link
-          href="/dashboard"
+          href="/data-pendaftar"
           className="self-start mb-5 flex items-center gap-2 text-gray-600 hover:text-gray-800 transition-colors"
         >
           <button

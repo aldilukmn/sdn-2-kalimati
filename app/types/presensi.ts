@@ -1,14 +1,20 @@
-interface Presensi {
-  nisn: string;
-  nama: string;
-  kelas: string;
-  tanggal: string;
-  status: "hadir" | "sakit" | "izin" | "alpha";
-  keterangan?: string;
+interface MasterStudentType {
+  studentId: string;
+  name: string;
+  grade: string;
 }
 
-interface PresensiHarian {
-  tanggal: string;
-  kelas: string;
-  entries: Omit<Presensi, "kelas" | "tanggal">[];
+interface StudentAttendanceType {
+  studentId: string;
+  name: string;
+  grade: string;
+  date: string;
+  status: "hadir" | "sakit" | "izin" | "alpha";
+  note?: string;
+}
+
+interface StudentAttendanceRequestType {
+  date: string;
+  grade: string;
+  entries: { studentId: string; status: "hadir" | "sakit" | "izin" | "alpha" }[];
 }

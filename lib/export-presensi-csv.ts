@@ -1,14 +1,14 @@
-interface PresensiRow {
-  nisn: string;
-  nama: string;
-  kelas: string;
-  tanggal: string;
+interface AttendanceRow {
+  studentId: string;
+  name: string;
+  grade: string;
+  date: string;
   status: string;
 }
 
 const HEADERS = [
   "No",
-  "NISN",
+  "Student ID",
   "Nama Lengkap",
   "Kelas",
   "Tanggal",
@@ -24,16 +24,16 @@ function wrap(value: unknown): string {
 }
 
 export function exportPresensiToCSV(
-  data: PresensiRow[],
+  data: AttendanceRow[],
   label: string
 ): void {
   const rows = data.map((r, i) =>
     [
       i + 1,
-      r.nisn,
-      r.nama,
-      `Kelas ${r.kelas}`,
-      r.tanggal,
+      r.studentId,
+      r.name,
+      `Kelas ${r.grade}`,
+      r.date,
       r.status.charAt(0).toUpperCase() + r.status.slice(1),
     ]
       .map(wrap)

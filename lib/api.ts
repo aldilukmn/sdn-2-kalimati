@@ -7,10 +7,10 @@ function getCookie(name: string): string | null {
   return match ? decodeURIComponent(match[2]) : null;
 }
 
-export const api = async (
+export const api = async <T = any>(
   endpoint: string,
   options: RequestInit = {}
-) => {
+): Promise<T> => {
   const token =
     typeof window !== "undefined"
       ? (sessionStorage.getItem(
