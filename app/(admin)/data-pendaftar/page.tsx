@@ -130,6 +130,7 @@ const formatCreatedDate = (date: Date | string | undefined): string => {
 
 export default function DataPendaftar() {
   const router = useRouter();
+  const [userRole, setUserRole] = useState<string | null>(null);
   const [registrants, setRegistrants] = useState<Registrant[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -161,6 +162,16 @@ export default function DataPendaftar() {
     const interval = setInterval(() => fetchRegistrants(), 30000);
     return () => clearInterval(interval);
   }, [router]);
+
+  useEffect(() => {
+    const token = sessionStorage.getItem("user_session");
+    if (token) {
+      try {
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        setUserRole(payload.role);
+      } catch {}
+    }
+  }, []);
 
   const handleRefresh = () => {
     setRefreshing(true);
@@ -594,9 +605,11 @@ export default function DataPendaftar() {
                   <th className="px-6 py-4 text-center text-sm font-semibold">
                     Aksi
                   </th>
-                  <th className="px-6 py-4 text-center text-sm font-semibold">
-                    Validasi
-                  </th>
+                  {userRole !== "kepala" && (
+                    <th className="px-6 py-4 text-center text-sm font-semibold">
+                      Validasi
+                    </th>
+                  )}
                 </tr>
               </thead>
               <tbody className="divide-y bg-white divide-gray-200 dark:divide-gray-700 dark:bg-gray-800">
@@ -633,18 +646,21 @@ export default function DataPendaftar() {
                       >
                         <Printer size={20} />
                       </button>
-                      <button
-                        onClick={() =>
-                          router.push(
-                            `/data-pendaftar/edit/${registrant._id || registrant.id}`,
-                          )
-                        }
-                        className="inline-flex items-center justify-center p-2 text-indigo-600 hover:bg-indigo-100 rounded-lg transition-colors dark:text-indigo-400 dark:hover:bg-indigo-900/30 cursor-pointer"
-                        title="Edit Data"
-                      >
-                        <Pencil size={20} />
-                      </button>
+                      {userRole !== "kepala" && (
+                        <button
+                          onClick={() =>
+                            router.push(
+                              `/data-pendaftar/edit/${registrant._id || registrant.id}`,
+                            )
+                          }
+                          className="inline-flex items-center justify-center p-2 text-indigo-600 hover:bg-indigo-100 rounded-lg transition-colors dark:text-indigo-400 dark:hover:bg-indigo-900/30 cursor-pointer"
+                          title="Edit Data"
+                        >
+                          <Pencil size={20} />
+                        </button>
+                      )}
                     </td>
+                    {userRole !== "kepala" && (
                     <td className="px-6 py-4 text-center">
                       <button
                         onClick={() =>
@@ -684,6 +700,7 @@ export default function DataPendaftar() {
                         )}
                       </button>
                     </td>
+                    )}
                   </tr>
                 ))}
               </tbody>

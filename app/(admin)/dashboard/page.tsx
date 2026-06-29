@@ -1,152 +1,108 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import {
-  Users,
-  CheckCircle2,
-  Circle,
-  GraduationCap,
-  School,
-} from "lucide-react";
-import DashboardService from "@/services/dashboard.service";
+import { useDashboard, useTeacherDashboard } from "@/hooks/useDashboard";
+import DashboardStatCards from "@/app/components/DashboardStatCards";
 import AttendanceDonutChart from "@/app/components/AttendanceDonutChart";
 import AttendanceBarChart from "@/app/components/AttendanceBarChart";
-
-interface StatCard {
-  label: string;
-  value: number | string;
-  icon: React.ElementType;
-  color: string;
-  bgClass: string;
-  borderClass: string;
-  textClass: string;
-  hoverClass: string;
-  skeletonClass: string;
-}
-
-const GRADES = ["1", "2", "3", "4", "5", "6"];
+import {
+  Users,
+  Mars,
+  Venus,
+  Loader2,
+} from "lucide-react";
 
 export default function Dashboard() {
-  const router = useRouter();
-  const now = new Date();
-  const [month, setMonth] = useState(now.getMonth() + 1);
-  const [year, setYear] = useState(now.getFullYear());
-  const [loading, setLoading] = useState(true);
-  const [chartLoading, setChartLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [summary, setSummary] = useState<{
-    totalRegistrants: number;
-    validated: number;
-    unvalidated: number;
-    totalStudents: number;
-    totalTeachers: number;
-    attendanceByStatus: { hadir: number; sakit: number; izin: number; alpha: number } | null;
-    attendanceByGrade: { grade: string; rate: number; studentCount: number }[] | null;
-    totalDays: number;
-  } | null>(null);
-
-  const fetchData = async (m: number, y: number, isInitial = false) => {
-    try {
-      const res = await DashboardService.getSummary(m, y);
-      const data = res.result || res.data || {};
-      setSummary({
-        totalRegistrants: data.totalRegistrants ?? 0,
-        validated: data.validated ?? 0,
-        unvalidated: data.unvalidated ?? 0,
-        totalStudents: data.totalStudents ?? 0,
-        totalTeachers: data.totalTeachers ?? 0,
-        attendanceByStatus: data.attendanceByStatus || null,
-        attendanceByGrade: data.attendanceByGrade || null,
-        totalDays: data.totalDays ?? 0,
-      });
-    } catch (err) {
-      const error = err as Error & { status?: number };
-      if (error.status === 401) {
-        router.replace("/login");
-        return;
-      }
-      setError(error.message || "Gagal memuat data dashboard");
-    } finally {
-      if (isInitial) setLoading(false);
-      setChartLoading(false);
-    }
-  };
+  const [userRole, setUserRole] = useState<string | null>(null);
 
   useEffect(() => {
-    const isInitial = summary === null;
-    if (isInitial) setLoading(true);
-    setChartLoading(true);
-    setError(null);
-    fetchData(month, year, isInitial);
-  }, [month, year]);
+    const token = sessionStorage.getItem("user_session");
+    if (token) {
+      try {
+        const payload = JSON.parse(atob(token.split(".")[1]));
+        setUserRole(payload.role);
+      } catch {}
+    }
+  }, []);
 
-  const cards: StatCard[] = [
-    {
-      label: "Peserta Didik",
-      value: summary?.totalStudents ?? "-",
-      icon: GraduationCap,
-      color: "indigo",
-      bgClass: "bg-indigo-500/5",
-      borderClass: "border-indigo-500/40",
-      textClass: "text-indigo-600 dark:text-indigo-400",
-      hoverClass: "hover:bg-indigo-500/10 hover:border-indigo-500/60 hover:shadow-indigo-500/10",
-      skeletonClass: "bg-indigo-200 dark:bg-indigo-700",
-    },
-    {
-      label: "GTK",
-      value: summary?.totalTeachers ?? "-",
-      icon: School,
-      color: "teal",
-      bgClass: "bg-teal-500/5",
-      borderClass: "border-teal-500/40",
-      textClass: "text-teal-600 dark:text-teal-400",
-      hoverClass: "hover:bg-teal-500/10 hover:border-teal-500/60 hover:shadow-teal-500/10",
-      skeletonClass: "bg-teal-200 dark:bg-teal-700",
-    },
-    {
-      label: "Total Pendaftar",
-      value: summary?.totalRegistrants ?? 0,
-      icon: Users,
-      color: "blue",
-      bgClass: "bg-blue-500/5",
-      borderClass: "border-blue-500/40",
-      textClass: "text-blue-600 dark:text-blue-400",
-      hoverClass: "hover:bg-blue-500/10 hover:border-blue-500/60 hover:shadow-blue-500/10",
-      skeletonClass: "bg-blue-200 dark:bg-blue-700",
-    },
-    {
-      label: "Tervalidasi",
-      value: summary?.validated ?? 0,
-      icon: CheckCircle2,
-      color: "emerald",
-      bgClass: "bg-emerald-500/5",
-      borderClass: "border-emerald-500/40",
-      textClass: "text-emerald-600 dark:text-emerald-400",
-      hoverClass: "hover:bg-emerald-500/10 hover:border-emerald-500/60 hover:shadow-emerald-500/10",
-      skeletonClass: "bg-emerald-200 dark:bg-emerald-700",
-    },
-    {
-      label: "Belum Divalidasi",
-      value: summary?.unvalidated ?? 0,
-      icon: Circle,
-      color: "amber",
-      bgClass: "bg-yellow-500/5",
-      borderClass: "border-yellow-500/40",
-      textClass: "text-amber-600 dark:text-amber-400",
-      hoverClass: "hover:bg-yellow-500/10 hover:border-yellow-500/60 hover:shadow-yellow-500/10",
-      skeletonClass: "bg-yellow-200 dark:bg-yellow-700",
-    },
+  if (userRole === null) {
+    return (
+      <div className="p-4 md:p-6 flex items-center justify-center min-h-[200px]">
+        <Loader2 size={32} className="animate-spin text-gray-400" />
+      </div>
+    );
+  }
+
+  if (userRole === "guru") return <GuruDashboard />;
+
+  return <AdminDashboard />;
+}
+
+function GuruDashboard() {
+  const { loading, summary } = useTeacherDashboard();
+
+  const statCards = [
+    { label: "Total Murid", value: summary?.totalStudents, icon: Users, color: "bg-blue-500" },
+    { label: "Laki-laki", value: summary?.maleCount, icon: Mars, color: "bg-emerald-500" },
+    { label: "Perempuan", value: summary?.femaleCount, icon: Venus, color: "bg-pink-500" },
   ];
 
-  const donutData = summary?.attendanceByStatus
-    ? [
-        { name: "hadir", value: summary.attendanceByStatus.hadir, color: "#10b981" },
-        { name: "sakit", value: summary.attendanceByStatus.sakit, color: "#f59e0b" },
-        { name: "izin", value: summary.attendanceByStatus.izin, color: "#3b82f6" },
-        { name: "alpha", value: summary.attendanceByStatus.alpha, color: "#ef4444" },
-      ]
-    : [];
+  return (
+    <div className="p-4 md:p-6 space-y-6">
+      <div>
+        <h1 className="text-2xl md:text-3xl font-bold text-gray-800 dark:text-white">
+          Dashboard
+        </h1>
+        <p className="text-gray-600 dark:text-gray-400 mt-1">
+          Ringkasan data kelas
+        </p>
+      </div>
+
+      {loading ? (
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          {statCards.map((card) => (
+            <div key={card.label} className="bg-white dark:bg-gray-800 rounded-xl shadow p-5 animate-pulse">
+              <div className="h-4 w-24 bg-slate-200 dark:bg-slate-700 rounded mb-3" />
+              <div className="h-8 w-16 bg-slate-200 dark:bg-slate-700 rounded" />
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          {statCards.map((card) => (
+            <div
+              key={card.label}
+              className="bg-white dark:bg-gray-800 rounded-xl shadow p-5 flex items-center gap-4"
+            >
+              <div className={`w-12 h-12 ${card.color} rounded-xl flex items-center justify-center`}>
+                <card.icon size={24} className="text-white" />
+              </div>
+              <div>
+                <p className="text-sm text-gray-500 dark:text-gray-400">{card.label}</p>
+                <p className="text-2xl font-bold text-gray-800 dark:text-white">
+                  {card.value ?? "-"}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function AdminDashboard() {
+  const {
+    month,
+    setMonth,
+    year,
+    setYear,
+    loading,
+    chartLoading,
+    error,
+    summary,
+    donutData,
+  } = useDashboard();
 
   return (
     <div className="p-4 md:p-6 space-y-6">
@@ -165,30 +121,7 @@ export default function Dashboard() {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {cards.map((card) => (
-          <div
-            key={card.label}
-            className={`border ${card.borderClass} ${card.bgClass} px-5 py-6 rounded-xl duration-300 ${card.hoverClass} hover:shadow-md shadow`}
-          >
-            <div className="flex items-center justify-between mb-3">
-              <span className="text-sm font-semibold text-gray-600 dark:text-gray-400">
-                {card.label}
-              </span>
-              <card.icon size={22} className={card.textClass} />
-            </div>
-            <div className={`text-3xl font-bold ${card.textClass}`}>
-              {loading ? (
-                <div
-                  className={`h-9 w-16 rounded ${card.skeletonClass} animate-pulse`}
-                />
-              ) : (
-                card.value
-              )}
-            </div>
-          </div>
-        ))}
-      </div>
+      <DashboardStatCards summary={summary} loading={loading} />
 
       <div className="flex gap-3">
         <select

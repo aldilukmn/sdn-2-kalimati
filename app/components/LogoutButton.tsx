@@ -16,6 +16,8 @@ function parseJWT(token: string) {
 const ROLE_STYLES: Record<string, { bg: string; label: string }> = {
   admin: { bg: "bg-indigo-500", label: "Admin" },
   guru: { bg: "bg-emerald-500", label: "Guru" },
+  kepala: { bg: "bg-purple-500", label: "Kepala Sekolah" },
+  penjaga: { bg: "bg-amber-500", label: "Penjaga" },
 };
 
 const DEFAULT_ROLE_STYLE = ROLE_STYLES.admin;

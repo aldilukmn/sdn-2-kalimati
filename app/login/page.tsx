@@ -36,6 +36,8 @@ export default function LoginPage() {
 
       if (role === "guru") {
         router.push("/presensi-murid");
+      } else if (role === "penjaga") {
+        router.push("/beranda-penjaga");
       } else {
         router.push("/dashboard");
       }

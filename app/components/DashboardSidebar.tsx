@@ -20,6 +20,10 @@ const menuItems = [
   { label: "Presensi Murid", icon: CalendarCheck, href: "/presensi-murid" },
 ];
 
+const penjagaMenuItems = [
+  { label: "Beranda", icon: LayoutDashboard, href: "/beranda-penjaga" },
+];
+
 interface SidebarProps {
   isOpen: boolean;
   isCollapsed: boolean;
@@ -39,7 +43,10 @@ export default function DashboardSidebar({
 
   const filteredMenuItems = useMemo(() => {
     if (userRole === "guru") {
-      return menuItems.filter((item) => item.href === "/presensi-murid");
+      return menuItems.filter((item) => item.href === "/dashboard" || item.href === "/presensi-murid");
+    }
+    if (userRole === "penjaga") {
+      return penjagaMenuItems;
     }
     return menuItems;
   }, [userRole]);

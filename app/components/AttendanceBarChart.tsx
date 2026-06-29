@@ -28,10 +28,23 @@ const GRADE_COLORS: Record<string, string> = {
 const SKELETON_HEIGHTS = ["55", "70", "48", "82", "63", "76"];
 
 const RECHARTS_PROPS = new Set([
-  "parentViewBox", "originalDataIndex", "background",
-  "payload", "tabIndex", "formattedValue",
-  "xAxis", "yAxis", "stackedBarStart", "stackedBarEnd",
-  "tooltipPosition", "studentCount",
+  "parentViewBox",
+  "originalDataIndex",
+  "background",
+  "payload",
+  "tabIndex",
+  "formattedValue",
+  "xAxis",
+  "yAxis",
+  "stackedBarStart",
+  "stackedBarEnd",
+  "tooltipPosition",
+  "studentCount",
+  "isActive",
+  "dataKey",
+  "animationElapsedTime",
+  "isAnimating",
+  "isEntrance",
 ]);
 
 function sanitizeDOMProps(obj: Record<string, any>) {

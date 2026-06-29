@@ -59,9 +59,6 @@ export function proxy(request: NextRequest) {
     if (!payload) {
       return redirectToLogin(request);
     }
-    if (payload.role === "guru") {
-      return NextResponse.redirect(new URL("/presensi-murid", request.url));
-    }
   }
 
   // Proteksi presensi — cek token + expired

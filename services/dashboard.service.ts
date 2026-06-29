@@ -8,4 +8,8 @@ export default class DashboardService {
     const query = params.toString();
     return await api(`/dashboard${query ? `?${query}` : ""}`);
   }
+
+  static async getTeacherSummary() {
+    return await api("/dashboard/teacher");
+  }
 }
