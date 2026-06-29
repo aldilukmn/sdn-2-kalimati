@@ -65,7 +65,7 @@ function Modal({
   );
 }
 
-export default function DataGuru() {
+export default function DataGTK() {
   const router = useRouter();
   const [teachers, setTeachers] = useState<TeacherType[]>([]);
   const [loading, setLoading] = useState(true);

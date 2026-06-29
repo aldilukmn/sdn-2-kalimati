@@ -60,7 +60,7 @@ export function proxy(request: NextRequest) {
       return redirectToLogin(request);
     }
     if (payload.role === "guru") {
-      return NextResponse.redirect(new URL("/presensi", request.url));
+      return NextResponse.redirect(new URL("/presensi-murid", request.url));
     }
   }
 

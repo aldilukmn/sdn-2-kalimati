@@ -19,16 +19,16 @@ export default function DashboardNavbar({ onMenuClick }: NavbarProps) {
           >
             <Menu size={22} className="text-slate-700 dark:text-slate-200" />
           </button>
-          {/* <div className='flex gap-5 items-center'>
+          <div className='flex gap-5 items-center'>
             <img
               src="https://res.cloudinary.com/dhtfq9yw8/image/upload/v1717920310/uptd%20sdn%202%20kalimati/svg/vapqm0latukpxjjawzfu.svg"
               alt="logo-sekolah"
-              className="w-14"
+              className="w-14 hidden md:block"
             />
-            <h1 className="text-lg flex-1 font-semibold text-slate-800 dark:text-white text-nowrap">
+            {/* <h1 className="text-lg flex-1 font-semibold text-slate-800 dark:text-white text-nowrap">
               SDN 2 Kalimati
-            </h1>
-          </div> */}
+            </h1> */}
+          </div>
         </div>
         <LogoutButton />
       </div>

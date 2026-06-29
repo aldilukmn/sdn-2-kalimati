@@ -5,6 +5,10 @@ export default class UserService {
     return await api<UserApiResponse>("/user?role=guru");
   }
 
+  static async getTeacherByGrade(grade: string) {
+    return await api(`/teacher-by-grade/${grade}`);
+  }
+
   static async getAll() {
     return await api("/user");
   }

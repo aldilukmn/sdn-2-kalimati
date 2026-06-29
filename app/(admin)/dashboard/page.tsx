@@ -10,6 +10,8 @@ import {
   School,
 } from "lucide-react";
 import DashboardService from "@/services/dashboard.service";
+import AttendanceDonutChart from "@/app/components/AttendanceDonutChart";
+import AttendanceBarChart from "@/app/components/AttendanceBarChart";
 
 interface StatCard {
   label: string;
@@ -27,7 +29,11 @@ const GRADES = ["1", "2", "3", "4", "5", "6"];
 
 export default function Dashboard() {
   const router = useRouter();
+  const now = new Date();
+  const [month, setMonth] = useState(now.getMonth() + 1);
+  const [year, setYear] = useState(now.getFullYear());
   const [loading, setLoading] = useState(true);
+  const [chartLoading, setChartLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [summary, setSummary] = useState<{
     totalRegistrants: number;
@@ -35,34 +41,45 @@ export default function Dashboard() {
     unvalidated: number;
     totalStudents: number;
     totalTeachers: number;
+    attendanceByStatus: { hadir: number; sakit: number; izin: number; alpha: number } | null;
+    attendanceByGrade: { grade: string; rate: number; studentCount: number }[] | null;
+    totalDays: number;
   } | null>(null);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await DashboardService.getSummary();
-        const data = res.result || res.data || {};
-        setSummary({
-          totalRegistrants: data.totalRegistrants ?? 0,
-          validated: data.validated ?? 0,
-          unvalidated: data.unvalidated ?? 0,
-          totalStudents: data.totalStudents ?? 0,
-          totalTeachers: data.totalTeachers ?? 0,
-        });
-      } catch (err) {
-        const error = err as Error & { status?: number };
-        if (error.status === 401) {
-          router.replace("/login");
-          return;
-        }
-        setError(error.message || "Gagal memuat data dashboard");
-      } finally {
-        setLoading(false);
+  const fetchData = async (m: number, y: number, isInitial = false) => {
+    try {
+      const res = await DashboardService.getSummary(m, y);
+      const data = res.result || res.data || {};
+      setSummary({
+        totalRegistrants: data.totalRegistrants ?? 0,
+        validated: data.validated ?? 0,
+        unvalidated: data.unvalidated ?? 0,
+        totalStudents: data.totalStudents ?? 0,
+        totalTeachers: data.totalTeachers ?? 0,
+        attendanceByStatus: data.attendanceByStatus || null,
+        attendanceByGrade: data.attendanceByGrade || null,
+        totalDays: data.totalDays ?? 0,
+      });
+    } catch (err) {
+      const error = err as Error & { status?: number };
+      if (error.status === 401) {
+        router.replace("/login");
+        return;
       }
-    };
+      setError(error.message || "Gagal memuat data dashboard");
+    } finally {
+      if (isInitial) setLoading(false);
+      setChartLoading(false);
+    }
+  };
 
-    fetchData();
-  }, [router]);
+  useEffect(() => {
+    const isInitial = summary === null;
+    if (isInitial) setLoading(true);
+    setChartLoading(true);
+    setError(null);
+    fetchData(month, year, isInitial);
+  }, [month, year]);
 
   const cards: StatCard[] = [
     {
@@ -122,6 +139,15 @@ export default function Dashboard() {
     },
   ];
 
+  const donutData = summary?.attendanceByStatus
+    ? [
+        { name: "hadir", value: summary.attendanceByStatus.hadir, color: "#10b981" },
+        { name: "sakit", value: summary.attendanceByStatus.sakit, color: "#f59e0b" },
+        { name: "izin", value: summary.attendanceByStatus.izin, color: "#3b82f6" },
+        { name: "alpha", value: summary.attendanceByStatus.alpha, color: "#ef4444" },
+      ]
+    : [];
+
   return (
     <div className="p-4 md:p-6 space-y-6">
       {error && (
@@ -153,13 +179,75 @@ export default function Dashboard() {
             </div>
             <div className={`text-3xl font-bold ${card.textClass}`}>
               {loading ? (
-                <div className={`h-9 w-16 rounded ${card.skeletonClass} animate-pulse`} />
+                <div
+                  className={`h-9 w-16 rounded ${card.skeletonClass} animate-pulse`}
+                />
               ) : (
                 card.value
               )}
             </div>
           </div>
         ))}
+      </div>
+
+      <div className="flex gap-3">
+        <select
+          value={month}
+          onChange={(e) => setMonth(Number(e.target.value))}
+          className="rounded-xl border border-slate-300 bg-slate-50 px-4 py-2 text-sm cursor-pointer dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100 focus:border-blue-500"
+          style={{ outline: "none" }}
+        >
+          {Array.from({ length: 12 }, (_, i) => (
+            <option key={i + 1} value={i + 1}>
+              {new Date(0, i).toLocaleDateString("id-ID", { month: "long" })}
+            </option>
+          ))}
+        </select>
+        <select
+          value={year}
+          onChange={(e) => setYear(Number(e.target.value))}
+          className="rounded-xl border border-slate-300 bg-slate-50 px-4 py-2 text-sm focus:border-blue-500 focus:ring-blue-200 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100 cursor-pointer"
+        >
+          {[2025, 2026, 2027].map((t) => (
+            <option key={t} value={t}>
+              {t}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="border border-emerald-500/40 dark:border-emerald-500/30 rounded-xl p-5 bg-emerald-500/5 dark:bg-emerald-500/10 shadow hover:shadow-md hover:bg-emerald-500/10 duration-300">
+          <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">
+            Distribusi Kehadiran
+          </h3>
+          <p className="text-xs text-gray-600 dark:text-gray-500 mb-4">
+            {new Date(0, month - 1).toLocaleDateString("id-ID", {
+              month: "long",
+            })}{" "}
+            {year}
+          </p>
+          <AttendanceDonutChart
+            data={donutData}
+            loading={chartLoading}
+            totalDays={summary?.totalDays}
+          />
+        </div>
+        <div className="border border-indigo-500/40 dark:border-indigo-500/30 rounded-xl p-5 bg-indigo-500/5 dark:bg-indigo-500/10 shadow hover:shadow-md hover:bg-indigo-500/10 duration-300">
+          <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">
+            Kehadiran per Kelas
+          </h3>
+          <p className="text-xs text-gray-600 dark:text-gray-500 mb-4">
+            {new Date(0, month - 1).toLocaleDateString("id-ID", {
+              month: "long",
+            })}{" "}
+            {year}
+          </p>
+          <AttendanceBarChart
+            data={summary?.attendanceByGrade || []}
+            loading={chartLoading}
+          />
+        </div>
       </div>
     </div>
   );

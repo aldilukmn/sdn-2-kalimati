@@ -1,13 +1,49 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { LogOut, Loader2 } from "lucide-react";
 import AuthService from "@/services/auth.service";
 
+function parseJWT(token: string) {
+  try {
+    return JSON.parse(atob(token.split(".")[1]));
+  } catch {
+    return null;
+  }
+}
+
+const ROLE_STYLES: Record<string, { bg: string; label: string }> = {
+  admin: { bg: "bg-indigo-500", label: "Admin" },
+  guru: { bg: "bg-emerald-500", label: "Guru" },
+};
+
+const DEFAULT_ROLE_STYLE = ROLE_STYLES.admin;
+
 export default function LogoutButton() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+  const [user, setUser] = useState<{ fullName: string; role: string; initial: string; roleStyle: { bg: string; label: string } }>({
+    fullName: "User",
+    role: "admin",
+    initial: "U",
+    roleStyle: DEFAULT_ROLE_STYLE,
+  });
+
+  useEffect(() => {
+    const token = sessionStorage.getItem("user_session");
+    if (!token) return;
+    const payload = parseJWT(token);
+    if (!payload) return;
+    const fullName = payload.fullName || "User";
+    const role: string = payload.role || "admin";
+    setUser({
+      fullName,
+      role,
+      initial: fullName.charAt(0).toUpperCase(),
+      roleStyle: ROLE_STYLES[role] || DEFAULT_ROLE_STYLE,
+    });
+  }, []);
 
   const handleLogout = async () => {
     setIsLoading(true);
@@ -25,19 +61,28 @@ export default function LogoutButton() {
   };
 
   return (
-    <button
-      onClick={handleLogout}
-      disabled={isLoading}
-      className="flex items-center gap-2 px-6 py-2.5 bg-red-600 hover:bg-red-700 text-white rounded-lg font-medium transition-colors dark:bg-red-700 dark:hover:bg-red-800 disabled:opacity-50 disabled:cursor-not-allowed shadow-md cursor-pointer"
-    >
-      {isLoading ? (
-        <Loader2 size={20} className="animate-spin" />
-      ) : (
-        <LogOut size={20} />
-      )}
-      <span className="text-sm font-medium">
-        {isLoading ? "Logging out..." : "Logout"}
-      </span>
-    </button>
+    <div className="flex items-center gap-2 md:gap-3">
+      <div className="flex items-center gap-2.5">
+        <div className={`w-8 h-8 md:w-9 md:h-9 rounded-full flex items-center justify-center text-white text-xs md:text-sm font-bold shrink-0 ${user.roleStyle.bg}`}>
+          {user.initial}
+        </div>
+        <div className="hidden md:block leading-tight">
+          <p className="text-sm font-semibold text-slate-800 dark:text-white leading-none mb-1">{user.fullName}</p>
+          <p className="text-xs text-slate-500 dark:text-slate-400 leading-none">{user.roleStyle.label}</p>
+        </div>
+      </div>
+      <button
+        onClick={handleLogout}
+        disabled={isLoading}
+        className="p-2 rounded-lg text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 dark:hover:text-red-400 transition-colors cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
+        title="Logout"
+      >
+        {isLoading ? (
+          <Loader2 size={20} className="animate-spin" />
+        ) : (
+          <LogOut size={20} />
+        )}
+      </button>
+    </div>
   );
 }

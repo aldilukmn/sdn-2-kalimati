@@ -49,6 +49,13 @@ export const api = async <T = any>(
   }
 
   if (!response.ok) {
+    if (response.status === 401) {
+      sessionStorage.removeItem("user_session");
+      document.cookie = "user_session=; max-age=0; path=/";
+      window.location.href = "/login";
+      return undefined as any;
+    }
+
     const error = new Error(
       result?.status?.message || result?.message || `HTTP ${response.status}`
     ) as Error & {

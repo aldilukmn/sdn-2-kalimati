@@ -13,9 +13,11 @@ import {
 import { Card } from "flowbite-react";
 import TableSkeleton from "@/app/components/TableSkeleton";
 import StudentAttendanceService from "@/services/student-attendance.service";
+import UserService from "@/services/user.service";
 import { exportPresensiToCSV } from "@/lib/export-presensi-csv";
 import BackButton from "../components/BackButton";
 import Pagination from "@/app/components/Pagination";
+import MonthYearPicker from "../components/MonthYearPicker";
 
 const GRADES = ["1", "2", "3", "4", "5", "6"];
 
@@ -26,6 +28,8 @@ export default function RekapPresensi() {
   const [year, setYear] = useState(new Date().getFullYear());
   const [dataPresensi, setDataPresensi] = useState<StudentAttendanceType[]>([]);
   const [siswaList, setSiswaList] = useState<MasterStudentType[]>([]);
+  const [teacherName, setTeacherName] = useState<string | null>(null);
+  const [teacherLoading, setTeacherLoading] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
@@ -38,6 +42,19 @@ export default function RekapPresensi() {
       setSiswaList(data);
     } catch {
       setSiswaList([]);
+    }
+  };
+
+  const fetchTeacher = async () => {
+    setTeacherLoading(true);
+    try {
+      const res = await UserService.getTeacherByGrade(grade);
+      const teacher = res?.result;
+      setTeacherName(teacher?.fullName || null);
+    } catch {
+      setTeacherName(null);
+    } finally {
+      setTeacherLoading(false);
     }
   };
 
@@ -60,8 +77,11 @@ export default function RekapPresensi() {
   useEffect(() => {
     setLoading(true);
     setError(null);
+    setTeacherName(null);
+    setTeacherLoading(true);
     setCurrentPage(1);
     fetchSiswa();
+    fetchTeacher();
     fetchAllPresensi();
   }, [grade, month, year]);
 
@@ -112,7 +132,7 @@ export default function RekapPresensi() {
           </p>
         </div>
 
-        <div className="flex flex-col sm:flex-row gap-4 mb-6 justify-center">
+        <div className="flex flex-col sm:flex-row gap-4 mb-4 justify-center">
           <div>
             <label className="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-300">
               Kelas
@@ -131,37 +151,14 @@ export default function RekapPresensi() {
           </div>
           <div>
             <label className="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-300">
-              Bulan
+              Periode
             </label>
-            <select
-              value={month}
-              onChange={(e) => setMonth(Number(e.target.value))}
-              className="rounded-xl border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100"
-            >
-              {Array.from({ length: 12 }, (_, i) => (
-                <option key={i + 1} value={i + 1}>
-                  {new Date(0, i).toLocaleDateString("id-ID", {
-                    month: "long",
-                  })}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div>
-            <label className="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-300">
-              Tahun
-            </label>
-            <select
-              value={year}
-              onChange={(e) => setYear(Number(e.target.value))}
-              className="rounded-xl border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100"
-            >
-              {[2025, 2026, 2027].map((t) => (
-                <option key={t} value={t}>
-                  {t}
-                </option>
-              ))}
-            </select>
+            <MonthYearPicker
+              month={month}
+              year={year}
+              onMonthChange={setMonth}
+              onYearChange={setYear}
+            />
           </div>
           <div className="flex items-end">
             <button
@@ -173,6 +170,18 @@ export default function RekapPresensi() {
               Export CSV
             </button>
           </div>
+        </div>
+
+        <div className="flex justify-center mb-4">
+          {teacherLoading ? (
+            <span className="inline-flex items-center gap-1.5 text-sm px-3 py-1.5 rounded-full bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300">
+              👤 Guru: <span className="inline-block h-3.5 w-28 bg-purple-300 dark:bg-purple-600 rounded animate-pulse align-middle" />
+            </span>
+          ) : teacherName ? (
+            <span className="inline-flex items-center gap-1.5 text-sm px-3 py-1.5 rounded-full bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300">
+              👤 Guru: {teacherName}
+            </span>
+          ) : null}
         </div>
 
         {error && (

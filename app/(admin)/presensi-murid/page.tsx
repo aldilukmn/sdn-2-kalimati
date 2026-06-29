@@ -16,6 +16,8 @@ import { Card } from "flowbite-react";
 import TableSkeleton from "@/app/components/TableSkeleton";
 import Pagination from "@/app/components/Pagination";
 import StudentAttendanceService from "@/services/student-attendance.service";
+import UserService from "@/services/user.service";
+import DateDayPicker from "@/app/components/DateDayPicker";
 
 const STATUS_LABEL: Record<string, string> = {
   hadir: "Hadir",
@@ -25,10 +27,13 @@ const STATUS_LABEL: Record<string, string> = {
 };
 
 const STATUS_BTN: Record<string, string> = {
-  hadir: "bg-green-500 hover:bg-green-600 text-white ring-2 ring-green-300 dark:ring-green-700",
-  sakit: "bg-yellow-500 hover:bg-yellow-600 text-white ring-2 ring-yellow-300 dark:ring-yellow-700",
+  hadir:
+    "bg-green-500 hover:bg-green-600 text-white ring-2 ring-green-300 dark:ring-green-700",
+  sakit:
+    "bg-yellow-500 hover:bg-yellow-600 text-white ring-2 ring-yellow-300 dark:ring-yellow-700",
   izin: "bg-blue-500 hover:bg-blue-600 text-white ring-2 ring-blue-300 dark:ring-blue-700",
-  alpha: "bg-red-500 hover:bg-red-600 text-white ring-2 ring-red-300 dark:ring-red-700",
+  alpha:
+    "bg-red-500 hover:bg-red-600 text-white ring-2 ring-red-300 dark:ring-red-700",
 };
 
 interface Entry {
@@ -50,7 +55,7 @@ export default function PresensiMuridPage() {
     const token = sessionStorage.getItem("user_session");
     if (token) {
       try {
-        const payload = JSON.parse(atob(token.split('.')[1]));
+        const payload = JSON.parse(atob(token.split(".")[1]));
         setUserRole(payload.role);
         setUserGrade(payload.grade);
         if (payload.role === "guru" && payload.grade) {
@@ -72,6 +77,8 @@ export default function PresensiMuridPage() {
   const [isExisting, setIsExisting] = useState(false);
   const [loadingSiswa, setLoadingSiswa] = useState(true);
   const [syncing, setSyncing] = useState(false);
+  const [teacherName, setTeacherName] = useState<string | null>(null);
+  const [teacherLoading, setTeacherLoading] = useState(false);
   const [isJwtReady, setIsJwtReady] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
@@ -87,6 +94,15 @@ export default function PresensiMuridPage() {
   }, [grade, date]);
 
   useEffect(() => {
+    if (!isJwtReady || !grade) return;
+    setTeacherLoading(true);
+    UserService.getTeacherByGrade(grade)
+      .then((res) => setTeacherName(res?.result?.fullName || null))
+      .catch(() => setTeacherName(null))
+      .finally(() => setTeacherLoading(false));
+  }, [grade, isJwtReady]);
+
+  useEffect(() => {
     if (!isJwtReady || !grade || !date) return;
 
     const hasEntries = entries.length > 0;
@@ -97,7 +113,6 @@ export default function PresensiMuridPage() {
       } else {
         setLoadingSiswa(true);
       }
-      setMessage(null);
       try {
         const [siswaRes, presensiRes] = await Promise.all([
           StudentAttendanceService.getStudentsByGrade(grade),
@@ -110,7 +125,7 @@ export default function PresensiMuridPage() {
         if (presensiData.length > 0) {
           const merged = siswaList.map((s: any) => {
             const existing = presensiData.find(
-              (e: any) => e.studentId === s.studentId
+              (e: any) => e.studentId === s.studentId,
             );
             return {
               studentId: s.studentId,
@@ -130,7 +145,7 @@ export default function PresensiMuridPage() {
               studentId: s.studentId,
               name: s.name,
               status: "hadir" as const,
-            }))
+            })),
           );
           setIsExisting(false);
         }
@@ -148,7 +163,7 @@ export default function PresensiMuridPage() {
 
   const handleStatusChange = (studentId: string, status: Entry["status"]) => {
     setEntries((prev) =>
-      prev.map((e) => (e.studentId === studentId ? { ...e, status } : e))
+      prev.map((e) => (e.studentId === studentId ? { ...e, status } : e)),
     );
   };
 
@@ -177,9 +192,7 @@ export default function PresensiMuridPage() {
       setMessage({
         type: "error",
         text:
-          err instanceof Error
-            ? err.message
-            : "Gagal menyimpan data presensi",
+          err instanceof Error ? err.message : "Gagal menyimpan data presensi",
       });
     } finally {
       setSaving(false);
@@ -212,7 +225,7 @@ export default function PresensiMuridPage() {
               Kelas
             </label>
             {userRole !== "admin" ? (
-              <div className="w-full rounded-xl border border-slate-300 bg-slate-100 px-4 py-2.5 text-sm text-gray-700 dark:border-gray-700 dark:bg-gray-900 dark:text-slate-100">
+              <div className="w-full rounded-xl border border-slate-300 bg-slate-100 px-4 py-2.5 text-sm text-slate-800 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100">
                 Kelas {grade}
               </div>
             ) : (
@@ -233,12 +246,10 @@ export default function PresensiMuridPage() {
             <label className="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-300">
               Tanggal
             </label>
-            <input
-              type="date"
+            <DateDayPicker
               value={date}
-              onChange={(e) => setDate(e.target.value)}
+              onChange={setDate}
               max={new Date().toISOString().slice(0, 10)}
-              className="w-full rounded-xl border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100"
             />
           </div>
         </div>
@@ -260,6 +271,55 @@ export default function PresensiMuridPage() {
               {message.text}
             </div>
           )}
+
+          <div className="grid lg:grid-cols-2 sm:items-center sm:justify-between gap-3 mb-4">
+            <div className="flex-shrink-0">
+              {teacherLoading ? (
+                <span className="inline-flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-full bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300">
+                  👤 Guru:{" "}
+                  <span className="inline-block h-3 w-24 bg-purple-300 dark:bg-purple-600 rounded animate-pulse align-middle" />
+                </span>
+              ) : teacherName ? (
+                <span className="inline-flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-full bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300">
+                  👤 Guru: {teacherName}
+                </span>
+              ) : null}
+            </div>
+            <div className="grid grid-cols-4 flex-wrap gap-3">
+              <span className="inline-flex items-center gap-1 text-xs px-2.5 py-1 rounded-full bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300">
+                <UserCheck size={14} /> Hadir:{" "}
+                {loadingSiswa || syncing ? (
+                  <span className="inline-block h-3 w-5 bg-green-300 dark:bg-green-600 rounded animate-pulse align-middle" />
+                ) : (
+                  countByStatus("hadir")
+                )}
+              </span>
+              <span className="inline-flex items-center gap-1 text-xs px-2.5 py-1 rounded-full bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-300">
+                <Clock size={14} /> Sakit:{" "}
+                {loadingSiswa || syncing ? (
+                  <span className="inline-block h-3 w-5 bg-yellow-300 dark:bg-yellow-600 rounded animate-pulse align-middle" />
+                ) : (
+                  countByStatus("sakit")
+                )}
+              </span>
+              <span className="inline-flex items-center gap-1 text-xs px-2.5 py-1 rounded-full bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300">
+                <FileText size={14} /> Izin:{" "}
+                {loadingSiswa || syncing ? (
+                  <span className="inline-block h-3 w-5 bg-blue-300 dark:bg-blue-600 rounded animate-pulse align-middle" />
+                ) : (
+                  countByStatus("izin")
+                )}
+              </span>
+              <span className="inline-flex items-center gap-1 text-xs px-2.5 py-1 rounded-full bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300">
+                <UserX size={14} /> Alpha:{" "}
+                {loadingSiswa || syncing ? (
+                  <span className="inline-block h-3 w-5 bg-red-300 dark:bg-red-600 rounded animate-pulse align-middle" />
+                ) : (
+                  countByStatus("alpha")
+                )}
+              </span>
+            </div>
+          </div>
 
           {loadingSiswa ? (
             <TableSkeleton
@@ -294,21 +354,6 @@ export default function PresensiMuridPage() {
             </div>
           ) : (
             <>
-              <div className="flex flex-wrap gap-3 mb-4">
-                <span className="inline-flex items-center gap-1 text-xs px-2.5 py-1 rounded-full bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300">
-                  <UserCheck size={14} /> Hadir: {countByStatus("hadir")}
-                </span>
-                <span className="inline-flex items-center gap-1 text-xs px-2.5 py-1 rounded-full bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-300">
-                  <Clock size={14} /> Sakit: {countByStatus("sakit")}
-                </span>
-                <span className="inline-flex items-center gap-1 text-xs px-2.5 py-1 rounded-full bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300">
-                  <FileText size={14} /> Izin: {countByStatus("izin")}
-                </span>
-                <span className="inline-flex items-center gap-1 text-xs px-2.5 py-1 rounded-full bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300">
-                  <UserX size={14} /> Alpha: {countByStatus("alpha")}
-                </span>
-              </div>
-
               <div className="overflow-x-auto rounded-xl border border-slate-200 dark:border-gray-700">
                 <table className="w-full">
                   <thead>
@@ -318,9 +363,6 @@ export default function PresensiMuridPage() {
                       </th>
                       <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600 dark:text-gray-300">
                         Nama Siswa
-                      </th>
-                      <th className="px-4 py-3 text-center text-xs font-semibold text-gray-600 dark:text-gray-300">
-                        Student ID
                       </th>
                       <th className="px-4 py-3 text-center text-xs font-semibold text-gray-600 dark:text-gray-300">
                         Status Kehadiran
@@ -338,9 +380,6 @@ export default function PresensiMuridPage() {
                         </td>
                         <td className="px-4 py-3 text-sm font-medium text-gray-900 dark:text-white">
                           {entry.name}
-                        </td>
-                        <td className="px-4 py-3 text-sm text-gray-600 dark:text-gray-300 text-center">
-                          {entry.studentId}
                         </td>
                         <td className="px-4 py-3">
                           {syncing ? (

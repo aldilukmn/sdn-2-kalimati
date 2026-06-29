@@ -15,7 +15,7 @@ import {
 
 const menuItems = [
   { label: "Dashboard", icon: LayoutDashboard, href: "/dashboard" },
-  { label: "Data Guru", icon: Users, href: "/data-guru" },
+  { label: "Data GTK", icon: Users, href: "/data-gtk" },
   { label: "Data Pendaftar", icon: ClipboardList, href: "/data-pendaftar" },
   { label: "Presensi Murid", icon: CalendarCheck, href: "/presensi-murid" },
 ];
@@ -39,7 +39,7 @@ export default function DashboardSidebar({
 
   const filteredMenuItems = useMemo(() => {
     if (userRole === "guru") {
-      return menuItems.filter((item) => item.href === "/presensi");
+      return menuItems.filter((item) => item.href === "/presensi-murid");
     }
     return menuItems;
   }, [userRole]);
