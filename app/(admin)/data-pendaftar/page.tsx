@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useAuth } from "@/app/contexts/AuthContext";
 import {
   Printer,
   CheckCircle2,
@@ -130,6 +131,7 @@ const formatCreatedDate = (date: Date | string | undefined): string => {
 
 export default function DataPendaftar() {
   const router = useRouter();
+  const { userRole: authRole, isLoading: authLoading } = useAuth();
   const [userRole, setUserRole] = useState<string | null>(null);
   const [registrants, setRegistrants] = useState<Registrant[]>([]);
   const [loading, setLoading] = useState(true);
@@ -158,10 +160,11 @@ export default function DataPendaftar() {
   };
 
   useEffect(() => {
+    if (authLoading || (authRole !== "admin" && authRole !== "kepala")) return;
     fetchRegistrants();
     const interval = setInterval(() => fetchRegistrants(), 30000);
     return () => clearInterval(interval);
-  }, [router]);
+  }, [authRole, authLoading]);
 
   useEffect(() => {
     const token = sessionStorage.getItem("user_session");
@@ -172,6 +175,13 @@ export default function DataPendaftar() {
       } catch {}
     }
   }, []);
+
+  // Route guard: hanya admin yang boleh akses
+  useEffect(() => {
+    if (!authLoading && authRole !== "admin" && authRole !== "kepala") {
+      router.replace("/dashboard");
+    }
+  }, [authRole, authLoading]);
 
   const handleRefresh = () => {
     setRefreshing(true);
@@ -455,6 +465,8 @@ export default function DataPendaftar() {
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const paginatedRegistrants = registrants.slice(startIndex, endIndex);
+
+  if (authLoading || (authRole !== "admin" && authRole !== "kepala")) return null;
 
   return (
     <div className="p-4 md:p-6 space-y-6">

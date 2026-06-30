@@ -42,6 +42,7 @@ export default function DashboardSidebar({
   const pathname = usePathname();
 
   const filteredMenuItems = useMemo(() => {
+    if (userRole === null) return [];
     if (userRole === "guru") {
       return menuItems.filter((item) => item.href === "/dashboard" || item.href === "/presensi-murid");
     }

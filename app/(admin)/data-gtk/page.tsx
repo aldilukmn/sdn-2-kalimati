@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useAuth } from "@/app/contexts/AuthContext";
 import {
   Plus,
   Pencil,
@@ -120,6 +121,7 @@ function ConfirmDialog({
 
 export default function DataGTK() {
   const router = useRouter();
+  const { userRole: authRole, isLoading: authLoading } = useAuth();
   const [userRole, setUserRole] = useState<string | null>(null);
   const [teachers, setTeachers] = useState<TeacherType[]>([]);
   const [staff, setStaff] = useState<TeacherType[]>([]);
@@ -145,6 +147,13 @@ export default function DataGTK() {
       } catch {}
     }
   }, []);
+
+  // Route guard: hanya admin/kepala yang boleh akses
+  useEffect(() => {
+    if (!authLoading && authRole !== "admin" && authRole !== "kepala") {
+      router.replace("/dashboard");
+    }
+  }, [authRole, authLoading]);
 
   const fetchTeachers = async () => {
     try {
@@ -200,9 +209,10 @@ export default function DataGTK() {
   };
 
   useEffect(() => {
+    if (authLoading || (authRole !== "admin" && authRole !== "kepala")) return;
     fetchTeachers();
     fetchStaff();
-  }, [router]);
+  }, [authRole, authLoading]);
 
   const handleAdd = async () => {
     setSubmitting(true);
@@ -302,6 +312,8 @@ export default function DataGTK() {
     });
     setShowEditModal(true);
   };
+
+  if (authLoading || (authRole !== "admin" && authRole !== "kepala")) return null;
 
   return (
     <div className="p-4 md:p-6 space-y-6">

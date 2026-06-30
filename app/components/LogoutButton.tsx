@@ -24,6 +24,7 @@ const DEFAULT_ROLE_STYLE = ROLE_STYLES.admin;
 
 export default function LogoutButton() {
   const router = useRouter();
+  const [loaded, setLoaded] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [user, setUser] = useState<{ fullName: string; role: string; initial: string; roleStyle: { bg: string; label: string } }>({
     fullName: "User",
@@ -34,17 +35,20 @@ export default function LogoutButton() {
 
   useEffect(() => {
     const token = sessionStorage.getItem("user_session");
-    if (!token) return;
-    const payload = parseJWT(token);
-    if (!payload) return;
-    const fullName = payload.fullName || "User";
-    const role: string = payload.role || "admin";
-    setUser({
-      fullName,
-      role,
-      initial: fullName.charAt(0).toUpperCase(),
-      roleStyle: ROLE_STYLES[role] || DEFAULT_ROLE_STYLE,
-    });
+    if (token) {
+      const payload = parseJWT(token);
+      if (payload) {
+        const fullName = payload.fullName || "User";
+        const role: string = payload.role || "admin";
+        setUser({
+          fullName,
+          role,
+          initial: fullName.charAt(0).toUpperCase(),
+          roleStyle: ROLE_STYLES[role] || DEFAULT_ROLE_STYLE,
+        });
+      }
+    }
+    setLoaded(true);
   }, []);
 
   const handleLogout = async () => {
@@ -61,6 +65,21 @@ export default function LogoutButton() {
       router.replace("/login");
     }
   };
+
+  if (!loaded) {
+    return (
+      <div className="flex items-center gap-2 md:gap-3">
+        <div className="flex items-center gap-2.5">
+          <div className="w-8 h-8 md:w-9 md:h-9 rounded-full bg-slate-200 dark:bg-slate-700 animate-pulse" />
+          <div className="hidden md:block space-y-1.5">
+            <div className="h-3 w-24 bg-slate-200 dark:bg-slate-700 rounded animate-pulse" />
+            <div className="h-2.5 w-16 bg-slate-200 dark:bg-slate-700 rounded animate-pulse" />
+          </div>
+        </div>
+        <div className="w-9 h-9 rounded-lg bg-slate-200 dark:bg-slate-700 animate-pulse" />
+      </div>
+    );
+  }
 
   return (
     <div className="flex items-center gap-2 md:gap-3">

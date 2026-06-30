@@ -1,27 +1,18 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import DashboardSidebar from "@/app/components/DashboardSidebar";
 import DashboardNavbar from "@/app/components/DashboardNavbar";
+import { useAuth } from "@/app/contexts/AuthContext";
 
 export default function DashboardShell({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const { userRole } = useAuth();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isCollapsed, setIsCollapsed] = useState(false);
-  const [userRole, setUserRole] = useState<string | null>(null);
-
-  useEffect(() => {
-    const token = sessionStorage.getItem("user_session");
-    if (token) {
-      try {
-        const payload = JSON.parse(atob(token.split('.')[1]));
-        setUserRole(payload.role);
-      } catch {}
-    }
-  }, []);
 
   const toggleCollapse = () => setIsCollapsed((prev) => !prev);
 

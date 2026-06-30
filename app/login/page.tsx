@@ -27,15 +27,18 @@ export default function LoginPage() {
       setMessage(response.status.message);
 
       const token = response.result?.token || response.result;
-      const role = response.result?.role || "admin";
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      const role = payload.role || "admin";
+      const grade = payload.grade || "";
 
       sessionStorage.setItem("user_session", token);
       sessionStorage.setItem("user_identifier", identifier);
       sessionStorage.setItem("user_role", role);
+      sessionStorage.setItem("user_grade", grade);
       document.cookie = `user_session=${token}; path=/; max-age=86400`;
 
       if (role === "guru") {
-        router.push("/presensi-murid");
+        router.push("/dashboard");
       } else if (role === "penjaga") {
         router.push("/beranda-penjaga");
       } else {

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
+import { useAuth } from "@/app/contexts/AuthContext";
 import Link from "next/link";
 import { ArrowLeft, Loader2, Save } from "lucide-react";
 import RegistrationService from "@/services/registration.service";
@@ -27,6 +28,7 @@ const emptyForm: RegistrationForm = {
 export default function EditRegistration() {
   const params = useParams();
   const router = useRouter();
+  const { userRole: authRole, isLoading: authLoading } = useAuth();
   const [formData, setFormData] = useState<RegistrationForm>(emptyForm);
   const [registrationInfo, setRegistrationInfo] = useState<{
     number: string; status: string;
@@ -37,6 +39,7 @@ export default function EditRegistration() {
   const [modalStatus, setModalStatus] = useState<"loading" | "success" | "error">("loading");
 
   useEffect(() => {
+    if (authLoading || authRole !== "admin") return;
     const fetchData = async () => {
       try {
         const res = await RegistrationService.getById(params.id as string);
@@ -108,7 +111,14 @@ export default function EditRegistration() {
     };
 
     fetchData();
-  }, [params.id]);
+  }, [params.id, authRole, authLoading]);
+
+  // Route guard: hanya admin yang boleh akses
+  useEffect(() => {
+    if (!authLoading && authRole !== "admin") {
+      router.replace("/dashboard");
+    }
+  }, [authRole, authLoading]);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>,
@@ -159,6 +169,8 @@ export default function EditRegistration() {
       setSubmitting(false);
     }
   };
+
+  if (authLoading || authRole !== "admin") return null;
 
   if (loading) {
     return (

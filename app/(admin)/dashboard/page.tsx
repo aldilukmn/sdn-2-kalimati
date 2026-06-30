@@ -1,31 +1,20 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useDashboard, useTeacherDashboard } from "@/hooks/useDashboard";
+import { useTeacherChart } from "@/hooks/useTeacherChart";
+import { useAuth } from "@/app/contexts/AuthContext";
 import DashboardStatCards from "@/app/components/DashboardStatCards";
 import AttendanceDonutChart from "@/app/components/AttendanceDonutChart";
 import AttendanceBarChart from "@/app/components/AttendanceBarChart";
-import {
-  Users,
-  Mars,
-  Venus,
-  Loader2,
-} from "lucide-react";
+import MonthYearPicker from "@/app/components/MonthYearPicker";
+import StudentAttendanceTable from "@/app/components/StudentAttendanceTable";
+import { Users, Mars, Venus, Loader2 } from "lucide-react";
 
 export default function Dashboard() {
-  const [userRole, setUserRole] = useState<string | null>(null);
+  const { userRole, isLoading } = useAuth();
 
-  useEffect(() => {
-    const token = sessionStorage.getItem("user_session");
-    if (token) {
-      try {
-        const payload = JSON.parse(atob(token.split(".")[1]));
-        setUserRole(payload.role);
-      } catch {}
-    }
-  }, []);
-
-  if (userRole === null) {
+  if (isLoading) {
     return (
       <div className="p-4 md:p-6 flex items-center justify-center min-h-[200px]">
         <Loader2 size={32} className="animate-spin text-gray-400" />
@@ -39,54 +28,85 @@ export default function Dashboard() {
 }
 
 function GuruDashboard() {
+  const { grade: userGrade } = useAuth();
   const { loading, summary } = useTeacherDashboard();
+  const now = new Date();
+  const [month, setMonth] = useState(now.getMonth() + 1);
+  const [year, setYear] = useState(now.getFullYear());
+  const { data: chartData, loading: chartLoading } = useTeacherChart(
+    userGrade || "1",
+    month,
+    year,
+  );
 
   const statCards = [
-    { label: "Total Murid", value: summary?.totalStudents, icon: Users, color: "bg-blue-500" },
-    { label: "Laki-laki", value: summary?.maleCount, icon: Mars, color: "bg-emerald-500" },
-    { label: "Perempuan", value: summary?.femaleCount, icon: Venus, color: "bg-pink-500" },
+    {
+      label: "Total Murid",
+      value: summary?.totalStudents,
+      icon: Users,
+      color: "bg-gradient-to-br from-blue-500 to-blue-700",
+    },
+    {
+      label: "Laki-laki",
+      value: summary?.maleCount,
+      icon: Mars,
+      color: "bg-gradient-to-br from-emerald-400 to-emerald-600",
+    },
+    {
+      label: "Perempuan",
+      value: summary?.femaleCount,
+      icon: Venus,
+      color: "bg-gradient-to-br from-pink-400 to-pink-600",
+    },
   ];
 
   return (
     <div className="p-4 md:p-6 space-y-6">
-      <div>
-        <h1 className="text-2xl md:text-3xl font-bold text-gray-800 dark:text-white">
-          Dashboard
-        </h1>
-        <p className="text-gray-600 dark:text-gray-400 mt-1">
-          Ringkasan data kelas
-        </p>
-      </div>
-
-      {loading ? (
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          {statCards.map((card) => (
-            <div key={card.label} className="bg-white dark:bg-gray-800 rounded-xl shadow p-5 animate-pulse">
-              <div className="h-4 w-24 bg-slate-200 dark:bg-slate-700 rounded mb-3" />
-              <div className="h-8 w-16 bg-slate-200 dark:bg-slate-700 rounded" />
-            </div>
-          ))}
-        </div>
-      ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          {statCards.map((card) => (
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        {statCards.map((card) => (
+          <div
+            key={card.label}
+            className="bg-white dark:bg-gray-800 shadow-md hover:shadow-lg transition-shadow rounded-2xl p-5 flex items-center gap-4"
+          >
             <div
-              key={card.label}
-              className="bg-white dark:bg-gray-800 rounded-xl shadow p-5 flex items-center gap-4"
+              className={`w-14 h-14 ${card.color} rounded-2xl flex items-center justify-center shadow-lg shadow-black/10`}
             >
-              <div className={`w-12 h-12 ${card.color} rounded-xl flex items-center justify-center`}>
-                <card.icon size={24} className="text-white" />
-              </div>
-              <div>
-                <p className="text-sm text-gray-500 dark:text-gray-400">{card.label}</p>
+              <card.icon size={24} className="text-white" />
+            </div>
+            <div>
+              <p className="text-sm text-gray-500 dark:text-gray-400">
+                {card.label}
+              </p>
+              {loading ? (
+                <div className="h-8 w-16 bg-gray-200 dark:bg-slate-700 rounded animate-pulse mt-1" />
+              ) : (
                 <p className="text-2xl font-bold text-gray-800 dark:text-white">
                   {card.value ?? "-"}
                 </p>
-              </div>
+              )}
             </div>
-          ))}
+          </div>
+        ))}
+      </div>
+
+      <div className="bg-white dark:bg-gray-800 shadow-lg rounded-2xl overflow-hidden">
+        <div className="bg-gradient-to-r from-blue-800 to-indigo-700 dark:from-gray-800 dark:to-gray-800 dark:border-b dark:border-gray-700 px-6 py-4">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+            <h3 className="text-base font-semibold text-white dark:text-gray-200">
+              Kehadiran Murid
+            </h3>
+            <MonthYearPicker
+              month={month}
+              year={year}
+              onMonthChange={setMonth}
+              onYearChange={setYear}
+            />
+          </div>
         </div>
-      )}
+        <div className="p-0">
+          <StudentAttendanceTable data={chartData} loading={chartLoading} />
+        </div>
+      </div>
     </div>
   );
 }
@@ -111,16 +131,6 @@ function AdminDashboard() {
           {error}
         </div>
       )}
-
-      <div>
-        <h1 className="text-2xl md:text-3xl font-bold text-gray-800 dark:text-white">
-          Dashboard
-        </h1>
-        <p className="text-gray-600 dark:text-gray-400 mt-1">
-          Ringkasan data sekolah
-        </p>
-      </div>
-
       <DashboardStatCards summary={summary} loading={loading} />
 
       <div className="flex gap-3">
