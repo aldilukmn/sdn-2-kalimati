@@ -105,7 +105,7 @@ export default function AttendanceDonutChart({ data, loading, totalDays }: Props
         </ResponsiveContainer>
         <div className="absolute flex flex-col items-center pointer-events-none select-none">
           <span className="text-2xl font-bold text-gray-800 dark:text-white">{totalDays ?? total}</span>
-          <span className="text-[10px] text-gray-400 dark:text-gray-500 uppercase tracking-wider">
+          <span className="text-[10px] text-gray-400 dark:text-gray-500 tracking-wider">
             {totalDays !== undefined ? "Hari" : "Total"}
           </span>
         </div>

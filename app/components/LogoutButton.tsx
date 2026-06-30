@@ -61,6 +61,7 @@ export default function LogoutButton() {
       sessionStorage.removeItem("user_session");
       sessionStorage.removeItem("user_identifier");
       sessionStorage.removeItem("user_role");
+      sessionStorage.removeItem("user_grade");
       document.cookie = "user_session=; path=/; max-age=0";
       router.replace("/login");
     }

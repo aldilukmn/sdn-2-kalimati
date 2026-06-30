@@ -8,6 +8,7 @@ interface AuthContextType {
   isLoading: boolean;
   grade: string | null;
   user: string | null;
+  userName: string | null;
 }
 
 const AuthContext = createContext<AuthContextType>({
@@ -15,6 +16,7 @@ const AuthContext = createContext<AuthContextType>({
   isLoading: true,
   grade: null,
   user: null,
+  userName: null,
 });
 
 export function AuthProvider({ children }: { children: ReactNode }) {
@@ -34,9 +36,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const storedGrade = hydrated
     ? (typeof window !== "undefined" ? sessionStorage.getItem("user_grade") : null)
     : null;
+  const userName = hydrated
+    ? (typeof window !== "undefined" ? sessionStorage.getItem("user_fullName") : null)
+    : null;
 
   return (
-    <AuthContext.Provider value={{ userRole, isLoading: !hydrated, grade: storedGrade, user }}>
+    <AuthContext.Provider value={{ userRole, isLoading: !hydrated, grade: storedGrade, user, userName }}>
       {children}
     </AuthContext.Provider>
   );

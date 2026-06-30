@@ -68,19 +68,19 @@ export default function Pagination({
   const endItem = Math.min(currentPage * itemsPerPage, totalItems);
 
   return (
-    <div className="flex flex-col items-center gap-4 mt-8 text-gray-900 dark:text-gray-200">
-      <div className="flex items-center justify-center gap-2">
+    <div key={currentPage} className="flex flex-col items-center gap-2 md:gap-4 mt-6 text-gray-900 dark:text-gray-200 animate-fadeIn">
+      <div className="flex items-center justify-center gap-1">
         <button
           onClick={handlePreviousPage}
           disabled={!hasPreviousPage}
-          className={`p-2 rounded-lg border transition-all ${
+          className={`p-1.5 md:p-2 rounded-lg border transition-all ${
             hasPreviousPage
               ? "border-blue-500/50 bg-blue-500/5 hover:bg-blue-500/15 cursor-pointer"
               : "border-gray-500/30 bg-gray-500/5 cursor-not-allowed opacity-50"
           }`}
           aria-label="Previous page"
         >
-          <ChevronLeft size={20} />
+          <ChevronLeft size={16} className="md:size-[18px]" />
         </button>
 
         <div className="flex items-center gap-1">
@@ -88,7 +88,7 @@ export default function Pagination({
             <button
               key={page}
               onClick={() => handlePageClick(page)}
-              className={`w-10 h-10 rounded-lg border transition-all font-medium ${
+              className={`w-8 h-8 md:w-10 md:h-10 rounded-lg border transition-all font-medium text-xs md:text-sm ${
                 page === currentPage
                   ? "border-blue-500 bg-blue-500/20 text-blue-400"
                   : "border-blue-500/50 bg-blue-500/5 hover:bg-blue-500/15 cursor-pointer"
@@ -104,24 +104,24 @@ export default function Pagination({
         <button
           onClick={handleNextPage}
           disabled={!hasNextPage}
-          className={`p-2 rounded-lg border transition-all ${
+          className={`p-1.5 md:p-2 rounded-lg border transition-all ${
             hasNextPage
               ? "border-blue-500/50 bg-blue-500/5 hover:bg-blue-500/15 cursor-pointer"
               : "border-gray-500/30 bg-gray-500/5 cursor-not-allowed opacity-50"
           }`}
           aria-label="Next page"
         >
-          <ChevronRight size={20} />
+          <ChevronRight size={16} className="md:size-[18px]" />
         </button>
       </div>
 
       {totalItems > 0 && (
-        <p className="text-sm opacity-60">
+        <p className="text-xs md:text-sm opacity-60">
           Menampilkan {startItem} - {endItem} dari {totalItems} data
         </p>
       )}
 
-      <p className="text-sm opacity-60">
+      <p className="text-xs md:text-sm opacity-60">
         Halaman {currentPage} dari {totalPages}
       </p>
     </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useDashboard, useTeacherDashboard } from "@/hooks/useDashboard";
 import { useTeacherChart } from "@/hooks/useTeacherChart";
 import { useAuth } from "@/app/contexts/AuthContext";
@@ -8,8 +8,9 @@ import DashboardStatCards from "@/app/components/DashboardStatCards";
 import AttendanceDonutChart from "@/app/components/AttendanceDonutChart";
 import AttendanceBarChart from "@/app/components/AttendanceBarChart";
 import MonthYearPicker from "@/app/components/MonthYearPicker";
+import Pagination from "@/app/components/Pagination";
 import StudentAttendanceTable from "@/app/components/StudentAttendanceTable";
-import { Users, Mars, Venus, Loader2 } from "lucide-react";
+import { Users, Mars, Venus, Loader2, GraduationCap } from "lucide-react";
 
 export default function Dashboard() {
   const { userRole, isLoading } = useAuth();
@@ -28,15 +29,36 @@ export default function Dashboard() {
 }
 
 function GuruDashboard() {
-  const { grade: userGrade } = useAuth();
+  const { grade: userGrade, userName } = useAuth();
   const { loading, summary } = useTeacherDashboard();
   const now = new Date();
   const [month, setMonth] = useState(now.getMonth() + 1);
   const [year, setYear] = useState(now.getFullYear());
-  const { data: chartData, loading: chartLoading } = useTeacherChart(
-    userGrade || "1",
+  const [currentPage, setCurrentPage] = useState(1);
+  const gradeReady = !!userGrade;
+  const { data: chartData, loading: chartLoading, hasAttendanceData } = useTeacherChart(
+    gradeReady ? userGrade : "",
     month,
     year,
+  );
+
+  const [itemsPerPage, setItemsPerPage] = useState(5);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [month, year]);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width: 1024px)");
+    setItemsPerPage(mq.matches ? 6 : 5);
+    const handler = (e: MediaQueryListEvent) => setItemsPerPage(e.matches ? 6 : 5);
+    mq.addEventListener("change", handler);
+    return () => mq.removeEventListener("change", handler);
+  }, []);
+  const totalPages = Math.ceil(chartData.length / itemsPerPage);
+  const paginatedData = chartData.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage,
   );
 
   const statCards = [
@@ -44,32 +66,59 @@ function GuruDashboard() {
       label: "Total Murid",
       value: summary?.totalStudents,
       icon: Users,
-      color: "bg-gradient-to-br from-blue-500 to-blue-700",
+      color: "bg-gradient-to-br from-violet-400 to-purple-600",
     },
     {
       label: "Laki-laki",
       value: summary?.maleCount,
       icon: Mars,
-      color: "bg-gradient-to-br from-emerald-400 to-emerald-600",
+      color: "bg-gradient-to-br from-sky-400 to-blue-600",
     },
     {
       label: "Perempuan",
       value: summary?.femaleCount,
       icon: Venus,
-      color: "bg-gradient-to-br from-pink-400 to-pink-600",
+      color: "bg-gradient-to-br from-rose-400 to-pink-600",
     },
   ];
 
   return (
     <div className="p-4 md:p-6 space-y-6">
+      {!gradeReady ? (
+        <div className="h-28 w-full rounded-2xl animate-shimmer" />
+      ) : (
+        <div className="animate-fadeInUp">
+          <div className="relative bg-gradient-to-br from-indigo-500 via-indigo-600 to-purple-600 rounded-2xl overflow-hidden shadow-xl">
+            <div className="absolute -top-6 -right-6 w-40 h-40 bg-white/5 rounded-full blur-2xl" />
+            <div className="absolute -bottom-8 -left-8 w-48 h-48 bg-indigo-400/20 rounded-full blur-3xl" />
+            <div className="relative p-5 md:p-6 flex items-center gap-5">
+              <div className="shrink-0 w-14 h-14 md:w-16 md:h-16 bg-white/15 backdrop-blur-sm rounded-xl flex items-center justify-center animate-iconBounce">
+                <GraduationCap size={28} className="md:size-[32px] text-white" />
+              </div>
+              <div className="min-w-0">
+                <p className="text-indigo-200/80 text-xs md:text-sm font-medium tracking-wide">
+                  Selamat Datang,
+                </p>
+                <h1 className="text-white text-lg md:text-xl font-bold truncate">
+                  {userName || "Guru"}
+                </h1>
+                <p className="text-indigo-200 text-xs md:text-sm mt-0.5">
+                  Kelas {userGrade} · {summary?.totalStudents ?? "-"} Murid
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         {statCards.map((card) => (
           <div
             key={card.label}
-            className="bg-white dark:bg-gray-800 shadow-md hover:shadow-lg transition-shadow rounded-2xl p-5 flex items-center gap-4"
+            className="group bg-white/70 dark:bg-gray-800/40 backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-5 flex items-center gap-4 transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 hover:shadow-xl"
           >
             <div
-              className={`w-14 h-14 ${card.color} rounded-2xl flex items-center justify-center shadow-lg shadow-black/10`}
+              className={`w-14 h-14 ${card.color} rounded-2xl flex items-center justify-center shadow-lg shadow-black/10 transition-transform duration-300 group-hover:rotate-3`}
             >
               <card.icon size={24} className="text-white" />
             </div>
@@ -78,7 +127,7 @@ function GuruDashboard() {
                 {card.label}
               </p>
               {loading ? (
-                <div className="h-8 w-16 bg-gray-200 dark:bg-slate-700 rounded animate-pulse mt-1" />
+                <div className="h-8 w-16 rounded mt-1 animate-shimmer" />
               ) : (
                 <p className="text-2xl font-bold text-gray-800 dark:text-white">
                   {card.value ?? "-"}
@@ -89,10 +138,10 @@ function GuruDashboard() {
         ))}
       </div>
 
-      <div className="bg-white dark:bg-gray-800 shadow-lg rounded-2xl overflow-hidden">
-        <div className="bg-gradient-to-r from-blue-800 to-indigo-700 dark:from-gray-800 dark:to-gray-800 dark:border-b dark:border-gray-700 px-6 py-4">
+      <div className="bg-white/70 dark:bg-gray-800/40 backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl overflow-hidden">
+        <div className="bg-white/40 dark:bg-gray-800/30 backdrop-blur-xl border-b border-white/20 dark:border-gray-700/50 px-6 py-4">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-            <h3 className="text-base font-semibold text-white dark:text-gray-200">
+            <h3 className="text-base font-semibold text-gray-800 dark:text-gray-200">
               Kehadiran Murid
             </h3>
             <MonthYearPicker
@@ -104,7 +153,31 @@ function GuruDashboard() {
           </div>
         </div>
         <div className="p-0">
-          <StudentAttendanceTable data={chartData} loading={chartLoading} />
+          {chartLoading ? (
+            <StudentAttendanceTable data={paginatedData} loading={chartLoading} totalItems={chartData.length} />
+          ) : !hasAttendanceData ? (
+            <div className="flex flex-col items-center justify-center py-16 px-4 text-center">
+              <div className="text-5xl mb-4">📭</div>
+              <p className="text-lg font-semibold text-gray-700 dark:text-gray-300">
+                Belum Ada Data Kehadiran
+              </p>
+              <p className="text-sm text-gray-500 dark:text-gray-400 mt-1 max-w-sm">
+                Silakan pilih bulan lain atau input presensi melalui menu
+                Presensi Murid terlebih dahulu.
+              </p>
+            </div>
+          ) : (
+            <>
+              <StudentAttendanceTable data={paginatedData} loading={chartLoading} totalItems={chartData.length} />
+              <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={setCurrentPage}
+                itemsPerPage={itemsPerPage}
+                totalItems={chartData.length}
+              />
+            </>
+          )}
         </div>
       </div>
     </div>

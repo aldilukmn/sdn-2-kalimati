@@ -30,9 +30,11 @@ export default function LoginPage() {
       const payload = JSON.parse(atob(token.split('.')[1]));
       const role = payload.role || "admin";
       const grade = payload.grade || "";
+      const fullName = payload.fullName || identifier;
 
       sessionStorage.setItem("user_session", token);
       sessionStorage.setItem("user_identifier", identifier);
+      sessionStorage.setItem("user_fullName", fullName);
       sessionStorage.setItem("user_role", role);
       sessionStorage.setItem("user_grade", grade);
       document.cookie = `user_session=${token}; path=/; max-age=86400`;
