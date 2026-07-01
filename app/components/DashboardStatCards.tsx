@@ -78,7 +78,7 @@ const CARDS: StatCardItem[] = [
     skeletonClass: "bg-emerald-200 dark:bg-emerald-700",
   },
   {
-    label: "Belum Divalidasi",
+    label: "Belum Tervalidasi",
     key: "unvalidated",
     icon: Circle,
     fallback: 0,
@@ -98,29 +98,32 @@ interface Props {
 
 export default function DashboardStatCards({ summary, loading }: Props) {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div className="grid grid-cols-3 gap-3 md:gap-4">
       {CARDS.map((card) => {
         const Icon = card.icon;
         const value = summary?.[card.key] ?? card.fallback;
         return (
           <div
             key={card.label}
-            className={`border ${card.borderClass} ${card.bgClass} px-5 py-6 rounded-xl duration-300 ${card.hoverClass} hover:shadow-md shadow`}
+            className={`${card.bgClass} md:backdrop-blur-xl border ${card.borderClass} shadow-lg rounded-2xl p-3 md:p-5 transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 hover:shadow-xl`}
           >
-            <div className="flex items-center justify-between mb-3">
-              <span className="text-sm font-semibold text-gray-600 dark:text-gray-400">
+            <div className="flex items-center md:items-start justify-center md:justify-between mb-1 md:mb-3 min-h-10">
+              <span className="text-[13px] text-center md:text-base font-semibold text-gray-600 dark:text-gray-400">
                 {card.label}
               </span>
-              <Icon size={22} className={card.textClass} />
+              <Icon className={`hidden md:block w-[22px] h-[22px] ${card.textClass}`} />
             </div>
-            <div className={`text-3xl font-bold ${card.textClass}`}>
-              {loading ? (
-                <div
-                  className={`h-9 w-16 rounded ${card.skeletonClass} animate-pulse`}
-                />
-              ) : (
-                value
-              )}
+            <div className="flex items-center justify-center md:justify-start gap-2">
+              <Icon className={`md:hidden w-4 h-4 ${card.textClass}`} />
+              <span className={`text-lg md:text-3xl font-bold ${card.textClass}`}>
+                {loading ? (
+                  <div
+                    className={`h-9 w-16 rounded ${card.skeletonClass} animate-pulse`}
+                  />
+                ) : (
+                  value
+                )}
+              </span>
             </div>
           </div>
         );

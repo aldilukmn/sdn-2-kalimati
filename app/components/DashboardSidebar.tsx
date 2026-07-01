@@ -39,7 +39,9 @@ export default function DashboardSidebar({
   const filteredMenuItems = useMemo(() => {
     if (userRole === null) return [];
     if (userRole === "guru") {
-      return menuItems.filter((item) => item.href === "/dashboard" || item.href === "/presensi-murid");
+      return menuItems.filter(
+        (item) => item.href === "/dashboard" || item.href === "/presensi-murid",
+      );
     }
     if (userRole === "penjaga") {
       return penjagaMenuItems;
@@ -63,7 +65,7 @@ export default function DashboardSidebar({
       <aside
         className={`
           fixed top-0 left-0 h-full w-64 z-50
-          bg-indigo-100/50 dark:bg-slate-800/80 md:backdrop-blur-xl
+          bg-slate-100/80 dark:bg-slate-800/80 md:backdrop-blur-xl
           border-r border-slate-200 dark:border-slate-700
           text-slate-700 dark:text-slate-200 shadow-lg
           transform transition-transform duration-300 ease-in-out
@@ -73,10 +75,13 @@ export default function DashboardSidebar({
         `}
       >
         {/* Header */}
-        <div className="flex items-center justify-between p-5 border-b border-indigo-300 dark:border-slate-700">
+        <div className="flex items-center p-4 border-b border-indigo-300 dark:border-slate-700">
           <div className="flex items-center gap-2.5 min-w-0">
-            <div className="w-8 h-8 shrink-0 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-md animate-iconBounce">
-              <GraduationCap size={16} className="text-white" />
+            <div className="w-10 shrink-0 rounded-lg flex items-center justify-center shadow-md animate-iconBounce">
+              <img
+                src="https://res.cloudinary.com/dhtfq9yw8/image/upload/v1717920310/uptd%20sdn%202%20kalimati/svg/vapqm0latukpxjjawzfu.svg"
+                alt="logo-sekolah"
+              />
             </div>
             <span className="text-sm font-bold tracking-wide truncate">
               <span className="bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-300 dark:to-purple-300 bg-clip-text text-transparent">
@@ -84,12 +89,6 @@ export default function DashboardSidebar({
               </span>
             </span>
           </div>
-          <button
-            onClick={onClose}
-            className="md:hidden p-1.5 rounded-lg hover:bg-slate-200/50 dark:hover:bg-slate-700/50 text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 transition-colors cursor-pointer"
-          >
-            <X size={18} />
-          </button>
         </div>
 
         {/* Nav */}
@@ -107,7 +106,7 @@ export default function DashboardSidebar({
                   transition-all duration-200
                   ${
                     active
-                      ? "bg-indigo-500/30 dark:bg-indigo-900/70 text-indigo-600 dark:text-indigo-300 border-r-2 border-indigo-500 dark:border-indigo-400"
+                      ? "bg-indigo-500/50 dark:bg-indigo-900/70 text-indigo-600 dark:text-indigo-300 border-r-2 border-indigo-500 dark:border-indigo-400"
                       : "text-slate-600 dark:text-slate-400 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 hover:text-slate-800 dark:hover:text-slate-200"
                   }
                 `}

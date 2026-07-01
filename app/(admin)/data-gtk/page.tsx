@@ -8,10 +8,10 @@ import {
   Pencil,
   Trash2,
   Loader2,
-  CheckCircle2,
-  AlertCircle,
+  Users,
   AlertTriangle,
 } from "lucide-react";
+import Toast from "@/app/components/Toast";
 import UserService from "@/services/user.service";
 import StudentAttendanceService from "@/services/student-attendance.service";
 
@@ -26,7 +26,15 @@ interface FormData {
 }
 
 const GRADES = ["1", "2", "3", "4", "5", "6"];
-const emptyForm: FormData = { username: "", password: "", fullName: "", nip: "", grade: "", title: "", role: "guru" };
+const emptyForm: FormData = {
+  username: "",
+  password: "",
+  fullName: "",
+  nip: "",
+  grade: "",
+  title: "",
+  role: "guru",
+};
 
 const ROLE_OPTIONS = [
   { value: "guru", label: "Guru" },
@@ -35,7 +43,13 @@ const ROLE_OPTIONS = [
 ];
 
 function Modal({
-  title, formData, setFormData, onSubmit, onClose, submitting, isEdit
+  title,
+  formData,
+  setFormData,
+  onSubmit,
+  onClose,
+  submitting,
+  isEdit,
 }: {
   title: string;
   formData: FormData;
@@ -48,32 +62,113 @@ function Modal({
   const isGuru = formData.role === "guru";
 
   return (
-    <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4" onClick={onClose}>
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-xl w-full max-w-md p-6" onClick={(e) => e.stopPropagation()}>
-        <h2 className="text-lg font-bold text-gray-800 dark:text-gray-200 mb-4">{title}</h2>
+    <div
+      className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4"
+      onClick={onClose}
+    >
+      <div
+        className="bg-white dark:bg-gray-800 rounded-xl shadow-xl w-full max-w-md p-6"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <h2 className="text-sm md:text-lg font-bold text-gray-800 dark:text-gray-200 mb-4">
+          {title}
+        </h2>
         <div className="space-y-3">
           {!isEdit && (
-            <select value={formData.role} onChange={(e) => setFormData({ ...formData, role: e.target.value, grade: e.target.value !== "guru" ? "" : formData.grade })} className="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-900 px-3 py-2 text-sm outline-none focus:border-blue-500 dark:text-gray-200 text-gray-800">
-              {ROLE_OPTIONS.map((r) => <option key={r.value} value={r.value}>{r.label}</option>)}
+            <select
+              value={formData.role}
+              onChange={(e) =>
+                setFormData({
+                  ...formData,
+                  role: e.target.value,
+                  grade: e.target.value !== "guru" ? "" : formData.grade,
+                })
+              }
+              className="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-900 px-3 py-2 text-sm outline-none focus:border-blue-500 dark:text-gray-200 text-gray-800"
+            >
+              {ROLE_OPTIONS.map((r) => (
+                <option key={r.value} value={r.value}>
+                  {r.label}
+                </option>
+              ))}
             </select>
           )}
-          <input placeholder="Username" value={formData.username} onChange={(e) => setFormData({ ...formData, username: e.target.value })} className="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-900 px-3 py-2 text-sm outline-none focus:border-blue-500 dark:text-gray-200 text-gray-800" />
+          <input
+            placeholder="Username"
+            value={formData.username}
+            onChange={(e) =>
+              setFormData({ ...formData, username: e.target.value })
+            }
+            className="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-900 px-3 py-2 text-sm outline-none focus:border-blue-500 dark:text-gray-200 text-gray-800"
+          />
           {!isEdit && (
-            <input type="password" placeholder="Password" value={formData.password} onChange={(e) => setFormData({ ...formData, password: e.target.value })} className="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-900 px-3 py-2 text-sm outline-none focus:border-blue-500 dark:text-gray-200 text-gray-800" />
+            <input
+              type="password"
+              placeholder="Password"
+              value={formData.password}
+              onChange={(e) =>
+                setFormData({ ...formData, password: e.target.value })
+              }
+              className="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-900 px-3 py-2 text-sm outline-none focus:border-blue-500 dark:text-gray-200 text-gray-800"
+            />
           )}
-          <input placeholder="Nama Lengkap" value={formData.fullName} onChange={(e) => setFormData({ ...formData, fullName: e.target.value })} className="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-900 px-3 py-2 text-sm outline-none focus:border-blue-500 dark:text-gray-200 text-gray-800" />
-          <input placeholder="NIP" value={formData.nip} onChange={(e) => setFormData({ ...formData, nip: e.target.value })} className="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-900 px-3 py-2 text-sm outline-none focus:border-blue-500 dark:text-gray-200 text-gray-800" />
+          <input
+            placeholder="Nama Lengkap"
+            value={formData.fullName}
+            onChange={(e) =>
+              setFormData({ ...formData, fullName: e.target.value })
+            }
+            className="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-900 px-3 py-2 text-sm outline-none focus:border-blue-500 dark:text-gray-200 text-gray-800"
+          />
+          <input
+            placeholder="NIP"
+            value={formData.nip}
+            onChange={(e) => setFormData({ ...formData, nip: e.target.value })}
+            className="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-900 px-3 py-2 text-sm outline-none focus:border-blue-500 dark:text-gray-200 text-gray-800"
+          />
           {isGuru && (
-            <select value={formData.grade} onChange={(e) => setFormData({ ...formData, grade: e.target.value })} className="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-900 px-3 py-2 text-sm outline-none focus:border-blue-500 dark:text-gray-200 text-gray-800">
+            <select
+              value={formData.grade}
+              onChange={(e) =>
+                setFormData({ ...formData, grade: e.target.value })
+              }
+              className="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-900 px-3 py-2 text-sm outline-none focus:border-blue-500 dark:text-gray-200 text-gray-800"
+            >
               <option value="">Pilih Kelas</option>
-              {GRADES.map((g) => <option key={g} value={g}>Kelas {g}</option>)}
+              {GRADES.map((g) => (
+                <option key={g} value={g}>
+                  Kelas {g}
+                </option>
+              ))}
             </select>
           )}
-          <input placeholder="Gelar (contoh: S.Pd)" value={formData.title} onChange={(e) => setFormData({ ...formData, title: e.target.value })} className="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-900 px-3 py-2 text-sm outline-none focus:border-blue-500 dark:text-gray-200 text-gray-800" />
+          <input
+            placeholder="Gelar (contoh: S.Pd)"
+            value={formData.title}
+            onChange={(e) =>
+              setFormData({ ...formData, title: e.target.value })
+            }
+            className="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-900 px-3 py-2 text-sm outline-none focus:border-blue-500 dark:text-gray-200 text-gray-800"
+          />
         </div>
         <div className="flex justify-end gap-2 mt-6">
-          <button onClick={onClose} className="px-4 py-2 text-sm rounded-lg border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">Batal</button>
-          <button onClick={onSubmit} disabled={submitting || (!isEdit && (!formData.username || !formData.password || (isGuru && !formData.grade)))} className="flex items-center gap-2 px-4 py-2 text-sm bg-blue-600 hover:bg-blue-700 text-white rounded-lg disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer">
+          <button
+            onClick={onClose}
+            className="px-4 py-2 text-sm rounded-lg border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer"
+          >
+            Batal
+          </button>
+          <button
+            onClick={onSubmit}
+            disabled={
+              submitting ||
+              (!isEdit &&
+                (!formData.username ||
+                  !formData.password ||
+                  (isGuru && !formData.grade)))
+            }
+            className="flex items-center gap-2 px-4 py-2 text-sm bg-blue-600 hover:bg-blue-700 text-white rounded-lg disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+          >
             {submitting && <Loader2 size={16} className="animate-spin" />}
             {isEdit ? "Simpan" : "Tambah"}
           </button>
@@ -96,20 +191,35 @@ function ConfirmDialog({
 }) {
   if (!id) return null;
   return (
-    <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4" onClick={onClose}>
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-xl w-full max-w-sm p-6 text-center" onClick={(e) => e.stopPropagation()}>
+    <div
+      className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4"
+      onClick={onClose}
+    >
+      <div
+        className="bg-white dark:bg-gray-800 rounded-xl shadow-xl w-full max-w-sm p-6 text-center"
+        onClick={(e) => e.stopPropagation()}
+      >
         <div className="mx-auto w-12 h-12 flex items-center justify-center rounded-full bg-red-100 dark:bg-red-900/30 mb-4">
           <AlertTriangle size={28} className="text-red-600 dark:text-red-400" />
         </div>
-        <h2 className="text-lg font-bold text-gray-800 dark:text-gray-200 mb-2">Konfirmasi Hapus</h2>
+<h2 className="text-sm md:text-lg font-bold text-gray-800 dark:text-gray-200 mb-2">
+            Konfirmasi Hapus
+          </h2>
         <p className="text-sm text-gray-600 dark:text-gray-400 mb-6">
           Yakin ingin menghapus data ini? Tindakan ini tidak bisa dibatalkan.
         </p>
         <div className="flex justify-center gap-3">
-          <button onClick={onClose} className="px-5 py-2 text-sm rounded-lg border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">
+          <button
+            onClick={onClose}
+            className="px-5 py-2 text-sm rounded-lg border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer"
+          >
             Batal
           </button>
-          <button onClick={() => onConfirm(id)} disabled={submitting} className="flex items-center gap-2 px-5 py-2 text-sm bg-red-600 hover:bg-red-700 text-white rounded-lg disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer">
+          <button
+            onClick={() => onConfirm(id)}
+            disabled={submitting}
+            className="flex items-center gap-2 px-5 py-2 text-sm bg-red-600 hover:bg-red-700 text-white rounded-lg disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+          >
             {submitting && <Loader2 size={16} className="animate-spin" />}
             Ya, Hapus
           </button>
@@ -127,8 +237,10 @@ export default function DataGTK() {
   const [staff, setStaff] = useState<TeacherType[]>([]);
   const [loading, setLoading] = useState(true);
   const [staffLoading, setStaffLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState<string | null>(null);
+  const [toast, setToast] = useState<{
+    message: string;
+    type: "success" | "error";
+  } | null>(null);
   const [showAddModal, setShowAddModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [editId, setEditId] = useState<string | null>(null);
@@ -136,13 +248,15 @@ export default function DataGTK() {
   const [submitting, setSubmitting] = useState(false);
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
-  const [studentCounts, setStudentCounts] = useState<Record<string, number>>({});
+  const [studentCounts, setStudentCounts] = useState<Record<string, number>>(
+    {},
+  );
 
   useEffect(() => {
     const token = sessionStorage.getItem("user_session");
     if (token) {
       try {
-        const payload = JSON.parse(atob(token.split('.')[1]));
+        const payload = JSON.parse(atob(token.split(".")[1]));
         setUserRole(payload.role);
       } catch {}
     }
@@ -169,11 +283,15 @@ export default function DataGTK() {
         data.map(async (guru) => {
           if (!guru.grade || counts[guru.grade] !== undefined) return;
           try {
-            const res = await StudentAttendanceService.getStudentsByGrade(guru.grade);
+            const res = await StudentAttendanceService.getStudentsByGrade(
+              guru.grade,
+            );
             const students = res.data || res.result || [];
             counts[guru.grade] = students.length;
-          } catch { counts[guru.grade] = 0; }
-        })
+          } catch {
+            counts[guru.grade] = 0;
+          }
+        }),
       );
       setStudentCounts(counts);
     } catch (err) {
@@ -182,7 +300,10 @@ export default function DataGTK() {
         router.replace("/login");
         return;
       }
-      setError(error.message || "Gagal memuat data guru");
+      setToast({
+        message: error.message || "Gagal memuat data guru",
+        type: "error",
+      });
     } finally {
       setLoading(false);
     }
@@ -216,9 +337,10 @@ export default function DataGTK() {
 
   const handleAdd = async () => {
     setSubmitting(true);
-    setError(null);
+    setToast(null);
     const isGuru = formData.role === "guru";
-    const label = ROLE_OPTIONS.find(r => r.value === formData.role)?.label || "User";
+    const label =
+      ROLE_OPTIONS.find((r) => r.value === formData.role)?.label || "User";
     try {
       await UserService.create({
         username: formData.username,
@@ -231,16 +353,21 @@ export default function DataGTK() {
       });
       setShowAddModal(false);
       setFormData(emptyForm);
-      setSuccess(`${label} berhasil ditambahkan`);
-      setTimeout(() => setSuccess(null), 3000);
+      setToast({ message: `${label} berhasil ditambahkan`, type: "success" });
       if (isGuru) {
         await fetchTeachers();
       } else {
         await fetchStaff();
       }
+      setToast(null);
     } catch (err) {
-      setSuccess(null);
-      setError(err instanceof Error ? err.message : `Gagal menambahkan ${label.toLowerCase()}`);
+      setToast({
+        message:
+          err instanceof Error
+            ? err.message
+            : `Gagal menambahkan ${label.toLowerCase()}`,
+        type: "error",
+      });
     } finally {
       setSubmitting(false);
     }
@@ -257,7 +384,7 @@ export default function DataGTK() {
   const handleEdit = async () => {
     if (!editId) return;
     setSubmitting(true);
-    setError(null);
+    setToast(null);
     try {
       await UserService.update(editId, {
         username: formData.username,
@@ -269,13 +396,15 @@ export default function DataGTK() {
       setShowEditModal(false);
       setEditId(null);
       setFormData(emptyForm);
-      setSuccess("Data berhasil diupdate");
-      setTimeout(() => setSuccess(null), 3000);
+      setToast({ message: "Data berhasil diupdate", type: "success" });
       await fetchTeachers();
       await fetchStaff();
+      setToast(null);
     } catch (err) {
-      setSuccess(null);
-      setError(err instanceof Error ? err.message : "Gagal mengupdate data");
+      setToast({
+        message: err instanceof Error ? err.message : "Gagal mengupdate data",
+        type: "error",
+      });
     } finally {
       setSubmitting(false);
     }
@@ -284,16 +413,17 @@ export default function DataGTK() {
   const handleDelete = async (id: string) => {
     setConfirmDeleteId(null);
     setDeletingId(id);
-    setError(null);
+    setToast(null);
     try {
       await UserService.delete(id);
       await fetchTeachers();
       await fetchStaff();
-      setSuccess("Data berhasil dihapus");
-      setTimeout(() => setSuccess(null), 3000);
+      setToast({ message: "Data berhasil dihapus", type: "success" });
     } catch (err) {
-      setSuccess(null);
-      setError(err instanceof Error ? err.message : "Gagal menghapus data");
+      setToast({
+        message: err instanceof Error ? err.message : "Gagal menghapus data",
+        type: "error",
+      });
     } finally {
       setDeletingId(null);
     }
@@ -313,51 +443,61 @@ export default function DataGTK() {
     setShowEditModal(true);
   };
 
-  if (authLoading || (authRole !== "admin" && authRole !== "kepala")) return null;
+  if (authLoading || (authRole !== "admin" && authRole !== "kepala"))
+    return null;
 
   return (
     <div className="p-4 md:p-6 space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl md:text-3xl font-bold text-gray-800 dark:text-white">
-            Data Guru
-          </h1>
-          <p className="text-gray-600 dark:text-gray-400 mt-1">
-            Kelola data guru dan tenaga kependidikan
-          </p>
+      {/* Hero */}
+      <div className="relative bg-gradient-to-br from-indigo-500 via-indigo-600 to-purple-600 rounded-2xl overflow-hidden shadow-xl">
+        <div className="absolute -top-6 -right-6 w-40 h-40 bg-white/5 rounded-full blur-2xl" />
+        <div className="absolute -bottom-8 -left-8 w-48 h-48 bg-indigo-400/20 rounded-full blur-3xl" />
+        <div className="relative p-5 md:p-6 flex items-center justify-between gap-4">
+          <div className="flex items-center gap-4">
+            <div className="shrink-0 w-12 h-12 md:w-14 md:h-14 bg-white/15 rounded-xl flex items-center justify-center animate-iconBounce">
+              <Users size={26} className="md:size-[30px] text-white" />
+            </div>
+            <div>
+              <h1 className="text-white text-sm md:text-xl font-bold">
+                Data Guru & Tenaga Kependidikan
+              </h1>
+              <p className="text-indigo-200/80 text-xs md:text-sm mt-0.5">
+                Kelola data guru dan tenaga kependidikan
+              </p>
+            </div>
+          </div>
+          {userRole !== "kepala" && (
+            <button
+              onClick={() => {
+                setFormData(emptyForm);
+                setShowAddModal(true);
+              }}
+              className="flex items-center gap-2 px-2.5 md:px-4 py-2.5 bg-white/20 hover:bg-white/30 text-white rounded-xl text-sm font-semibold transition-colors cursor-pointer shrink-0 backdrop-blur-sm"
+            >
+              <Plus size={18} />{" "}
+              <span className="hidden md:inline">Tambah</span>
+            </button>
+          )}
         </div>
-        {userRole !== "kepala" && (
-          <button
-            onClick={() => {
-              setFormData(emptyForm);
-              setShowAddModal(true);
-            }}
-            className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium transition-colors cursor-pointer"
-          >
-            <Plus size={20} /> Tambah User
-          </button>
-        )}
       </div>
 
-      {success && (
-        <div className="fixed top-4 right-4 z-[100] flex items-center gap-2 px-4 py-3 bg-white dark:bg-gray-800 border border-green-400 dark:border-green-600 shadow-xl rounded-xl text-green-700 dark:text-green-200 text-sm font-medium animate-in slide-in-from-top-2">
-          <CheckCircle2 size={18} />
-          {success}
-        </div>
-      )}
-      {error && (
-        <div className="fixed top-4 right-4 z-[100] flex items-center gap-2 px-4 py-3 bg-white dark:bg-gray-800 border border-red-400 dark:border-red-600 shadow-xl rounded-xl text-red-600 dark:text-red-300 text-sm font-medium animate-in slide-in-from-top-2">
-          <AlertCircle size={18} />
-          {error}
-        </div>
+      {toast && (
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          onClose={() => setToast(null)}
+        />
       )}
 
-      <div className="rounded-lg shadow overflow-hidden">
+      <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5 overflow-hidden">
         {loading ? (
-          <div className="overflow-x-auto">
+          <div
+            key="skeleton"
+            className="overflow-x-auto animate-fadeIn rounded-xl border border-gray-200 dark:border-gray-700 bg-white/80 md:bg-white/60 dark:bg-gray-800/30"
+          >
             <table className="w-full">
               <thead>
-                <tr className="bg-teal-600 text-white">
+                <tr className="bg-indigo-700 text-indigo-50 tracking-wider text-xs md:text-sm">
                   {[
                     "Username",
                     "Nama Lengkap",
@@ -369,88 +509,95 @@ export default function DataGTK() {
                   ].map((h) => (
                     <th
                       key={h}
-                      className="px-6 py-4 text-left text-sm font-semibold"
+                      className="px-3 py-3 md:px-6 md:py-4 text-left font-semibold"
                     >
                       {h}
                     </th>
                   ))}
                 </tr>
               </thead>
-              <tbody className="divide-y bg-white divide-gray-200 dark:divide-gray-700 dark:bg-gray-800">
+              <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
                 {Array.from({ length: 5 }).map((_, i) => (
                   <tr key={i} className="animate-pulse">
-                    {Array.from({ length: 7 }).map((_, j) => (
-                      <td key={j} className="px-6 py-4">
-                        <div className="h-4 w-24 bg-slate-200 dark:bg-slate-700 rounded" />
-                      </td>
-                    ))}
+                    {Array.from({ length: userRole !== "kepala" ? 7 : 6 }).map(
+                      (_, j) => (
+                        <td key={j} className="px-3 py-3 md:px-6 md:py-4">
+                          <div className="h-4 w-24 bg-slate-200 dark:bg-slate-700 rounded" />
+                        </td>
+                      ),
+                    )}
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
         ) : teachers.length === 0 ? (
-          <div className="border border-teal-500/40 bg-teal-500/5 px-5 py-6 rounded-xl text-center">
-            <p className="text-gray-500 dark:text-gray-400">
+          <div className="flex flex-col items-center justify-center py-12 text-center bg-white/80 md:bg-white/60 dark:bg-gray-800/30 rounded-xl border border-gray-200 dark:border-gray-700">
+            <p className="text-gray-400 dark:text-gray-500 text-sm">
               Belum ada data guru
             </p>
           </div>
         ) : (
-          <div className="overflow-x-auto">
+          <div
+            key="data"
+            className="overflow-x-auto animate-fadeIn rounded-xl border border-gray-200 dark:border-gray-700 bg-white/80 md:bg-white/60 dark:bg-gray-800/30"
+          >
             <table className="w-full">
               <thead>
-                <tr className="bg-teal-600 text-white">
-                  <th className="px-6 py-4 text-left text-sm font-semibold">
+                <tr className="bg-indigo-700 text-indigo-50 tracking-wider text-xs md:text-sm">
+                  <th className="px-3 py-3 md:px-6 md:py-4 text-left font-semibold">
                     Username
                   </th>
-                  <th className="px-6 py-4 text-left text-sm font-semibold">
+                  <th className="px-3 py-3 md:px-6 md:py-4 text-left font-semibold">
                     Nama Lengkap
                   </th>
-                  <th className="px-6 py-4 text-left text-sm font-semibold">
+                  <th className="px-3 py-3 md:px-6 md:py-4 text-left font-semibold">
                     NIP
                   </th>
-                  <th className="px-6 py-4 text-left text-sm font-semibold">
+                  <th className="px-3 py-3 md:px-6 md:py-4 text-left font-semibold">
                     Kelas
                   </th>
-                  <th className="px-6 py-4 text-center text-sm font-semibold">
+                  <th className="px-3 py-3 md:px-6 md:py-4 text-center font-semibold">
                     Jumlah Murid
                   </th>
-                  <th className="px-6 py-4 text-left text-sm font-semibold">
+                  <th className="px-3 py-3 md:px-6 md:py-4 text-left font-semibold">
                     Gelar
                   </th>
                   {userRole !== "kepala" && (
-                    <th className="px-6 py-4 text-center text-sm font-semibold">
+                    <th className="px-3 py-3 md:px-6 md:py-4 text-center font-semibold">
                       Aksi
                     </th>
                   )}
                 </tr>
               </thead>
-              <tbody className="divide-y bg-white divide-gray-200 dark:divide-gray-700 dark:bg-gray-800">
+              <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
                 {teachers.map((guru) => (
                   <tr
                     key={guru._id}
-                    className={`transition-colors ${deletingId === guru._id ? "opacity-50 pointer-events-none" : "hover:bg-teal-50 dark:hover:bg-gray-700/50"}`}
+                    className={`transition-colors animate-fadeIn ${deletingId === guru._id ? "opacity-50 pointer-events-none" : "hover:bg-indigo-50/50 dark:hover:bg-indigo-900/20"}`}
                   >
-                    <td className="px-6 py-4 text-sm font-medium text-gray-900 dark:text-white">
+                    <td className="px-3 py-3 md:px-6 md:py-4 text-sm font-medium text-gray-900 dark:text-white whitespace-nowrap">
                       {guru.username}
                     </td>
-                    <td className="px-6 py-4 text-sm text-gray-600 dark:text-gray-300">
+                    <td className="px-3 py-3 md:px-6 md:py-4 text-sm text-gray-600 dark:text-gray-300 whitespace-nowrap">
                       {guru.fullName || "-"}
                     </td>
-                    <td className="px-6 py-4 text-sm text-gray-600 dark:text-gray-300">
+                    <td className="px-3 py-3 md:px-6 md:py-4 text-sm text-gray-600 dark:text-gray-300 whitespace-nowrap">
                       {guru.nip || "-"}
                     </td>
-                    <td className="px-6 py-4 text-sm text-gray-600 dark:text-gray-300 text-center">
+                    <td className="px-3 py-3 md:px-6 md:py-4 text-sm text-gray-600 dark:text-gray-300 text-center">
                       {guru.grade ? `${guru.grade}` : "-"}
                     </td>
-                    <td className="px-6 py-4 text-center text-sm text-gray-600 dark:text-gray-300">
-                      {guru.grade ? `${studentCounts[guru.grade] ?? "-"} Murid` : "-"}
+                    <td className="px-3 py-3 md:px-6 md:py-4 text-center text-sm text-gray-600 dark:text-gray-300 whitespace-nowrap">
+                      {guru.grade
+                        ? `${studentCounts[guru.grade] ?? "-"} Murid`
+                        : "-"}
                     </td>
-                    <td className="px-6 py-4 text-sm text-gray-600 dark:text-gray-300">
+                    <td className="px-3 py-3 md:px-6 md:py-4 text-sm text-gray-600 dark:text-gray-300 whitespace-nowrap">
                       {guru.title || "-"}
                     </td>
                     {userRole !== "kepala" && (
-                      <td className="px-6 py-4 text-center">
+                      <td className="px-3 py-3 md:px-6 md:py-4 text-center">
                         <div className="flex items-center justify-center gap-1">
                           <button
                             onClick={() => openEditModal(guru)}
@@ -483,68 +630,93 @@ export default function DataGTK() {
         )}
       </div>
 
-      <div className="mt-8">
-        <h2 className="text-xl md:text-2xl font-bold text-gray-800 dark:text-white">
-          Data Tenaga Kependidikan
-        </h2>
-        <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
-          Kepala sekolah, penjaga, dan tenaga non-guru lainnya
-        </p>
-      </div>
-
-      <div className="rounded-lg shadow overflow-hidden">
+      <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5 overflow-hidden">
         {staffLoading ? (
-          <div className="overflow-x-auto">
+          <div
+            key="skeleton"
+            className="overflow-x-auto animate-fadeIn rounded-xl border border-gray-200 dark:border-gray-700 bg-white/80 md:bg-white/60 dark:bg-gray-800/30"
+          >
             <table className="w-full">
               <thead>
-                <tr className="bg-indigo-600 text-white">
-                  <th className="px-6 py-4 text-left text-sm font-semibold">Username</th>
-                  <th className="px-6 py-4 text-left text-sm font-semibold">Nama Lengkap</th>
-                  <th className="px-6 py-4 text-left text-sm font-semibold">NIP</th>
-                  <th className="px-6 py-4 text-left text-sm font-semibold">Gelar</th>
-                  <th className="px-6 py-4 text-center text-sm font-semibold">Jabatan</th>
+                <tr className="bg-indigo-700 text-indigo-50 tracking-wider text-xs md:text-sm">
+                  <th className="px-3 py-3 md:px-6 md:py-4 text-left font-semibold">
+                    Username
+                  </th>
+                  <th className="px-3 py-3 md:px-6 md:py-4 text-left font-semibold">
+                    Nama Lengkap
+                  </th>
+                  <th className="px-3 py-3 md:px-6 md:py-4 text-left font-semibold">
+                    NIP
+                  </th>
+                  <th className="px-3 py-3 md:px-6 md:py-4 text-left font-semibold">
+                    Gelar
+                  </th>
+                  <th className="px-3 py-3 md:px-6 md:py-4 text-center font-semibold">
+                    Jabatan
+                  </th>
                   {userRole !== "kepala" && (
-                    <th className="px-6 py-4 text-center text-sm font-semibold">Aksi</th>
+                    <th className="px-3 py-3 md:px-6 md:py-4 text-center font-semibold">
+                      Aksi
+                    </th>
                   )}
                 </tr>
               </thead>
-              <tbody className="divide-y bg-white divide-gray-200 dark:divide-gray-700 dark:bg-gray-800">
+              <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
                 {Array.from({ length: 3 }).map((_, i) => (
                   <tr key={i} className="animate-pulse">
-                    {Array.from({ length: userRole !== "kepala" ? 6 : 5 }).map((_, j) => (
-                      <td key={j} className="px-6 py-4">
-                        <div className="h-4 w-24 bg-slate-200 dark:bg-slate-700 rounded" />
-                      </td>
-                    ))}
+                    {Array.from({ length: userRole !== "kepala" ? 6 : 5 }).map(
+                      (_, j) => (
+                        <td key={j} className="px-3 py-3 md:px-6 md:py-4">
+                          <div className="h-4 w-24 bg-slate-200 dark:bg-slate-700 rounded" />
+                        </td>
+                      ),
+                    )}
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
         ) : staff.length === 0 ? (
-          <div className="border border-indigo-500/40 bg-indigo-500/5 px-5 py-6 rounded-xl text-center">
-            <p className="text-gray-500 dark:text-gray-400">
+          <div className="flex flex-col items-center justify-center py-12 text-center bg-white/80 md:bg-white/60 dark:bg-gray-800/30 rounded-xl border border-gray-200 dark:border-gray-700">
+            <p className="text-gray-400 dark:text-gray-500 text-sm">
               Belum ada data tenaga kependidikan
             </p>
           </div>
         ) : (
-          <div className="overflow-x-auto">
+          <div
+            key="data"
+            className="overflow-x-auto animate-fadeIn rounded-xl border border-gray-200 dark:border-gray-700 bg-white/80 md:bg-white/60 dark:bg-gray-800/30"
+          >
             <table className="w-full">
               <thead>
-                <tr className="bg-indigo-600 text-white">
-                  <th className="px-6 py-4 text-left text-sm font-semibold">Username</th>
-                  <th className="px-6 py-4 text-left text-sm font-semibold">Nama Lengkap</th>
-                  <th className="px-6 py-4 text-left text-sm font-semibold">NIP</th>
-                  <th className="px-6 py-4 text-left text-sm font-semibold">Gelar</th>
-                  <th className="px-6 py-4 text-center text-sm font-semibold">Jabatan</th>
+                <tr className="bg-indigo-700 text-indigo-50 tracking-wider text-xs md:text-sm">
+                  <th className="px-3 py-3 md:px-6 md:py-4 text-left font-semibold">
+                    Username
+                  </th>
+                  <th className="px-3 py-3 md:px-6 md:py-4 text-left font-semibold">
+                    Nama Lengkap
+                  </th>
+                  <th className="px-3 py-3 md:px-6 md:py-4 text-left font-semibold">
+                    NIP
+                  </th>
+                  <th className="px-3 py-3 md:px-6 md:py-4 text-left font-semibold">
+                    Gelar
+                  </th>
+                  <th className="px-3 py-3 md:px-6 md:py-4 text-center font-semibold">
+                    Jabatan
+                  </th>
                   {userRole !== "kepala" && (
-                    <th className="px-6 py-4 text-center text-sm font-semibold">Aksi</th>
+                    <th className="px-3 py-3 md:px-6 md:py-4 text-center font-semibold">
+                      Aksi
+                    </th>
                   )}
                 </tr>
               </thead>
-              <tbody className="divide-y bg-white divide-gray-200 dark:divide-gray-700 dark:bg-gray-800">
+              <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
                 {staff.map((user) => {
-                  const roleLabel = ROLE_OPTIONS.find(r => r.value === user.role)?.label || user.role;
+                  const roleLabel =
+                    ROLE_OPTIONS.find((r) => r.value === user.role)?.label ||
+                    user.role;
                   const roleBadgeColor =
                     user.role === "kepala"
                       ? "bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300"
@@ -552,27 +724,29 @@ export default function DataGTK() {
                   return (
                     <tr
                       key={user._id}
-                      className={`transition-colors ${deletingId === user._id ? "opacity-50 pointer-events-none" : "hover:bg-indigo-50 dark:hover:bg-gray-700/50"}`}
+                      className={`transition-colors animate-fadeIn ${deletingId === user._id ? "opacity-50 pointer-events-none" : "hover:bg-indigo-50/50 dark:hover:bg-indigo-900/20"}`}
                     >
-                      <td className="px-6 py-4 text-sm font-medium text-gray-900 dark:text-white">
+                      <td className="px-3 py-3 md:px-6 md:py-4 text-sm font-medium text-gray-900 dark:text-white whitespace-nowrap">
                         {user.username}
                       </td>
-                      <td className="px-6 py-4 text-sm text-gray-600 dark:text-gray-300">
+                      <td className="px-3 py-3 md:px-6 md:py-4 text-sm text-gray-600 dark:text-gray-300 whitespace-nowrap">
                         {user.fullName || "-"}
                       </td>
-                      <td className="px-6 py-4 text-sm text-gray-600 dark:text-gray-300">
+                      <td className="px-3 py-3 md:px-6 md:py-4 text-sm text-gray-600 dark:text-gray-300 whitespace-nowrap">
                         {user.nip || "-"}
                       </td>
-                      <td className="px-6 py-4 text-sm text-gray-600 dark:text-gray-300">
+                      <td className="px-3 py-3 md:px-6 md:py-4 text-sm text-gray-600 dark:text-gray-300 whitespace-nowrap">
                         {user.title || "-"}
                       </td>
-                      <td className="px-6 py-4 text-center">
-                        <span className={`inline-block px-2.5 py-1 rounded-full text-xs font-medium ${roleBadgeColor}`}>
+                      <td className="px-3 py-3 md:px-6 md:py-4 text-center">
+                        <span
+                          className={`inline-block px-2.5 py-1 rounded-full text-xs font-medium ${roleBadgeColor}`}
+                        >
                           {roleLabel}
                         </span>
                       </td>
                       {userRole !== "kepala" && (
-                        <td className="px-6 py-4 text-center">
+                        <td className="px-3 py-3 md:px-6 md:py-4 text-center">
                           <div className="flex items-center justify-center gap-1">
                             <button
                               onClick={() => openEditModal(user)}

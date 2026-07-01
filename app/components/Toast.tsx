@@ -21,26 +21,30 @@ export default function Toast({
     return () => clearTimeout(timer);
   }, [onClose, duration]);
 
-  const borderColor =
-    type === "success" ? "border-l-emerald-500" : "border-l-red-500";
-  const bgColor =
-    type === "success" ? "bg-emerald-50 dark:bg-gray-800" : "bg-red-50 dark:bg-gray-800";
-  const textColor =
-    type === "success"
-      ? "text-emerald-800 dark:text-emerald-200"
-      : "text-red-800 dark:text-red-200";
+  const isSuccess = type === "success";
+  const borderColor = isSuccess ? "border-emerald-500/40 dark:border-emerald-500/30" : "border-red-500/40 dark:border-red-500/30";
+  const barColor = isSuccess ? "bg-emerald-400/70" : "bg-red-400/70";
+  const textColor = isSuccess
+    ? "text-emerald-800 dark:text-emerald-200"
+    : "text-red-800 dark:text-red-200";
 
   return (
     <div
-      className={`fixed top-4 right-4 z-50 flex items-center gap-3 border-l-4 ${borderColor} ${bgColor} ${textColor} px-4 py-3 rounded-r-lg shadow-lg animate-slide-in-right max-w-sm`}
+      className={`fixed top-4 right-4 w-[66vw] md:w-auto z-50 flex flex-col border ${borderColor} bg-white/90 md:bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl ${textColor} rounded-2xl shadow-lg animate-slide-in-right md:max-w-sm overflow-hidden`}
     >
-      <p className="text-sm font-medium flex-1">{message}</p>
-      <button
-        onClick={onClose}
-        className="shrink-0 p-0.5 rounded hover:bg-black/5 dark:hover:bg-white/10 transition-colors cursor-pointer"
-      >
-        <X size={16} />
-      </button>
+      <div className="flex items-center gap-3 px-4 pt-3 pb-2.5">
+        <p className="text-xs md:text-sm font-medium flex-1 leading-relaxed">{message}</p>
+        <button
+          onClick={onClose}
+          className="shrink-0 p-0.5 rounded hover:bg-black/5 dark:hover:bg-white/10 transition-colors cursor-pointer"
+        >
+          <X size={14} />
+        </button>
+      </div>
+      <div
+        className={`h-[2px] ${barColor} rounded-full animate-shrink`}
+        style={{ animationDuration: `${duration}ms` }}
+      />
     </div>
   );
 }

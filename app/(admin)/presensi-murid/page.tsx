@@ -1,6 +1,6 @@
 "use client";
 
-import { Loader2, Save, GraduationCap } from "lucide-react";
+import { Loader2, Save, CalendarCheck } from "lucide-react";
 import DateDayPicker from "@/app/components/DateDayPicker";
 import PresensiStatusBadge from "@/app/components/PresensiStatusBadge";
 import PresensiTable from "@/app/components/PresensiTable";
@@ -42,7 +42,7 @@ export default function PresensiMuridPage() {
         <div className="absolute -bottom-8 -left-8 w-48 h-48 bg-indigo-400/20 rounded-full blur-3xl" />
         <div className="relative p-5 md:p-6 flex items-center gap-4">
           <div className="shrink-0 w-12 h-12 md:w-14 md:h-14 bg-white/15 rounded-xl flex items-center justify-center animate-iconBounce">
-            <GraduationCap size={26} className="md:size-[30px] text-white" />
+            <CalendarCheck size={26} className="md:size-[30px] text-white" />
           </div>
           <div>
             <h1 className="text-white text-lg md:text-xl font-bold">
@@ -58,7 +58,7 @@ export default function PresensiMuridPage() {
       {/* Filters */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
-          <label className="mb-2 block text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+          <label className="mb-2 block text-xs font-semibold text-gray-500 dark:text-gray-400 tracking-wider">
             Kelas
           </label>
           {userRole !== "admin" && userRole !== "kepala" ? (
@@ -81,7 +81,7 @@ export default function PresensiMuridPage() {
         </div>
 
         <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
-          <label className="mb-2 block text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+          <label className="mb-2 block text-xs font-semibold text-gray-500 dark:text-gray-400 tracking-wider">
             Tanggal
           </label>
           <DateDayPicker

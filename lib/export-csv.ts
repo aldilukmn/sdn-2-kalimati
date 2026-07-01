@@ -128,7 +128,7 @@ export function exportRegistrantsToCSV(registrants: Registrant[]): void {
       r.status === "validated"
         ? "Tervalidasi"
         : r.status === "unvalidated"
-          ? "Belum Divalidasi"
+          ? "Belum Tervalidasi"
           : "-";
 
     return [

@@ -229,7 +229,7 @@ export default function EditRegistration() {
             >
               {registrationInfo?.status === "validated"
                 ? "Tervalidasi"
-                : "Belum Divalidasi"}
+                : "Belum Tervalidasi"}
             </span>
           </p>
 

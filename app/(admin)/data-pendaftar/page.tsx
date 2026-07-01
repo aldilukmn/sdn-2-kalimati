@@ -11,8 +11,10 @@ import {
   Pencil,
   RefreshCw,
   Download,
-  ClipboardCheck,
+  ClipboardList,
+  Users,
 } from "lucide-react";
+import Toast from "@/app/components/Toast";
 import RegistrationService from "@/services/registration.service";
 import Pagination from "@/app/components/Pagination";
 import { exportRegistrantsToCSV } from "@/lib/export-csv";
@@ -135,10 +137,10 @@ export default function DataPendaftar() {
   const [userRole, setUserRole] = useState<string | null>(null);
   const [registrants, setRegistrants] = useState<Registrant[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
   const [validating, setValidating] = useState<Set<string>>(new Set());
   const [currentPage, setCurrentPage] = useState(1);
   const [refreshing, setRefreshing] = useState(false);
+  const [toast, setToast] = useState<{ message: string; type: "success" | "error" } | null>(null);
   const itemsPerPage = 5;
 
   const fetchRegistrants = async (isRefresh?: boolean) => {
@@ -152,7 +154,7 @@ export default function DataPendaftar() {
         router.replace("/login");
         return;
       }
-      setError(error.message || "Gagal memuat data pendaftar");
+      setToast({ message: error.message || "Gagal memuat data pendaftar", type: "error" });
     } finally {
       if (isRefresh) setRefreshing(false);
       setLoading(false);
@@ -212,7 +214,7 @@ export default function DataPendaftar() {
         return;
       }
 
-      setError(error.message || "Gagal memperbarui status validasi");
+      setToast({ message: error.message || "Gagal memperbarui status validasi", type: "error" });
     } finally {
       setValidating((prev) => {
         const newSet = new Set(prev);
@@ -470,59 +472,88 @@ export default function DataPendaftar() {
 
   return (
     <div className="p-4 md:p-6 space-y-6">
-      {/* Header */}
-      <div>
-        <h1 className="text-2xl md:text-3xl font-bold text-gray-800 dark:text-white">
-          Data Pendaftar
-        </h1>
-        <p className="text-gray-600 dark:text-gray-400 mt-1">
-          Kelola data pendaftar dan validasi formulir
-        </p>
+      {/* Hero */}
+      <div className="relative bg-gradient-to-br from-indigo-500 via-indigo-600 to-purple-600 rounded-2xl overflow-hidden shadow-xl">
+        <div className="absolute -top-6 -right-6 w-40 h-40 bg-white/5 rounded-full blur-2xl" />
+        <div className="absolute -bottom-8 -left-8 w-48 h-48 bg-indigo-400/20 rounded-full blur-3xl" />
+        <div className="relative p-5 md:p-6 flex items-center gap-4">
+          <div className="shrink-0 w-12 h-12 md:w-14 md:h-14 bg-white/15 rounded-xl flex items-center justify-center animate-iconBounce">
+            <ClipboardList size={26} className="md:size-[30px] text-white" />
+          </div>
+          <div>
+            <h1 className="text-white text-sm md:text-xl font-bold">
+              Data Pendaftar
+            </h1>
+            <p className="text-indigo-200/80 text-xs md:text-sm mt-0.5">
+              Kelola data pendaftar dan validasi formulir
+            </p>
+          </div>
+        </div>
       </div>
 
-      {/* Error Alert */}
-      {error && (
-        <div className="p-4 bg-red-100 border border-red-400 text-red-700 rounded-lg dark:bg-red-900/30 dark:border-red-700 dark:text-red-200">
-          {error}
-        </div>
+      {/* Toast */}
+      {toast && (
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          onClose={() => setToast(null)}
+        />
       )}
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="border border-blue-500/40 bg-blue-500/5 px-5 py-6 rounded-xl duration-300 hover:bg-blue-500/10 hover:border-blue-500/60 hover:shadow-md hover:shadow-blue-500/10 shadow">
-          <div className="text-sm font-semibold text-gray-600 dark:text-gray-400 mb-2">
-            Total Pendaftar
+      <div className="grid grid-cols-3 gap-3 md:gap-4">
+        <div className="bg-blue-500/5 dark:bg-blue-500/10 md:backdrop-blur-xl border border-blue-500/40 dark:border-blue-500/30 shadow-lg rounded-2xl p-3 md:p-5 transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 hover:shadow-xl">
+          <div className="flex items-center md:items-start justify-center md:justify-between mb-1 md:mb-3 min-h-10">
+            <span className="text-[13px] text-center md:text-base font-semibold text-gray-600 dark:text-gray-400">
+              Total Pendaftar
+            </span>
+            <Users className="hidden md:block w-[22px] h-[22px] text-blue-600 dark:text-blue-400" />
           </div>
-          <div className="text-3xl font-bold text-blue-600 dark:text-blue-400">
-            {loading ? (
-              <div className="h-9 w-16 rounded bg-blue-200 dark:bg-blue-700 animate-pulse" />
-            ) : (
-              registrants.length
-            )}
-          </div>
-        </div>
-        <div className="border border-emerald-500/40 bg-emerald-500/5 px-5 py-6 rounded-xl duration-300 hover:bg-emerald-500/10 hover:border-emerald-500/60 hover:shadow-md hover:shadow-emerald-500/10 shadow">
-          <div className="text-sm font-semibold text-gray-600 dark:text-gray-400 mb-2">
-            Tervalidasi
-          </div>
-          <div className="text-3xl font-bold text-green-600 dark:text-green-400">
-            {loading ? (
-              <div className="h-9 w-16 rounded bg-emerald-200 dark:bg-emerald-700 animate-pulse" />
-            ) : (
-              registrants.filter((r) => r.status === "validated").length
-            )}
+          <div className="flex items-center justify-center md:justify-start gap-2">
+            <Users className="md:hidden w-4 h-4 text-blue-600 dark:text-blue-400" />
+            <span className="text-lg md:text-3xl font-bold text-blue-600 dark:text-blue-400">
+              {loading ? (
+                <span className="inline-block h-9 w-16 rounded bg-indigo-200 dark:bg-indigo-700 animate-pulse" />
+              ) : (
+                registrants.length
+              )}
+            </span>
           </div>
         </div>
-        <div className="border border-yellow-500/40 bg-yellow-500/5 px-5 py-6 rounded-xl duration-300 hover:bg-yellow-500/10 hover:border-yellow-500/60 hover:shadow-md hover:shadow-yellow-500/10 shadow">
-          <div className="text-sm font-semibold text-gray-600 dark:text-gray-400 mb-2">
-            Belum Divalidasi
+        <div className="bg-emerald-500/5 dark:bg-emerald-500/10 md:backdrop-blur-xl border border-emerald-500/40 dark:border-emerald-500/30 shadow-lg rounded-2xl p-3 md:p-5 transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 hover:shadow-xl">
+          <div className="flex items-center md:items-start justify-center md:justify-between mb-1 md:mb-3 min-h-10">
+            <span className="text-[13px] text-center md:text-base font-semibold text-gray-600 dark:text-gray-400">
+              Tervalidasi
+            </span>
+            <CheckCircle2 className="hidden md:block w-[22px] h-[22px] text-emerald-600 dark:text-emerald-400" />
           </div>
-          <div className="text-3xl font-bold text-amber-600 dark:text-amber-400">
-            {loading ? (
-              <div className="h-9 w-16 rounded bg-yellow-200 dark:bg-yellow-700 animate-pulse" />
-            ) : (
-              registrants.filter((r) => r.status === "unvalidated").length
-            )}
+          <div className="flex items-center justify-center md:justify-start gap-2">
+            <CheckCircle2 className="md:hidden w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+            <span className="text-lg md:text-3xl font-bold text-emerald-600 dark:text-emerald-400">
+              {loading ? (
+                <span className="inline-block h-9 w-16 rounded bg-emerald-200 dark:bg-emerald-700 animate-pulse" />
+              ) : (
+                registrants.filter((r) => r.status === "validated").length
+              )}
+            </span>
+          </div>
+        </div>
+        <div className="bg-amber-500/5 dark:bg-amber-500/10 md:backdrop-blur-xl border border-amber-500/40 dark:border-amber-500/30 shadow-lg rounded-2xl p-3 md:p-5 transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 hover:shadow-xl">
+          <div className="flex items-center md:items-start justify-center md:justify-between mb-1 md:mb-3 min-h-10">
+            <span className="text-[13px] text-center md:text-base font-semibold text-gray-600 dark:text-gray-400">
+              Belum Divalidasi
+            </span>
+            <Circle className="hidden md:block w-[22px] h-[22px] text-amber-600 dark:text-amber-400" />
+          </div>
+          <div className="flex items-center justify-center md:justify-start gap-2">
+            <Circle className="md:hidden w-4 h-4 text-amber-600 dark:text-amber-400" />
+            <span className="text-lg md:text-3xl font-bold text-amber-600 dark:text-amber-400">
+              {loading ? (
+                <span className="inline-block h-9 w-16 rounded bg-amber-200 dark:bg-amber-700 animate-pulse" />
+              ) : (
+                registrants.filter((r) => r.status === "unvalidated").length
+              )}
+            </span>
           </div>
         </div>
       </div>
@@ -531,149 +562,131 @@ export default function DataPendaftar() {
       <div className="flex items-center gap-3 justify-end flex-wrap">
         <button
           onClick={() => exportRegistrantsToCSV(registrants)}
-          className="flex items-center gap-2 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg transition-colors dark:bg-emerald-700 dark:hover:bg-emerald-800 cursor-pointer"
+          className="flex items-center gap-2 px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-sm font-semibold shadow-md transition-all duration-200 cursor-pointer"
           title="Export ke Excel"
         >
-          <Download size={20} />
-          <span className="text-sm font-medium hidden sm:inline">
-            Export Excel
-          </span>
+          <Download size={18} />
+          <span className="hidden sm:inline">Export Excel</span>
         </button>
         <button
           onClick={handleRefresh}
           disabled={refreshing}
-          className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 border border-gray-300 dark:border-gray-600 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+          className="flex items-center gap-2 px-4 py-2.5 bg-white/90 md:bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl border border-white/20 dark:border-gray-700/50 text-gray-700 dark:text-gray-200 rounded-xl text-sm font-semibold shadow-lg transition-all duration-200 hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
           title="Perbarui Data"
         >
-          <RefreshCw size={20} className={refreshing ? "animate-spin" : ""} />
-          <span className="text-sm font-medium hidden sm:inline">
-            {refreshing ? "Memuat..." : "Refresh"}
-          </span>
+          <RefreshCw size={18} className={refreshing ? "animate-spin" : ""} />
+          <span className="hidden sm:inline">{refreshing ? "Memuat..." : "Refresh"}</span>
         </button>
       </div>
 
       {/* Table */}
-      <div className="rounded-lg shadow overflow-hidden">
+      <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5 overflow-hidden">
         {loading ? (
-          <div className="overflow-x-auto">
+          <div key="skeleton" className="overflow-x-auto animate-fadeIn rounded-xl border border-gray-200 dark:border-gray-700 bg-white/80 md:bg-white/60 dark:bg-gray-800/30">
             <table className="w-full">
               <thead>
-                <tr className="bg-blue-600 text-white">
-                  <th className="px-6 py-4 text-left text-sm font-semibold">No. Pendaftaran</th>
-                  <th className="px-6 py-4 text-left text-sm font-semibold">Tanggal Daftar</th>
-                  <th className="px-6 py-4 text-left text-sm font-semibold">Tanggal Update</th>
-                  <th className="px-6 py-4 text-left text-sm font-semibold">Nama Lengkap</th>
-                  <th className="px-6 py-4 text-left text-sm font-semibold">No. HP</th>
-                  <th className="px-6 py-4 text-left text-sm font-semibold">Alamat</th>
-                  <th className="px-6 py-4 text-center text-sm font-semibold">Aksi</th>
-                  <th className="px-6 py-4 text-center text-sm font-semibold">Validasi</th>
+                <tr className="bg-indigo-700 text-indigo-50 tracking-wider text-xs md:text-sm">
+                  <th className="px-3 py-3 md:px-6 md:py-4 text-left font-semibold">No. Pendaftaran</th>
+                  <th className="px-3 py-3 md:px-6 md:py-4 text-left font-semibold">Tanggal Daftar</th>
+                  <th className="px-3 py-3 md:px-6 md:py-4 text-left font-semibold">Tanggal Update</th>
+                  <th className="px-3 py-3 md:px-6 md:py-4 text-left font-semibold">Nama Lengkap</th>
+                  <th className="px-3 py-3 md:px-6 md:py-4 text-left font-semibold">No. HP</th>
+                  <th className="px-3 py-3 md:px-6 md:py-4 text-left font-semibold">Alamat</th>
+                  <th className="px-3 py-3 md:px-6 md:py-4 text-center font-semibold">Aksi</th>
+                  <th className="px-3 py-3 md:px-6 md:py-4 text-center font-semibold">Validasi</th>
                 </tr>
               </thead>
-              <tbody className="divide-y bg-white divide-gray-200 dark:divide-gray-700 dark:bg-gray-800">
+              <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
                 {Array.from({ length: 5 }).map((_, i) => (
                   <tr key={i} className="animate-pulse">
-                    <td className="px-6 py-4"><div className="h-4 w-28 bg-slate-200 dark:bg-slate-700 rounded" /></td>
-                    <td className="px-6 py-4"><div className="h-4 w-32 bg-slate-200 dark:bg-slate-700 rounded" /></td>
-                    <td className="px-6 py-4"><div className="h-4 w-32 bg-slate-200 dark:bg-slate-700 rounded" /></td>
-                    <td className="px-6 py-4"><div className="h-4 w-40 bg-slate-200 dark:bg-slate-700 rounded" /></td>
-                    <td className="px-6 py-4"><div className="h-4 w-24 bg-slate-200 dark:bg-slate-700 rounded" /></td>
-                    <td className="px-6 py-4"><div className="h-4 w-36 bg-slate-200 dark:bg-slate-700 rounded" /></td>
-                    <td className="px-6 py-4"><div className="h-4 w-16 bg-slate-200 dark:bg-slate-700 rounded mx-auto" /></td>
-                    <td className="px-6 py-4"><div className="h-4 w-16 bg-slate-200 dark:bg-slate-700 rounded mx-auto" /></td>
+                    <td className="px-3 py-3 md:px-6 md:py-4"><div className="h-4 w-28 bg-slate-200 dark:bg-slate-700 rounded" /></td>
+                    <td className="px-3 py-3 md:px-6 md:py-4"><div className="h-4 w-32 bg-slate-200 dark:bg-slate-700 rounded" /></td>
+                    <td className="px-3 py-3 md:px-6 md:py-4"><div className="h-4 w-32 bg-slate-200 dark:bg-slate-700 rounded" /></td>
+                    <td className="px-3 py-3 md:px-6 md:py-4"><div className="h-4 w-40 bg-slate-200 dark:bg-slate-700 rounded" /></td>
+                    <td className="px-3 py-3 md:px-6 md:py-4"><div className="h-4 w-24 bg-slate-200 dark:bg-slate-700 rounded" /></td>
+                    <td className="px-3 py-3 md:px-6 md:py-4"><div className="h-4 w-36 bg-slate-200 dark:bg-slate-700 rounded" /></td>
+                    <td className="px-3 py-3 md:px-6 md:py-4"><div className="h-4 w-16 bg-slate-200 dark:bg-slate-700 rounded mx-auto" /></td>
+                    <td className="px-3 py-3 md:px-6 md:py-4"><div className="h-4 w-16 bg-slate-200 dark:bg-slate-700 rounded mx-auto" /></td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
         ) : registrants.length === 0 ? (
-          <div className="border border-indigo-500/40 bg-indigo-500/5 px-5 py-6 rounded-xl text-center">
-            <p className="text-gray-500 dark:text-gray-400">
+          <div className="flex flex-col items-center justify-center py-12 text-center bg-white/80 md:bg-white/60 dark:bg-gray-800/30 rounded-xl border border-gray-200 dark:border-gray-700">
+            <p className="text-gray-400 dark:text-gray-500 text-sm">
               Belum ada data pendaftar
             </p>
           </div>
         ) : (
-          <div className="overflow-x-auto">
+          <div key="data" className="overflow-x-auto animate-fadeIn rounded-xl border border-gray-200 dark:border-gray-700 bg-white/80 md:bg-white/60 dark:bg-gray-800/30">
             <table className="w-full">
               <thead>
-                <tr className="bg-blue-600 text-white">
-                  <th className="px-6 py-4 text-left text-sm font-semibold">
-                    No. Pendaftaran
-                  </th>
-                  <th className="px-6 py-4 text-left text-sm font-semibold">
-                    Tanggal Daftar
-                  </th>
-                  <th className="px-6 py-4 text-left text-sm font-semibold">
-                    Tanggal Update
-                  </th>
-                  <th className="px-6 py-4 text-left text-sm font-semibold">
-                    Nama Lengkap
-                  </th>
-                  <th className="px-6 py-4 text-left text-sm font-semibold">
-                    No. HP
-                  </th>
-                  <th className="px-6 py-4 text-left text-sm font-semibold">
-                    Alamat
-                  </th>
-                  <th className="px-6 py-4 text-center text-sm font-semibold">
-                    Aksi
-                  </th>
+                <tr className="bg-indigo-700 text-indigo-50 tracking-wider text-xs md:text-sm">
+                  <th className="px-3 py-3 md:px-6 md:py-4 text-left font-semibold">No. Pendaftaran</th>
+                  <th className="px-3 py-3 md:px-6 md:py-4 text-left font-semibold">Tanggal Daftar</th>
+                  <th className="px-3 py-3 md:px-6 md:py-4 text-left font-semibold">Tanggal Update</th>
+                  <th className="px-3 py-3 md:px-6 md:py-4 text-left font-semibold">Nama Lengkap</th>
+                  <th className="px-3 py-3 md:px-6 md:py-4 text-left font-semibold">No. HP</th>
+                  <th className="px-3 py-3 md:px-6 md:py-4 text-left font-semibold">Alamat</th>
+                  <th className="px-3 py-3 md:px-6 md:py-4 text-center font-semibold">Aksi</th>
                   {userRole !== "kepala" && (
-                    <th className="px-6 py-4 text-center text-sm font-semibold">
-                      Validasi
-                    </th>
+                    <th className="px-3 py-3 md:px-6 md:py-4 text-center font-semibold">Validasi</th>
                   )}
                 </tr>
               </thead>
-              <tbody className="divide-y bg-white divide-gray-200 dark:divide-gray-700 dark:bg-gray-800">
+              <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
                 {paginatedRegistrants.map((registrant, index) => (
                   <tr
                     key={registrant._id || registrant.id}
-                    className="hover:bg-blue-50 dark:hover:bg-gray-700/50 transition-colors"
+                    className="transition-colors animate-fadeIn hover:bg-indigo-50/50 dark:hover:bg-indigo-900/20"
                   >
-                    <td className="px-6 py-4 text-sm text-gray-600 dark:text-gray-300">
+                    <td className="px-3 py-3 md:px-6 md:py-4 text-sm text-gray-600 dark:text-gray-300 whitespace-nowrap">
                       {registrant.registrationNumber || "-"}
                     </td>
-                    <td className="px-6 py-4 text-sm text-gray-600 dark:text-gray-300">
+                    <td className="px-3 py-3 md:px-6 md:py-4 text-sm text-gray-600 dark:text-gray-300 whitespace-nowrap">
                       {formatCreatedDate(registrant.createdAt)}
                     </td>
-                    <td className="px-6 py-4 text-sm text-gray-600 dark:text-gray-300">
+                    <td className="px-3 py-3 md:px-6 md:py-4 text-sm text-gray-600 dark:text-gray-300 whitespace-nowrap">
                       {formatCreatedDate(registrant.updatedAt)}
                     </td>
-                    <td className="px-6 py-4 text-sm font-medium text-gray-900 dark:text-white">
+                    <td className="px-3 py-3 md:px-6 md:py-4 text-sm font-medium text-gray-900 dark:text-white whitespace-nowrap">
                       {registrant.student?.fullName || "-"}
                     </td>
-                    <td className="px-6 py-4 text-sm text-gray-600 dark:text-gray-300">
+                    <td className="px-3 py-3 md:px-6 md:py-4 text-sm text-gray-600 dark:text-gray-300 whitespace-nowrap">
                       {registrant.contactPhoneNumber || "-"}
                     </td>
-                    <td className="px-6 py-4 text-sm text-gray-600 dark:text-gray-300 max-w-xs truncate">
+                    <td className="px-3 py-3 md:px-6 md:py-4 text-sm text-gray-600 dark:text-gray-300 max-w-[200px] truncate">
                       {registrant.student?.address?.street
                         ? `${registrant.student.address.street}, ${registrant.student.address.village || ""} ${registrant.student.address.district || ""}`
                         : "-"}
                     </td>
-                    <td className="px-6 py-4 text-center flex">
-                      <button
-                        onClick={() => handlePrint(registrant)}
-                        className="inline-flex items-center justify-center p-2 text-blue-600 hover:bg-blue-100 rounded-lg transition-colors dark:text-blue-400 dark:hover:bg-blue-900/30 cursor-pointer"
-                        title="Cetak Formulir"
-                      >
-                        <Printer size={20} />
-                      </button>
-                      {userRole !== "kepala" && (
+                    <td className="px-3 py-3 md:px-6 md:py-4 text-center">
+                      <div className="flex items-center justify-center gap-1">
                         <button
-                          onClick={() =>
-                            router.push(
-                              `/data-pendaftar/edit/${registrant._id || registrant.id}`,
-                            )
-                          }
-                          className="inline-flex items-center justify-center p-2 text-indigo-600 hover:bg-indigo-100 rounded-lg transition-colors dark:text-indigo-400 dark:hover:bg-indigo-900/30 cursor-pointer"
-                          title="Edit Data"
+                          onClick={() => handlePrint(registrant)}
+                          className="p-2 text-blue-600 hover:bg-blue-100 rounded-lg transition-colors dark:text-blue-400 dark:hover:bg-blue-900/30 cursor-pointer"
+                          title="Cetak Formulir"
                         >
-                          <Pencil size={20} />
+                          <Printer size={18} />
                         </button>
-                      )}
+                        {userRole !== "kepala" && (
+                          <button
+                            onClick={() =>
+                              router.push(
+                                `/data-pendaftar/edit/${registrant._id || registrant.id}`,
+                              )
+                            }
+                            className="p-2 text-indigo-600 hover:bg-indigo-100 rounded-lg transition-colors dark:text-indigo-400 dark:hover:bg-indigo-900/30 cursor-pointer"
+                            title="Edit Data"
+                          >
+                            <Pencil size={18} />
+                          </button>
+                        )}
+                      </div>
                     </td>
                     {userRole !== "kepala" && (
-                    <td className="px-6 py-4 text-center">
+                    <td className="px-3 py-3 md:px-6 md:py-4 text-center">
                       <button
                         onClick={() =>
                           handleValidate(
@@ -692,7 +705,7 @@ export default function DataPendaftar() {
                               ? "text-green-600 bg-green-100 dark:text-green-400 dark:bg-green-900/30 animate-pulse"
                               : "text-green-600 bg-green-100 dark:text-green-400 dark:bg-green-900/30 hover:scale-110"
                             : validating.has(registrant._id as string)
-                              ? "text-blue-600 bg-blue-100 dark:text-blue-400 dark:bg-blue-900/30 animate-pulse"
+                              ? "text-indigo-600 bg-indigo-100 dark:text-indigo-400 dark:bg-indigo-900/30 animate-pulse"
                               : "text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700/50 hover:scale-110"
                         }`}
                         title={
@@ -704,11 +717,11 @@ export default function DataPendaftar() {
                         }
                       >
                         {validating.has(registrant._id as string) ? (
-                          <Loader2 size={20} className="animate-spin" />
+                          <Loader2 size={18} className="animate-spin" />
                         ) : registrant.status === "validated" ? (
-                          <CheckCircle2 size={20} />
+                          <CheckCircle2 size={18} />
                         ) : (
-                          <Circle size={20} />
+                          <Circle size={18} />
                         )}
                       </button>
                     </td>
@@ -719,18 +732,18 @@ export default function DataPendaftar() {
             </table>
           </div>
         )}
-      </div>
 
-      {/* Pagination */}
-      {registrants.length > 0 && (
-        <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onPageChange={(page) => setCurrentPage(page)}
-          itemsPerPage={itemsPerPage}
-          totalItems={registrants.length}
-        />
-      )}
+        {/* Pagination */}
+        {!loading && registrants.length > 0 && (
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={(page) => setCurrentPage(page)}
+            itemsPerPage={itemsPerPage}
+            totalItems={registrants.length}
+          />
+        )}
+      </div>
     </div>
   );
 }

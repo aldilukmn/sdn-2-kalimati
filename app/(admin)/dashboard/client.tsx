@@ -9,7 +9,7 @@ import AttendanceBarChart from "@/app/components/AttendanceBarChart";
 import MonthYearPicker from "@/app/components/MonthYearPicker";
 import Pagination from "@/app/components/Pagination";
 import StudentAttendanceTable from "@/app/components/StudentAttendanceTable";
-import { Users, Mars, Venus, Loader2, GraduationCap } from "lucide-react";
+import { Users, Mars, Venus, Loader2, LayoutDashboard } from "lucide-react";
 import { useDashboard } from "@/hooks/useDashboard";
 import { useTeacherChart } from "@/hooks/useTeacherChart";
 import type { AttendanceRow } from "@/lib/merge-attendance";
@@ -41,6 +41,25 @@ function AdminDashboardView({ initialSummary, initialMonth, initialYear }: { ini
 
   return (
     <div className="p-4 md:p-6 space-y-6">
+      {/* Hero */}
+      <div className="relative bg-gradient-to-br from-indigo-500 via-indigo-600 to-purple-600 rounded-2xl overflow-hidden shadow-xl">
+        <div className="absolute -top-6 -right-6 w-40 h-40 bg-white/5 rounded-full blur-2xl" />
+        <div className="absolute -bottom-8 -left-8 w-48 h-48 bg-indigo-400/20 rounded-full blur-3xl" />
+        <div className="relative p-5 md:p-6 flex items-center gap-4">
+          <div className="shrink-0 w-12 h-12 md:w-14 md:h-14 bg-white/15 rounded-xl flex items-center justify-center animate-iconBounce">
+            <LayoutDashboard size={26} className="md:size-[30px] text-white" />
+          </div>
+          <div>
+            <h1 className="text-white text-lg md:text-xl font-bold">
+              Dashboard Admin
+            </h1>
+            <p className="text-indigo-200/80 text-xs md:text-sm mt-0.5">
+              Ringkasan data pendaftar, guru, dan kehadiran siswa
+            </p>
+          </div>
+        </div>
+      </div>
+
       {error && (
         <div className="p-4 bg-red-100 border border-red-400 text-red-700 rounded-lg dark:bg-red-900/30 dark:border-red-700 dark:text-red-200">
           {error}
@@ -48,8 +67,13 @@ function AdminDashboardView({ initialSummary, initialMonth, initialYear }: { ini
       )}
       <DashboardStatCards summary={summary} loading={loading} />
 
-      <div className="flex gap-3">
-        <select
+      {/* Periode */}
+      <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
+        <label className="mb-2 block text-xs font-semibold text-gray-500 dark:text-gray-400 tracking-wider">
+          Periode
+        </label>
+        <div className="flex gap-3">
+          <select
           value={month}
           onChange={(e) => setMonth(Number(e.target.value))}
           className="rounded-xl border border-slate-300 bg-slate-50 px-4 py-2 text-sm cursor-pointer dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100 focus:border-blue-500"
@@ -73,9 +97,10 @@ function AdminDashboardView({ initialSummary, initialMonth, initialYear }: { ini
           ))}
         </select>
       </div>
+      </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="border border-emerald-500/40 dark:border-emerald-500/30 rounded-xl p-5 bg-emerald-500/5 dark:bg-emerald-500/10 shadow hover:shadow-md hover:bg-emerald-500/10 duration-300">
+        <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
           <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">
             Distribusi Kehadiran
           </h3>
@@ -91,7 +116,7 @@ function AdminDashboardView({ initialSummary, initialMonth, initialYear }: { ini
             totalDays={summary?.totalDays}
           />
         </div>
-        <div className="border border-indigo-500/40 dark:border-indigo-500/30 rounded-xl p-5 bg-indigo-500/5 dark:bg-indigo-500/10 shadow hover:shadow-md hover:bg-indigo-500/10 duration-300">
+        <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
           <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">
             Kehadiran per Kelas
           </h3>
@@ -188,7 +213,7 @@ function GuruDashboardView({
             <div className="absolute -bottom-8 -left-8 w-48 h-48 bg-indigo-400/20 rounded-full blur-3xl" />
             <div className="relative p-5 md:p-6 flex items-center gap-5">
               <div className="shrink-0 w-14 h-14 md:w-16 md:h-16 bg-white/15 backdrop-blur-sm rounded-xl flex items-center justify-center animate-iconBounce">
-                <GraduationCap
+                <LayoutDashboard
                   size={28}
                   className="md:size-[32px] text-white"
                 />
@@ -245,7 +270,7 @@ function GuruDashboardView({
           </div>
 
           <div className="shrink-0">
-            <label className="mb-2 block text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+            <label className="mb-2 block text-xs font-semibold text-gray-500 dark:text-gray-400 tracking-wider">
               Periode
             </label>
             <MonthYearPicker
