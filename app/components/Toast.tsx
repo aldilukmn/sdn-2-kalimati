@@ -22,8 +22,8 @@ export default function Toast({
   }, [onClose, duration]);
 
   const isSuccess = type === "success";
-  const borderColor = isSuccess ? "border-emerald-500/40 dark:border-emerald-500/30" : "border-red-500/40 dark:border-red-500/30";
-  const barColor = isSuccess ? "bg-emerald-400/70" : "bg-red-400/70";
+  const borderColor = isSuccess ? "border-emerald-500" : "border-red-500";
+  const barColor = isSuccess ? "bg-emerald-400" : "bg-red-400";
   const textColor = isSuccess
     ? "text-emerald-800 dark:text-emerald-200"
     : "text-red-800 dark:text-red-200";
