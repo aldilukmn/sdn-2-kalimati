@@ -77,7 +77,7 @@ export default function PresensiStatusBadge({ loading, countByStatus }: Props) {
               </p>
               {loading ? (
                 <div
-                  className={`h-5 w-8 rounded mt-0.5 animate-shimmer ${item.skeletonClass}`}
+                  className={`h-5 w-8 rounded mt-0.5 ${item.skeletonClass}`}
                 />
               ) : (
                 <p className={`text-lg font-bold ${item.textClass} leading-none`}>
