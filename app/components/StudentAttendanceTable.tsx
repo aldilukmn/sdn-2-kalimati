@@ -7,7 +7,7 @@ interface StudentRow {
   hadir: number;
   sakit: number;
   izin: number;
-  alpha: number;
+  absen: number;
 }
 
 interface Props {
@@ -45,8 +45,8 @@ const STATUS_COLUMNS = [
     text: "text-blue-700 dark:text-blue-300",
   },
   {
-    key: "alpha" as const,
-    label: "Alpha",
+    key: "absen" as const,
+    label: "Absen",
     dot: "bg-red-400",
     bg: "bg-red-100 dark:bg-red-900/30",
     text: "text-red-700 dark:text-red-300",
@@ -75,7 +75,7 @@ export default function StudentAttendanceTable({
 
   return (
     <div className="bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
-      <div className="overflow-x-auto animate-fadeInUp rounded-xl border border-gray-200 dark:border-gray-700 bg-white/60 dark:bg-gray-800/30 backdrop-blur-sm">
+      <div key={loading ? "skeleton" : "data"} className="overflow-x-auto animate-fadeIn rounded-xl border border-gray-200 dark:border-gray-700 bg-white/60 dark:bg-gray-800/30 backdrop-blur-sm">
         <table className="w-full text-sm">
           <thead>
             <tr className="bg-indigo-700 text-indigo-50 tracking-wider text-xs">
@@ -105,7 +105,7 @@ export default function StudentAttendanceTable({
               <th className="px-3 py-3 text-center font-semibold">
                 <span className="inline-flex items-center gap-1">
                   <span className="w-2 h-2 rounded-full bg-red-400" />
-                  Alpha
+                  Absen
                 </span>
               </th>
             </tr>
@@ -134,7 +134,7 @@ export default function StudentAttendanceTable({
                   </tr>
                 ))
               : data.map((row, i) => {
-                  const total = row.hadir + row.sakit + row.izin + row.alpha;
+                  const total = row.hadir + row.sakit + row.izin + row.absen;
                   const rate = total > 0 ? Math.round((row.hadir / total) * 100) : 0;
                   const colors = getRateColor(rate);
 

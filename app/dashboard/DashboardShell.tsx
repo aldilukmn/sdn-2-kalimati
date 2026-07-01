@@ -3,14 +3,18 @@
 import { useState } from "react";
 import DashboardSidebar from "@/app/components/DashboardSidebar";
 import DashboardNavbar from "@/app/components/DashboardNavbar";
-import { useAuth } from "@/app/contexts/AuthContext";
+
+interface Props {
+  children: React.ReactNode;
+  userRole?: string | null;
+  userName?: string | null;
+  userGrade?: string | null;
+}
 
 export default function DashboardShell({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
-  const { userRole } = useAuth();
+  userRole = null,
+}: Props) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   return (

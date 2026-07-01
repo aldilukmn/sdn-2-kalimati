@@ -16,7 +16,7 @@ interface Props {
   onStatusChange: (studentId: string, status: Entry["status"]) => void;
 }
 
-const STATUS_LIST = ["hadir", "sakit", "izin", "alpha"] as const;
+const STATUS_LIST = ["hadir", "sakit", "izin", "absen"] as const;
 
 export default function PresensiTable({
   paginatedEntries,
@@ -41,7 +41,7 @@ export default function PresensiTable({
 
   return (
     <div className="bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5 overflow-hidden">
-      <div className="overflow-x-auto rounded-xl border border-gray-200 dark:border-gray-700 bg-white/60 dark:bg-gray-800/30 backdrop-blur-sm">
+      <div key={loading ? "skeleton" : "data"} className="overflow-x-auto animate-fadeIn rounded-xl border border-gray-200 dark:border-gray-700 bg-white/60 dark:bg-gray-800/30 backdrop-blur-sm">
         <table className="w-full">
           <thead>
             <tr className="bg-indigo-700 text-indigo-50 tracking-wider text-xs md:text-sm">

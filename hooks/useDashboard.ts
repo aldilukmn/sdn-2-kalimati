@@ -14,7 +14,7 @@ export interface DashboardSummary {
     hadir: number;
     sakit: number;
     izin: number;
-    alpha: number;
+    absen: number;
   } | null;
   attendanceByGrade:
     | { grade: string; rate: number; studentCount: number }[]
@@ -30,15 +30,16 @@ export interface TeacherSummary {
 
 export const GRADES = ["1", "2", "3", "4", "5", "6"];
 
-export function useDashboard() {
+export function useDashboard(initialSummary?: DashboardSummary | null, initialMonth?: number, initialYear?: number) {
   const router = useRouter();
-  const now = new Date();
-  const [month, setMonth] = useState(now.getMonth() + 1);
-  const [year, setYear] = useState(now.getFullYear());
-  const [loading, setLoading] = useState(true);
-  const [chartLoading, setChartLoading] = useState(true);
+  const defaultMonth = initialMonth ?? new Date().getMonth() + 1;
+  const defaultYear = initialYear ?? new Date().getFullYear();
+  const [month, setMonth] = useState(defaultMonth);
+  const [year, setYear] = useState(defaultYear);
+  const [loading, setLoading] = useState(!initialSummary);
+  const [chartLoading, setChartLoading] = useState(!initialSummary);
   const [error, setError] = useState<string | null>(null);
-  const [summary, setSummary] = useState<DashboardSummary | null>(null);
+  const [summary, setSummary] = useState<DashboardSummary | null>(initialSummary ?? null);
 
   const fetchData = async (m: number, y: number, isInitial = false) => {
     try {
@@ -68,6 +69,10 @@ export function useDashboard() {
   };
 
   useEffect(() => {
+    if (initialSummary && month === defaultMonth && year === defaultYear) {
+      setChartLoading(false);
+      return;
+    }
     const isInitial = summary === null;
     if (isInitial) setLoading(true);
     setChartLoading(true);
@@ -93,8 +98,8 @@ export function useDashboard() {
           color: "#3b82f6",
         },
         {
-          name: "alpha",
-          value: summary.attendanceByStatus.alpha,
+          name: "absen",
+          value: summary.attendanceByStatus.absen,
           color: "#ef4444",
         },
       ]
@@ -113,12 +118,13 @@ export function useDashboard() {
   };
 }
 
-export function useTeacherDashboard() {
+export function useTeacherDashboard(initialSummary?: TeacherSummary | null) {
   const router = useRouter();
-  const [loading, setLoading] = useState(true);
-  const [summary, setSummary] = useState<TeacherSummary | null>(null);
+  const [loading, setLoading] = useState(!initialSummary);
+  const [summary, setSummary] = useState<TeacherSummary | null>(initialSummary ?? null);
 
   useEffect(() => {
+    if (initialSummary) return;
     const fetchData = async () => {
       try {
         const res = await DashboardService.getTeacherSummary();
@@ -128,18 +134,14 @@ export function useTeacherDashboard() {
           maleCount: data.maleCount ?? 0,
           femaleCount: data.femaleCount ?? 0,
         });
-      } catch (err) {
-        const error = err as Error & { status?: number };
-        if (error.status === 401) {
-          router.replace("/login");
-          return;
-        }
+      } catch {
+        // ignore
       } finally {
         setLoading(false);
       }
     };
     fetchData();
-  }, [router]);
+  }, []);
 
   return { loading, summary };
 }

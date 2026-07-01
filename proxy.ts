@@ -5,6 +5,15 @@ const GRADUATION_ANNOUNCEMENT_DATE = new Date(
   Date.UTC(2026, 5, 2, 5, 0, 0)
 );
 
+const ROLE_ROUTES: Record<string, string[]> = {
+  "/dashboard": ["admin", "kepala", "guru"],
+  "/data-gtk": ["admin", "kepala"],
+  "/data-pendaftar": ["admin", "kepala"],
+  "/presensi-murid": ["guru"],
+  "/rekap-presensi": ["admin", "kepala", "guru"],
+  "/beranda-penjaga": ["penjaga"],
+};
+
 const BASE64_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 
 function decodeBase64(str: string): string {
@@ -43,14 +52,34 @@ function redirectToLogin(request: NextRequest) {
   return response;
 }
 
+function redirectToForbidden(request: NextRequest, role?: string) {
+  const target =
+    role === "guru" ? "/dashboard" :
+    role === "penjaga" ? "/beranda-penjaga" :
+    "/";
+  return NextResponse.redirect(new URL(target, request.url));
+}
+
 export function proxy(request: NextRequest) {
   const now = new Date();
   const pathname = request.nextUrl.pathname;
 
   const token = request.cookies.get("user_session")?.value;
 
-  // Proteksi dashboard — blokir guru, expired, corrupted
-  if (pathname.startsWith("/dashboard")) {
+  if (pathname === "/login") {
+    if (token && !isTokenExpired(token)) {
+      const payload = decodeJWTPayload(token);
+      const target = payload?.role === "penjaga" ? "/beranda-penjaga" : "/dashboard";
+      return NextResponse.redirect(new URL(target, request.url));
+    }
+    return NextResponse.next();
+  }
+
+  const matchedRoute = Object.keys(ROLE_ROUTES).find((r) =>
+    pathname === r || pathname.startsWith(r + "/")
+  );
+
+  if (matchedRoute) {
     if (!token || isTokenExpired(token)) {
       return redirectToLogin(request);
     }
@@ -59,27 +88,20 @@ export function proxy(request: NextRequest) {
     if (!payload) {
       return redirectToLogin(request);
     }
-  }
 
-  // Proteksi presensi — cek token + expired
-  if (pathname === "/dashboard") {
-    if (!token || isTokenExpired(token)) {
-      return redirectToLogin(request);
+    // Admin & kepala dapat akses semua route
+    if (payload.role === "admin" || payload.role === "kepala") {
+      return NextResponse.next();
     }
-  }
 
-  // Jika sudah login, tidak boleh ke login lagi
-  if (pathname === "/login") {
-    if (token) {
-      const payload = decodeJWTPayload(token);
-      if (payload?.role === "guru") {
-        return NextResponse.redirect(new URL("/dashboard", request.url));
-      }
-      return NextResponse.redirect(new URL("/dashboard", request.url));
+    const allowedRoles = ROLE_ROUTES[matchedRoute];
+    if (!allowedRoles.includes(payload.role)) {
+      return redirectToForbidden(request, payload.role);
     }
+
+    return NextResponse.next();
   }
 
-  // Cek tanggal kelulusan
   if (pathname === "/kelulusan") {
     if (now < GRADUATION_ANNOUNCEMENT_DATE) {
       return NextResponse.redirect(new URL("/", request.url));
@@ -94,6 +116,10 @@ export const config = {
     "/login",
     "/kelulusan",
     "/dashboard/:path*",
-    "/presensi"
-  ]
+    "/data-gtk/:path*",
+    "/data-pendaftar/:path*",
+    "/presensi-murid/:path*",
+    "/rekap-presensi",
+    "/beranda-penjaga",
+  ],
 };

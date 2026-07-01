@@ -57,3 +57,27 @@ types/           — User interface (server-side model)
 ## VSCode
 - Recommended extension: `bradlc.vscode-tailwindcss`
 - `.css` files associated as `tailwindcss`
+
+## Known Issues / Planned Splits
+
+| # | File | Masalah | Dampak |
+|---|---|---|---|
+| **1** | `app/(admin)/dashboard/client.tsx:148` | **Dynamic import** `StudentAttendanceService` di dalam `useEffect` — tiap ganti bulan, import ulang dari awal | Overhead tiap fetch, risk race condition |
+| **2** | `app/(admin)/dashboard/client.tsx:170` | **Perbandingan month/year pakai `new Date()`** — `now` di-set saat render, tidak update. Kalau user ganti bulan, skip logic salah | Bisa skip fetch padahal month berbeda |
+| **3** | ✅ | **Server fetch chart — duplicate merge logic** — kode merging attendance diekstrak ke `lib/merge-attendance.ts` | Reused di server + client |
+| **4** | `app/contexts/AuthContext.tsx` | **AuthContext fallback ke cookie** — membaca `document.cookie` setelah hydration. Kalau cookie expired, userRole jadi null meskipun sessionStorage masih ada | Tidak sync antara cookie & sessionStorage setelah expire |
+| **5** | ✅ | **AdminDashboardView** — server preload (sama seperti guru) | Loading flash hilang untuk role admin/kepala |
+| **6** | ✅ | **useTeacherChart** — terima initialData + skip fetch, pakai mergeAttendance dari shared lib | Code cleaner, reuse logic |
+| **7** | ✅ | **proxy.ts** — route protection + role-based access, login redirect sesuai role | Server-side protection, zero flash |
+
+### Urutan rekomendasi
+
+| Prioritas | Perbaikan | Token | Waktu |
+|---|---|---|---|
+| 🔴 1 | Dynamic import → static import | 2 baris | 2 menit |
+| 🟡 2 | Server kirim `initialMonth`/`initialYear`, client bandingkan akurat | ~10 baris | 5 menit |
+| 🟡 3 | Ekstrak helper function untuk merge chart data, reuse di server + client | ~15 baris | 10 menit |
+| 🟢 4 | Sync cookie vs sessionStorage di AuthContext | ~5 baris | 3 menit |
+| ✅ 5 | Preload AdminDashboard juga (sama seperti guru) | ~30 baris | 15 menit |
+| ✅ 6 | `useTeacherChart` terima `initialData` (seperti `useTeacherDashboard`) | ~15 baris | 10 menit |
+| ✅ 7 | Middleware route protection | ~40 baris | 20 menit |

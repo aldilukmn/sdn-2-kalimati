@@ -41,8 +41,8 @@ const ITEMS: StatusCardItem[] = [
     skeletonClass: "bg-blue-300 dark:bg-blue-600",
   },
   {
-    key: "alpha",
-    label: "Alpha",
+    key: "absen",
+    label: "Absen",
     icon: UserX,
     cardBg: "bg-red-500/5 dark:bg-red-500/10 border-red-500/30",
     iconBg: "bg-red-500",

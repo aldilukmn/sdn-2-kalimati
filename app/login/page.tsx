@@ -37,7 +37,12 @@ export default function LoginPage() {
       sessionStorage.setItem("user_fullName", fullName);
       sessionStorage.setItem("user_role", role);
       sessionStorage.setItem("user_grade", grade);
+      const enc = encodeURIComponent;
       document.cookie = `user_session=${token}; path=/; max-age=86400`;
+      document.cookie = `user_identifier=${enc(identifier)}; path=/; max-age=86400`;
+      document.cookie = `user_fullName=${enc(fullName)}; path=/; max-age=86400`;
+      document.cookie = `user_role=${enc(role)}; path=/; max-age=86400`;
+      document.cookie = `user_grade=${enc(grade)}; path=/; max-age=86400`;
 
       if (role === "guru") {
         router.push("/dashboard");

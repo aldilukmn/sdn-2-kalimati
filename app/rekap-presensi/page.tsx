@@ -108,7 +108,7 @@ export default function RekapPresensi() {
       hadir: studentData.filter((d) => d.status === "hadir").length,
       sakit: studentData.filter((d) => d.status === "sakit").length,
       izin: studentData.filter((d) => d.status === "izin").length,
-      alpha: studentData.filter((d) => d.status === "alpha").length,
+      absen: studentData.filter((d) => d.status === "absen").length,
     };
   };
 
@@ -193,7 +193,7 @@ export default function RekapPresensi() {
         {loading ? (
           <div className="bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl overflow-hidden">
             <TableSkeleton
-              headers={["No", "Nama", "Hadir", "Sakit", "Izin", "Alpha", "Kehadiran"]}
+              headers={["No", "Nama", "Hadir", "Sakit", "Izin", "Absen", "Kehadiran"]}
               rows={5}
             >
               {() => (
@@ -255,10 +255,10 @@ export default function RekapPresensi() {
               </div>
               <div className="border border-red-500/40 bg-red-500/5 px-4 py-3 rounded-xl text-center">
                 <div className="text-xs font-semibold text-gray-600 dark:text-gray-400 flex items-center justify-center gap-1">
-                  <UserX size={14} /> Alpha
+                  <UserX size={14} /> Absen
                 </div>
                 <div className="text-xl font-bold text-red-600 dark:text-red-400">
-                  {countByStatus("alpha")}
+                  {countByStatus("absen")}
                 </div>
               </div>
             </div> */}
@@ -288,7 +288,7 @@ export default function RekapPresensi() {
                         Izin
                       </th>
                       <th className="px-4 py-3 text-center text-xs font-semibold">
-                        Alpha
+                        Absen
                       </th>
                       <th className="px-4 py-3 text-center text-xs font-semibold">
                         Kehadiran
@@ -323,7 +323,7 @@ export default function RekapPresensi() {
                             {stats.izin}
                           </td>
                           <td className="px-4 py-3 text-sm text-center text-red-600 dark:text-red-400 font-medium">
-                            {stats.alpha}
+                            {stats.absen}
                           </td>
                           <td className="px-4 py-3 text-center">
                             <div className="flex items-center gap-2 justify-center">

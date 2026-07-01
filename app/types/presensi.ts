@@ -9,12 +9,12 @@ interface StudentAttendanceType {
   name: string;
   grade: string;
   date: string;
-  status: "hadir" | "sakit" | "izin" | "alpha";
+  status: "hadir" | "sakit" | "izin" | "absen";
   note?: string;
 }
 
 interface StudentAttendanceRequestType {
   date: string;
   grade: string;
-  entries: { studentId: string; status: "hadir" | "sakit" | "izin" | "alpha" }[];
+  entries: { studentId: string; status: "hadir" | "sakit" | "izin" | "absen" }[];
 }

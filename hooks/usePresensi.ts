@@ -8,14 +8,14 @@ import UserService from "@/services/user.service";
 export interface Entry {
   studentId: string;
   name: string;
-  status: "hadir" | "sakit" | "izin" | "alpha";
+  status: "hadir" | "sakit" | "izin" | "absen";
 }
 
 export const STATUS_LABEL: Record<string, string> = {
   hadir: "Hadir",
   sakit: "Sakit",
   izin: "Izin",
-  alpha: "Alpha",
+  absen: "Absen",
 };
 
 export const STATUS_BTN: Record<string, string> = {
@@ -24,7 +24,7 @@ export const STATUS_BTN: Record<string, string> = {
   sakit:
     "bg-yellow-500 hover:bg-yellow-600 text-white ring-2 ring-yellow-300 dark:ring-yellow-700",
   izin: "bg-blue-500 hover:bg-blue-600 text-white ring-2 ring-blue-300 dark:ring-blue-700",
-  alpha:
+  absen:
     "bg-red-500 hover:bg-red-600 text-white ring-2 ring-red-300 dark:ring-red-700",
 };
 

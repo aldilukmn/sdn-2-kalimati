@@ -13,7 +13,7 @@ const LABELS: Record<string, string> = {
   hadir: "Hadir",
   sakit: "Sakit",
   izin: "Izin",
-  alpha: "Alpha",
+  absen: "Absen",
 };
 
 export default function AttendanceDonutChart({ data, loading, totalDays }: Props) {
