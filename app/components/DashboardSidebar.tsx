@@ -9,8 +9,7 @@ import {
   CalendarCheck,
   Users,
   X,
-  ChevronLeft,
-  ChevronRight,
+  GraduationCap,
 } from "lucide-react";
 
 const menuItems = [
@@ -26,17 +25,13 @@ const penjagaMenuItems = [
 
 interface SidebarProps {
   isOpen: boolean;
-  isCollapsed: boolean;
   onClose: () => void;
-  onToggleCollapse: () => void;
   userRole: string | null;
 }
 
 export default function DashboardSidebar({
   isOpen,
-  isCollapsed,
   onClose,
-  onToggleCollapse,
   userRole,
 }: SidebarProps) {
   const pathname = usePathname();
@@ -60,76 +55,72 @@ export default function DashboardSidebar({
     <>
       {isOpen && (
         <div
-          className="fixed inset-0 bg-black/50 z-40 md:hidden"
+          className="fixed inset-0 bg-black/40 backdrop-blur-sm z-40 md:hidden"
           onClick={onClose}
         />
-      )}
-
-      {!isOpen && isCollapsed && (
-        <button
-          onClick={onToggleCollapse}
-          className="fixed left-0 top-1/2 -translate-y-1/2 z-40 hidden md:flex items-center justify-center w-6 h-20 bg-slate-800 dark:bg-slate-900 text-white rounded-r-lg shadow-lg hover:bg-slate-700 transition-all cursor-pointer group"
-          title="Tampilkan sidebar"
-        >
-          <ChevronRight size={16} className="group-hover:scale-110 transition-transform" />
-        </button>
       )}
 
       <aside
         className={`
           fixed top-0 left-0 h-full w-64 z-50
-          bg-slate-800 dark:bg-slate-900 text-white
+          bg-indigo-100/50 dark:bg-slate-800/80 backdrop-blur-xl
+          border-r border-slate-200 dark:border-slate-700
+          text-slate-700 dark:text-slate-200 shadow-lg
           transform transition-transform duration-300 ease-in-out
           ${isOpen ? "translate-x-0" : "-translate-x-full"}
-          ${isCollapsed ? "md:-translate-x-full" : "md:translate-x-0"}
+          md:translate-x-0
           flex flex-col
         `}
       >
-        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-700">
-          <span className="text-lg font-bold tracking-wide">Menu</span>
-          <div className="flex items-center gap-1">
-            <button
-              onClick={onToggleCollapse}
-              className="hidden md:flex p-1.5 rounded-lg hover:bg-slate-700 transition-colors cursor-pointer"
-              title="Sembunyikan sidebar"
-            >
-              <ChevronLeft size={20} />
-            </button>
-            <button
-              onClick={onClose}
-              className="md:hidden p-1.5 rounded-lg hover:bg-slate-700 transition-colors cursor-pointer"
-            >
-              <X size={20} />
-            </button>
+        {/* Header */}
+        <div className="flex items-center justify-between p-5 border-b border-indigo-300 dark:border-slate-700">
+          <div className="flex items-center gap-2.5 min-w-0">
+            <div className="w-8 h-8 shrink-0 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-md animate-iconBounce">
+              <GraduationCap size={16} className="text-white" />
+            </div>
+            <span className="text-sm font-bold tracking-wide truncate">
+              <span className="bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-300 dark:to-purple-300 bg-clip-text text-transparent">
+                SDN 2 Kalimati
+              </span>
+            </span>
           </div>
+          <button
+            onClick={onClose}
+            className="md:hidden p-1.5 rounded-lg hover:bg-slate-200/50 dark:hover:bg-slate-700/50 text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 transition-colors cursor-pointer"
+          >
+            <X size={18} />
+          </button>
         </div>
 
-        <nav className="flex-1 px-4 py-6 space-y-1">
+        {/* Nav */}
+        <nav className="flex-1 px-3 py-5 space-y-0.5 overflow-y-auto">
           {filteredMenuItems.map((item) => {
             const active = isActive(item.href);
+            const Icon = item.icon;
             return (
               <Link
                 key={item.label}
                 href={item.href}
                 onClick={onClose}
                 className={`
-                  flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium
+                  flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-sm font-medium
                   transition-all duration-200
                   ${
                     active
-                      ? "bg-slate-700 text-white shadow-md"
-                      : "text-slate-300 hover:bg-slate-700/50 hover:text-white"
+                      ? "bg-indigo-500/30 dark:bg-indigo-900/70 text-indigo-600 dark:text-indigo-300 border-r-2 border-indigo-500 dark:border-indigo-400"
+                      : "text-slate-600 dark:text-slate-400 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 hover:text-slate-800 dark:hover:text-slate-200"
                   }
                 `}
               >
-                <item.icon size={20} />
+                <Icon size={19} className="shrink-0" />
                 <span>{item.label}</span>
               </Link>
             );
           })}
         </nav>
 
-        <div className="px-6 py-4 border-t border-slate-700 text-xs text-slate-400">
+        {/* Footer */}
+        <div className="px-5 py-3.5 border-t border-indigo-300 dark:border-slate-700 text-[11px] text-slate-400 dark:text-slate-500">
           SDN 2 Kalimati &copy; {new Date().getFullYear()}
         </div>
       </aside>

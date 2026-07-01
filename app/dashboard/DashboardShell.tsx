@@ -12,25 +12,16 @@ export default function DashboardShell({
 }>) {
   const { userRole } = useAuth();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [isCollapsed, setIsCollapsed] = useState(false);
-
-  const toggleCollapse = () => setIsCollapsed((prev) => !prev);
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950">
       <DashboardSidebar
         isOpen={isSidebarOpen}
-        isCollapsed={isCollapsed}
         onClose={() => setIsSidebarOpen(false)}
-        onToggleCollapse={toggleCollapse}
         userRole={userRole}
       />
 
-      <div
-        className={`flex flex-col min-h-screen transition-all duration-300 ${
-          isCollapsed ? "md:pl-0" : "md:pl-64"
-        }`}
-      >
+      <div className="flex flex-col min-h-screen md:pl-64">
         <DashboardNavbar onMenuClick={() => setIsSidebarOpen(true)} />
         <main className="flex-1">{children}</main>
       </div>

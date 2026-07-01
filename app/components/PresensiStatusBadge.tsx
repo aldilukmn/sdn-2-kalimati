@@ -1,43 +1,53 @@
 "use client";
 
-import { UserCheck, UserX, Clock, FileText } from "lucide-react";
+import { UserCheck, Clock, FileText, UserX } from "lucide-react";
 
-interface StatusBadgeItem {
+interface StatusCardItem {
   key: string;
   label: string;
   icon: React.ElementType;
-  bg: string;
-  skeletonBg: string;
+  cardBg: string;
+  iconBg: string;
+  textClass: string;
+  skeletonClass: string;
 }
 
-const ITEMS: StatusBadgeItem[] = [
+const ITEMS: StatusCardItem[] = [
   {
     key: "hadir",
     label: "Hadir",
     icon: UserCheck,
-    bg: "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300",
-    skeletonBg: "bg-green-300 dark:bg-green-600",
+    cardBg: "bg-emerald-500/5 dark:bg-emerald-500/10 border-emerald-500/30",
+    iconBg: "bg-emerald-500",
+    textClass: "text-emerald-600 dark:text-emerald-400",
+    skeletonClass: "bg-emerald-300 dark:bg-emerald-600",
   },
   {
     key: "sakit",
     label: "Sakit",
     icon: Clock,
-    bg: "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-300",
-    skeletonBg: "bg-yellow-300 dark:bg-yellow-600",
+    cardBg: "bg-amber-500/5 dark:bg-amber-500/10 border-amber-500/30",
+    iconBg: "bg-amber-500",
+    textClass: "text-amber-600 dark:text-amber-400",
+    skeletonClass: "bg-amber-300 dark:bg-amber-600",
   },
   {
     key: "izin",
     label: "Izin",
     icon: FileText,
-    bg: "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300",
-    skeletonBg: "bg-blue-300 dark:bg-blue-600",
+    cardBg: "bg-blue-500/5 dark:bg-blue-500/10 border-blue-500/30",
+    iconBg: "bg-blue-500",
+    textClass: "text-blue-600 dark:text-blue-400",
+    skeletonClass: "bg-blue-300 dark:bg-blue-600",
   },
   {
     key: "alpha",
     label: "Alpha",
     icon: UserX,
-    bg: "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300",
-    skeletonBg: "bg-red-300 dark:bg-red-600",
+    cardBg: "bg-red-500/5 dark:bg-red-500/10 border-red-500/30",
+    iconBg: "bg-red-500",
+    textClass: "text-red-600 dark:text-red-400",
+    skeletonClass: "bg-red-300 dark:bg-red-600",
   },
 ];
 
@@ -48,23 +58,34 @@ interface Props {
 
 export default function PresensiStatusBadge({ loading, countByStatus }: Props) {
   return (
-    <div className="grid grid-cols-4 flex-wrap gap-3">
+    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
       {ITEMS.map((item) => {
         const Icon = item.icon;
         return (
-          <span
+          <div
             key={item.key}
-            className={`flex flex-col md:flex-row items-center gap-1 text-xs px-2.5 py-1 rounded-full ${item.bg}`}
+            className={`border ${item.cardBg} backdrop-blur-sm rounded-xl px-3.5 py-2.5 flex items-center gap-3`}
           >
-            <Icon size={14} /> {item.label}:{" "}
-            {loading ? (
-              <span
-                className={`inline-block h-3 w-5 rounded animate-pulse align-middle ${item.skeletonBg}`}
-              />
-            ) : (
-              countByStatus(item.key)
-            )}
-          </span>
+            <div
+              className={`w-9 h-9 ${item.iconBg} rounded-lg flex items-center justify-center shadow-sm`}
+            >
+              <Icon size={16} className="text-white" />
+            </div>
+            <div>
+              <p className="text-[11px] font-medium text-gray-500 dark:text-gray-400 leading-tight">
+                {item.label}
+              </p>
+              {loading ? (
+                <div
+                  className={`h-5 w-8 rounded mt-0.5 animate-shimmer ${item.skeletonClass}`}
+                />
+              ) : (
+                <p className={`text-lg font-bold ${item.textClass} leading-none`}>
+                  {countByStatus(item.key)}
+                </p>
+              )}
+            </div>
+          </div>
         );
       })}
     </div>

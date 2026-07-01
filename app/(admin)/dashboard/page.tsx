@@ -36,25 +36,17 @@ function GuruDashboard() {
   const [year, setYear] = useState(now.getFullYear());
   const [currentPage, setCurrentPage] = useState(1);
   const gradeReady = !!userGrade;
-  const { data: chartData, loading: chartLoading, hasAttendanceData } = useTeacherChart(
-    gradeReady ? userGrade : "",
-    month,
-    year,
-  );
+  const {
+    data: chartData,
+    loading: chartLoading,
+    hasAttendanceData,
+  } = useTeacherChart(gradeReady ? userGrade : "", month, year);
 
-  const [itemsPerPage, setItemsPerPage] = useState(5);
+  const itemsPerPage = 5;
 
   useEffect(() => {
     setCurrentPage(1);
   }, [month, year]);
-
-  useEffect(() => {
-    const mq = window.matchMedia("(min-width: 1024px)");
-    setItemsPerPage(mq.matches ? 6 : 5);
-    const handler = (e: MediaQueryListEvent) => setItemsPerPage(e.matches ? 6 : 5);
-    mq.addEventListener("change", handler);
-    return () => mq.removeEventListener("change", handler);
-  }, []);
   const totalPages = Math.ceil(chartData.length / itemsPerPage);
   const paginatedData = chartData.slice(
     (currentPage - 1) * itemsPerPage,
@@ -93,7 +85,10 @@ function GuruDashboard() {
             <div className="absolute -bottom-8 -left-8 w-48 h-48 bg-indigo-400/20 rounded-full blur-3xl" />
             <div className="relative p-5 md:p-6 flex items-center gap-5">
               <div className="shrink-0 w-14 h-14 md:w-16 md:h-16 bg-white/15 backdrop-blur-sm rounded-xl flex items-center justify-center animate-iconBounce">
-                <GraduationCap size={28} className="md:size-[32px] text-white" />
+                <GraduationCap
+                  size={28}
+                  className="md:size-[32px] text-white"
+                />
               </div>
               <div className="min-w-0">
                 <p className="text-indigo-200/80 text-xs md:text-sm font-medium tracking-wide">
@@ -102,9 +97,6 @@ function GuruDashboard() {
                 <h1 className="text-white text-lg md:text-xl font-bold truncate">
                   {userName || "Guru"}
                 </h1>
-                <p className="text-indigo-200 text-xs md:text-sm mt-0.5">
-                  Kelas {userGrade} · {summary?.totalStudents ?? "-"} Murid
-                </p>
               </div>
             </div>
           </div>
@@ -138,12 +130,21 @@ function GuruDashboard() {
         ))}
       </div>
 
-      <div className="bg-white/70 dark:bg-gray-800/40 backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl overflow-hidden">
-        <div className="bg-white/40 dark:bg-gray-800/30 backdrop-blur-xl border-b border-white/20 dark:border-gray-700/50 px-6 py-4">
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-            <h3 className="text-base font-semibold text-gray-800 dark:text-gray-200">
-              Kehadiran Murid
+      <div className="bg-white/70 dark:bg-gray-800/40 backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+          <div className="animate-fadeInUp">
+            <h3 className="text-lg md:text-xl font-semibold text-gray-800 dark:text-gray-200">
+              Rekapitulasi Kehadiran Murid
             </h3>
+            <p className="text-sm text-gray-500 dark:text-gray-400 mt-0.5">
+              Pantau kehadiran siswa per bulan
+            </p>
+          </div>
+
+          <div className="shrink-0">
+            <label className="mb-2 block text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+              Periode
+            </label>
             <MonthYearPicker
               month={month}
               year={year}
@@ -152,34 +153,41 @@ function GuruDashboard() {
             />
           </div>
         </div>
-        <div className="p-0">
-          {chartLoading ? (
-            <StudentAttendanceTable data={paginatedData} loading={chartLoading} totalItems={chartData.length} />
-          ) : !hasAttendanceData ? (
-            <div className="flex flex-col items-center justify-center py-16 px-4 text-center">
-              <div className="text-5xl mb-4">📭</div>
-              <p className="text-lg font-semibold text-gray-700 dark:text-gray-300">
-                Belum Ada Data Kehadiran
-              </p>
-              <p className="text-sm text-gray-500 dark:text-gray-400 mt-1 max-w-sm">
-                Silakan pilih bulan lain atau input presensi melalui menu
-                Presensi Murid terlebih dahulu.
-              </p>
-            </div>
-          ) : (
-            <>
-              <StudentAttendanceTable data={paginatedData} loading={chartLoading} totalItems={chartData.length} />
-              <Pagination
-                currentPage={currentPage}
-                totalPages={totalPages}
-                onPageChange={setCurrentPage}
-                itemsPerPage={itemsPerPage}
-                totalItems={chartData.length}
-              />
-            </>
-          )}
-        </div>
       </div>
+
+      {chartLoading ? (
+        <StudentAttendanceTable
+          data={paginatedData}
+          loading={chartLoading}
+          totalItems={chartData.length}
+        />
+      ) : !hasAttendanceData ? (
+        <div className="flex flex-col items-center justify-center py-16 px-4 text-center bg-white/70 dark:bg-gray-800/40 backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl">
+          <div className="text-5xl mb-4">📭</div>
+          <p className="text-lg font-semibold text-gray-700 dark:text-gray-300">
+            Belum Ada Data Kehadiran
+          </p>
+          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1 max-w-sm">
+            Silakan pilih bulan lain atau input presensi melalui menu
+            Presensi Murid terlebih dahulu.
+          </p>
+        </div>
+      ) : (
+        <>
+          <StudentAttendanceTable
+            data={paginatedData}
+            loading={chartLoading}
+            totalItems={chartData.length}
+          />
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={setCurrentPage}
+            itemsPerPage={itemsPerPage}
+            totalItems={chartData.length}
+          />
+        </>
+      )}
     </div>
   );
 }

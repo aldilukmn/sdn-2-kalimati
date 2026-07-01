@@ -29,7 +29,7 @@ export const STATUS_BTN: Record<string, string> = {
 };
 
 export const GRADES = ["1", "2", "3", "4", "5", "6"];
-export const ITEMS_PER_PAGE = 10;
+export const ITEMS_PER_PAGE = 5;
 
 export function usePresensi() {
   const router = useRouter();
@@ -193,6 +193,8 @@ export function usePresensi() {
     [entries],
   );
 
+  const clearMessage = useCallback(() => setMessage(null), []);
+
   const totalPages = Math.ceil(entries.length / ITEMS_PER_PAGE);
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const paginatedEntries = entries.slice(startIndex, startIndex + ITEMS_PER_PAGE);
@@ -216,6 +218,7 @@ export function usePresensi() {
     handleStatusChange,
     handleSave,
     countByStatus,
+    clearMessage,
     totalPages,
     startIndex,
     paginatedEntries,

@@ -191,39 +191,41 @@ export default function RekapPresensi() {
         )}
 
         {loading ? (
-          <TableSkeleton
-            headers={["No", "Nama", "Hadir", "Sakit", "Izin", "Alpha", "Kehadiran"]}
-            rows={5}
-          >
-            {() => (
-              <>
-                <td className="px-4 py-3">
-                  <div className="h-4 w-4 bg-gray-200 dark:bg-gray-700 rounded" />
-                </td>
-                <td className="px-4 py-3">
-                  <div className="h-4 w-48 bg-gray-200 dark:bg-gray-700 rounded" />
-                </td>
-                <td className="px-4 py-3">
-                  <div className="h-4 w-8 bg-gray-200 dark:bg-gray-700 rounded mx-auto" />
-                </td>
-                <td className="px-4 py-3">
-                  <div className="h-4 w-8 bg-gray-200 dark:bg-gray-700 rounded mx-auto" />
-                </td>
-                <td className="px-4 py-3">
-                  <div className="h-4 w-8 bg-gray-200 dark:bg-gray-700 rounded mx-auto" />
-                </td>
-                <td className="px-4 py-3">
-                  <div className="h-4 w-8 bg-gray-200 dark:bg-gray-700 rounded mx-auto" />
-                </td>
-                <td className="px-4 py-3">
-                  <div className="flex items-center gap-2 justify-center">
-                    <div className="h-2 w-20 bg-gray-200 dark:bg-gray-700 rounded-full" />
-                    <div className="h-4 w-8 bg-gray-200 dark:bg-gray-700 rounded" />
-                  </div>
-                </td>
-              </>
-            )}
-          </TableSkeleton>
+          <div className="bg-white/70 dark:bg-gray-800/40 backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl overflow-hidden">
+            <TableSkeleton
+              headers={["No", "Nama", "Hadir", "Sakit", "Izin", "Alpha", "Kehadiran"]}
+              rows={5}
+            >
+              {() => (
+                <>
+                  <td className="px-4 py-3">
+                    <div className="h-4 w-4 bg-gray-200 dark:bg-gray-700 rounded" />
+                  </td>
+                  <td className="px-4 py-3">
+                    <div className="h-4 w-48 bg-gray-200 dark:bg-gray-700 rounded" />
+                  </td>
+                  <td className="px-4 py-3">
+                    <div className="h-4 w-8 bg-gray-200 dark:bg-gray-700 rounded mx-auto" />
+                  </td>
+                  <td className="px-4 py-3">
+                    <div className="h-4 w-8 bg-gray-200 dark:bg-gray-700 rounded mx-auto" />
+                  </td>
+                  <td className="px-4 py-3">
+                    <div className="h-4 w-8 bg-gray-200 dark:bg-gray-700 rounded mx-auto" />
+                  </td>
+                  <td className="px-4 py-3">
+                    <div className="h-4 w-8 bg-gray-200 dark:bg-gray-700 rounded mx-auto" />
+                  </td>
+                  <td className="px-4 py-3">
+                    <div className="flex items-center gap-2 justify-center">
+                      <div className="h-2 w-20 bg-gray-200 dark:bg-gray-700 rounded-full" />
+                      <div className="h-4 w-8 bg-gray-200 dark:bg-gray-700 rounded" />
+                    </div>
+                  </td>
+                </>
+              )}
+            </TableSkeleton>
+          </div>
         ) : (
           <>
             {/* <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">

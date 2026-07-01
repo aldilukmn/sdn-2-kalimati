@@ -1,7 +1,5 @@
 "use client";
 
-import { Loader2 } from "lucide-react";
-
 interface StudentRow {
   _id: string;
   studentIndex: number;
@@ -18,43 +16,56 @@ interface Props {
   totalItems?: number;
 }
 
-const STATUSES = [
-  { key: "hadir" as const, label: "Hadir", dot: "bg-emerald-400", bg: "bg-emerald-50 dark:bg-emerald-900/20", text: "text-emerald-700 dark:text-emerald-300" },
-  { key: "sakit" as const, label: "Sakit", dot: "bg-amber-400", bg: "bg-amber-50 dark:bg-amber-900/20", text: "text-amber-700 dark:text-amber-300" },
-  { key: "izin" as const, label: "Izin", dot: "bg-blue-400", bg: "bg-blue-50 dark:bg-blue-900/20", text: "text-blue-700 dark:text-blue-300" },
-  { key: "alpha" as const, label: "Alpha", dot: "bg-red-400", bg: "bg-red-50 dark:bg-red-900/20", text: "text-red-700 dark:text-red-300" },
+const RATE_COLORS = [
+  { min: 80, bar: "bg-emerald-500", avatar: "bg-emerald-500" },
+  { min: 50, bar: "bg-orange-500", avatar: "bg-orange-500" },
+  { min: 0, bar: "bg-red-500", avatar: "bg-red-500" },
 ];
 
-const RATE_COLORS = [
+const STATUS_COLUMNS = [
   {
-    min: 80,
-    bg: "bg-emerald-500",
-    ring: "stroke-emerald-500",
-    avatar: "bg-emerald-500",
+    key: "hadir" as const,
+    label: "Hadir",
+    dot: "bg-emerald-400",
+    bg: "bg-emerald-100 dark:bg-emerald-900/30",
+    text: "text-emerald-700 dark:text-emerald-300",
   },
   {
-    min: 50,
-    bg: "bg-orange-500",
-    ring: "stroke-orange-500",
-    avatar: "bg-orange-500",
+    key: "sakit" as const,
+    label: "Sakit",
+    dot: "bg-amber-400",
+    bg: "bg-amber-100 dark:bg-amber-900/30",
+    text: "text-amber-700 dark:text-amber-300",
   },
-  { min: 0, bg: "bg-red-500", ring: "stroke-red-500", avatar: "bg-red-500" },
+  {
+    key: "izin" as const,
+    label: "Izin",
+    dot: "bg-blue-400",
+    bg: "bg-blue-100 dark:bg-blue-900/30",
+    text: "text-blue-700 dark:text-blue-300",
+  },
+  {
+    key: "alpha" as const,
+    label: "Alpha",
+    dot: "bg-red-400",
+    bg: "bg-red-100 dark:bg-red-900/30",
+    text: "text-red-700 dark:text-red-300",
+  },
 ];
 
 function getRateColor(rate: number) {
-  return RATE_COLORS.find((c) => rate >= c.min) || RATE_COLORS[RATE_COLORS.length - 1];
+  return (
+    RATE_COLORS.find((c) => rate >= c.min) ||
+    RATE_COLORS[RATE_COLORS.length - 1]
+  );
 }
 
-export default function StudentAttendanceTable({ data, loading, totalItems = data.length }: Props) {
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center py-12">
-        <Loader2 size={28} className="animate-spin text-blue-500" />
-      </div>
-    );
-  }
-
-  if (!data || data.length === 0) {
+export default function StudentAttendanceTable({
+  data,
+  loading,
+  totalItems = data.length,
+}: Props) {
+  if (!loading && (!data || data.length === 0)) {
     return (
       <div className="text-center py-12 text-gray-500 dark:text-gray-400 text-sm">
         Belum ada data kehadiran
@@ -63,88 +74,116 @@ export default function StudentAttendanceTable({ data, loading, totalItems = dat
   }
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 p-4 animate-fadeInUp">
-      {data.map((row, i) => {
-        const total = row.hadir + row.sakit + row.izin + row.alpha;
-        const rate = total > 0 ? Math.round((row.hadir / total) * 100) : 0;
-        const colors = getRateColor(rate);
-        const circumference = 2 * Math.PI * 18;
-        const offset = circumference - (rate / 100) * circumference;
-
-        return (
-          <div
-            key={row._id}
-            className="group bg-white/80 dark:bg-gray-800/40 backdrop-blur-sm border border-gray-100 dark:border-gray-700/50 rounded-xl p-4 shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1 animate-fadeInUp"
-            style={{ animationDelay: `${i * 60}ms` }}
-          >
-            {/* Header: Avatar + Name + Rate */}
-            <div className="flex items-center gap-3 mb-3">
-              <div
-                className={`w-10 h-10 shrink-0 rounded-full flex items-center justify-center text-white font-bold text-sm shadow-sm ${colors.avatar}`}
-              >
-                {row.name.charAt(0).toUpperCase()}
-              </div>
-              <div className="min-w-0 flex-1">
-                <p className="font-semibold text-gray-800 dark:text-gray-200 truncate text-sm leading-tight">
-                  {row.name}
-                </p>
-                <p className="text-[11px] text-gray-400 dark:text-gray-500">
-                  #{row.studentIndex + 1} dari {totalItems}
-                </p>
-              </div>
-              <div className="relative shrink-0">
-                <svg width="44" height="44" className="-rotate-90">
-                  <circle
-                    cx="22" cy="22" r="18"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="3"
-                    className="text-gray-100 dark:text-gray-700"
-                  />
-                  <circle
-                    cx="22" cy="22" r="18"
-                    fill="none"
-                    strokeWidth="3"
-                    strokeLinecap="round"
-                    strokeDasharray={circumference}
-                    strokeDashoffset={offset}
-                    className={`transition-all duration-700 ${colors.ring}`}
-                  />
-                </svg>
-                <span className="absolute inset-0 flex items-center justify-center text-[11px] font-bold text-gray-700 dark:text-gray-300">
-                  {rate}%
+    <div className="bg-white/70 dark:bg-gray-800/40 backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
+      <div className="overflow-x-auto animate-fadeInUp rounded-xl border border-gray-200 dark:border-gray-700 bg-white/60 dark:bg-gray-800/30 backdrop-blur-sm">
+        <table className="w-full text-sm">
+          <thead>
+            <tr className="bg-indigo-700 text-indigo-50 tracking-wider text-xs">
+              <th className="px-3 py-3 font-semibold w-10">No</th>
+              <th className="px-3 py-3 text-left font-semibold">Nama</th>
+              <th className="px-3 py-3 text-center font-semibold min-w-[120px]">
+                Kehadiran (%)
+              </th>
+              <th className="px-3 py-3 text-center font-semibold">
+                <span className="inline-flex items-center gap-1">
+                  <span className="w-2 h-2 rounded-full bg-emerald-400" />
+                  Hadir
                 </span>
-              </div>
-            </div>
+              </th>
+              <th className="px-3 py-3 text-center font-semibold">
+                <span className="inline-flex items-center gap-1">
+                  <span className="w-2 h-2 rounded-full bg-amber-400" />
+                  Sakit
+                </span>
+              </th>
+              <th className="px-3 py-3 text-center font-semibold">
+                <span className="inline-flex items-center gap-1">
+                  <span className="w-2 h-2 rounded-full bg-blue-400" />
+                  Izin
+                </span>
+              </th>
+              <th className="px-3 py-3 text-center font-semibold">
+                <span className="inline-flex items-center gap-1">
+                  <span className="w-2 h-2 rounded-full bg-red-400" />
+                  Alpha
+                </span>
+              </th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-gray-300 dark:divide-gray-700">
+            {loading
+              ? Array.from({ length: 5 }).map((_, i) => (
+                  <tr key={i} className="animate-pulse">
+                    <td className="px-3 py-3">
+                      <div className="h-4 w-4 bg-gray-200 dark:bg-gray-700 rounded mx-auto" />
+                    </td>
+                    <td className="px-3 py-3">
+                      <div className="h-4 w-36 bg-gray-200 dark:bg-gray-700 rounded" />
+                    </td>
+                    <td className="px-3 py-3">
+                      <div className="flex items-center gap-2 justify-center">
+                        <div className="h-2.5 w-20 bg-gray-200 dark:bg-gray-700 rounded-full" />
+                        <div className="h-4 w-8 bg-gray-200 dark:bg-gray-700 rounded" />
+                      </div>
+                    </td>
+                    {[...Array(4)].map((_, j) => (
+                      <td key={j} className="px-3 py-3">
+                        <div className="h-5 w-10 bg-gray-200 dark:bg-gray-700 rounded-full mx-auto" />
+                      </td>
+                    ))}
+                  </tr>
+                ))
+              : data.map((row, i) => {
+                  const total = row.hadir + row.sakit + row.izin + row.alpha;
+                  const rate = total > 0 ? Math.round((row.hadir / total) * 100) : 0;
+                  const colors = getRateColor(rate);
 
-            {/* Status grid */}
-            <div className="grid grid-cols-2 gap-1.5 mb-3">
-              {STATUSES.map((s) => (
-                <div
-                  key={s.key}
-                  className={`flex items-center gap-1.5 px-2 py-1 rounded-lg ${s.bg}`}
-                >
-                  <span className={`w-2 h-2 rounded-full shrink-0 ${s.dot}`} />
-                  <span className={`text-xs font-medium ${s.text}`}>
-                    {row[s.key]}
-                  </span>
-                  <span className="text-[10px] text-gray-400 dark:text-gray-500 ml-auto">
-                    {s.label}
-                  </span>
-                </div>
-              ))}
-            </div>
-
-            {/* Progress bar */}
-            <div className="h-2 bg-gray-100 dark:bg-gray-700/50 rounded-full overflow-hidden">
-              <div
-                className={`h-full rounded-full transition-all duration-700 ${colors.bg}`}
-                style={{ width: `${rate}%` }}
-              />
-            </div>
-          </div>
-        );
-      })}
+                  return (
+                    <tr
+                      key={row._id}
+                      className="hover:bg-indigo-50/50 dark:hover:bg-indigo-900/20 transition-colors animate-fadeInUp"
+                      style={{ animationDelay: `${i * 60}ms` }}
+                    >
+                      <td className="px-3 py-3 text-gray-800 dark:text-gray-300 text-center">
+                        <span className="text font-mono">
+                          {row.studentIndex + 1}
+                        </span>
+                      </td>
+                      <td className="px-3 py-3">
+                        <div className="flex items-center gap-2.5">
+                          <span className="text-gray-800 dark:text-gray-200 truncate">
+                            {row.name}
+                          </span>
+                        </div>
+                      </td>
+                      <td className="px-3 py-3">
+                        <div className="flex items-center gap-2">
+                          <div className="flex-1 h-2.5 bg-gray-100 dark:bg-gray-700/50 rounded-full overflow-hidden">
+                            <div
+                              className={`h-full rounded-full transition-all duration-700 ${colors.bar}`}
+                              style={{ width: `${rate}%` }}
+                            />
+                          </div>
+                          <span className="text-xs font-semibold text-gray-600 dark:text-gray-400 w-9 text-right shrink-0">
+                            {rate}%
+                          </span>
+                        </div>
+                      </td>
+                      {STATUS_COLUMNS.map((s) => (
+                        <td key={s.key} className="px-3 py-3 text-center">
+                          <span
+                            className={`inline-flex items-center justify-center min-w-[2rem] px-2 py-0.5 rounded-full text-xs font-medium ${s.bg} ${s.text}`}
+                          >
+                            {row[s.key]}
+                          </span>
+                        </td>
+                      ))}
+                    </tr>
+                  );
+                })}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }

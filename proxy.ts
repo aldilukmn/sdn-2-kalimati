@@ -62,7 +62,7 @@ export function proxy(request: NextRequest) {
   }
 
   // Proteksi presensi — cek token + expired
-  if (pathname === "/presensi") {
+  if (pathname === "/dashboard") {
     if (!token || isTokenExpired(token)) {
       return redirectToLogin(request);
     }
@@ -73,7 +73,7 @@ export function proxy(request: NextRequest) {
     if (token) {
       const payload = decodeJWTPayload(token);
       if (payload?.role === "guru") {
-        return NextResponse.redirect(new URL("/presensi", request.url));
+        return NextResponse.redirect(new URL("/dashboard", request.url));
       }
       return NextResponse.redirect(new URL("/dashboard", request.url));
     }
