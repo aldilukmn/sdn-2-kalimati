@@ -31,7 +31,7 @@ export default function PresensiTable({
 }: Props) {
   if (!loading && totalItems === 0) {
     return (
-      <div className="bg-white/70 dark:bg-gray-800/40 backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl">
+      <div className="bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl">
         <div className="text-center py-12 text-gray-400 dark:text-gray-500 text-sm">
           Tidak ada siswa di kelas ini
         </div>
@@ -40,7 +40,7 @@ export default function PresensiTable({
   }
 
   return (
-    <div className="bg-white/70 dark:bg-gray-800/40 backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5 overflow-hidden">
+    <div className="bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5 overflow-hidden">
       <div className="overflow-x-auto rounded-xl border border-gray-200 dark:border-gray-700 bg-white/60 dark:bg-gray-800/30 backdrop-blur-sm">
         <table className="w-full">
           <thead>
@@ -75,7 +75,7 @@ export default function PresensiTable({
               : paginatedEntries.map((entry, i) => (
                   <tr
                     key={entry.studentId}
-                    className="hover:bg-indigo-50/50 dark:hover:bg-indigo-900/20 transition-colors animate-fadeInUp"
+                    className="hover:bg-indigo-50/50 dark:hover:bg-indigo-900/20 transition-colors animate-fadeIn"
                   >
                     <td className="p-3 text-sm text-gray-800 dark:text-gray-300 text-center">
                       {startIndex + i + 1}

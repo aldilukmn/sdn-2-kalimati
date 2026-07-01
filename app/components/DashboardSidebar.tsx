@@ -63,7 +63,7 @@ export default function DashboardSidebar({
       <aside
         className={`
           fixed top-0 left-0 h-full w-64 z-50
-          bg-indigo-100/50 dark:bg-slate-800/80 backdrop-blur-xl
+          bg-indigo-100/50 dark:bg-slate-800/80 md:backdrop-blur-xl
           border-r border-slate-200 dark:border-slate-700
           text-slate-700 dark:text-slate-200 shadow-lg
           transform transition-transform duration-300 ease-in-out

@@ -191,7 +191,7 @@ export default function RekapPresensi() {
         )}
 
         {loading ? (
-          <div className="bg-white/70 dark:bg-gray-800/40 backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl overflow-hidden">
+          <div className="bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl overflow-hidden">
             <TableSkeleton
               headers={["No", "Nama", "Hadir", "Sakit", "Izin", "Alpha", "Kehadiran"]}
               rows={5}

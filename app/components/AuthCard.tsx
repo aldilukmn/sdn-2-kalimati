@@ -14,7 +14,7 @@ export default function AuthCard({ title, subtitle, status, message, children }:
   return (
     <div className="relative w-full max-w-lg">
       <div className="absolute -inset-[1px] rounded-2xl bg-gradient-to-b from-blue-400/20 via-indigo-400/15 to-blue-500/20 dark:from-blue-500/15 dark:via-indigo-500/10 dark:to-blue-600/15" />
-      <div className="relative rounded-2xl border border-slate-200/60 bg-white/80 shadow-md backdrop-blur-xl dark:border-slate-700/60 dark:bg-gray-800/80">
+      <div className="relative rounded-2xl border border-slate-200/60 bg-white/80 shadow-md md:backdrop-blur-xl dark:border-slate-700/60 dark:bg-gray-800/80">
         <div className="p-6 md:p-8">
           <div className="mb-6 text-center">
             <div className="relative mx-auto mb-6 flex h-20 w-20 items-center justify-center">

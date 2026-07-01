@@ -74,7 +74,7 @@ export default function StudentAttendanceTable({
   }
 
   return (
-    <div className="bg-white/70 dark:bg-gray-800/40 backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
+    <div className="bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
       <div className="overflow-x-auto animate-fadeInUp rounded-xl border border-gray-200 dark:border-gray-700 bg-white/60 dark:bg-gray-800/30 backdrop-blur-sm">
         <table className="w-full text-sm">
           <thead>
@@ -141,9 +141,7 @@ export default function StudentAttendanceTable({
                   return (
                     <tr
                       key={row._id}
-                      className="hover:bg-indigo-50/50 dark:hover:bg-indigo-900/20 transition-colors animate-fadeInUp"
-                      style={{ animationDelay: `${i * 60}ms` }}
-                    >
+                      className="hover:bg-indigo-50/50 dark:hover:bg-indigo-900/20 transition-colors animate-fadeIn">
                       <td className="px-3 py-3 text-gray-800 dark:text-gray-300 text-center">
                         <span className="text font-mono">
                           {row.studentIndex + 1}

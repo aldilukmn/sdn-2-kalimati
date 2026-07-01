@@ -9,7 +9,7 @@ interface NavbarProps {
 
 export default function DashboardNavbar({ onMenuClick }: NavbarProps) {
   return (
-    <header className="sticky top-0 z-30 bg-indigo-100/50 dark:bg-slate-800/80 backdrop-blur-xl border-b border-indigo-300 dark:border-slate-700">
+    <header className="sticky top-0 z-30 bg-indigo-100/50 dark:bg-slate-800/80 md:backdrop-blur-xl border-b border-indigo-300 dark:border-slate-700">
       <div className="flex items-center justify-between px-4 md:px-6 py-3">
         <div className="flex items-center gap-3">
           <button

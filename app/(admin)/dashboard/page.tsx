@@ -107,7 +107,7 @@ function GuruDashboard() {
         {statCards.map((card) => (
           <div
             key={card.label}
-            className="group bg-white/70 dark:bg-gray-800/40 backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-5 flex items-center gap-4 transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 hover:shadow-xl"
+            className="group bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-5 flex items-center gap-4 transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 hover:shadow-xl"
           >
             <div
               className={`w-14 h-14 ${card.color} rounded-2xl flex items-center justify-center shadow-lg shadow-black/10 transition-transform duration-300 group-hover:rotate-3`}
@@ -130,7 +130,7 @@ function GuruDashboard() {
         ))}
       </div>
 
-      <div className="bg-white/70 dark:bg-gray-800/40 backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
+      <div className="bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <div className="animate-fadeInUp">
             <h3 className="text-lg md:text-xl font-semibold text-gray-800 dark:text-gray-200">
@@ -162,7 +162,7 @@ function GuruDashboard() {
           totalItems={chartData.length}
         />
       ) : !hasAttendanceData ? (
-        <div className="flex flex-col items-center justify-center py-16 px-4 text-center bg-white/70 dark:bg-gray-800/40 backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl">
+        <div className="flex flex-col items-center justify-center py-16 px-4 text-center bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl">
           <div className="text-5xl mb-4">📭</div>
           <p className="text-lg font-semibold text-gray-700 dark:text-gray-300">
             Belum Ada Data Kehadiran
