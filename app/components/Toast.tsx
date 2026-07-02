@@ -23,7 +23,7 @@ export default function Toast({
 
   const isSuccess = type === "success";
   const borderColor = isSuccess ? "border-emerald-500" : "border-red-500";
-  const bgColor = isSuccess ? "bg-emerald-50 dark:bg-emerald-900/40" : "bg-red-50 dark:bg-red-900/40";
+  const bgColor = isSuccess ? "bg-emerald-50 dark:bg-emerald-800" : "bg-red-50 dark:bg-red-800`";
   const barColor = isSuccess ? "bg-emerald-400" : "bg-red-400";
   const textColor = isSuccess
     ? "text-emerald-800 dark:text-emerald-200"
