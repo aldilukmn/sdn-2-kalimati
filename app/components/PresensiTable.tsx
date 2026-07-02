@@ -14,6 +14,7 @@ interface Props {
   loading: boolean;
   onPageChange: (page: number) => void;
   onStatusChange: (studentId: string, status: Entry["status"]) => void;
+  saveButton?: React.ReactNode;
 }
 
 const STATUS_LIST = ["hadir", "sakit", "izin", "absen"] as const;
@@ -28,6 +29,7 @@ export default function PresensiTable({
   loading,
   onPageChange,
   onStatusChange,
+  saveButton,
 }: Props) {
   if (!loading && totalItems === 0) {
     return (
@@ -40,8 +42,12 @@ export default function PresensiTable({
   }
 
   return (
-    <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5 overflow-hidden">
-      <div key={loading ? "skeleton" : "data"} className="overflow-x-auto animate-fadeIn rounded-xl border border-gray-200 dark:border-gray-700 bg-white/80 md:bg-white/60 dark:bg-gray-800/30 backdrop-blur-sm" style={{ transform: "translateZ(0)" }}>
+    <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5 overflow-hidden animate-fadeInUp">
+      <div
+        key={loading ? "skeleton" : "data"}
+        className="overflow-x-auto animate-fadeIn rounded-xl border border-gray-200 dark:border-gray-700 bg-white/80 md:bg-white/60 dark:bg-gray-800/30 backdrop-blur-sm"
+        style={{ transform: "translateZ(0)" }}
+      >
         <table className="w-full">
           <thead>
             <tr className="bg-indigo-700 text-indigo-50 tracking-wider text-xs md:text-sm">
@@ -132,6 +138,8 @@ export default function PresensiTable({
           />
         </div>
       )}
+
+      {saveButton && <div className="mt-4">{saveButton}</div>}
     </div>
   );
 }

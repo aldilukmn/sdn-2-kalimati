@@ -74,9 +74,8 @@ export default function StudentAttendanceTable({
   }
 
   return (
-    <div className="bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
-      <div key={loading ? "skeleton" : "data"} className="overflow-x-auto animate-fadeIn rounded-xl border border-gray-200 dark:border-gray-700 bg-white/60 dark:bg-gray-800/30 backdrop-blur-sm">
-        <table className="w-full text-sm">
+    <div key={loading ? "skeleton" : "data"} className="overflow-x-auto animate-fadeIn rounded-xl border border-gray-200 dark:border-gray-700 bg-white/60 dark:bg-gray-800/30 backdrop-blur-sm">
+      <table className="w-full text-sm">
           <thead>
             <tr className="bg-indigo-700 text-indigo-50 tracking-wider text-xs">
               <th className="px-3 py-3 font-semibold w-10">No</th>
@@ -182,6 +181,5 @@ export default function StudentAttendanceTable({
           </tbody>
         </table>
       </div>
-    </div>
   );
 }

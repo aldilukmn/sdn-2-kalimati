@@ -98,7 +98,7 @@ interface Props {
 
 export default function DashboardStatCards({ summary, loading }: Props) {
   return (
-    <div className="grid grid-cols-3 gap-3 md:gap-4">
+    <div className="grid grid-cols-3 gap-3 md:gap-4 animate-fadeInUp">
       {CARDS.map((card) => {
         const Icon = card.icon;
         const value = summary?.[card.key] ?? card.fallback;
@@ -111,11 +111,15 @@ export default function DashboardStatCards({ summary, loading }: Props) {
               <span className="text-[13px] text-center md:text-base font-semibold text-gray-600 dark:text-gray-400">
                 {card.label}
               </span>
-              <Icon className={`hidden md:block w-[22px] h-[22px] ${card.textClass}`} />
+              <Icon
+                className={`hidden md:block w-[22px] h-[22px] ${card.textClass}`}
+              />
             </div>
             <div className="flex items-center justify-center md:justify-start gap-2">
               <Icon className={`md:hidden w-4 h-4 ${card.textClass}`} />
-              <span className={`text-lg md:text-3xl font-bold ${card.textClass}`}>
+              <span
+                className={`text-lg md:text-3xl font-bold ${card.textClass}`}
+              >
                 {loading ? (
                   <div
                     className={`h-9 w-16 rounded ${card.skeletonClass} animate-pulse`}

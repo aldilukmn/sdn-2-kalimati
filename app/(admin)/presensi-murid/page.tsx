@@ -37,7 +37,7 @@ export default function PresensiMuridPage() {
   return (
     <div className="flex flex-col gap-6 p-4 md:p-6">
       {/* Hero */}
-      <div className="relative bg-gradient-to-br from-indigo-500 via-indigo-600 to-purple-600 rounded-2xl overflow-hidden shadow-xl">
+      <div className="relative bg-gradient-to-br from-indigo-500 via-indigo-600 to-purple-600 rounded-2xl overflow-hidden shadow-xl animate-fadeInUp">
         <div className="absolute -top-6 -right-6 w-40 h-40 bg-white/5 rounded-full blur-2xl" />
         <div className="absolute -bottom-8 -left-8 w-48 h-48 bg-indigo-400/20 rounded-full blur-3xl" />
         <div className="relative p-5 md:p-6 flex items-center gap-4">
@@ -56,7 +56,7 @@ export default function PresensiMuridPage() {
       </div>
 
       {/* Filters */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 animate-fadeInUp">
         <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
           <label className="mb-2 block text-xs font-semibold text-gray-500 dark:text-gray-400 tracking-wider">
             Kelas
@@ -93,7 +93,7 @@ export default function PresensiMuridPage() {
       </div>
 
       {/* Status summary */}
-      <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
+      <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5 animate-fadeInUp">
         <PresensiStatusBadge
           loading={loadingSiswa || syncing}
           countByStatus={countByStatus}
@@ -120,27 +120,27 @@ export default function PresensiMuridPage() {
         loading={loadingSiswa}
         onPageChange={setCurrentPage}
         onStatusChange={handleStatusChange}
+        saveButton={
+          entries.length > 0 ? (
+            <button
+              onClick={handleSave}
+              disabled={saving}
+              className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white rounded-xl text-sm font-semibold transition-all duration-300 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+            >
+              {saving ? (
+                <Loader2 size={18} className="animate-spin" />
+              ) : (
+                <Save size={18} />
+              )}
+              {saving
+                ? "Menyimpan..."
+                : isExisting
+                  ? "Perbarui Presensi"
+                  : "Simpan Presensi"}
+            </button>
+          ) : undefined
+        }
       />
-
-      {/* Save */}
-      {entries.length > 0 && (
-        <button
-          onClick={handleSave}
-          disabled={saving}
-          className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white rounded-xl text-sm font-semibold transition-all duration-300 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
-        >
-          {saving ? (
-            <Loader2 size={18} className="animate-spin" />
-          ) : (
-            <Save size={18} />
-          )}
-          {saving
-            ? "Menyimpan..."
-            : isExisting
-              ? "Perbarui Presensi"
-              : "Simpan Presensi"}
-        </button>
-      )}
     </div>
   );
 }

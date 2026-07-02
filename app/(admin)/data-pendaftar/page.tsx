@@ -473,7 +473,7 @@ export default function DataPendaftar() {
   return (
     <div className="p-4 md:p-6 space-y-6">
       {/* Hero */}
-      <div className="relative bg-gradient-to-br from-indigo-500 via-indigo-600 to-purple-600 rounded-2xl overflow-hidden shadow-xl">
+      <div className="relative bg-gradient-to-br from-indigo-500 via-indigo-600 to-purple-600 rounded-2xl overflow-hidden shadow-xl animate-fadeInUp">
         <div className="absolute -top-6 -right-6 w-40 h-40 bg-white/5 rounded-full blur-2xl" />
         <div className="absolute -bottom-8 -left-8 w-48 h-48 bg-indigo-400/20 rounded-full blur-3xl" />
         <div className="relative p-5 md:p-6 flex items-center gap-4">
@@ -501,7 +501,7 @@ export default function DataPendaftar() {
       )}
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-3 gap-3 md:gap-4">
+      <div className="grid grid-cols-3 gap-3 md:gap-4 animate-fadeInUp">
         <div className="bg-blue-500/5 dark:bg-blue-500/10 md:backdrop-blur-xl border border-blue-500/40 dark:border-blue-500/30 shadow-lg rounded-2xl p-3 md:p-5 transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 hover:shadow-xl">
           <div className="flex items-center md:items-start justify-center md:justify-between mb-1 md:mb-3 min-h-10">
             <span className="text-[13px] text-center md:text-base font-semibold text-gray-600 dark:text-gray-400">
@@ -559,7 +559,7 @@ export default function DataPendaftar() {
       </div>
 
       {/* Action Buttons */}
-      <div className="flex items-center gap-3 justify-end flex-wrap">
+      <div className="flex items-center gap-3 justify-end flex-wrap animate-fadeInUp">
         <button
           onClick={() => exportRegistrantsToCSV(registrants)}
           className="flex items-center gap-2 px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-sm font-semibold shadow-md transition-all duration-200 cursor-pointer"
@@ -575,38 +575,75 @@ export default function DataPendaftar() {
           title="Perbarui Data"
         >
           <RefreshCw size={18} className={refreshing ? "animate-spin" : ""} />
-          <span className="hidden sm:inline">{refreshing ? "Memuat..." : "Refresh"}</span>
+          <span className="hidden sm:inline">
+            {refreshing ? "Memuat..." : "Refresh"}
+          </span>
         </button>
       </div>
 
       {/* Table */}
-      <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5 overflow-hidden">
+      <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5 overflow-hidden animate-fadeInUp">
         {loading ? (
-          <div key="skeleton" className="overflow-x-auto animate-fadeIn rounded-xl border border-gray-200 dark:border-gray-700 bg-white/80 md:bg-white/60 dark:bg-gray-800/30">
+          <div
+            key="skeleton"
+            className="overflow-x-auto animate-fadeIn rounded-xl border border-gray-200 dark:border-gray-700 bg-white/80 md:bg-white/60 dark:bg-gray-800/30"
+          >
             <table className="w-full">
               <thead>
                 <tr className="bg-indigo-700 text-indigo-50 tracking-wider text-xs md:text-sm">
-                  <th className="px-3 py-3 md:px-6 md:py-4 text-left font-semibold">No. Pendaftaran</th>
-                  <th className="px-3 py-3 md:px-6 md:py-4 text-left font-semibold">Tanggal Daftar</th>
-                  <th className="px-3 py-3 md:px-6 md:py-4 text-left font-semibold">Tanggal Update</th>
-                  <th className="px-3 py-3 md:px-6 md:py-4 text-left font-semibold">Nama Lengkap</th>
-                  <th className="px-3 py-3 md:px-6 md:py-4 text-left font-semibold">No. HP</th>
-                  <th className="px-3 py-3 md:px-6 md:py-4 text-left font-semibold">Alamat</th>
-                  <th className="px-3 py-3 md:px-6 md:py-4 text-center font-semibold">Aksi</th>
-                  <th className="px-3 py-3 md:px-6 md:py-4 text-center font-semibold">Validasi</th>
+                  <th className="px-3 py-3 md:px-6 md:py-4 text-left font-semibold">
+                    No. Pendaftaran
+                  </th>
+                  <th className="px-3 py-3 md:px-6 md:py-4 text-left font-semibold">
+                    Tanggal Daftar
+                  </th>
+                  <th className="px-3 py-3 md:px-6 md:py-4 text-left font-semibold">
+                    Tanggal Update
+                  </th>
+                  <th className="px-3 py-3 md:px-6 md:py-4 text-left font-semibold">
+                    Nama Lengkap
+                  </th>
+                  <th className="px-3 py-3 md:px-6 md:py-4 text-left font-semibold">
+                    No. HP
+                  </th>
+                  <th className="px-3 py-3 md:px-6 md:py-4 text-left font-semibold">
+                    Alamat
+                  </th>
+                  <th className="px-3 py-3 md:px-6 md:py-4 text-center font-semibold">
+                    Aksi
+                  </th>
+                  <th className="px-3 py-3 md:px-6 md:py-4 text-center font-semibold">
+                    Validasi
+                  </th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
                 {Array.from({ length: 5 }).map((_, i) => (
                   <tr key={i} className="animate-pulse">
-                    <td className="px-3 py-3 md:px-6 md:py-4"><div className="h-4 w-28 bg-slate-200 dark:bg-slate-700 rounded" /></td>
-                    <td className="px-3 py-3 md:px-6 md:py-4"><div className="h-4 w-32 bg-slate-200 dark:bg-slate-700 rounded" /></td>
-                    <td className="px-3 py-3 md:px-6 md:py-4"><div className="h-4 w-32 bg-slate-200 dark:bg-slate-700 rounded" /></td>
-                    <td className="px-3 py-3 md:px-6 md:py-4"><div className="h-4 w-40 bg-slate-200 dark:bg-slate-700 rounded" /></td>
-                    <td className="px-3 py-3 md:px-6 md:py-4"><div className="h-4 w-24 bg-slate-200 dark:bg-slate-700 rounded" /></td>
-                    <td className="px-3 py-3 md:px-6 md:py-4"><div className="h-4 w-36 bg-slate-200 dark:bg-slate-700 rounded" /></td>
-                    <td className="px-3 py-3 md:px-6 md:py-4"><div className="h-4 w-16 bg-slate-200 dark:bg-slate-700 rounded mx-auto" /></td>
-                    <td className="px-3 py-3 md:px-6 md:py-4"><div className="h-4 w-16 bg-slate-200 dark:bg-slate-700 rounded mx-auto" /></td>
+                    <td className="px-3 py-3 md:px-6 md:py-4">
+                      <div className="h-4 w-28 bg-slate-200 dark:bg-slate-700 rounded" />
+                    </td>
+                    <td className="px-3 py-3 md:px-6 md:py-4">
+                      <div className="h-4 w-32 bg-slate-200 dark:bg-slate-700 rounded" />
+                    </td>
+                    <td className="px-3 py-3 md:px-6 md:py-4">
+                      <div className="h-4 w-32 bg-slate-200 dark:bg-slate-700 rounded" />
+                    </td>
+                    <td className="px-3 py-3 md:px-6 md:py-4">
+                      <div className="h-4 w-40 bg-slate-200 dark:bg-slate-700 rounded" />
+                    </td>
+                    <td className="px-3 py-3 md:px-6 md:py-4">
+                      <div className="h-4 w-24 bg-slate-200 dark:bg-slate-700 rounded" />
+                    </td>
+                    <td className="px-3 py-3 md:px-6 md:py-4">
+                      <div className="h-4 w-36 bg-slate-200 dark:bg-slate-700 rounded" />
+                    </td>
+                    <td className="px-3 py-3 md:px-6 md:py-4">
+                      <div className="h-4 w-16 bg-slate-200 dark:bg-slate-700 rounded mx-auto" />
+                    </td>
+                    <td className="px-3 py-3 md:px-6 md:py-4">
+                      <div className="h-4 w-16 bg-slate-200 dark:bg-slate-700 rounded mx-auto" />
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -619,19 +656,38 @@ export default function DataPendaftar() {
             </p>
           </div>
         ) : (
-          <div key="data" className="overflow-x-auto animate-fadeIn rounded-xl border border-gray-200 dark:border-gray-700 bg-white/80 md:bg-white/60 dark:bg-gray-800/30">
+          <div
+            key="data"
+            className="overflow-x-auto animate-fadeIn rounded-xl border border-gray-200 dark:border-gray-700 bg-white/80 md:bg-white/60 dark:bg-gray-800/30"
+          >
             <table className="w-full">
               <thead>
                 <tr className="bg-indigo-700 text-indigo-50 tracking-wider text-xs md:text-sm">
-                  <th className="px-3 py-3 md:px-6 md:py-4 text-left font-semibold">No. Pendaftaran</th>
-                  <th className="px-3 py-3 md:px-6 md:py-4 text-left font-semibold">Tanggal Daftar</th>
-                  <th className="px-3 py-3 md:px-6 md:py-4 text-left font-semibold">Tanggal Update</th>
-                  <th className="px-3 py-3 md:px-6 md:py-4 text-left font-semibold">Nama Lengkap</th>
-                  <th className="px-3 py-3 md:px-6 md:py-4 text-left font-semibold">No. HP</th>
-                  <th className="px-3 py-3 md:px-6 md:py-4 text-left font-semibold">Alamat</th>
-                  <th className="px-3 py-3 md:px-6 md:py-4 text-center font-semibold">Aksi</th>
+                  <th className="px-3 py-3 md:px-6 md:py-4 text-left font-semibold">
+                    No. Pendaftaran
+                  </th>
+                  <th className="px-3 py-3 md:px-6 md:py-4 text-left font-semibold">
+                    Tanggal Daftar
+                  </th>
+                  <th className="px-3 py-3 md:px-6 md:py-4 text-left font-semibold">
+                    Tanggal Update
+                  </th>
+                  <th className="px-3 py-3 md:px-6 md:py-4 text-left font-semibold">
+                    Nama Lengkap
+                  </th>
+                  <th className="px-3 py-3 md:px-6 md:py-4 text-left font-semibold">
+                    No. HP
+                  </th>
+                  <th className="px-3 py-3 md:px-6 md:py-4 text-left font-semibold">
+                    Alamat
+                  </th>
+                  <th className="px-3 py-3 md:px-6 md:py-4 text-center font-semibold">
+                    Aksi
+                  </th>
                   {userRole !== "kepala" && (
-                    <th className="px-3 py-3 md:px-6 md:py-4 text-center font-semibold">Validasi</th>
+                    <th className="px-3 py-3 md:px-6 md:py-4 text-center font-semibold">
+                      Validasi
+                    </th>
                   )}
                 </tr>
               </thead>
@@ -686,45 +742,45 @@ export default function DataPendaftar() {
                       </div>
                     </td>
                     {userRole !== "kepala" && (
-                    <td className="px-3 py-3 md:px-6 md:py-4 text-center">
-                      <button
-                        onClick={() =>
-                          handleValidate(
-                            registrant._id as string,
-                            registrant.status,
-                          )
-                        }
-                        disabled={validating.has(registrant._id as string)}
-                        className={`inline-flex items-center justify-center p-2 rounded-lg transition-all duration-300 ${
-                          validating.has(registrant._id as string)
-                            ? "cursor-not-allowed opacity-75"
-                            : "cursor-pointer"
-                        } ${
-                          registrant.status === "validated"
-                            ? validating.has(registrant._id as string)
-                              ? "text-green-600 bg-green-100 dark:text-green-400 dark:bg-green-900/30 animate-pulse"
-                              : "text-green-600 bg-green-100 dark:text-green-400 dark:bg-green-900/30 hover:scale-110"
-                            : validating.has(registrant._id as string)
-                              ? "text-indigo-600 bg-indigo-100 dark:text-indigo-400 dark:bg-indigo-900/30 animate-pulse"
-                              : "text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700/50 hover:scale-110"
-                        }`}
-                        title={
-                          validating.has(registrant._id as string)
-                            ? "Sedang memproses..."
-                            : registrant.status === "validated"
-                              ? "Data Tervalidasi"
-                              : "Data Belum Tervalidasi"
-                        }
-                      >
-                        {validating.has(registrant._id as string) ? (
-                          <Loader2 size={18} className="animate-spin" />
-                        ) : registrant.status === "validated" ? (
-                          <CheckCircle2 size={18} />
-                        ) : (
-                          <Circle size={18} />
-                        )}
-                      </button>
-                    </td>
+                      <td className="px-3 py-3 md:px-6 md:py-4 text-center">
+                        <button
+                          onClick={() =>
+                            handleValidate(
+                              registrant._id as string,
+                              registrant.status,
+                            )
+                          }
+                          disabled={validating.has(registrant._id as string)}
+                          className={`inline-flex items-center justify-center p-2 rounded-lg transition-all duration-300 ${
+                            validating.has(registrant._id as string)
+                              ? "cursor-not-allowed opacity-75"
+                              : "cursor-pointer"
+                          } ${
+                            registrant.status === "validated"
+                              ? validating.has(registrant._id as string)
+                                ? "text-green-600 bg-green-100 dark:text-green-400 dark:bg-green-900/30 animate-pulse"
+                                : "text-green-600 bg-green-100 dark:text-green-400 dark:bg-green-900/30 hover:scale-110"
+                              : validating.has(registrant._id as string)
+                                ? "text-indigo-600 bg-indigo-100 dark:text-indigo-400 dark:bg-indigo-900/30 animate-pulse"
+                                : "text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700/50 hover:scale-110"
+                          }`}
+                          title={
+                            validating.has(registrant._id as string)
+                              ? "Sedang memproses..."
+                              : registrant.status === "validated"
+                                ? "Data Tervalidasi"
+                                : "Data Belum Tervalidasi"
+                          }
+                        >
+                          {validating.has(registrant._id as string) ? (
+                            <Loader2 size={18} className="animate-spin" />
+                          ) : registrant.status === "validated" ? (
+                            <CheckCircle2 size={18} />
+                          ) : (
+                            <Circle size={18} />
+                          )}
+                        </button>
+                      </td>
                     )}
                   </tr>
                 ))}

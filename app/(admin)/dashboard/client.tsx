@@ -42,7 +42,7 @@ function AdminDashboardView({ initialSummary, initialMonth, initialYear }: { ini
   return (
     <div className="p-4 md:p-6 space-y-6">
       {/* Hero */}
-      <div className="relative bg-gradient-to-br from-indigo-500 via-indigo-600 to-purple-600 rounded-2xl overflow-hidden shadow-xl">
+      <div className="relative bg-gradient-to-br from-indigo-500 via-indigo-600 to-purple-600 rounded-2xl overflow-hidden shadow-xl animate-fadeInUp">
         <div className="absolute -top-6 -right-6 w-40 h-40 bg-white/5 rounded-full blur-2xl" />
         <div className="absolute -bottom-8 -left-8 w-48 h-48 bg-indigo-400/20 rounded-full blur-3xl" />
         <div className="relative p-5 md:p-6 flex items-center gap-4">
@@ -68,38 +68,38 @@ function AdminDashboardView({ initialSummary, initialMonth, initialYear }: { ini
       <DashboardStatCards summary={summary} loading={loading} />
 
       {/* Periode */}
-      <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
+      <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5 animate-fadeInUp">
         <label className="mb-2 block text-xs font-semibold text-gray-500 dark:text-gray-400 tracking-wider">
           Periode
         </label>
         <div className="flex gap-3">
           <select
-          value={month}
-          onChange={(e) => setMonth(Number(e.target.value))}
-          className="rounded-xl border border-slate-300 bg-slate-50 px-4 py-2 text-sm cursor-pointer dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100 focus:border-blue-500"
-          style={{ outline: "none" }}
-        >
-          {Array.from({ length: 12 }, (_, i) => (
-            <option key={i + 1} value={i + 1}>
-              {new Date(0, i).toLocaleDateString("id-ID", { month: "long" })}
-            </option>
-          ))}
-        </select>
-        <select
-          value={year}
-          onChange={(e) => setYear(Number(e.target.value))}
-          className="rounded-xl border border-slate-300 bg-slate-50 px-4 py-2 text-sm focus:border-blue-500 focus:ring-blue-200 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100 cursor-pointer"
-        >
-          {[2025, 2026, 2027].map((t) => (
-            <option key={t} value={t}>
-              {t}
-            </option>
-          ))}
-        </select>
-      </div>
+            value={month}
+            onChange={(e) => setMonth(Number(e.target.value))}
+            className="rounded-xl border border-slate-300 bg-slate-50 px-4 py-2 text-sm cursor-pointer dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100 focus:border-blue-500"
+            style={{ outline: "none" }}
+          >
+            {Array.from({ length: 12 }, (_, i) => (
+              <option key={i + 1} value={i + 1}>
+                {new Date(0, i).toLocaleDateString("id-ID", { month: "long" })}
+              </option>
+            ))}
+          </select>
+          <select
+            value={year}
+            onChange={(e) => setYear(Number(e.target.value))}
+            className="rounded-xl border border-slate-300 bg-slate-50 px-4 py-2 text-sm focus:border-blue-500 focus:ring-blue-200 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100 cursor-pointer"
+          >
+            {[2025, 2026, 2027].map((t) => (
+              <option key={t} value={t}>
+                {t}
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 animate-fadeInUp">
         <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
           <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">
             Distribusi Kehadiran
@@ -187,25 +187,28 @@ function GuruDashboardView({
       value: summary?.totalStudents,
       icon: Users,
       color: "bg-gradient-to-br from-violet-400 to-purple-600",
+      skeletonClass: "bg-violet-200 dark:bg-violet-700",
     },
     {
       label: "Laki-laki",
       value: summary?.maleCount,
       icon: Mars,
       color: "bg-gradient-to-br from-sky-400 to-blue-600",
+      skeletonClass: "bg-sky-200 dark:bg-sky-700",
     },
     {
       label: "Perempuan",
       value: summary?.femaleCount,
       icon: Venus,
       color: "bg-gradient-to-br from-rose-400 to-pink-600",
+      skeletonClass: "bg-rose-200 dark:bg-rose-700",
     },
   ];
 
   return (
     <div className="p-4 md:p-6 space-y-6">
       {!gradeReady ? (
-        <div className="h-28 w-full rounded-2xl animate-shimmer" />
+        <div className="h-28 w-full rounded-2xl animate-pulse bg-slate-200 dark:bg-slate-700" />
       ) : (
         <div className="animate-fadeInUp">
           <div className="relative bg-gradient-to-br from-indigo-500 via-indigo-600 to-purple-600 rounded-2xl overflow-hidden shadow-xl">
@@ -231,7 +234,7 @@ function GuruDashboardView({
         </div>
       )}
 
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 animate-fadeInUp">
         {statCards.map((card) => (
           <div
             key={card.label}
@@ -247,7 +250,9 @@ function GuruDashboardView({
                 {card.label}
               </p>
               {loading ? (
-                <div className="h-8 w-16 rounded mt-1 animate-shimmer" />
+                <div
+                  className={`h-8 w-16 rounded mt-1 animate-pulse ${card.skeletonClass}`}
+                />
               ) : (
                 <p className="text-2xl font-bold text-gray-800 dark:text-white">
                   {card.value ?? "-"}
@@ -284,11 +289,13 @@ function GuruDashboardView({
       </div>
 
       {chartLoading ? (
-        <StudentAttendanceTable
-          data={paginatedData}
-          loading={chartLoading}
-          totalItems={chartData.length}
-        />
+        <div className="bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5 animate-fadeInUp">
+          <StudentAttendanceTable
+            data={paginatedData}
+            loading={chartLoading}
+            totalItems={chartData.length}
+          />
+        </div>
       ) : !hasAttendanceData ? (
         <div className="flex flex-col items-center justify-center py-16 px-4 text-center bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl">
           <div className="text-5xl mb-4">📭</div>
@@ -301,20 +308,22 @@ function GuruDashboardView({
           </p>
         </div>
       ) : (
-        <>
+        <div className="bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
           <StudentAttendanceTable
             data={paginatedData}
             loading={chartLoading}
             totalItems={chartData.length}
           />
-          <Pagination
-            currentPage={currentPage}
-            totalPages={totalPages}
-            onPageChange={setCurrentPage}
-            itemsPerPage={itemsPerPage}
-            totalItems={chartData.length}
-          />
-        </>
+          <div className="mt-4">
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={setCurrentPage}
+              itemsPerPage={itemsPerPage}
+              totalItems={chartData.length}
+            />
+          </div>
+        </div>
       )}
     </div>
   );
