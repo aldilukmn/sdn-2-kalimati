@@ -34,7 +34,7 @@ export default function PresensiTable({
   if (!loading && totalItems === 0) {
     return (
       <div className="bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl">
-        <div className="text-center py-12 text-gray-400 dark:text-gray-500 text-sm">
+        <div className="text-center py-12 text-gray-400 dark:text-gray-500 text-sm animate-fadeInUp">
           Tidak ada siswa di kelas ini
         </div>
       </div>
@@ -42,7 +42,7 @@ export default function PresensiTable({
   }
 
   return (
-    <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5 overflow-hidden animate-fadeInUp">
+    <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5 overflow-hidden">
       <div
         key={loading ? "skeleton" : "data"}
         className="overflow-x-auto animate-fadeIn rounded-xl border border-gray-200 dark:border-gray-700 bg-white/80 md:bg-white/60 dark:bg-gray-800/30 backdrop-blur-sm"
@@ -56,7 +56,7 @@ export default function PresensiTable({
               <th className="px-4 py-3 text-center font-semibold">Kehadiran</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-300 dark:divide-gray-700">
+          <tbody className="divide-y divide-gray-300 dark:divide-gray-700 animate-fadeInUp">
             {loading
               ? Array.from({ length: 5 }).map((_, i) => (
                   <tr key={i} className="animate-pulse">

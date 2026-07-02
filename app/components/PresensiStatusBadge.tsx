@@ -58,7 +58,7 @@ interface Props {
 
 export default function PresensiStatusBadge({ loading, countByStatus }: Props) {
   return (
-    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 animate-fadeInUp">
       {ITEMS.map((item) => {
         const Icon = item.icon;
         return (
@@ -80,7 +80,9 @@ export default function PresensiStatusBadge({ loading, countByStatus }: Props) {
                   className={`h-5 w-8 rounded mt-0.5 ${item.skeletonClass}`}
                 />
               ) : (
-                <p className={`text-lg font-bold ${item.textClass} leading-none`}>
+                <p
+                  className={`text-lg font-bold ${item.textClass} leading-none`}
+                >
                   {countByStatus(item.key)}
                 </p>
               )}

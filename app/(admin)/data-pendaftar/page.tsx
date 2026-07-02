@@ -171,7 +171,7 @@ export default function DataPendaftar() {
     const token = sessionStorage.getItem("user_session");
     if (token) {
       try {
-        const payload = JSON.parse(atob(token.split('.')[1]));
+        const payload = JSON.parse(atob(token.split(".")[1]));
         setUserRole(payload.role);
       } catch {}
     }
@@ -467,15 +467,16 @@ export default function DataPendaftar() {
   const endIndex = startIndex + itemsPerPage;
   const paginatedRegistrants = registrants.slice(startIndex, endIndex);
 
-  if (authLoading || (authRole !== "admin" && authRole !== "kepala")) return null;
+  if (authLoading || (authRole !== "admin" && authRole !== "kepala"))
+    return null;
 
   return (
     <div className="p-4 md:p-6 space-y-6">
       {/* Hero */}
-      <div className="relative bg-gradient-to-br from-indigo-500 via-indigo-600 to-purple-600 rounded-2xl overflow-hidden shadow-xl animate-fadeInUp">
+      <div className="relative bg-gradient-to-br from-indigo-500 via-indigo-600 to-purple-600 rounded-2xl overflow-hidden shadow-xl">
         <div className="absolute -top-6 -right-6 w-40 h-40 bg-white/5 rounded-full blur-2xl" />
         <div className="absolute -bottom-8 -left-8 w-48 h-48 bg-indigo-400/20 rounded-full blur-3xl" />
-        <div className="relative p-5 md:p-6 flex items-center gap-4">
+        <div className="relative p-5 md:p-6 flex items-center gap-4 animate-fadeInUp">
           <div className="shrink-0 w-12 h-12 md:w-14 md:h-14 bg-white/15 rounded-xl flex items-center justify-center animate-iconBounce">
             <ClipboardList size={26} className="md:size-[30px] text-white" />
           </div>
@@ -491,59 +492,65 @@ export default function DataPendaftar() {
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-3 gap-3 md:gap-4 animate-fadeInUp">
+      <div className="grid grid-cols-3 gap-3 md:gap-4">
         <div className="bg-blue-500/5 dark:bg-blue-500/10 md:backdrop-blur-xl border border-blue-500/40 dark:border-blue-500/30 shadow-lg rounded-2xl p-3 md:p-5 transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 hover:shadow-xl">
-          <div className="flex items-center md:items-start justify-center md:justify-between mb-1 md:mb-3 min-h-10">
-            <span className="text-[13px] text-center md:text-base font-semibold text-gray-600 dark:text-gray-400">
-              Total Pendaftar
-            </span>
-            <Users className="hidden md:block w-[22px] h-[22px] text-blue-600 dark:text-blue-400" />
-          </div>
-          <div className="flex items-center justify-center md:justify-start gap-2">
-            <Users className="md:hidden w-4 h-4 text-blue-600 dark:text-blue-400" />
-            <span className="text-lg md:text-3xl font-bold text-blue-600 dark:text-blue-400">
-              {loading ? (
-                <span className="inline-block h-9 w-16 rounded bg-indigo-200 dark:bg-indigo-700 animate-pulse" />
-              ) : (
-                registrants.length
-              )}
-            </span>
+          <div className="animate-fadeInUp">
+            <div className="flex items-center md:items-start justify-center md:justify-between mb-1 md:mb-3 min-h-10">
+              <span className="text-[13px] text-center md:text-base font-semibold text-gray-600 dark:text-gray-400">
+                Total Pendaftar
+              </span>
+              <Users className="hidden md:block w-[22px] h-[22px] text-blue-600 dark:text-blue-400" />
+            </div>
+            <div className="flex items-center justify-center md:justify-start gap-2">
+              <Users className="md:hidden w-4 h-4 text-blue-600 dark:text-blue-400" />
+              <span className="text-lg md:text-3xl font-bold text-blue-600 dark:text-blue-400">
+                {loading ? (
+                  <span className="inline-block h-9 w-16 rounded bg-indigo-200 dark:bg-indigo-700 animate-pulse" />
+                ) : (
+                  registrants.length
+                )}
+              </span>
+            </div>
           </div>
         </div>
         <div className="bg-emerald-500/5 dark:bg-emerald-500/10 md:backdrop-blur-xl border border-emerald-500/40 dark:border-emerald-500/30 shadow-lg rounded-2xl p-3 md:p-5 transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 hover:shadow-xl">
-          <div className="flex items-center md:items-start justify-center md:justify-between mb-1 md:mb-3 min-h-10">
-            <span className="text-[13px] text-center md:text-base font-semibold text-gray-600 dark:text-gray-400">
-              Tervalidasi
-            </span>
-            <CheckCircle2 className="hidden md:block w-[22px] h-[22px] text-emerald-600 dark:text-emerald-400" />
-          </div>
-          <div className="flex items-center justify-center md:justify-start gap-2">
-            <CheckCircle2 className="md:hidden w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-            <span className="text-lg md:text-3xl font-bold text-emerald-600 dark:text-emerald-400">
-              {loading ? (
-                <span className="inline-block h-9 w-16 rounded bg-emerald-200 dark:bg-emerald-700 animate-pulse" />
-              ) : (
-                registrants.filter((r) => r.status === "validated").length
-              )}
-            </span>
+          <div className="animate-fadeInUp">
+            <div className="flex items-center md:items-start justify-center md:justify-between mb-1 md:mb-3 min-h-10">
+              <span className="text-[13px] text-center md:text-base font-semibold text-gray-600 dark:text-gray-400">
+                Tervalidasi
+              </span>
+              <CheckCircle2 className="hidden md:block w-[22px] h-[22px] text-emerald-600 dark:text-emerald-400" />
+            </div>
+            <div className="flex items-center justify-center md:justify-start gap-2">
+              <CheckCircle2 className="md:hidden w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+              <span className="text-lg md:text-3xl font-bold text-emerald-600 dark:text-emerald-400">
+                {loading ? (
+                  <span className="inline-block h-9 w-16 rounded bg-emerald-200 dark:bg-emerald-700 animate-pulse" />
+                ) : (
+                  registrants.filter((r) => r.status === "validated").length
+                )}
+              </span>
+            </div>
           </div>
         </div>
         <div className="bg-amber-500/5 dark:bg-amber-500/10 md:backdrop-blur-xl border border-amber-500/40 dark:border-amber-500/30 shadow-lg rounded-2xl p-3 md:p-5 transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 hover:shadow-xl">
-          <div className="flex items-center md:items-start justify-center md:justify-between mb-1 md:mb-3 min-h-10">
-            <span className="text-[13px] text-center md:text-base font-semibold text-gray-600 dark:text-gray-400">
-              Belum Divalidasi
-            </span>
-            <Circle className="hidden md:block w-[22px] h-[22px] text-amber-600 dark:text-amber-400" />
-          </div>
-          <div className="flex items-center justify-center md:justify-start gap-2">
-            <Circle className="md:hidden w-4 h-4 text-amber-600 dark:text-amber-400" />
-            <span className="text-lg md:text-3xl font-bold text-amber-600 dark:text-amber-400">
-              {loading ? (
-                <span className="inline-block h-9 w-16 rounded bg-amber-200 dark:bg-amber-700 animate-pulse" />
-              ) : (
-                registrants.filter((r) => r.status === "unvalidated").length
-              )}
-            </span>
+          <div className="animate-fadeInUp">
+            <div className="flex items-center md:items-start justify-center md:justify-between mb-1 md:mb-3 min-h-10">
+              <span className="text-[13px] text-center md:text-base font-semibold text-gray-600 dark:text-gray-400">
+                Belum Divalidasi
+              </span>
+              <Circle className="hidden md:block w-[22px] h-[22px] text-amber-600 dark:text-amber-400" />
+            </div>
+            <div className="flex items-center justify-center md:justify-start gap-2">
+              <Circle className="md:hidden w-4 h-4 text-amber-600 dark:text-amber-400" />
+              <span className="text-lg md:text-3xl font-bold text-amber-600 dark:text-amber-400">
+                {loading ? (
+                  <span className="inline-block h-9 w-16 rounded bg-amber-200 dark:bg-amber-700 animate-pulse" />
+                ) : (
+                  registrants.filter((r) => r.status === "unvalidated").length
+                )}
+              </span>
+            </div>
           </div>
         </div>
       </div>
@@ -572,7 +579,7 @@ export default function DataPendaftar() {
       </div>
 
       {/* Table */}
-      <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5 overflow-hidden animate-fadeInUp">
+      <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5 overflow-hidden">
         {loading ? (
           <div
             key="skeleton"
@@ -641,7 +648,7 @@ export default function DataPendaftar() {
           </div>
         ) : registrants.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-12 text-center bg-white/80 md:bg-white/60 dark:bg-gray-800/30 rounded-xl border border-gray-200 dark:border-gray-700">
-            <p className="text-gray-400 dark:text-gray-500 text-sm">
+            <p className="text-gray-400 dark:text-gray-500 text-sm animate-fadeInUp">
               Belum ada data pendaftar
             </p>
           </div>
@@ -681,7 +688,7 @@ export default function DataPendaftar() {
                   )}
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
+              <tbody className="divide-y divide-gray-200 dark:divide-gray-700 animate-fadeInUp">
                 {paginatedRegistrants.map((registrant, index) => (
                   <tr
                     key={registrant._id || registrant.id}

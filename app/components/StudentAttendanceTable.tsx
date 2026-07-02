@@ -109,7 +109,7 @@ export default function StudentAttendanceTable({
               </th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-300 dark:divide-gray-700">
+          <tbody className="divide-y divide-gray-300 dark:divide-gray-700 animate-fadeInUp">
             {loading
               ? Array.from({ length: 5 }).map((_, i) => (
                   <tr key={i} className="animate-pulse">

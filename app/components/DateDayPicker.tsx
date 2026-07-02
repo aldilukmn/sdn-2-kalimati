@@ -77,7 +77,7 @@ export default function DateDayPicker({ value, onChange, max }: DateDayPickerPro
   const maxDate = max ? parseISO(max) : null;
 
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex items-center gap-2 animate-fadeInUp">
       <button
         type="button"
         onClick={prevDay}
@@ -98,7 +98,7 @@ export default function DateDayPicker({ value, onChange, max }: DateDayPickerPro
         </button>
 
         {open && (
-          <div className="absolute left-0 top-full z-50 mt-1 w-72 rounded-xl border border-slate-200 bg-white p-4 shadow-xl dark:border-gray-700 dark:bg-gray-900">
+          <div className="absolute left-0 top-full z-50 my-2 w-full rounded-xl border border-slate-200 bg-white p-4 shadow-xl dark:border-gray-700 dark:bg-gray-900">
             <div className="mb-3 flex items-center justify-between">
               <button
                 type="button"
@@ -121,7 +121,9 @@ export default function DateDayPicker({ value, onChange, max }: DateDayPickerPro
 
             <div className="grid grid-cols-7 gap-0.5 text-center text-xs font-medium text-slate-500 dark:text-slate-400 mb-1.5">
               {DAYS.map((d) => (
-                <div key={d} className="py-1">{d}</div>
+                <div key={d} className="py-1">
+                  {d}
+                </div>
               ))}
             </div>
 
