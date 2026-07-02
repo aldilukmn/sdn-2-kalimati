@@ -71,6 +71,7 @@ types/           — User interface (server-side model)
 | **7** | ✅ | **proxy.ts** — route protection + role-based access, login redirect sesuai role | Server-side protection, zero flash |
 | **8** | ✅ | `app/(admin)/data-gtk/page.tsx:282-295` | **N+1 API calls** — `fetchTeachers()` panggil `getStudentsByGrade(grade)` untuk tiap grade unik via `Promise.all`. Total 6+ request ke Vercel | Loading 5-10 detik — cold start serverless + query MongoDB berulang |
 | **9** | ✅ | `app/(admin)/` | **Tidak ada `loading.tsx`** — Semua route `(admin)` dynamic (`ƒ`) karena AdminLayout server component pakai `cookies()`. Navigasi sidebar trigger full SSR tanpa loading state | Halaman kosong 1-3 detik saat pindah halaman (cold start Vercel) |
+| **10** | ✅ | `app/(admin)/dashboard/page.tsx` | **Server-side API blocking di Dashboard Component** — `page.tsx` melakukan `await apiServer()` untuk preload data guru/admin, memblokir render awal selama 300-800ms | Navigasi ke Dashboard terasa "diam sedikit" (freeze) sebelum pindah halaman — kontras dengan halaman client-side lain yang instan |
 
 ### Urutan rekomendasi
 
@@ -85,3 +86,4 @@ types/           — User interface (server-side model)
 | ✅ 7 | Middleware route protection | ~40 baris | 20 menit |
 | ✅ 8 | Backend: endpoint `GET /api/students/count-by-grade` (1 aggregation). FE: ganti N+1 jadi 1 call | BE ~20 baris, FE ~5 baris | ~20 menit |
 | ✅ 9 | Tambah `loading.tsx` di `app/(admin)/` — skeleton/glass styled | ~15 baris | ~5 menit |
+| ✅ 10 | Dashboard: pindah server preload ke client-side fetching — hilangkan `await apiServer` blocking di `page.tsx` | ~15 baris | ~5 menit |
