@@ -40,6 +40,9 @@ export default function LoginPage() {
       document.cookie = `user_role=${enc(role)}; path=/; max-age=86400`;
       document.cookie = `user_grade=${enc(grade)}; path=/; max-age=86400`;
 
+      toast.success(`Selamat datang, ${fullName}!`);
+      await new Promise((r) => setTimeout(r, 1500));
+
       if (role === "guru") {
         router.push("/dashboard");
       } else if (role === "penjaga") {

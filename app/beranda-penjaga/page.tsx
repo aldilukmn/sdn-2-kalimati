@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { LogOut, Loader2 } from "lucide-react";
 import AuthService from "@/services/auth.service";
+import toast from "react-hot-toast";
 
 export default function BerandaPenjaga() {
   const router = useRouter();
@@ -16,6 +17,8 @@ export default function BerandaPenjaga() {
     } catch {
       // proceed with local logout
     }
+    toast.success("Sampai jumpa!");
+    await new Promise((r) => setTimeout(r, 1500));
     sessionStorage.clear();
     document.cookie = "user_session=; path=/; max-age=0";
     document.cookie = "user_identifier=; path=/; max-age=0";

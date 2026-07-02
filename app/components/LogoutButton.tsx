@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { LogOut, Loader2 } from "lucide-react";
 import AuthService from "@/services/auth.service";
+import toast from "react-hot-toast";
 
 function parseJWT(token: string) {
   try {
@@ -58,6 +59,8 @@ export default function LogoutButton() {
     } catch {
       // proceed with local logout regardless
     } finally {
+      toast.success("Sampai jumpa!");
+      await new Promise((r) => setTimeout(r, 1500));
       sessionStorage.removeItem("user_session");
       sessionStorage.removeItem("user_identifier");
       sessionStorage.removeItem("user_role");
