@@ -25,6 +25,7 @@ No linter, formatter, typecheck, or test scripts exist.
 | `/hasil-tka` | TKA test results lookup |
 | `/kelas-5` | Class 5 info (schedule, piket, org structure) |
 | `/login` | Admin login form |
+| `/tabungan-murid` | Tabungan Murid (protected — admin, kepala, guru) |
 | `/dashboard` | Admin dashboard (protected) |
 
 ## Auth
@@ -87,3 +88,40 @@ types/           — User interface (server-side model)
 | ✅ 8 | Backend: endpoint `GET /api/students/count-by-grade` (1 aggregation). FE: ganti N+1 jadi 1 call | BE ~20 baris, FE ~5 baris | ~20 menit |
 | ✅ 9 | Tambah `loading.tsx` di `app/(admin)/` — skeleton/glass styled | ~15 baris | ~5 menit |
 | ✅ 10 | Dashboard: pindah server preload ke client-side fetching — hilangkan `await apiServer` blocking di `page.tsx` | ~15 baris | ~5 menit |
+
+## Tabungan Murid (Student Savings)
+
+### Files
+
+| File | Tugas |
+|------|-------|
+| `services/student-savings.service.ts` | API client class (static methods) |
+| `hooks/useStudentSavings.ts` | Data-fetching hook (students, transactions, summary) — exposes `date`/`setDate` |
+| `hooks/useSavingsRecap.ts` | Hook dashboard — monthly recap (totalBalance, totalStudents, monthlyDeposits, monthlyWithdrawals) |
+| `app/(admin)/tabungan-murid/page.tsx` | Halaman utama — filter kelas + DateDayPicker, 4 summary cards |
+| `app/(admin)/dashboard/client.tsx` | Dashboard admin + guru — section Tabungan (rekap bulanan) |
+| `app/components/DateDayPicker.tsx` | Komponen navigasi tanggal (◀ ▶ + calendar popup) |
+| `app/components/DashboardSidebar.tsx` | Nav item: icon `Wallet` |
+| `proxy.ts` | Route protection: `"/tabungan-murid": ["admin", "kepala", "guru"]` |
+| `package.json` | Dependency: `xlsx` untuk export Excel |
+
+### Halaman Layout
+1. **Hero Banner** — gradient indigo + icon `Wallet` (lucide-react)
+2. **Filter** — card glass, grid 2 kolom: select kelas (guru: readonly, admin/kepala: bisa pilih) + `DateDayPicker` (pilih tanggal, navigasi ◀ ▶, popup calendar)
+3. **Summary Cards** — 4 glass card: Siswa Menabung (distinct siswa setor pd tanggal tsb), Setoran, Penarikan, Selisih (setoran − penarikan, warna hijau ≥ 0 / merah < 0)
+4. **Tabel** — glass card: No, Nama, Saldo, Setoran Hari Ini, Aksi ([+ Simpan] [– Tarik] [Riwayat])
+5. **Modal Riwayat** — popup dengan tabel transaksi per siswa + pagination + edit/hapus
+6. **Export Excel** — tombol download `.xlsx` (via `xlsx` library)
+
+### Role Access
+| Endpoint | View | Input (simpan/tarik/edit/hapus) |
+|----------|------|-------------------------------|
+| All | Semua login (admin/kepala/guru) | Guru (kelasnya sendiri), admin/kepala |
+
+### Summary Cards Data
+| Card | Field Sumber | Penjelasan |
+|------|-------------|------------|
+| Siswa Menabung | `totalStudents` | Jumlah distinct siswa yang setor (`type=simpan`) pada tanggal dipilih |
+| Setoran | `dailyDeposits` | Total nominal setoran pada tanggal dipilih |
+| Penarikan | `dailyWithdrawals` | Total nominal penarikan pada tanggal dipilih |
+| Selisih | computed frontend | `dailyDeposits - dailyWithdrawals` (hijau ≥ 0, merah < 0) |

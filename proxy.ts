@@ -10,6 +10,7 @@ const ROLE_ROUTES: Record<string, string[]> = {
   "/data-gtk": ["admin", "kepala"],
   "/data-pendaftar": ["admin", "kepala"],
   "/presensi-murid": ["guru"],
+  "/tabungan-murid": ["admin", "kepala", "guru"],
   "/rekap-presensi": ["admin", "kepala", "guru"],
   "/beranda-penjaga": ["penjaga"],
 };
@@ -119,6 +120,7 @@ export const config = {
     "/data-gtk/:path*",
     "/data-pendaftar/:path*",
     "/presensi-murid/:path*",
+    "/tabungan-murid/:path*",
     "/rekap-presensi",
     "/beranda-penjaga",
   ],

@@ -13,9 +13,10 @@ import AttendanceBarChart from "@/app/components/AttendanceBarChart";
 import MonthYearPicker from "@/app/components/MonthYearPicker";
 import Pagination from "@/app/components/Pagination";
 import StudentAttendanceTable from "@/app/components/StudentAttendanceTable";
-import { Users, Mars, Venus, Loader2, LayoutDashboard } from "lucide-react";
+import { Users, Mars, Venus, Loader2, LayoutDashboard, Wallet } from "lucide-react";
 import { useDashboard } from "@/hooks/useDashboard";
 import { useTeacherChart } from "@/hooks/useTeacherChart";
+import { useSavingsRecap } from "@/hooks/useSavingsRecap";
 import type { AttendanceRow } from "@/lib/merge-attendance";
 
 interface Props {
@@ -152,6 +153,76 @@ function AdminDashboardView({
           </div>
         </div>
       </div>
+
+      {/* Tabungan Section */}
+      <TabunganSection />
+    </div>
+  );
+}
+
+function TabunganSection({ grade }: { grade?: string | null }) {
+  const now = new Date();
+  const [month, setMonth] = useState(now.getMonth() + 1);
+  const [year, setYear] = useState(now.getFullYear());
+  const { data, loading } = useSavingsRecap(grade ?? undefined, month, year);
+
+  const formatRupiah = (num: number) =>
+    `Rp ${num.toLocaleString("id-ID")}`;
+
+  return (
+    <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
+      <div className="flex items-center gap-2.5 mb-4">
+        <div className="w-8 h-8 bg-indigo-100 dark:bg-indigo-900/40 rounded-lg flex items-center justify-center">
+          <Wallet size={16} className="text-indigo-600 dark:text-indigo-300" />
+        </div>
+        <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300">
+          Rekapitulasi Tabungan
+        </h3>
+        <div className="ml-auto">
+          <MonthYearPicker
+            month={month}
+            year={year}
+            onMonthChange={setMonth}
+            onYearChange={setYear}
+          />
+        </div>
+      </div>
+
+      {!loading && data && data.monthlyDeposits === 0 && data.monthlyWithdrawals === 0 ? (
+        <div className="flex flex-col items-center justify-center py-8 text-center">
+          <div className="text-3xl mb-2">🏦</div>
+          <p className="text-sm font-semibold text-gray-500 dark:text-gray-400">
+            Belum Ada Data Tabungan
+          </p>
+          <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">
+            Belum ada siswa yang menabung di bulan ini
+          </p>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div className="bg-slate-50/80 dark:bg-gray-900/50 rounded-xl p-4 border border-slate-200/50 dark:border-gray-700/30">
+            <p className="text-xs text-gray-500 dark:text-gray-400">Total Saldo</p>
+            <p className="text-xl md:text-2xl font-bold text-sky-700 dark:text-sky-300 mt-1">
+              {loading ? "..." : formatRupiah(data?.totalBalance || 0)}
+            </p>
+            <p className="text-[11px] text-gray-400 dark:text-gray-500 mt-0.5">
+              {loading ? "..." : `${data?.totalStudents || 0} siswa menabung`}
+            </p>
+          </div>
+          <div className="bg-slate-50/80 dark:bg-gray-900/50 rounded-xl p-4 border border-slate-200/50 dark:border-gray-700/30">
+            <p className="text-xs text-gray-500 dark:text-gray-400">Setoran Bulan Ini</p>
+            <p className="text-xl md:text-2xl font-bold text-emerald-700 dark:text-emerald-300 mt-1">
+              {loading ? "..." : formatRupiah(data?.monthlyDeposits || 0)}
+            </p>
+          </div>
+          <div className="bg-slate-50/80 dark:bg-gray-900/50 rounded-xl p-4 border border-slate-200/50 dark:border-gray-700/30">
+            <p className="text-xs text-gray-500 dark:text-gray-400">Penarikan Bulan Ini</p>
+            <p className="text-xl md:text-2xl font-bold text-orange-700 dark:text-orange-300 mt-1">
+              {loading ? "..." : formatRupiah(data?.monthlyWithdrawals || 0)}
+            </p>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
@@ -351,6 +422,22 @@ function GuruDashboardView({
           </div>
         </div>
       )}
+
+      {/* Tabungan Section */}
+      <div className="bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
+        <div className="flex items-center gap-2.5 mb-4">
+          <div className="w-8 h-8 bg-indigo-100 dark:bg-indigo-900/40 rounded-lg flex items-center justify-center">
+            <Wallet size={16} className="text-indigo-600 dark:text-indigo-300" />
+          </div>
+          <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300">
+            Tabungan Murid
+          </h3>
+          <p className="text-xs text-gray-400 dark:text-gray-500 ml-auto">
+            {new Date(0, month - 1).toLocaleDateString("id-ID", { month: "long" })} {year}
+          </p>
+        </div>
+        <TabunganSection grade={userGrade} />
+      </div>
     </div>
   );
 }

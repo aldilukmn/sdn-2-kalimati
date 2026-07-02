@@ -8,6 +8,7 @@ import {
   ClipboardList,
   CalendarCheck,
   Users,
+  Wallet,
   X,
   GraduationCap,
 } from "lucide-react";
@@ -17,6 +18,7 @@ const menuItems = [
   { label: "Data GTK", icon: Users, href: "/data-gtk" },
   { label: "Data Pendaftar", icon: ClipboardList, href: "/data-pendaftar" },
   { label: "Presensi Murid", icon: CalendarCheck, href: "/presensi-murid" },
+  { label: "Tabungan Murid", icon: Wallet, href: "/tabungan-murid" },
 ];
 
 const penjagaMenuItems = [
@@ -40,7 +42,10 @@ export default function DashboardSidebar({
     if (userRole === null) return [];
     if (userRole === "guru") {
       return menuItems.filter(
-        (item) => item.href === "/dashboard" || item.href === "/presensi-murid",
+        (item) =>
+          item.href === "/dashboard" ||
+          item.href === "/presensi-murid" ||
+          item.href === "/tabungan-murid",
       );
     }
     if (userRole === "penjaga") {
