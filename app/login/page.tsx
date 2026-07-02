@@ -6,13 +6,12 @@ import { useRouter } from "next/navigation";
 import { User, Lock, ArrowRight, Loader2, Eye, EyeOff } from "lucide-react";
 import BackButton from "../components/BackButton";
 import AuthCard from "../components/AuthCard";
+import toast from "react-hot-toast";
 
 export default function LoginPage() {
   const router = useRouter();
   const [identifier, setIdentifier] = useState("");
   const [password, setPassword] = useState("");
-  const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
-  const [message, setMessage] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
@@ -22,9 +21,6 @@ export default function LoginPage() {
 
     try {
       const response = await AuthService.login(identifier, password);
-
-      setStatus("success");
-      setMessage(response.status.message);
 
       const token = response.result?.token || response.result;
       const payload = JSON.parse(atob(token.split('.')[1]));
@@ -52,9 +48,7 @@ export default function LoginPage() {
         router.push("/dashboard");
       }
     } catch (error) {
-      setStatus("error");
-
-      setMessage(error instanceof Error ? error.message : "Login gagal");
+      toast.error(error instanceof Error ? error.message : "Login gagal");
     } finally {
       setSubmitting(false);
     }
@@ -74,8 +68,6 @@ export default function LoginPage() {
         <AuthCard
         title="Selamat Datang"
         subtitle="Gunakan Username dan Password Anda untuk masuk."
-          status={status}
-          message={message}
         >
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>

@@ -1,11 +1,12 @@
 "use client";
 
+import { useEffect } from "react";
 import { Loader2, Save, CalendarCheck } from "lucide-react";
 import DateDayPicker from "@/app/components/DateDayPicker";
 import PresensiStatusBadge from "@/app/components/PresensiStatusBadge";
 import PresensiTable from "@/app/components/PresensiTable";
-import Toast from "@/app/components/Toast";
 import { usePresensi, GRADES } from "@/hooks/usePresensi";
+import toast from "react-hot-toast";
 
 export default function PresensiMuridPage() {
   const {
@@ -27,12 +28,21 @@ export default function PresensiMuridPage() {
     handleStatusChange,
     handleSave,
     countByStatus,
-    clearMessage,
     totalPages,
     startIndex,
     paginatedEntries,
     itemsPerPage,
   } = usePresensi();
+
+  useEffect(() => {
+    if (message) {
+      if (message.type === "success") {
+        toast.success(message.text);
+      } else {
+        toast.error(message.text);
+      }
+    }
+  }, [message]);
 
   return (
     <div className="flex flex-col gap-6 p-4 md:p-6">
@@ -99,15 +109,6 @@ export default function PresensiMuridPage() {
           countByStatus={countByStatus}
         />
       </div>
-
-      {/* Toast */}
-      {message && (
-        <Toast
-          message={message.text}
-          type={message.type}
-          onClose={clearMessage}
-        />
-      )}
 
       {/* Table */}
       <PresensiTable

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "./contexts/AuthContext";
+import { Toaster } from "react-hot-toast";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -52,6 +53,24 @@ export default function RootLayout({
         suppressHydrationWarning
       >
         <AuthProvider>
+          <Toaster
+            position="top-right"
+            toastOptions={{
+              duration: 4000,
+              style: {
+                borderRadius: "16px",
+                padding: "12px 16px",
+                fontSize: "13px",
+                fontWeight: 500,
+              },
+              success: {
+                iconTheme: { primary: "#10b981", secondary: "#fff" },
+              },
+              error: {
+                iconTheme: { primary: "#ef4444", secondary: "#fff" },
+              },
+            }}
+          />
           <div
             className="min-h-screen bg-[radial-gradient(circle_at_top_left,rgba(59,130,246,0.12),transparent_35%),radial-gradient(circle_at_bottom_right,rgba(96,165,250,0.1),transparent_35%),linear-gradient(180deg,#f8fbff_0%,#eef6ff_45%,#dbeafe_100%)] dark:bg-[radial-gradient(circle_at_top_left,rgba(96,165,250,0.12),transparent_35%),radial-gradient(circle_at_bottom_right,rgba(59,130,246,0.1),transparent_35%),linear-gradient(180deg,#0f172a_0%,#111827_45%,#1e293b_100%)]"
           >

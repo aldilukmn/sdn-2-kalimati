@@ -5,12 +5,10 @@ import { ReactNode } from "react";
 interface AuthCardProps {
   title: string;
   subtitle: string;
-  status: "idle" | "success" | "error";
-  message: string;
   children: ReactNode;
 }
 
-export default function AuthCard({ title, subtitle, status, message, children }: AuthCardProps) {
+export default function AuthCard({ title, subtitle, children }: AuthCardProps) {
   return (
     <div className="relative w-full max-w-lg">
       <div className="absolute -inset-[1px] rounded-2xl bg-gradient-to-b from-blue-400/20 via-indigo-400/15 to-blue-500/20 dark:from-blue-500/15 dark:via-indigo-500/10 dark:to-blue-600/15" />
@@ -34,18 +32,6 @@ export default function AuthCard({ title, subtitle, status, message, children }:
           </div>
 
           {children}
-
-          {status !== "idle" && (
-            <div
-              className={`mt-6 rounded-2xl px-4 py-3 text-sm ${
-                status === "success"
-                  ? "bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-200"
-                  : "bg-rose-100 text-rose-800 dark:bg-rose-900/30 dark:text-rose-200"
-              }`}
-            >
-              {message}
-            </div>
-          )}
         </div>
       </div>
     </div>

@@ -11,7 +11,7 @@ import {
   Users,
   AlertTriangle,
 } from "lucide-react";
-import Toast from "@/app/components/Toast";
+import toast from "react-hot-toast";
 import UserService from "@/services/user.service";
 import StudentAttendanceService from "@/services/student-attendance.service";
 
@@ -237,10 +237,6 @@ export default function DataGTK() {
   const [staff, setStaff] = useState<TeacherType[]>([]);
   const [loading, setLoading] = useState(true);
   const [staffLoading, setStaffLoading] = useState(true);
-  const [toast, setToast] = useState<{
-    message: string;
-    type: "success" | "error";
-  } | null>(null);
   const [showAddModal, setShowAddModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [editId, setEditId] = useState<string | null>(null);
@@ -291,10 +287,7 @@ export default function DataGTK() {
         router.replace("/login");
         return;
       }
-      setToast({
-        message: error.message || "Gagal memuat data guru",
-        type: "error",
-      });
+      toast.error(error.message || "Gagal memuat data guru");
     } finally {
       setLoading(false);
     }
@@ -328,7 +321,6 @@ export default function DataGTK() {
 
   const handleAdd = async () => {
     setSubmitting(true);
-    setToast(null);
     const isGuru = formData.role === "guru";
     const label =
       ROLE_OPTIONS.find((r) => r.value === formData.role)?.label || "User";
@@ -344,21 +336,18 @@ export default function DataGTK() {
       });
       setShowAddModal(false);
       setFormData(emptyForm);
-      setToast({ message: `${label} berhasil ditambahkan`, type: "success" });
+      toast.success(`${label} berhasil ditambahkan`);
       if (isGuru) {
         await fetchTeachers();
       } else {
         await fetchStaff();
       }
-      setToast(null);
     } catch (err) {
-      setToast({
-        message:
-          err instanceof Error
-            ? err.message
-            : `Gagal menambahkan ${label.toLowerCase()}`,
-        type: "error",
-      });
+      toast.error(
+        err instanceof Error
+          ? err.message
+          : `Gagal menambahkan ${label.toLowerCase()}`,
+      );
     } finally {
       setSubmitting(false);
     }
@@ -375,7 +364,6 @@ export default function DataGTK() {
   const handleEdit = async () => {
     if (!editId) return;
     setSubmitting(true);
-    setToast(null);
     try {
       await UserService.update(editId, {
         username: formData.username,
@@ -387,15 +375,11 @@ export default function DataGTK() {
       setShowEditModal(false);
       setEditId(null);
       setFormData(emptyForm);
-      setToast({ message: "Data berhasil diupdate", type: "success" });
+      toast.success("Data berhasil diupdate");
       await fetchTeachers();
       await fetchStaff();
-      setToast(null);
     } catch (err) {
-      setToast({
-        message: err instanceof Error ? err.message : "Gagal mengupdate data",
-        type: "error",
-      });
+      toast.error(err instanceof Error ? err.message : "Gagal mengupdate data");
     } finally {
       setSubmitting(false);
     }
@@ -404,17 +388,13 @@ export default function DataGTK() {
   const handleDelete = async (id: string) => {
     setConfirmDeleteId(null);
     setDeletingId(id);
-    setToast(null);
     try {
       await UserService.delete(id);
       await fetchTeachers();
       await fetchStaff();
-      setToast({ message: "Data berhasil dihapus", type: "success" });
+      toast.success("Data berhasil dihapus");
     } catch (err) {
-      setToast({
-        message: err instanceof Error ? err.message : "Gagal menghapus data",
-        type: "error",
-      });
+      toast.error(err instanceof Error ? err.message : "Gagal menghapus data");
     } finally {
       setDeletingId(null);
     }
@@ -471,14 +451,6 @@ export default function DataGTK() {
           )}
         </div>
       </div>
-
-      {toast && (
-        <Toast
-          message={toast.message}
-          type={toast.type}
-          onClose={() => setToast(null)}
-        />
-      )}
 
       <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5 overflow-hidden animate-fadeInUp">
         {loading ? (

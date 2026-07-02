@@ -14,7 +14,7 @@ import {
   ClipboardList,
   Users,
 } from "lucide-react";
-import Toast from "@/app/components/Toast";
+import toast from "react-hot-toast";
 import RegistrationService from "@/services/registration.service";
 import Pagination from "@/app/components/Pagination";
 import { exportRegistrantsToCSV } from "@/lib/export-csv";
@@ -140,7 +140,6 @@ export default function DataPendaftar() {
   const [validating, setValidating] = useState<Set<string>>(new Set());
   const [currentPage, setCurrentPage] = useState(1);
   const [refreshing, setRefreshing] = useState(false);
-  const [toast, setToast] = useState<{ message: string; type: "success" | "error" } | null>(null);
   const itemsPerPage = 5;
 
   const fetchRegistrants = async (isRefresh?: boolean) => {
@@ -154,7 +153,7 @@ export default function DataPendaftar() {
         router.replace("/login");
         return;
       }
-      setToast({ message: error.message || "Gagal memuat data pendaftar", type: "error" });
+      toast.error(error.message || "Gagal memuat data pendaftar");
     } finally {
       if (isRefresh) setRefreshing(false);
       setLoading(false);
@@ -214,7 +213,7 @@ export default function DataPendaftar() {
         return;
       }
 
-      setToast({ message: error.message || "Gagal memperbarui status validasi", type: "error" });
+      toast.error(error.message || "Gagal memperbarui status validasi");
     } finally {
       setValidating((prev) => {
         const newSet = new Set(prev);
@@ -490,15 +489,6 @@ export default function DataPendaftar() {
           </div>
         </div>
       </div>
-
-      {/* Toast */}
-      {toast && (
-        <Toast
-          message={toast.message}
-          type={toast.type}
-          onClose={() => setToast(null)}
-        />
-      )}
 
       {/* Stats Cards */}
       <div className="grid grid-cols-3 gap-3 md:gap-4 animate-fadeInUp">

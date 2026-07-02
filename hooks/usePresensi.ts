@@ -135,9 +135,13 @@ export function usePresensi() {
           );
           setIsExisting(false);
         }
-      } catch {
+      } catch (err) {
         setEntries([]);
         setIsExisting(false);
+        setMessage({
+          type: "error",
+          text: err instanceof Error ? err.message : "Gagal memuat data siswa",
+        });
       } finally {
         setLoadingSiswa(false);
         setSyncing(false);
