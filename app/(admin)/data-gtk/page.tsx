@@ -278,22 +278,13 @@ export default function DataGTK() {
       );
       setTeachers(res.result || res.data || []);
 
-      const counts: Record<string, number> = {};
-      await Promise.all(
-        data.map(async (guru) => {
-          if (!guru.grade || counts[guru.grade] !== undefined) return;
-          try {
-            const res = await StudentAttendanceService.getStudentsByGrade(
-              guru.grade,
-            );
-            const students = res.data || res.result || [];
-            counts[guru.grade] = students.length;
-          } catch {
-            counts[guru.grade] = 0;
-          }
-        }),
-      );
-      setStudentCounts(counts);
+      try {
+        const countRes = await StudentAttendanceService.getStudentCountByGrade();
+        const counts: Record<string, number> = countRes.result || countRes.data || {};
+        setStudentCounts(counts);
+      } catch {
+        setStudentCounts({});
+      }
     } catch (err) {
       const error = err as Error & { status?: number };
       if (error.status === 401) {

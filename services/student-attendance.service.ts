@@ -23,4 +23,8 @@ export default class StudentAttendanceService {
   static async getStudentsByGrade(grade: string) {
     return await api(`/students?grade=${grade}`);
   }
+
+  static async getStudentCountByGrade() {
+    return await api(`/students/count-by-grade`);
+  }
 }

@@ -62,13 +62,15 @@ types/           — User interface (server-side model)
 
 | # | File | Masalah | Dampak |
 |---|---|---|---|
-| **1** | `app/(admin)/dashboard/client.tsx:148` | **Dynamic import** `StudentAttendanceService` di dalam `useEffect` — tiap ganti bulan, import ulang dari awal | Overhead tiap fetch, risk race condition |
-| **2** | `app/(admin)/dashboard/client.tsx:170` | **Perbandingan month/year pakai `new Date()`** — `now` di-set saat render, tidak update. Kalau user ganti bulan, skip logic salah | Bisa skip fetch padahal month berbeda |
+| **1** | ✅ | `app/(admin)/dashboard/client.tsx:148` | **Dynamic import** `StudentAttendanceService` di dalam `useEffect` — tiap ganti bulan, import ulang dari awal | Overhead tiap fetch, risk race condition |
+| **2** | ✅ | `app/(admin)/dashboard/client.tsx:170` | **Perbandingan month/year pakai `new Date()`** — `now` di-set saat render, tidak update. Kalau user ganti bulan, skip logic salah | Bisa skip fetch padahal month berbeda |
 | **3** | ✅ | **Server fetch chart — duplicate merge logic** — kode merging attendance diekstrak ke `lib/merge-attendance.ts` | Reused di server + client |
-| **4** | `app/contexts/AuthContext.tsx` | **AuthContext fallback ke cookie** — membaca `document.cookie` setelah hydration. Kalau cookie expired, userRole jadi null meskipun sessionStorage masih ada | Tidak sync antara cookie & sessionStorage setelah expire |
+| **4** | ✅ | `app/contexts/AuthContext.tsx` | **AuthContext fallback ke cookie** — membaca `document.cookie` setelah hydration. Kalau cookie expired, userRole jadi null meskipun sessionStorage masih ada | Tidak sync antara cookie & sessionStorage setelah expire |
 | **5** | ✅ | **AdminDashboardView** — server preload (sama seperti guru) | Loading flash hilang untuk role admin/kepala |
 | **6** | ✅ | **useTeacherChart** — terima initialData + skip fetch, pakai mergeAttendance dari shared lib | Code cleaner, reuse logic |
 | **7** | ✅ | **proxy.ts** — route protection + role-based access, login redirect sesuai role | Server-side protection, zero flash |
+| **8** | ✅ | `app/(admin)/data-gtk/page.tsx:282-295` | **N+1 API calls** — `fetchTeachers()` panggil `getStudentsByGrade(grade)` untuk tiap grade unik via `Promise.all`. Total 6+ request ke Vercel | Loading 5-10 detik — cold start serverless + query MongoDB berulang |
+| **9** | 🟡 | `app/(admin)/` | **Tidak ada `loading.tsx`** — Semua route `(admin)` dynamic (`ƒ`) karena AdminLayout server component pakai `cookies()`. Navigasi sidebar trigger full SSR tanpa loading state | Halaman kosong 1-3 detik saat pindah halaman (cold start Vercel) |
 
 ### Urutan rekomendasi
 
@@ -81,3 +83,5 @@ types/           — User interface (server-side model)
 | ✅ 5 | Preload AdminDashboard juga (sama seperti guru) | ~30 baris | 15 menit |
 | ✅ 6 | `useTeacherChart` terima `initialData` (seperti `useTeacherDashboard`) | ~15 baris | 10 menit |
 | ✅ 7 | Middleware route protection | ~40 baris | 20 menit |
+| ✅ 8 | Backend: endpoint `GET /api/students/count-by-grade` (1 aggregation). FE: ganti N+1 jadi 1 call | BE ~20 baris, FE ~5 baris | ~20 menit |
+| 🟡 9 | Tambah `loading.tsx` di `app/(admin)/` — skeleton/glass styled | ~15 baris | ~5 menit |
