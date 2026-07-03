@@ -23,7 +23,7 @@ export interface StudentSavingsSummary {
 }
 
 export const GRADES = ["1", "2", "3", "4", "5", "6"];
-const ITEMS_PER_PAGE = 10;
+const ITEMS_PER_PAGE = 5;
 const HISTORY_LIMIT = 10;
 
 export function useStudentSavings() {
@@ -57,6 +57,7 @@ export function useStudentSavings() {
     open: boolean;
     student: StudentWithBalance | null;
   }>({ open: false, student: null });
+  const [historyType, setHistoryType] = useState<string | undefined>(undefined);
   const [transactions, setTransactions] = useState<any[]>([]);
   const [historyLoading, setHistoryLoading] = useState(false);
   const [historyPage, setHistoryPage] = useState(1);
@@ -219,15 +220,17 @@ export function useStudentSavings() {
     }
   }, [txModal, txAmount, txDescription, grade, date, closeTxModal]);
 
-  const openHistoryModal = useCallback(async (student: StudentWithBalance) => {
+  const openHistoryModal = useCallback(async (student: StudentWithBalance, type?: string) => {
     setHistoryModal({ open: true, student });
     setHistoryPage(1);
+    setHistoryType(type);
     setHistoryLoading(true);
     try {
       const res = await StudentSavingsService.getTransactions(
         student.studentId,
         1,
-        HISTORY_LIMIT
+        HISTORY_LIMIT,
+        type
       );
       if (res?.result) {
         setTransactions(res.result.transactions || []);
@@ -255,7 +258,8 @@ export function useStudentSavings() {
       const res = await StudentSavingsService.getTransactions(
         historyModal.student.studentId,
         page,
-        HISTORY_LIMIT
+        HISTORY_LIMIT,
+        historyType
       );
       if (res?.result) {
         setTransactions(res.result.transactions || []);

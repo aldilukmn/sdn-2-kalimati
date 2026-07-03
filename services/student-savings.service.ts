@@ -53,14 +53,20 @@ export default class StudentSavingsService {
     return await api(url);
   }
 
+  static async getMonthlyBreakdown(grade: string, year: number) {
+    return await api(`/student-savings/monthly-breakdown?grade=${grade}&year=${year}`);
+  }
+
   static async getTransactions(
     studentId: string,
     page?: number,
-    limit?: number
+    limit?: number,
+    type?: string
   ) {
     const params = new URLSearchParams({ studentId });
     if (page) params.set("page", String(page));
     if (limit) params.set("limit", String(limit));
+    if (type) params.set("type", type);
     return await api(`/student-savings/transactions?${params.toString()}`);
   }
 }

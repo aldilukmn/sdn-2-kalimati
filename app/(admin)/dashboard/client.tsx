@@ -167,13 +167,13 @@ function TabunganSection({ grade }: { grade?: string | null }) {
             Rekapitulasi Tabungan
           </h3>
         </div>
-        <div className="flex items-center gap-2.5 md:ml-auto">
-          <div className="relative">
-            <Users size={16} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500 pointer-events-none" />
+        <div className="flex items-center gap-2.5 w-full md:w-auto md:ml-auto">
+          <div className="relative min-w-0">
+            <Users size={16} className="absolute left-9 md:left-5 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500 pointer-events-none" />
             <select
               value={filterGrade}
               onChange={(e) => setFilterGrade(e.target.value)}
-              className="h-8 rounded border border-slate-300 bg-slate-50 pl-7 pr-2 text-xs text-slate-700 text-center appearance-none min-w-[130px] transition-colors hover:border-blue-400 hover:bg-blue-50 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-300 dark:hover:border-blue-500 dark:hover:bg-blue-950/30 cursor-pointer"
+              className="h-8 rounded border border-slate-300 bg-slate-50 pl-2 md:pl-7 pr-2 text-xs text-slate-700 text-center appearance-none min-w-[205px] md:min-w-[150px] transition-colors hover:border-blue-400 hover:bg-blue-50 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-300 dark:hover:border-blue-500 dark:hover:bg-blue-950/30 cursor-pointer"
             >
               <option value="">Semua Kelas</option>
               {GRADES.map((g) => (

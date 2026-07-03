@@ -98,7 +98,8 @@ types/           — User interface (server-side model)
 | `services/student-savings.service.ts` | API client class (static methods) |
 | `hooks/useStudentSavings.ts` | Data-fetching hook (students, transactions, summary) — exposes `date`/`setDate` |
 | `hooks/useSavingsRecap.ts` | Hook dashboard — monthly recap (totalBalance, totalStudents, monthlyDeposits, monthlyWithdrawals) |
-| `app/(admin)/tabungan-murid/page.tsx` | Halaman utama — filter kelas + DateDayPicker, 4 summary cards |
+| `hooks/useStudentMonthlyBreakdown.ts` | Hook tabungan-murid — rekap setoran per siswa per 12 bulan + `pernahTarik` |
+| `app/(admin)/tabungan-murid/page.tsx` | Halaman utama — filter kelas + DateDayPicker + tabs (Transaksi Harian / Rekap Bulanan) |
 | `app/(admin)/dashboard/client.tsx` | Dashboard admin + guru — section Tabungan (rekap bulanan) |
 | `app/components/DateDayPicker.tsx` | Komponen navigasi tanggal (◀ ▶ + calendar popup) |
 | `app/components/DashboardSidebar.tsx` | Nav item: icon `Wallet` |
@@ -108,10 +109,10 @@ types/           — User interface (server-side model)
 ### Halaman Layout
 1. **Hero Banner** — gradient indigo + icon `Wallet` (lucide-react)
 2. **Filter** — card glass, grid 2 kolom: select kelas (guru: readonly, admin/kepala: bisa pilih) + `DateDayPicker` (pilih tanggal, navigasi ◀ ▶, popup calendar)
-3. **Summary Cards** — 4 glass card: Siswa Menabung (distinct siswa setor pd tanggal tsb), Setoran, Penarikan, Selisih (setoran − penarikan, warna hijau ≥ 0 / merah < 0)
-4. **Tabel** — glass card: No, Nama, Saldo, Setoran Hari Ini, Aksi ([+ Simpan] [– Tarik] [Riwayat])
-5. **Modal Riwayat** — popup dengan tabel transaksi per siswa + pagination + edit/hapus
-6. **Export Excel** — tombol download `.xlsx` (via `xlsx` library)
+3. **Tabs** — toggle Transaksi Harian / Rekap Bulanan (`bg-slate-100 rounded-xl p-1 w-fit`)
+4. **Tab Transaksi Harian**: Summary Cards (4 glass card) + Tabel + Modal Riwayat + Export Excel
+5. **Tab Rekap Bulanan**: year picker (Chevron ◀ ▶) + tabel siswa dengan 12 kolom bulan (01–12) + kolom Saldo + kolom Tarik (✓ pernah tarik → klik lihat riwayat, ✗ tidak pernah)
+6. **Export Excel** — tombol download `.xlsx` (via `xlsx` library) (tab harian)
 
 ### Role Access
 | Endpoint | View | Input (simpan/tarik/edit/hapus) |

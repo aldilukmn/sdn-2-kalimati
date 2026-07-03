@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import {
   Wallet,
   Plus,
@@ -12,12 +12,20 @@ import {
   Loader2,
   Pencil,
   Trash2,
+  ChevronLeft,
+  ChevronRight,
+  Users,
+  TrendingUp,
+  TrendingDown,
+  ArrowLeftRight,
 } from "lucide-react";
 import { useStudentSavings, GRADES } from "@/hooks/useStudentSavings";
+import { useStudentMonthlyBreakdown } from "@/hooks/useStudentMonthlyBreakdown";
 import Pagination from "@/app/components/Pagination";
 import DateDayPicker from "@/app/components/DateDayPicker";
 import toast from "react-hot-toast";
 import { formatCompactRupiah } from "@/lib/format";
+import LoadingDots from "@/app/components/LoadingDots";
 
 export default function TabunganMuridPage() {
   const {
@@ -63,10 +71,20 @@ export default function TabunganMuridPage() {
     exportExcel,
   } = useStudentSavings();
 
+  const [activeTab, setActiveTab] = useState<"harian" | "bulanan">("harian");
+  const [year, setYear] = useState(new Date().getFullYear());
+  const [refreshKey, setRefreshKey] = useState(0);
+  const { data: monthlyData, loading: monthlyLoading } = useStudentMonthlyBreakdown(
+    userRole === "guru" ? userGrade || grade : grade,
+    year,
+    refreshKey
+  );
+
   useEffect(() => {
     if (message) {
       if (message.type === "success") {
         toast.success(message.text);
+        setRefreshKey((k) => k + 1);
       } else {
         toast.error(message.text);
       }
@@ -129,177 +147,361 @@ export default function TabunganMuridPage() {
         </div>
       </div>
 
-      {/* Summary Cards */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
-          <p className="text-[13px] text-center md:text-base text-gray-500 dark:text-gray-400">
-            Siswa Menabung
-          </p>
-          <p className="text-lg md:text-3xl font-bold text-center mt-1 text-violet-700 dark:text-violet-300">
-            {summaryLoading ? "..." : `${summary?.totalStudents || 0} siswa`}
-          </p>
-        </div>
-        <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
-          <p className="text-[13px] text-center md:text-base text-gray-500 dark:text-gray-400">
-            Setoran
-          </p>
-          <p className="text-lg md:text-3xl font-bold text-center mt-1 text-emerald-700 dark:text-emerald-300">
-            {summaryLoading
-              ? "..."
-              : formatCompactRupiah(summary?.dailyDeposits || 0)}
-          </p>
-        </div>
-        <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
-          <p className="text-[13px] text-center md:text-base text-gray-500 dark:text-gray-400">
-            Penarikan
-          </p>
-          <p className="text-lg md:text-3xl font-bold text-center mt-1 text-orange-700 dark:text-orange-300">
-            {summaryLoading
-              ? "..."
-              : formatCompactRupiah(summary?.dailyWithdrawals || 0)}
-          </p>
-        </div>
-        <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
-          <p className="text-[13px] text-center md:text-base text-gray-500 dark:text-gray-400">
-            Selisih
-          </p>
-          <p className={`text-lg md:text-3xl font-bold text-center mt-1 ${
-            summaryLoading
-              ? ""
-              : (summary?.dailyDeposits || 0) - (summary?.dailyWithdrawals || 0) >= 0
-                ? "text-emerald-700 dark:text-emerald-300"
-                : "text-red-600 dark:text-red-400"
-          }`}>
-            {summaryLoading
-              ? "..."
-              : formatCompactRupiah((summary?.dailyDeposits || 0) - (summary?.dailyWithdrawals || 0))}
-          </p>
-        </div>
+      {/* Tabs */}
+      <div className="flex gap-1 bg-slate-100 dark:bg-gray-900 rounded-xl p-1 w-fit">
+        <button
+          onClick={() => setActiveTab("harian")}
+          className={`px-4 py-2 rounded-lg text-xs font-semibold transition-colors cursor-pointer ${
+            activeTab === "harian"
+              ? "bg-white dark:bg-gray-800 text-indigo-600 dark:text-indigo-300 shadow-sm"
+              : "text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
+          }`}
+        >
+          Transaksi Harian
+        </button>
+        <button
+          onClick={() => setActiveTab("bulanan")}
+          className={`px-4 py-2 rounded-lg text-xs font-semibold transition-colors cursor-pointer ${
+            activeTab === "bulanan"
+              ? "bg-white dark:bg-gray-800 text-indigo-600 dark:text-indigo-300 shadow-sm"
+              : "text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
+          }`}
+        >
+          Rekap Bulanan
+        </button>
       </div>
 
-      {/* Export + Table */}
-      <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="text-sm font-semibold text-gray-500 dark:text-gray-400 tracking-wider">
-            Daftar Tabungan Siswa
-          </h2>
-          <button
-            onClick={exportExcel}
-            disabled={loading || students.length === 0}
-          >
-            <FileDown size={18} />
-            Export Excel
-          </button>
-        </div>
+      {activeTab === "harian" ? (
+        <>
+          {/* Summary Cards */}
+          <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5 animate-fadeIn">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+              <div className="bg-indigo-50/80 dark:bg-indigo-950/20 rounded-xl p-4 border border-indigo-200/50 dark:border-indigo-800/30">
+                <div className="flex items-center gap-1.5 mb-1">
+                  <Users size={14} className="text-indigo-500 dark:text-indigo-400 shrink-0" />
+                  <p className="text-xs text-gray-500 dark:text-gray-400">
+                    Penabung
+                  </p>
+                </div>
+                <p className="text-lg md:text-2xl font-bold text-indigo-700 dark:text-indigo-300">
+                  {summaryLoading ? <LoadingDots /> : `${summary?.totalStudents || 0} siswa`}
+                </p>
+              </div>
+              <div className="bg-emerald-50/80 dark:bg-emerald-950/20 rounded-xl p-4 border border-emerald-200/50 dark:border-emerald-800/30">
+                <div className="flex items-center gap-1.5 mb-1">
+                  <TrendingUp size={14} className="text-emerald-500 dark:text-emerald-400 shrink-0" />
+                  <p className="text-xs text-gray-500 dark:text-gray-400">
+                    Setoran
+                  </p>
+                </div>
+                <p className="text-lg md:text-2xl font-bold text-emerald-700 dark:text-emerald-300">
+                  {summaryLoading
+                    ? <LoadingDots />
+                    : formatCompactRupiah(summary?.dailyDeposits || 0)}
+                </p>
+              </div>
+              <div className="bg-rose-50/80 dark:bg-rose-950/20 rounded-xl p-4 border border-rose-200/50 dark:border-rose-800/30">
+                <div className="flex items-center gap-1.5 mb-1">
+                  <TrendingDown size={14} className="text-rose-500 dark:text-rose-400 shrink-0" />
+                  <p className="text-xs text-gray-500 dark:text-gray-400">
+                    Penarikan
+                  </p>
+                </div>
+                <p className="text-lg md:text-2xl font-bold text-rose-700 dark:text-rose-300">
+                  {summaryLoading
+                    ? <LoadingDots />
+                    : formatCompactRupiah(summary?.dailyWithdrawals || 0)}
+                </p>
+              </div>
+              <div className="bg-amber-50/80 dark:bg-amber-950/20 rounded-xl p-4 border border-amber-200/50 dark:border-amber-800/30">
+                <div className="flex items-center gap-1.5 mb-1">
+                  <ArrowLeftRight size={14} className="text-amber-500 dark:text-amber-400 shrink-0" />
+                  <p className="text-xs text-gray-500 dark:text-gray-400">
+                    Selisih
+                  </p>
+                </div>
+                <p className={`text-lg md:text-2xl font-bold ${
+                  summaryLoading
+                    ? ""
+                    : (summary?.dailyDeposits || 0) - (summary?.dailyWithdrawals || 0) >= 0
+                      ? "text-emerald-700 dark:text-emerald-300"
+                      : "text-red-600 dark:text-red-400"
+                }`}>
+                  {summaryLoading
+                    ? <LoadingDots />
+                    : formatCompactRupiah((summary?.dailyDeposits || 0) - (summary?.dailyWithdrawals || 0))}
+                </p>
+              </div>
+            </div>
+          </div>
 
-        <div className="overflow-x-auto rounded-xl border border-slate-200 dark:border-gray-700">
-          <table className="w-full">
-            <thead>
-              <tr className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-xs md:text-sm">
-                <th className="px-3 py-3 text-left font-semibold">No</th>
-                <th className="px-3 py-3 text-left font-semibold">Nama</th>
-                <th className="px-3 py-3 text-center font-semibold">Saldo</th>
-                <th className="px-3 py-3 text-center font-semibold">Setoran</th>
-                <th className="px-3 py-3 text-center font-semibold">Penarikan</th>
-                <th className="px-3 py-3 text-center font-semibold">Aksi</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
-              {loading ? (
-                Array.from({ length: 5 }).map((_, i) => (
-                  <tr key={i} className="animate-pulse">
-                    <td className="px-3 py-3">
-                      <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-6" />
-                    </td>
-                    <td className="px-3 py-3">
-                      <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-40" />
-                    </td>
-                    <td className="px-3 py-3">
-                      <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-20 mx-auto" />
-                    </td>
-                    <td className="px-3 py-3">
-                      <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-20 mx-auto" />
-                    </td>
-                    <td className="px-3 py-3">
-                      <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-20 mx-auto" />
-                    </td>
-                    <td className="px-3 py-3">
-                      <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-32 mx-auto" />
-                    </td>
-                  </tr>
-                ))
-              ) : paginatedStudents.length === 0 ? (
-                <tr>
-                  <td
-                    colSpan={4}
-                    className="px-3 py-12 text-center text-gray-400"
-                  >
-                    Belum ada data tabungan untuk kelas ini
-                  </td>
-                </tr>
-              ) : (
-                paginatedStudents.map((s, i) => (
-                  <tr
-                    key={s.studentId}
-                    className="hover:bg-indigo-50/50 dark:hover:bg-indigo-900/20 transition-colors"
-                  >
-                    <td className="px-3 py-3 text-sm text-gray-600 dark:text-gray-400">
-                      {startIndex + i + 1}
-                    </td>
-                    <td className="px-3 py-3 text-sm font-medium text-gray-800 dark:text-slate-100">
-                      {s.name}
-                    </td>
-                    <td className="px-3 py-3 text-sm text-center font-semibold text-gray-800 dark:text-slate-100">
-                      {formatCompactRupiah(s.balance)}
-                    </td>
-                    <td className="px-3 py-3 text-sm text-center text-emerald-700 dark:text-emerald-300 font-medium">
-                      {s.todayDeposit ? formatCompactRupiah(s.todayDeposit) : "-"}
-                    </td>
-                    <td className="px-3 py-3 text-sm text-center text-orange-600 dark:text-orange-400 font-medium">
-                      {s.todayWithdrawal ? formatCompactRupiah(s.todayWithdrawal) : "-"}
-                    </td>
-                    <td className="px-3 py-3">
-                      <div className="flex items-center justify-center gap-1.5">
-                        <button
-                          onClick={() => openTxModal(s, "simpan")}
-                          className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-medium bg-emerald-500 hover:bg-emerald-600 text-white transition-colors cursor-pointer"
-                        >
-                          <Plus size={14} />
-                          Simpan
-                        </button>
-                        <button
-                          onClick={() => openTxModal(s, "tarik")}
-                          className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-medium bg-orange-500 hover:bg-orange-600 text-white transition-colors cursor-pointer"
-                        >
-                          <Minus size={14} />
-                          Tarik
-                        </button>
-                        <button
-                          onClick={() => openHistoryModal(s)}
-                          className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-medium bg-blue-500 hover:bg-blue-600 text-white transition-colors cursor-pointer"
-                        >
-                          <History size={14} />
-                          Riwayat
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))
-              )}
-            </tbody>
-          </table>
-        </div>
+          {/* Export + Table */}
+          <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-sm md:text-base font-semibold text-gray-500 dark:text-gray-400 tracking-wider">
+                Daftar Tabungan Siswa
+              </h2>
+              <button
+                onClick={exportExcel}
+                disabled={loading || students.length === 0}
+                className="flex items-center gap-1.5 text-xs font-medium text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-200 transition-colors disabled:opacity-40 cursor-pointer"
+              >
+                <FileDown size={16} />
+                Export Excel
+              </button>
+            </div>
 
-        {!loading && paginatedStudents.length > 0 && (
-          <Pagination
-            currentPage={currentPage}
-            totalPages={totalPages}
-            onPageChange={setCurrentPage}
-            totalItems={students.length}
-            itemsPerPage={10}
-          />
-        )}
-      </div>
+            <div className="overflow-x-auto rounded-xl border border-slate-200 dark:border-gray-700">
+              <table className="w-full">
+                <thead>
+                  <tr className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-xs md:text-sm">
+                    <th className="px-3 py-3 text-left font-semibold whitespace-nowrap">No</th>
+                    <th className="px-3 py-3 text-left font-semibold whitespace-nowrap">Nama</th>
+                    <th className="px-3 py-3 text-center font-semibold whitespace-nowrap">Saldo</th>
+                    <th className="px-3 py-3 text-center font-semibold whitespace-nowrap">Setoran</th>
+                    <th className="px-3 py-3 text-center font-semibold whitespace-nowrap">Penarikan</th>
+                    <th className="px-3 py-3 text-center font-semibold whitespace-nowrap">Aksi</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
+                  {loading ? (
+                    Array.from({ length: 5 }).map((_, i) => (
+                      <tr key={i} className="animate-pulse">
+                        <td className="px-3 py-3">
+                          <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-6" />
+                        </td>
+                        <td className="px-3 py-3">
+                          <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-40" />
+                        </td>
+                        <td className="px-3 py-3">
+                          <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-20 mx-auto" />
+                        </td>
+                        <td className="px-3 py-3">
+                          <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-20 mx-auto" />
+                        </td>
+                        <td className="px-3 py-3">
+                          <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-20 mx-auto" />
+                        </td>
+                        <td className="px-3 py-3">
+                          <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-24 md:w-32 mx-auto" />
+                        </td>
+                      </tr>
+                    ))
+                  ) : paginatedStudents.length === 0 ? (
+                    <tr>
+                      <td
+                        colSpan={6}
+                        className="px-3 py-12 text-center text-gray-400"
+                      >
+                        Belum ada data tabungan untuk kelas ini
+                      </td>
+                    </tr>
+                  ) : (
+                    paginatedStudents.map((s, i) => (
+                      <tr
+                        key={s.studentId}
+                        className="hover:bg-indigo-50/50 dark:hover:bg-indigo-900/20 transition-colors"
+                      >
+                        <td className="px-3 py-3 text-sm text-gray-600 dark:text-gray-400 whitespace-nowrap">
+                          {startIndex + i + 1}
+                        </td>
+                        <td className="px-3 py-3 text-sm font-medium text-gray-800 dark:text-slate-100 whitespace-nowrap">
+                          {s.name}
+                        </td>
+                        <td className="px-3 py-3 text-sm text-center font-semibold text-gray-800 dark:text-slate-100 whitespace-nowrap">
+                          {formatCompactRupiah(s.balance)}
+                        </td>
+                        <td className="px-3 py-3 text-sm text-center text-emerald-700 dark:text-emerald-300 font-medium whitespace-nowrap">
+                          {s.todayDeposit ? formatCompactRupiah(s.todayDeposit) : "-"}
+                        </td>
+                        <td className="px-3 py-3 text-sm text-center text-orange-600 dark:text-orange-400 font-medium whitespace-nowrap">
+                          {s.todayWithdrawal ? formatCompactRupiah(s.todayWithdrawal) : "-"}
+                        </td>
+                        <td className="px-3 py-3 whitespace-nowrap">
+                          <div className="flex items-center justify-center gap-1.5">
+                            <button
+                              title="Simpan"
+                              onClick={() => openTxModal(s, "simpan")}
+                              className="flex items-center gap-1 p-1.5 md:px-2.5 md:py-1.5 rounded-lg text-xs font-medium bg-emerald-500 hover:bg-emerald-600 text-white transition-colors cursor-pointer"
+                            >
+                              <Plus size={14} />
+                              <span className="hidden md:inline">Simpan</span>
+                            </button>
+                            <button
+                              title="Tarik"
+                              onClick={() => openTxModal(s, "tarik")}
+                              className="flex items-center gap-1 p-1.5 md:px-2.5 md:py-1.5 rounded-lg text-xs font-medium bg-orange-500 hover:bg-orange-600 text-white transition-colors cursor-pointer"
+                            >
+                              <Minus size={14} />
+                              <span className="hidden md:inline">Tarik</span>
+                            </button>
+                            <button
+                              title="Riwayat"
+                              onClick={() => openHistoryModal(s)}
+                              className="flex items-center gap-1 p-1.5 md:px-2.5 md:py-1.5 rounded-lg text-xs font-medium bg-blue-500 hover:bg-blue-600 text-white transition-colors cursor-pointer"
+                            >
+                              <History size={14} />
+                              <span className="hidden md:inline">Riwayat</span>
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))
+                  )}
+                </tbody>
+              </table>
+            </div>
+
+            {!loading && paginatedStudents.length > 0 && (
+              <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={setCurrentPage}
+                totalItems={students.length}
+                itemsPerPage={10}
+              />
+            )}
+          </div>
+        </>
+      ) : (
+        <>
+          {/* Rekap Bulanan */}
+          <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-sm font-semibold text-gray-500 dark:text-gray-400 tracking-wider">
+                Rekap Tabungan Bulanan
+              </h2>
+              <div className="flex items-center gap-2.5">
+                <button
+                  onClick={() => setYear((y) => y - 1)}
+                  className="flex h-7 w-7 items-center justify-center rounded border border-slate-300 bg-slate-50 text-slate-600 transition-colors hover:bg-slate-100 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-300 dark:hover:bg-gray-900 cursor-pointer"
+                >
+                  <ChevronLeft size={15} />
+                </button>
+                <span className="text-sm font-semibold text-gray-700 dark:text-gray-300 w-14 text-center">
+                  {year}
+                </span>
+                <button
+                  onClick={() => setYear((y) => y + 1)}
+                  className="flex h-7 w-7 items-center justify-center rounded border border-slate-300 bg-slate-50 text-slate-600 transition-colors hover:bg-slate-100 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-300 dark:hover:bg-gray-900 cursor-pointer"
+                >
+                  <ChevronRight size={15} />
+                </button>
+              </div>
+            </div>
+
+            <div className="overflow-x-auto rounded-xl border border-slate-200 dark:border-gray-700">
+              <table className="w-full">
+                <thead>
+                  <tr className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-xs md:text-sm">
+                    <th className="px-2 py-2.5 text-left font-semibold">No</th>
+                    <th className="px-2 py-2.5 text-left font-semibold whitespace-nowrap">Nama</th>
+                    {Array.from({ length: 12 }, (_, i) => (
+                      <th key={i} className="px-2 py-2.5 text-center font-semibold min-w-[60px] whitespace-nowrap">
+                        {String(i + 1).padStart(2, "0")}
+                      </th>
+                    ))}
+                    <th className="px-2 py-2.5 text-center font-semibold min-w-[70px] whitespace-nowrap">Saldo</th>
+                    <th className="px-2 py-2.5 text-center font-semibold min-w-[50px] whitespace-nowrap">Tarik</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
+                  {monthlyLoading ? (
+                    Array.from({ length: 8 }).map((_, i) => (
+                      <tr key={i} className="animate-pulse">
+                        <td className="px-2 py-2.5">
+                          <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-6" />
+                        </td>
+                        <td className="px-2 py-2.5">
+                          <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-32" />
+                        </td>
+                        {Array.from({ length: 14 }).map((_, j) => (
+                          <td key={j} className="px-2 py-2.5">
+                            <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-12 mx-auto" />
+                          </td>
+                        ))}
+                      </tr>
+                    ))
+                  ) : monthlyData.length === 0 ? (
+                    <tr>
+                      <td colSpan={16} className="px-3 py-12 text-center text-gray-400">
+                        Belum ada data tabungan untuk tahun {year}
+                      </td>
+                    </tr>
+                  ) : (
+                    monthlyData.map((s, i) => {
+                      const monthsTotal = Object.values(s.months).reduce((a, b) => a + b, 0);
+                      return (
+                        <tr
+                          key={s.studentId}
+                          className="hover:bg-indigo-50/50 dark:hover:bg-indigo-900/20 transition-colors"
+                        >
+                          <td className="px-2 py-2.5 text-sm text-gray-600 dark:text-gray-400 whitespace-nowrap">
+                            {i + 1}
+                          </td>
+                          <td className="px-2 py-2.5 text-sm font-medium text-gray-800 dark:text-slate-100 whitespace-nowrap">
+                            {s.name}
+                          </td>
+                          {Array.from({ length: 12 }, (_, mi) => {
+                            const monthKey = String(mi + 1).padStart(2, "0");
+                            const val = s.months[monthKey];
+                            return (
+                              <td
+                                key={mi}
+                                className="px-2 py-2.5 text-xs md:text-sm text-center font-medium whitespace-nowrap"
+                              >
+                                {val ? (
+                                  <span className="text-emerald-700 dark:text-emerald-300">
+                                    {formatCompactRupiah(val)}
+                                  </span>
+                                ) : (
+                                  <span className="text-gray-300 dark:text-gray-600">-</span>
+                                )}
+                              </td>
+                            );
+                          })}
+                          <td className="px-2 py-2.5 text-xs md:text-sm text-center font-semibold text-gray-800 dark:text-slate-100 whitespace-nowrap">
+                            {formatCompactRupiah(s.balance)}
+                          </td>
+                          <td className="px-2 py-2.5 text-center whitespace-nowrap">
+                            {s.totalWithdrawn > 0 ? (
+                              <button
+                                onClick={() => {
+                                  closeHistoryModal();
+                                  openHistoryModal({
+                                    studentId: s.studentId,
+                                    name: s.name,
+                                    grade: s.grade,
+                                    balance: s.balance,
+                                    todayDeposit: 0,
+                                    todayWithdrawal: 0,
+                                  }, "tarik");
+                                }}
+                                className="text-orange-600 dark:text-orange-400 hover:text-orange-800 dark:hover:text-orange-200 transition-colors cursor-pointer text-xs md:text-sm font-semibold underline decoration-dotted underline-offset-2"
+                                title="Lihat riwayat penarikan"
+                              >
+                                {formatCompactRupiah(s.totalWithdrawn)}
+                              </button>
+                            ) : (
+                              <span className="text-gray-300 dark:text-gray-600 text-xs md:text-sm">-</span>
+                            )}
+                          </td>
+                        </tr>
+                      );
+                    })
+                  )}
+                </tbody>
+              </table>
+            </div>
+
+            {!monthlyLoading && monthlyData.length > 0 && (
+              <p className="text-xs text-gray-400 dark:text-gray-500 mt-3 text-center">
+                Menampilkan total setoran per bulan. Tanda (-) berarti tidak ada setoran.
+              </p>
+            )}
+          </div>
+        </>
+      )}
 
       {/* Transaction Modal */}
       {txModal.open && txModal.student && (

@@ -1,9 +1,11 @@
 export function formatCompactRupiah(num: number): string {
-  if (num >= 1_000_000_000)
-    return `Rp ${num / 1_000_000_000} M`;
-  if (num >= 1_000_000)
-    return `Rp ${num / 1_000_000} jt`;
-  if (num >= 1_000)
-    return `Rp ${num / 1_000} rb`;
-  return `Rp ${num}`;
+  const sign = num < 0 ? "-" : "";
+  const abs = Math.abs(num);
+  if (abs >= 1_000_000_000)
+    return `${sign}Rp ${abs / 1_000_000_000} M`;
+  if (abs >= 1_000_000)
+    return `${sign}Rp ${abs / 1_000_000} jt`;
+  if (abs >= 1_000)
+    return `${sign}Rp ${abs / 1_000} rb`;
+  return `${sign}Rp ${abs}`;
 }
