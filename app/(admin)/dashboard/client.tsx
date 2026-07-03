@@ -393,23 +393,23 @@ function GuruDashboardView({
         {statCards.map((card) => (
           <div
             key={card.label}
-            className={`group ${card.orderClass} bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-5 flex items-center gap-4 transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 hover:shadow-xl`}
+            className={`group ${card.orderClass} bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-3 md:p-5 flex items-center gap-3 md:gap-4 transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 hover:shadow-xl`}
           >
             <div
-              className={`w-14 h-14 ${card.color} rounded-2xl flex items-center justify-center shadow-lg shadow-black/10 transition-transform duration-300 group-hover:rotate-3 animate-fadeInUp`}
+              className={`w-10 h-10 md:w-14 md:h-14 ${card.color} rounded-2xl flex items-center justify-center shadow-lg shadow-black/10 transition-transform duration-300 group-hover:rotate-3 animate-fadeInUp`}
             >
-              <card.icon size={24} className="text-white" />
+              <card.icon size={16} className="md:size-[24px] text-white" />
             </div>
             <div className="animate-fadeInUp">
-              <p className="text-sm text-gray-500 dark:text-gray-400">
+              <p className="text-sm md:text-base text-gray-500 dark:text-gray-400">
                 {card.label}
               </p>
               {(card.label === "Rata-rata Kehadiran" ? chartLoading : loading) ? (
                 <div
-                  className={`h-8 w-16 rounded mt-1 animate-pulse ${card.skeletonClass}`}
+                  className={`h-6 w-12 md:h-8 md:w-16 rounded mt-1 animate-pulse ${card.skeletonClass}`}
                 />
               ) : (
-                <p className="text-2xl font-bold text-gray-800 dark:text-white">
+                <p className="text-base md:text-2xl font-bold text-gray-800 dark:text-white">
                   {card.value !== null && card.value !== undefined
                     ? `${card.value}${card.label === "Kehadiran" ? " %" : ""}`
                     : "-"}
