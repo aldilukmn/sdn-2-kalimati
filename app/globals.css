@@ -113,3 +113,11 @@ html.dark {
 .animate-shrink {
   animation: shrink linear forwards;
 }
+
+@keyframes wave {
+  0%, 60%, 100% { opacity: 0.3; }
+  30% { opacity: 1; }
+}
+.animate-wave {
+  animation: wave 1.2s ease-in-out infinite;
+}

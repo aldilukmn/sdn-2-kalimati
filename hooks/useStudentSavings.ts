@@ -3,6 +3,7 @@
 import { useEffect, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import StudentSavingsService from "@/services/student-savings.service";
+import { formatCompactRupiah } from "@/lib/format";
 
 export interface StudentWithBalance {
   studentId: string;
@@ -169,8 +170,20 @@ export function useStudentSavings() {
     if (txModal.mode === "tarik" && amount > txModal.student.balance) {
       setMessage({
         type: "error",
-        text: `Saldo tidak mencukupi! Saldo saat ini: Rp ${txModal.student.balance.toLocaleString("id-ID")}`,
+        text: `Saldo tidak mencukupi! Saldo saat ini: ${formatCompactRupiah(txModal.student.balance)}`,
       });
+      return;
+    }
+    const today = (() => {
+      const d = new Date();
+      return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+    })();
+    if (date < today) {
+      setMessage({ type: "error", text: "Tidak bisa mencatat transaksi untuk tanggal yang sudah lewat!" });
+      return;
+    }
+    if (date > today) {
+      setMessage({ type: "error", text: "Tidak bisa mencatat transaksi untuk tanggal yang akan datang!" });
       return;
     }
     setSaving(true);
@@ -260,7 +273,7 @@ export function useStudentSavings() {
     async (tx: any) => {
       const newType = tx.type === "simpan" ? "tarik" : "simpan";
       const newAmount = prompt(
-        `Edit transaksi (${tx.type === "simpan" ? "Simpan" : "Tarik"}):\nJumlah saat ini: Rp ${tx.amount.toLocaleString("id-ID")}\nMasukkan jumlah baru:`,
+        `Edit transaksi (${tx.type === "simpan" ? "Simpan" : "Tarik"}):\nJumlah saat ini: ${formatCompactRupiah(tx.amount)}\nMasukkan jumlah baru:`,
         String(tx.amount)
       );
       if (!newAmount) return;
@@ -337,10 +350,6 @@ export function useStudentSavings() {
     [grade, historyPage, fetchHistoryPage, date]
   );
 
-  const formatRupiah = (num: number) => {
-    return `Rp ${num.toLocaleString("id-ID")}`;
-  };
-
   const exportExcel = useCallback(() => {
     import("xlsx").then((XLSX) => {
       const data = students.map((s, i) => ({
@@ -411,7 +420,7 @@ export function useStudentSavings() {
     handleEditTransaction,
     handleDeleteTransaction,
     fetchHistoryPage,
-    formatRupiah,
+    formatCompactRupiah,
     exportExcel,
   };
 }

@@ -17,6 +17,7 @@ import { useStudentSavings, GRADES } from "@/hooks/useStudentSavings";
 import Pagination from "@/app/components/Pagination";
 import DateDayPicker from "@/app/components/DateDayPicker";
 import toast from "react-hot-toast";
+import { formatCompactRupiah } from "@/lib/format";
 
 export default function TabunganMuridPage() {
   const {
@@ -57,7 +58,7 @@ export default function TabunganMuridPage() {
     handleEditTransaction,
     handleDeleteTransaction,
     fetchHistoryPage,
-    formatRupiah,
+    formatCompactRupiah,
     students,
     exportExcel,
   } = useStudentSavings();
@@ -129,7 +130,7 @@ export default function TabunganMuridPage() {
       </div>
 
       {/* Summary Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
           <p className="text-[13px] text-center md:text-base text-gray-500 dark:text-gray-400">
             Siswa Menabung
@@ -145,7 +146,7 @@ export default function TabunganMuridPage() {
           <p className="text-lg md:text-3xl font-bold text-center mt-1 text-emerald-700 dark:text-emerald-300">
             {summaryLoading
               ? "..."
-              : formatRupiah(summary?.dailyDeposits || 0)}
+              : formatCompactRupiah(summary?.dailyDeposits || 0)}
           </p>
         </div>
         <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
@@ -155,7 +156,7 @@ export default function TabunganMuridPage() {
           <p className="text-lg md:text-3xl font-bold text-center mt-1 text-orange-700 dark:text-orange-300">
             {summaryLoading
               ? "..."
-              : formatRupiah(summary?.dailyWithdrawals || 0)}
+              : formatCompactRupiah(summary?.dailyWithdrawals || 0)}
           </p>
         </div>
         <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
@@ -171,7 +172,7 @@ export default function TabunganMuridPage() {
           }`}>
             {summaryLoading
               ? "..."
-              : formatRupiah((summary?.dailyDeposits || 0) - (summary?.dailyWithdrawals || 0))}
+              : formatCompactRupiah((summary?.dailyDeposits || 0) - (summary?.dailyWithdrawals || 0))}
           </p>
         </div>
       </div>
@@ -249,13 +250,13 @@ export default function TabunganMuridPage() {
                       {s.name}
                     </td>
                     <td className="px-3 py-3 text-sm text-center font-semibold text-gray-800 dark:text-slate-100">
-                      {formatRupiah(s.balance)}
+                      {formatCompactRupiah(s.balance)}
                     </td>
                     <td className="px-3 py-3 text-sm text-center text-emerald-700 dark:text-emerald-300 font-medium">
-                      {s.todayDeposit ? formatRupiah(s.todayDeposit) : "-"}
+                      {s.todayDeposit ? formatCompactRupiah(s.todayDeposit) : "-"}
                     </td>
                     <td className="px-3 py-3 text-sm text-center text-orange-600 dark:text-orange-400 font-medium">
-                      {s.todayWithdrawal ? formatRupiah(s.todayWithdrawal) : "-"}
+                      {s.todayWithdrawal ? formatCompactRupiah(s.todayWithdrawal) : "-"}
                     </td>
                     <td className="px-3 py-3">
                       <div className="flex items-center justify-center gap-1.5">
@@ -326,7 +327,7 @@ export default function TabunganMuridPage() {
               <div>
                 <p className="text-xs text-gray-500">Saldo Saat Ini</p>
                 <p className="text-sm font-semibold text-gray-800 dark:text-slate-100">
-                  {formatRupiah(txModal.student.balance)}
+                  {formatCompactRupiah(txModal.student.balance)}
                 </p>
               </div>
               <div>
@@ -467,7 +468,7 @@ export default function TabunganMuridPage() {
                             </span>
                           </td>
                           <td className="px-3 py-2.5 text-sm text-right font-medium text-gray-800 dark:text-slate-100">
-                            {formatRupiah(tx.amount)}
+                            {formatCompactRupiah(tx.amount)}
                           </td>
                           <td className="px-3 py-2.5 text-center">
                             <div className="flex items-center justify-center gap-1">

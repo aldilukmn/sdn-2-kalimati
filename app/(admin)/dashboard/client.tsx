@@ -13,10 +13,21 @@ import AttendanceBarChart from "@/app/components/AttendanceBarChart";
 import MonthYearPicker from "@/app/components/MonthYearPicker";
 import Pagination from "@/app/components/Pagination";
 import StudentAttendanceTable from "@/app/components/StudentAttendanceTable";
-import { Users, Mars, Venus, Loader2, LayoutDashboard, Wallet } from "lucide-react";
+import {
+  Users,
+  Mars,
+  Venus,
+  Loader2,
+  LayoutDashboard,
+  Wallet,
+  CalendarCheck,
+} from "lucide-react";
 import { useDashboard } from "@/hooks/useDashboard";
 import { useTeacherChart } from "@/hooks/useTeacherChart";
 import { useSavingsRecap } from "@/hooks/useSavingsRecap";
+import { GRADES } from "@/hooks/useStudentSavings";
+import { formatCompactRupiah } from "@/lib/format";
+import LoadingDots from "@/app/components/LoadingDots";
 import type { AttendanceRow } from "@/lib/merge-attendance";
 
 interface Props {
@@ -80,53 +91,35 @@ function AdminDashboardView({
       )}
       <DashboardStatCards summary={summary} loading={loading} />
 
-      {/* Periode */}
+      <TabunganSection />
+
+      {/* Rekapitulasi Kehadiran — satu card */}
       <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
-        <div className="animate-fadeInUp">
-          <label className="mb-2 block text-xs font-semibold text-gray-500 dark:text-gray-400 tracking-wider">
-            Periode
-          </label>
-          <div className="flex gap-3">
-            <select
-              value={month}
-              onChange={(e) => setMonth(Number(e.target.value))}
-              className="rounded-xl border border-slate-300 bg-slate-50 px-4 py-2 text-sm cursor-pointer dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100 focus:border-blue-500"
-              style={{ outline: "none" }}
-            >
-              {Array.from({ length: 12 }, (_, i) => (
-                <option key={i + 1} value={i + 1}>
-                  {new Date(0, i).toLocaleDateString("id-ID", {
-                    month: "long",
-                  })}
-                </option>
-              ))}
-            </select>
-            <select
-              value={year}
-              onChange={(e) => setYear(Number(e.target.value))}
-              className="rounded-xl border border-slate-300 bg-slate-50 px-4 py-2 text-sm focus:border-blue-500 focus:ring-blue-200 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100 cursor-pointer"
-            >
-              {[2025, 2026, 2027].map((t) => (
-                <option key={t} value={t}>
-                  {t}
-                </option>
-              ))}
-            </select>
+        <div className="flex flex-col md:flex-row items-center gap-2.5 mb-4">
+          <div className="flex items-center gap-2.5 mb-3 md:mb-0">
+            <div className="w-8 h-8 bg-indigo-100 dark:bg-indigo-900/40 rounded-lg flex items-center justify-center">
+              <CalendarCheck
+                size={16}
+                className="text-indigo-600 dark:text-indigo-300"
+              />
+            </div>
+            <h3 className="font-semibold text-gray-700 dark:text-gray-300">
+              Rekapitulasi Kehadiran
+            </h3>
+          </div>
+          <div className="md:ml-auto">
+            <MonthYearPicker
+              month={month}
+              year={year}
+              onMonthChange={setMonth}
+              onYearChange={setYear}
+            />
           </div>
         </div>
-      </div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
-          <div className="animate-fadeInUp">
-            <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="bg-slate-50/80 dark:bg-gray-900/50 rounded-xl p-4 border border-slate-200/50 dark:border-gray-700/30 animate-fadeInUp">
+            <p className="text-sm md:text-base text-gray-500 dark:text-gray-400">
               Distribusi Kehadiran
-            </h3>
-            <p className="text-xs text-gray-600 dark:text-gray-500 mb-4">
-              {new Date(0, month - 1).toLocaleDateString("id-ID", {
-                month: "long",
-              })}{" "}
-              {year}
             </p>
             <AttendanceDonutChart
               data={donutData}
@@ -134,17 +127,9 @@ function AdminDashboardView({
               totalDays={summary?.totalDays}
             />
           </div>
-        </div>
-        <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
-          <div className="animate-fadeInUp">
-            <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">
+          <div className="bg-slate-50/80 dark:bg-gray-900/50 rounded-xl p-4 border border-slate-200/50 dark:border-gray-700/30 animate-fadeInUp">
+            <p className="text-sm md:text-base text-gray-500 dark:text-gray-400">
               Kehadiran per Kelas
-            </h3>
-            <p className="text-xs text-gray-600 dark:text-gray-500 mb-4">
-              {new Date(0, month - 1).toLocaleDateString("id-ID", {
-                month: "long",
-              })}{" "}
-              {year}
             </p>
             <AttendanceBarChart
               data={summary?.attendanceByGrade || []}
@@ -153,9 +138,6 @@ function AdminDashboardView({
           </div>
         </div>
       </div>
-
-      {/* Tabungan Section */}
-      <TabunganSection />
     </div>
   );
 }
@@ -164,21 +146,40 @@ function TabunganSection({ grade }: { grade?: string | null }) {
   const now = new Date();
   const [month, setMonth] = useState(now.getMonth() + 1);
   const [year, setYear] = useState(now.getFullYear());
-  const { data, loading } = useSavingsRecap(grade ?? undefined, month, year);
-
-  const formatRupiah = (num: number) =>
-    `Rp ${num.toLocaleString("id-ID")}`;
+  const [filterGrade, setFilterGrade] = useState(grade ?? "");
+  const { data, loading } = useSavingsRecap(
+    filterGrade || undefined,
+    month,
+    year,
+  );
 
   return (
     <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
-      <div className="flex items-center gap-2.5 mb-4">
-        <div className="w-8 h-8 bg-indigo-100 dark:bg-indigo-900/40 rounded-lg flex items-center justify-center">
-          <Wallet size={16} className="text-indigo-600 dark:text-indigo-300" />
+      <div className="flex flex-col md:flex-row items-center justify-center gap-2.5 mb-4">
+        <div className="flex items-center gap-2.5 mb-3 md:mb-0">
+          <div className="w-8 h-8 bg-indigo-100 dark:bg-indigo-900/40 rounded-lg flex items-center justify-center">
+            <Wallet
+              size={16}
+              className="text-indigo-600 dark:text-indigo-300"
+            />
+          </div>
+          <h3 className="font-semibold text-gray-700 dark:text-gray-300">
+            Rekapitulasi Tabungan
+          </h3>
         </div>
-        <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300">
-          Rekapitulasi Tabungan
-        </h3>
-        <div className="ml-auto">
+        <div className="flex items-center gap-2.5 md:ml-auto">
+          <select
+            value={filterGrade}
+            onChange={(e) => setFilterGrade(e.target.value)}
+            className="h-8 rounded border border-slate-300 bg-slate-50 px-2 text-xs text-slate-700 transition-colors hover:border-blue-400 hover:bg-blue-50 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-300 dark:hover:border-blue-500 dark:hover:bg-blue-950/30 cursor-pointer"
+          >
+            <option value="">Semua Kelas</option>
+            {GRADES.map((g) => (
+              <option key={g} value={g}>
+                Kelas {g}
+              </option>
+            ))}
+          </select>
           <MonthYearPicker
             month={month}
             year={year}
@@ -188,7 +189,10 @@ function TabunganSection({ grade }: { grade?: string | null }) {
         </div>
       </div>
 
-      {!loading && data && data.monthlyDeposits === 0 && data.monthlyWithdrawals === 0 ? (
+      {!loading &&
+      data &&
+      data.monthlyDeposits === 0 &&
+      data.monthlyWithdrawals === 0 ? (
         <div className="flex flex-col items-center justify-center py-8 text-center">
           <div className="text-3xl mb-2">🏦</div>
           <p className="text-sm font-semibold text-gray-500 dark:text-gray-400">
@@ -199,26 +203,59 @@ function TabunganSection({ grade }: { grade?: string | null }) {
           </p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <div className="bg-slate-50/80 dark:bg-gray-900/50 rounded-xl p-4 border border-slate-200/50 dark:border-gray-700/30">
-            <p className="text-xs text-gray-500 dark:text-gray-400">Total Saldo</p>
-            <p className="text-xl md:text-2xl font-bold text-sky-700 dark:text-sky-300 mt-1">
-              {loading ? "..." : formatRupiah(data?.totalBalance || 0)}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="bg-sky-50/80 dark:bg-sky-950/20 rounded-xl p-4 border border-sky-200/50 dark:border-sky-800/30">
+            <p className="text-xs text-gray-500 dark:text-gray-400">
+              Total Saldo
+            </p>
+            <p className="text-lg md:text-2xl font-bold text-sky-700 dark:text-sky-300 mt-1">
+              {loading ? <LoadingDots /> : formatCompactRupiah(data?.totalBalance || 0)}
             </p>
             <p className="text-[11px] text-gray-400 dark:text-gray-500 mt-0.5">
-              {loading ? "..." : `${data?.totalStudents || 0} siswa menabung`}
+              {loading ? <LoadingDots /> : `${data?.totalStudents || 0} siswa menabung`}
             </p>
           </div>
-          <div className="bg-slate-50/80 dark:bg-gray-900/50 rounded-xl p-4 border border-slate-200/50 dark:border-gray-700/30">
-            <p className="text-xs text-gray-500 dark:text-gray-400">Setoran Bulan Ini</p>
-            <p className="text-xl md:text-2xl font-bold text-emerald-700 dark:text-emerald-300 mt-1">
-              {loading ? "..." : formatRupiah(data?.monthlyDeposits || 0)}
+          <div className="bg-emerald-50/80 dark:bg-emerald-950/20 rounded-xl p-4 border border-emerald-200/50 dark:border-emerald-800/30">
+            <p className="text-xs text-gray-500 dark:text-gray-400">
+              Setoran Bulan Ini
+            </p>
+            <p className="text-lg md:text-2xl font-bold text-emerald-700 dark:text-emerald-300 mt-1">
+              {loading
+                ? <LoadingDots />
+                : formatCompactRupiah(data?.monthlyDeposits || 0)}
             </p>
           </div>
-          <div className="bg-slate-50/80 dark:bg-gray-900/50 rounded-xl p-4 border border-slate-200/50 dark:border-gray-700/30">
-            <p className="text-xs text-gray-500 dark:text-gray-400">Penarikan Bulan Ini</p>
-            <p className="text-xl md:text-2xl font-bold text-orange-700 dark:text-orange-300 mt-1">
-              {loading ? "..." : formatRupiah(data?.monthlyWithdrawals || 0)}
+          <div className="bg-orange-50/80 dark:bg-orange-950/20 rounded-xl p-4 border border-orange-200/50 dark:border-orange-800/30">
+            <p className="text-xs text-gray-500 dark:text-gray-400">
+              Penarikan Bulan Ini
+            </p>
+            <p className="text-lg md:text-2xl font-bold text-orange-700 dark:text-orange-300 mt-1">
+              {loading
+                ? <LoadingDots />
+                : formatCompactRupiah(data?.monthlyWithdrawals || 0)}
+            </p>
+          </div>
+          <div className="bg-violet-50/80 dark:bg-violet-950/20 rounded-xl p-4 border border-violet-200/50 dark:border-violet-800/30">
+            <p className="text-xs text-gray-500 dark:text-gray-400">
+              Selisih Bulan Ini
+            </p>
+            <p
+              className={`text-lg md:text-2xl font-bold mt-1 ${
+                loading
+                  ? "text-gray-700 dark:text-gray-300"
+                  : (data?.monthlyDeposits || 0) -
+                        (data?.monthlyWithdrawals || 0) >=
+                      0
+                    ? "text-emerald-700 dark:text-emerald-300"
+                    : "text-red-600 dark:text-red-400"
+              }`}
+            >
+              {loading
+                ? <LoadingDots />
+                : formatCompactRupiah(
+                    (data?.monthlyDeposits || 0) -
+                      (data?.monthlyWithdrawals || 0),
+                  )}
             </p>
           </div>
         </div>
@@ -266,6 +303,15 @@ function GuruDashboardView({
 
   const itemsPerPage = 5;
 
+  const averageAttendance = !chartLoading && hasAttendanceData && chartData.length > 0
+    ? Math.round(
+        chartData.reduce((sum, s) => {
+          const total = s.hadir + s.sakit + s.izin + s.absen;
+          return sum + (total > 0 ? (s.hadir / total) * 100 : 0);
+        }, 0) / chartData.length
+      )
+    : null;
+
   useEffect(() => {
     setCurrentPage(1);
   }, [month, year]);
@@ -283,6 +329,7 @@ function GuruDashboardView({
       icon: Users,
       color: "bg-gradient-to-br from-violet-400 to-purple-600",
       skeletonClass: "bg-violet-200 dark:bg-violet-700",
+      orderClass: "order-1 lg:order-1",
     },
     {
       label: "Laki-laki",
@@ -290,6 +337,7 @@ function GuruDashboardView({
       icon: Mars,
       color: "bg-gradient-to-br from-sky-400 to-blue-600",
       skeletonClass: "bg-sky-200 dark:bg-sky-700",
+      orderClass: "order-3 lg:order-2",
     },
     {
       label: "Perempuan",
@@ -297,6 +345,15 @@ function GuruDashboardView({
       icon: Venus,
       color: "bg-gradient-to-br from-rose-400 to-pink-600",
       skeletonClass: "bg-rose-200 dark:bg-rose-700",
+      orderClass: "order-4 lg:order-3",
+    },
+    {
+      label: "Kehadiran",
+      value: averageAttendance,
+      icon: CalendarCheck,
+      color: "bg-gradient-to-br from-amber-400 to-orange-600",
+      skeletonClass: "bg-amber-200 dark:bg-amber-700",
+      orderClass: "order-2 lg:order-4",
     },
   ];
 
@@ -329,11 +386,11 @@ function GuruDashboardView({
         </>
       )}
 
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {statCards.map((card) => (
           <div
             key={card.label}
-            className="group bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-5 flex items-center gap-4 transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 hover:shadow-xl"
+            className={`group ${card.orderClass} bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-5 flex items-center gap-4 transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 hover:shadow-xl`}
           >
             <div
               className={`w-14 h-14 ${card.color} rounded-2xl flex items-center justify-center shadow-lg shadow-black/10 transition-transform duration-300 group-hover:rotate-3 animate-fadeInUp`}
@@ -344,47 +401,42 @@ function GuruDashboardView({
               <p className="text-sm text-gray-500 dark:text-gray-400">
                 {card.label}
               </p>
-              {loading ? (
+              {(card.label === "Rata-rata Kehadiran" ? chartLoading : loading) ? (
                 <div
                   className={`h-8 w-16 rounded mt-1 animate-pulse ${card.skeletonClass}`}
                 />
               ) : (
                 <p className="text-2xl font-bold text-gray-800 dark:text-white">
-                  {card.value ?? "-"}
+                  {card.value !== null && card.value !== undefined
+                    ? `${card.value}${card.label === "Kehadiran" ? " %" : ""}`
+                    : "-"}
                 </p>
               )}
             </div>
           </div>
         ))}
       </div>
-
-      <div className="bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 animate-fadeInUp">
-          <div>
-            <h3 className="text-lg md:text-xl font-semibold text-gray-800 dark:text-gray-200">
-              Rekapitulasi Kehadiran Murid
-            </h3>
-            <p className="text-sm text-gray-500 dark:text-gray-400 mt-0.5">
-              Pantau kehadiran siswa per bulan
-            </p>
-          </div>
-
-          <div className="shrink-0 animate-fadeInUp">
-            <label className="mb-2 block text-xs font-semibold text-gray-500 dark:text-gray-400 tracking-wider">
-              Periode
-            </label>
-            <MonthYearPicker
-              month={month}
-              year={year}
-              onMonthChange={setMonth}
-              onYearChange={setYear}
-            />
-          </div>
-        </div>
-      </div>
-
+      <TabunganSection grade={userGrade} />
       {chartLoading ? (
-        <div className="bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
+        <div className="bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5 relative z-0 animate-fadeInUp">
+          <div className="flex flex-col md:flex-row items-center md:justify-between gap-4 mb-4">
+            <div className="text-center md:text-start">
+              <h3 className="text-lg md:text-xl font-semibold text-gray-800 dark:text-gray-200">
+                Rekapitulasi Kehadiran Murid
+              </h3>
+              <p className="text-sm text-gray-500 dark:text-gray-400 mt-0.5">
+                Pantau kehadiran siswa per bulan
+              </p>
+            </div>
+            <div className="shrink-0">
+              <MonthYearPicker
+                month={month}
+                year={year}
+                onMonthChange={setMonth}
+                onYearChange={setYear}
+              />
+            </div>
+          </div>
           <StudentAttendanceTable
             data={paginatedData}
             loading={chartLoading}
@@ -392,8 +444,26 @@ function GuruDashboardView({
           />
         </div>
       ) : !hasAttendanceData ? (
-        <div className="flex flex-col items-center justify-center py-16 px-4 text-center bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl">
-          <div className="animate-fadeInUp">
+        <div className="bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5 relative z-0 animate-fadeInUp">
+          <div className="flex flex-col md:flex-row items-center md:justify-between gap-4 mb-4">
+            <div className="text-center md:text-start">
+              <h3 className="text-lg md:text-xl font-semibold text-gray-800 dark:text-gray-200">
+                Rekapitulasi Kehadiran Murid
+              </h3>
+              <p className="text-sm text-gray-500 dark:text-gray-400 mt-0.5">
+                Pantau kehadiran siswa per bulan
+              </p>
+            </div>
+            <div className="shrink-0">
+              <MonthYearPicker
+                month={month}
+                year={year}
+                onMonthChange={setMonth}
+                onYearChange={setYear}
+              />
+            </div>
+          </div>
+          <div className="flex flex-col items-center justify-center py-16 px-4 text-center">
             <div className="text-5xl mb-4">📭</div>
             <p className="text-lg font-semibold text-gray-700 dark:text-gray-300">
               Belum Ada Data Kehadiran
@@ -405,7 +475,25 @@ function GuruDashboardView({
           </div>
         </div>
       ) : (
-        <div className="bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
+        <div className="bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5 relative z-0 animate-fadeInUp">
+          <div className="flex flex-col md:flex-row items-center md:justify-between gap-4 mb-4">
+            <div className="text-center md:text-start">
+              <h3 className="text-lg md:text-xl font-semibold text-gray-800 dark:text-gray-200">
+                Rekapitulasi Kehadiran Murid
+              </h3>
+              <p className="text-sm text-gray-500 dark:text-gray-400 mt-0.5">
+                Pantau kehadiran siswa per bulan
+              </p>
+            </div>
+            <div className="shrink-0">
+              <MonthYearPicker
+                month={month}
+                year={year}
+                onMonthChange={setMonth}
+                onYearChange={setYear}
+              />
+            </div>
+          </div>
           <StudentAttendanceTable
             data={paginatedData}
             loading={chartLoading}
@@ -422,22 +510,6 @@ function GuruDashboardView({
           </div>
         </div>
       )}
-
-      {/* Tabungan Section */}
-      <div className="bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
-        <div className="flex items-center gap-2.5 mb-4">
-          <div className="w-8 h-8 bg-indigo-100 dark:bg-indigo-900/40 rounded-lg flex items-center justify-center">
-            <Wallet size={16} className="text-indigo-600 dark:text-indigo-300" />
-          </div>
-          <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300">
-            Tabungan Murid
-          </h3>
-          <p className="text-xs text-gray-400 dark:text-gray-500 ml-auto">
-            {new Date(0, month - 1).toLocaleDateString("id-ID", { month: "long" })} {year}
-          </p>
-        </div>
-        <TabunganSection grade={userGrade} />
-      </div>
     </div>
   );
 }

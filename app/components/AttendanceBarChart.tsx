@@ -60,7 +60,7 @@ function sanitizeDOMProps(obj: Record<string, any>) {
 export default function AttendanceBarChart({ data, loading }: Props) {
   if (loading) {
     return (
-      <div className="h-[300px] flex items-end justify-center gap-3 px-8 ">
+      <div className="h-[250px] md:h-[400px] flex items-end justify-center gap-3 px-8 ">
         {Array.from({ length: 6 }).map((_, i) => (
           <div
             key={i}
@@ -74,7 +74,7 @@ export default function AttendanceBarChart({ data, loading }: Props) {
 
   if (!data || data.length === 0) {
     return (
-      <div className="h-[300px] flex items-center justify-center text-gray-400 dark:text-gray-500 text-sm">
+      <div className="h-[200px] md:h-[300px] flex items-center justify-center text-gray-400 dark:text-gray-500 text-sm">
         Belum ada data presensi bulan ini
       </div>
     );
@@ -93,19 +93,22 @@ export default function AttendanceBarChart({ data, loading }: Props) {
           transform-box: fill-box;
         }
       `}</style>
-      <ResponsiveContainer width="100%" height={300}>
-        <BarChart data={data} margin={{ top: 20, right: 20, left: 0, bottom: 5 }}>
+      <div className="h-[250px] md:h-[400px]">
+        <ResponsiveContainer width="100%" height="100%">
+        <BarChart data={data} margin={{ top: 50, right: 0, left: -25, bottom: 30 }}>
           <XAxis
             dataKey="grade"
             tickFormatter={(v) => `Kelas ${v}`}
-            tick={{ fontSize: 13, fontWeight: 500, className: "fill-gray-600 dark:fill-gray-200" }}
+            tick={{ fontWeight: 500, className: "fill-gray-600 dark:fill-gray-200 text-[10px] sm:text-xs" }}
+            angle={-45}
+            textAnchor="end"
             axisLine={{ className: "stroke-gray-500 dark:stroke-gray-200" }}
             tickLine={false}
           />
           <YAxis
             domain={[0, 100]}
             tickFormatter={(v) => `${v}%`}
-            tick={{ fontSize: 12, className: "fill-gray-600 dark:fill-gray-200" }}
+            tick={{ className: "fill-gray-600 dark:fill-gray-200 text-[10px] sm:text-xs" }}
             axisLine={{ className: "stroke-gray-500 dark:stroke-gray-200" }}
             tickLine={false}
           />
@@ -117,7 +120,7 @@ export default function AttendanceBarChart({ data, loading }: Props) {
           <Bar
             dataKey="rate"
             radius={[8, 8, 0, 0]}
-            maxBarSize={50}
+            maxBarSize={80}
             isAnimationActive={true}
             animationDuration={1200}
             animationEasing="ease-out"
@@ -144,11 +147,8 @@ export default function AttendanceBarChart({ data, loading }: Props) {
                 const cy = y + height / 2;
                 return (
                   <g>
-                    <text x={cx} y={cy - 4} textAnchor="middle" fill="#fff" fontSize={14} fontWeight={700}>
+                    <text x={cx} y={cy - 4} textAnchor="middle" fill="#fff" className="text-[11px] sm:text-sm font-bold">
                       {sCount}
-                    </text>
-                    <text x={cx} y={cy + 10} textAnchor="middle" fill="#ffffffcc" fontSize={12} fontWeight={500}>
-                      Murid
                     </text>
                   </g>
                 );
@@ -165,12 +165,13 @@ export default function AttendanceBarChart({ data, loading }: Props) {
               dataKey="rate"
               position="top"
               formatter={(v: any) => `${v}%`}
-              className="fill-gray-900 dark:fill-gray-100"
-              style={{ fontSize: 12, fontWeight: 600 }}
+              className="fill-gray-900 dark:fill-gray-100 text-[10px] sm:text-xs"
+              style={{ fontWeight: 600 }}
             />
           </Bar>
         </BarChart>
       </ResponsiveContainer>
+      </div>
     </>
   );
 }
