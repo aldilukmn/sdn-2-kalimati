@@ -121,7 +121,7 @@ export default function DashboardStatCards({ summary, loading }: Props) {
             key={card.label}
             className={`${card.bgClass} md:backdrop-blur-xl border ${card.borderClass} shadow-lg rounded-2xl p-3 md:p-5 transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 hover:shadow-xl`}
           >
-            <div className="flex items-center md:items-start justify-center md:justify-between mb-1 md:mb-3 min-h-10 animate-fadeInUp">
+            <div className="flex items-center md:items-start justify-center md:justify-between mb-1 md:mb-3 min-h-10">
               <span className="text-[13px] text-center md:text-base font-semibold text-gray-600 dark:text-gray-400">
                 {card.label}
               </span>
@@ -129,7 +129,7 @@ export default function DashboardStatCards({ summary, loading }: Props) {
                 className={`hidden md:block w-[22px] h-[22px] ${card.textClass}`}
               />
             </div>
-            <div className="flex items-center justify-center md:justify-start gap-2 animate-fadeInUp">
+            <div className="flex items-center justify-center md:justify-start gap-2">
               <Icon className={`md:hidden w-4 h-4 ${card.textClass}`} />
               <span
                 className={`text-lg md:text-3xl font-bold ${card.textClass}`}

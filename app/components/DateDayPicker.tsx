@@ -77,7 +77,7 @@ export default function DateDayPicker({ value, onChange, max }: DateDayPickerPro
   const maxDate = max ? parseISO(max) : null;
 
   return (
-    <div className="flex items-center gap-2 animate-fadeInUp">
+    <div className="flex items-center gap-2 z-10">
       <button
         type="button"
         onClick={prevDay}

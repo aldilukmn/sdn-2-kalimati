@@ -50,7 +50,7 @@ export default function PresensiMuridPage() {
       <div className="relative bg-gradient-to-br from-indigo-500 via-indigo-600 to-purple-600 rounded-2xl overflow-hidden shadow-xl ">
         <div className="absolute -top-6 -right-6 w-40 h-40 bg-white/5 rounded-full blur-2xl" />
         <div className="absolute -bottom-8 -left-8 w-48 h-48 bg-indigo-400/20 rounded-full blur-3xl" />
-        <div className="relative p-5 md:p-6 flex items-center gap-4 animate-fadeInUp">
+        <div className="relative p-5 md:p-6 flex items-center gap-4">
           <div className="shrink-0 w-12 h-12 md:w-14 md:h-14 bg-white/15 rounded-xl flex items-center justify-center animate-iconBounce">
             <CalendarCheck size={26} className="md:size-[30px] text-white" />
           </div>
@@ -68,18 +68,18 @@ export default function PresensiMuridPage() {
       {/* Filters */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 ">
         <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
-          <label className="mb-2 block text-xs font-semibold text-gray-500 dark:text-gray-400 tracking-wider animate-fadeInUp">
+          <label className="mb-2 block text-xs font-semibold text-gray-500 dark:text-gray-400 tracking-wider">
             Kelas
           </label>
           {userRole !== "admin" && userRole !== "kepala" ? (
-            <div className="w-full rounded-xl border border-slate-300 bg-slate-100 px-4 py-2.5 text-sm text-slate-800 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100 animate-fadeInUp">
+            <div className="w-full rounded-xl border border-slate-300 bg-slate-100 px-4 py-2.5 text-sm text-slate-800 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100">
               Kelas {grade}
             </div>
           ) : (
             <select
               value={grade}
               onChange={(e) => setGrade(e.target.value)}
-              className="w-full rounded-xl border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm outline-none focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100 cursor-pointer animate-fadeInUp"
+              className="w-full rounded-xl border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm outline-none focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100 cursor-pointer"
             >
               {GRADES.map((g) => (
                 <option key={g} value={g}>
@@ -91,7 +91,7 @@ export default function PresensiMuridPage() {
         </div>
 
         <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5 z-10">
-          <label className="mb-2 block text-xs font-semibold text-gray-500 dark:text-gray-400 tracking-wider animate-fadeInUp">
+          <label className="mb-2 block text-xs font-semibold text-gray-500 dark:text-gray-400 tracking-wider">
             Tanggal
           </label>
           <DateDayPicker

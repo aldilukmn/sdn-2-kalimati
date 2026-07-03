@@ -66,6 +66,20 @@ export function useStudentSavings() {
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [editingTx, setEditingTx] = useState<any | null>(null);
 
+  const [confirmDelete, setConfirmDelete] = useState<{
+    open: boolean;
+    txId: string | null;
+  }>({ open: false, txId: null });
+
+  const [editModal, setEditModal] = useState<{
+    open: boolean;
+    transaction: any | null;
+  }>({ open: false, transaction: null });
+  const [editAmount, setEditAmount] = useState("");
+  const [editDate, setEditDate] = useState("");
+  const [editDescription, setEditDescription] = useState("");
+  const [editSaving, setEditSaving] = useState(false);
+
   const [message, setMessage] = useState<{
     type: "success" | "error";
     text: string;
@@ -166,6 +180,10 @@ export function useStudentSavings() {
     const amount = parseInt(txAmount.replace(/\./g, ""));
     if (!amount || amount <= 0) {
       setMessage({ type: "error", text: "Jumlah harus lebih dari 0!" });
+      return;
+    }
+    if (txModal.mode === "tarik" && !txDescription.trim()) {
+      setMessage({ type: "error", text: "Catatan penarikan harus diisi!" });
       return;
     }
     if (txModal.mode === "tarik" && amount > txModal.student.balance) {
@@ -273,64 +291,88 @@ export function useStudentSavings() {
     }
   }, [historyModal.student]);
 
-  const handleEditTransaction = useCallback(
-    async (tx: any) => {
-      const newType = tx.type === "simpan" ? "tarik" : "simpan";
-      const newAmount = prompt(
-        `Edit transaksi (${tx.type === "simpan" ? "Simpan" : "Tarik"}):\nJumlah saat ini: ${formatCompactRupiah(tx.amount)}\nMasukkan jumlah baru:`,
-        String(tx.amount)
-      );
-      if (!newAmount) return;
-      const amountNum = parseInt(newAmount.replace(/\./g, ""));
-      if (!amountNum || amountNum <= 0) {
-        setMessage({ type: "error", text: "Jumlah harus lebih dari 0!" });
-        return;
-      }
-      const newDate = prompt(
-        "Tanggal (YYYY-MM-DD):",
-        tx.date
-      );
-      if (!newDate) return;
-      setEditingTx(tx._id);
-      try {
-        const res = await StudentSavingsService.updateTransaction(tx._id, {
-          type: newType,
-          amount: amountNum,
-          date: newDate,
-        });
-        if (res?.status?.response === "success") {
-          setMessage({ type: "success", text: "Transaksi berhasil diperbarui!" });
-          await fetchHistoryPage(historyPage);
-          const res2 = await StudentSavingsService.getByGrade(grade, date);
-          setStudents(res2?.result || []);
-          const res3 = await StudentSavingsService.getSummary(grade, date);
-          setSummary(res3?.result || null);
-        } else {
-          setMessage({
-            type: "error",
-            text: res?.status?.message || "Gagal memperbarui transaksi",
-          });
-        }
-      } catch (e: any) {
+  const openEditModal = useCallback((tx: any) => {
+    setEditModal({ open: true, transaction: tx });
+    setEditAmount(String(tx.amount));
+    setEditDate(tx.date);
+    setEditDescription(tx.description || "");
+  }, []);
+
+  const closeEditModal = useCallback(() => {
+    setEditModal({ open: false, transaction: null });
+    setEditAmount("");
+    setEditDate("");
+    setEditDescription("");
+  }, []);
+
+  const submitEditTransaction = useCallback(async () => {
+    const tx = editModal.transaction;
+    if (!tx) return;
+    const amountNum = parseInt(editAmount.replace(/\./g, ""));
+    if (!amountNum || amountNum <= 0) {
+      setMessage({ type: "error", text: "Jumlah harus lebih dari 0!" });
+      return;
+    }
+    if (!editDate) {
+      setMessage({ type: "error", text: "Tanggal harus diisi!" });
+      return;
+    }
+    if (tx.type === "tarik" && !editDescription.trim()) {
+      setMessage({ type: "error", text: "Catatan penarikan harus diisi!" });
+      return;
+    }
+    setEditSaving(true);
+    try {
+      const res = await StudentSavingsService.updateTransaction(tx._id, {
+        type: tx.type,
+        amount: amountNum,
+        date: editDate,
+      });
+      if (res?.status?.response === "success") {
+        setMessage({ type: "success", text: "Transaksi berhasil diperbarui!" });
+        closeEditModal();
+        await fetchHistoryPage(historyPage);
+        const res2 = await StudentSavingsService.getByGrade(grade, date);
+        setStudents(res2?.result || []);
+        const res3 = await StudentSavingsService.getSummary(grade, date);
+        setSummary(res3?.result || null);
+      } else {
         setMessage({
           type: "error",
-          text: e.message || "Gagal memperbarui transaksi",
+          text: res?.status?.message || "Gagal memperbarui transaksi",
         });
-      } finally {
-        setEditingTx(null);
       }
-    },
-    [grade, historyPage, fetchHistoryPage, date]
-  );
+    } catch (e: any) {
+      setMessage({
+        type: "error",
+        text: e.message || "Gagal memperbarui transaksi",
+      });
+    } finally {
+      setEditSaving(false);
+    }
+  }, [editModal, editAmount, editDate, editDescription, grade, date, historyPage, fetchHistoryPage, closeEditModal]);
 
   const handleDeleteTransaction = useCallback(
     async (txId: string) => {
-      if (!confirm("Hapus transaksi ini?")) return;
+      setConfirmDelete({ open: true, txId });
+    },
+    []
+  );
+
+  const closeConfirmDelete = useCallback(() => {
+    setConfirmDelete({ open: false, txId: null });
+  }, []);
+
+  const submitDeleteTransaction = useCallback(
+    async () => {
+      const txId = confirmDelete.txId;
+      if (!txId) return;
       setDeletingId(txId);
       try {
         const res = await StudentSavingsService.deleteTransaction(txId);
         if (res?.status?.response === "success") {
           setMessage({ type: "success", text: "Transaksi berhasil dihapus!" });
+          closeConfirmDelete();
           await fetchHistoryPage(historyPage);
           const res2 = await StudentSavingsService.getByGrade(grade, date);
           setStudents(res2?.result || []);
@@ -351,7 +393,7 @@ export function useStudentSavings() {
         setDeletingId(null);
       }
     },
-    [grade, historyPage, fetchHistoryPage, date]
+    [confirmDelete, grade, historyPage, fetchHistoryPage, date, closeConfirmDelete]
   );
 
   const exportExcel = useCallback(() => {
@@ -421,7 +463,20 @@ export function useStudentSavings() {
     historyTotalPages,
     editingTx,
     deletingId,
-    handleEditTransaction,
+    editModal,
+    editAmount,
+    setEditAmount,
+    editDate,
+    setEditDate,
+    editDescription,
+    setEditDescription,
+    editSaving,
+    openEditModal,
+    closeEditModal,
+    submitEditTransaction,
+    confirmDelete,
+    closeConfirmDelete,
+    submitDeleteTransaction,
     handleDeleteTransaction,
     fetchHistoryPage,
     formatCompactRupiah,

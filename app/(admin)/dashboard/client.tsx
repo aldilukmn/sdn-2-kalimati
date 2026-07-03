@@ -69,7 +69,7 @@ function AdminDashboardView({
       <div className="relative bg-gradient-to-br from-indigo-500 via-indigo-600 to-purple-600 rounded-2xl overflow-hidden shadow-xl">
         <div className="absolute -top-6 -right-6 w-40 h-40 bg-white/5 rounded-full blur-2xl" />
         <div className="absolute -bottom-8 -left-8 w-48 h-48 bg-indigo-400/20 rounded-full blur-3xl" />
-        <div className="relative p-5 md:p-6 flex items-center gap-4 animate-fadeInUp">
+        <div className="relative p-5 md:p-6 flex items-center gap-4">
           <div className="shrink-0 w-12 h-12 md:w-14 md:h-14 bg-white/15 rounded-xl flex items-center justify-center animate-iconBounce">
             <LayoutDashboard size={26} className="md:size-[30px] text-white" />
           </div>
@@ -117,7 +117,7 @@ function AdminDashboardView({
           </div>
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <div className="bg-slate-50/80 dark:bg-gray-900/50 rounded-xl p-4 border border-slate-200/50 dark:border-gray-700/30 animate-fadeInUp">
+          <div className="bg-slate-50/80 dark:bg-gray-900/50 rounded-xl p-4 border border-slate-200/50 dark:border-gray-700/30">
             <p className="text-sm md:text-base text-gray-500 dark:text-gray-400">
               Distribusi Kehadiran
             </p>
@@ -127,7 +127,7 @@ function AdminDashboardView({
               totalDays={summary?.totalDays}
             />
           </div>
-          <div className="bg-slate-50/80 dark:bg-gray-900/50 rounded-xl p-4 border border-slate-200/50 dark:border-gray-700/30 animate-fadeInUp">
+          <div className="bg-slate-50/80 dark:bg-gray-900/50 rounded-xl p-4 border border-slate-200/50 dark:border-gray-700/30">
             <p className="text-sm md:text-base text-gray-500 dark:text-gray-400">
               Kehadiran per Kelas
             </p>
@@ -168,21 +168,18 @@ function TabunganSection({ grade }: { grade?: string | null }) {
           </h3>
         </div>
         <div className="flex items-center gap-2.5 w-full md:w-auto md:ml-auto">
-          <div className="relative min-w-0">
-            <Users size={16} className="absolute left-9 md:left-5 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500 pointer-events-none" />
-            <select
-              value={filterGrade}
-              onChange={(e) => setFilterGrade(e.target.value)}
-              className="h-8 rounded border border-slate-300 bg-slate-50 pl-2 md:pl-7 pr-2 text-xs text-slate-700 text-center appearance-none min-w-[205px] md:min-w-[150px] transition-colors hover:border-blue-400 hover:bg-blue-50 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-300 dark:hover:border-blue-500 dark:hover:bg-blue-950/30 cursor-pointer"
-            >
-              <option value="">Semua Kelas</option>
-              {GRADES.map((g) => (
-                <option key={g} value={g}>
-                  Kelas {g}
-                </option>
-              ))}
-            </select>
-          </div>
+          <select
+            value={filterGrade}
+            onChange={(e) => setFilterGrade(e.target.value)}
+            className="h-8 w-32 rounded border border-slate-300 bg-slate-50 text-xs text-slate-700 text-center appearance-none  transition-colors hover:border-blue-400 hover:bg-blue-50 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-300 dark:hover:border-blue-500 dark:hover:bg-blue-950/30 cursor-pointer"
+          >
+            <option value="">Semua Kelas</option>
+            {GRADES.map((g) => (
+              <option key={g} value={g}>
+                Kelas {g}
+              </option>
+            ))}
+          </select>
           <MonthYearPicker
             month={month}
             year={year}
@@ -212,10 +209,18 @@ function TabunganSection({ grade }: { grade?: string | null }) {
               Total Saldo
             </p>
             <p className="text-lg md:text-2xl font-bold text-sky-700 dark:text-sky-300 mt-1">
-              {loading ? <LoadingDots /> : formatCompactRupiah(data?.totalBalance || 0)}
+              {loading ? (
+                <LoadingDots />
+              ) : (
+                formatCompactRupiah(data?.totalBalance || 0)
+              )}
             </p>
             <p className="text-[11px] text-gray-400 dark:text-gray-500 mt-0.5">
-              {loading ? <LoadingDots /> : `${data?.totalStudents || 0} siswa menabung`}
+              {loading ? (
+                <LoadingDots />
+              ) : (
+                `${data?.totalStudents || 0} siswa menabung`
+              )}
             </p>
           </div>
           <div className="bg-emerald-50/80 dark:bg-emerald-950/20 rounded-xl p-4 border border-emerald-200/50 dark:border-emerald-800/30">
@@ -223,9 +228,11 @@ function TabunganSection({ grade }: { grade?: string | null }) {
               Setoran Bulan Ini
             </p>
             <p className="text-lg md:text-2xl font-bold text-emerald-700 dark:text-emerald-300 mt-1">
-              {loading
-                ? <LoadingDots />
-                : formatCompactRupiah(data?.monthlyDeposits || 0)}
+              {loading ? (
+                <LoadingDots />
+              ) : (
+                formatCompactRupiah(data?.monthlyDeposits || 0)
+              )}
             </p>
           </div>
           <div className="bg-orange-50/80 dark:bg-orange-950/20 rounded-xl p-4 border border-orange-200/50 dark:border-orange-800/30">
@@ -233,9 +240,11 @@ function TabunganSection({ grade }: { grade?: string | null }) {
               Penarikan Bulan Ini
             </p>
             <p className="text-lg md:text-2xl font-bold text-orange-700 dark:text-orange-300 mt-1">
-              {loading
-                ? <LoadingDots />
-                : formatCompactRupiah(data?.monthlyWithdrawals || 0)}
+              {loading ? (
+                <LoadingDots />
+              ) : (
+                formatCompactRupiah(data?.monthlyWithdrawals || 0)
+              )}
             </p>
           </div>
           <div className="bg-violet-50/80 dark:bg-violet-950/20 rounded-xl p-4 border border-violet-200/50 dark:border-violet-800/30">
@@ -253,12 +262,14 @@ function TabunganSection({ grade }: { grade?: string | null }) {
                     : "text-red-600 dark:text-red-400"
               }`}
             >
-              {loading
-                ? <LoadingDots />
-                : formatCompactRupiah(
-                    (data?.monthlyDeposits || 0) -
-                      (data?.monthlyWithdrawals || 0),
-                  )}
+              {loading ? (
+                <LoadingDots />
+              ) : (
+                formatCompactRupiah(
+                  (data?.monthlyDeposits || 0) -
+                    (data?.monthlyWithdrawals || 0),
+                )
+              )}
             </p>
           </div>
         </div>
@@ -306,14 +317,15 @@ function GuruDashboardView({
 
   const itemsPerPage = 5;
 
-  const averageAttendance = !chartLoading && hasAttendanceData && chartData.length > 0
-    ? Math.round(
-        chartData.reduce((sum, s) => {
-          const total = s.hadir + s.sakit + s.izin + s.absen;
-          return sum + (total > 0 ? (s.hadir / total) * 100 : 0);
-        }, 0) / chartData.length
-      )
-    : null;
+  const averageAttendance =
+    !chartLoading && hasAttendanceData && chartData.length > 0
+      ? Math.round(
+          chartData.reduce((sum, s) => {
+            const total = s.hadir + s.sakit + s.izin + s.absen;
+            return sum + (total > 0 ? (s.hadir / total) * 100 : 0);
+          }, 0) / chartData.length,
+        )
+      : null;
 
   useEffect(() => {
     setCurrentPage(1);
@@ -369,7 +381,7 @@ function GuruDashboardView({
           <div className="relative bg-gradient-to-br from-indigo-500 via-indigo-600 to-purple-600 rounded-2xl overflow-hidden shadow-xl">
             <div className="absolute -top-6 -right-6 w-40 h-40 bg-white/5 rounded-full blur-2xl" />
             <div className="absolute -bottom-8 -left-8 w-48 h-48 bg-indigo-400/20 rounded-full blur-3xl" />
-            <div className="relative p-5 md:p-6 flex items-center gap-5 animate-fadeInUp">
+            <div className="relative p-5 md:p-6 flex items-center gap-5">
               <div className="shrink-0 w-14 h-14 md:w-16 md:h-16 bg-white/15 backdrop-blur-sm rounded-xl flex items-center justify-center animate-iconBounce">
                 <LayoutDashboard
                   size={28}
@@ -396,15 +408,17 @@ function GuruDashboardView({
             className={`group ${card.orderClass} bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-3 md:p-5 flex items-center gap-3 md:gap-4 transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 hover:shadow-xl`}
           >
             <div
-              className={`w-10 h-10 md:w-14 md:h-14 ${card.color} rounded-2xl flex items-center justify-center shadow-lg shadow-black/10 transition-transform duration-300 group-hover:rotate-3 animate-fadeInUp`}
+              className={`w-10 h-10 md:w-14 md:h-14 ${card.color} rounded-2xl flex items-center justify-center shadow-lg shadow-black/10 transition-transform duration-300 group-hover:rotate-3`}
             >
               <card.icon size={16} className="md:size-[24px] text-white" />
             </div>
-            <div className="animate-fadeInUp">
+            <div>
               <p className="text-sm md:text-base text-gray-500 dark:text-gray-400">
                 {card.label}
               </p>
-              {(card.label === "Rata-rata Kehadiran" ? chartLoading : loading) ? (
+              {(
+                card.label === "Rata-rata Kehadiran" ? chartLoading : loading
+              ) ? (
                 <div
                   className={`h-6 w-12 md:h-8 md:w-16 rounded mt-1 animate-pulse ${card.skeletonClass}`}
                 />
@@ -421,7 +435,7 @@ function GuruDashboardView({
       </div>
       <TabunganSection grade={userGrade} />
       {chartLoading ? (
-        <div className="bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5 relative z-0 animate-fadeInUp">
+        <div className="bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5 relative z-0">
           <div className="flex flex-col md:flex-row items-center md:justify-between gap-4 mb-4">
             <div className="text-center md:text-start">
               <h3 className="text-lg md:text-xl font-semibold text-gray-800 dark:text-gray-200">
@@ -447,7 +461,7 @@ function GuruDashboardView({
           />
         </div>
       ) : !hasAttendanceData ? (
-        <div className="bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5 relative z-0 animate-fadeInUp">
+        <div className="bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5 relative z-0">
           <div className="flex flex-col md:flex-row items-center md:justify-between gap-4 mb-4">
             <div className="text-center md:text-start">
               <h3 className="text-lg md:text-xl font-semibold text-gray-800 dark:text-gray-200">
@@ -478,7 +492,7 @@ function GuruDashboardView({
           </div>
         </div>
       ) : (
-        <div className="bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5 relative z-0 animate-fadeInUp">
+        <div className="bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5 relative z-0">
           <div className="flex flex-col md:flex-row items-center md:justify-between gap-4 mb-4">
             <div className="text-center md:text-start">
               <h3 className="text-lg md:text-xl font-semibold text-gray-800 dark:text-gray-200">

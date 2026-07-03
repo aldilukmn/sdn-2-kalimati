@@ -494,7 +494,7 @@ export default function DataPendaftar() {
       {/* Stats Cards */}
       <div className="grid grid-cols-3 gap-3 md:gap-4">
         <div className="bg-blue-500/5 dark:bg-blue-500/10 md:backdrop-blur-xl border border-blue-500/40 dark:border-blue-500/30 shadow-lg rounded-2xl p-3 md:p-5 transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 hover:shadow-xl">
-          <div className="animate-fadeInUp">
+          <div>
             <div className="flex items-center md:items-start justify-center md:justify-between mb-1 md:mb-3 min-h-10">
               <span className="text-[13px] text-center md:text-base font-semibold text-gray-600 dark:text-gray-400">
                 Total Pendaftar
@@ -514,7 +514,7 @@ export default function DataPendaftar() {
           </div>
         </div>
         <div className="bg-emerald-500/5 dark:bg-emerald-500/10 md:backdrop-blur-xl border border-emerald-500/40 dark:border-emerald-500/30 shadow-lg rounded-2xl p-3 md:p-5 transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 hover:shadow-xl">
-          <div className="animate-fadeInUp">
+          <div>
             <div className="flex items-center md:items-start justify-center md:justify-between mb-1 md:mb-3 min-h-10">
               <span className="text-[13px] text-center md:text-base font-semibold text-gray-600 dark:text-gray-400">
                 Tervalidasi
@@ -534,7 +534,7 @@ export default function DataPendaftar() {
           </div>
         </div>
         <div className="bg-amber-500/5 dark:bg-amber-500/10 md:backdrop-blur-xl border border-amber-500/40 dark:border-amber-500/30 shadow-lg rounded-2xl p-3 md:p-5 transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 hover:shadow-xl">
-          <div className="animate-fadeInUp">
+          <div>
             <div className="flex items-center md:items-start justify-center md:justify-between mb-1 md:mb-3 min-h-10">
               <span className="text-[13px] text-center md:text-base font-semibold text-gray-600 dark:text-gray-400">
                 Belum Divalidasi

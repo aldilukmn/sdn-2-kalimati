@@ -63,7 +63,20 @@ export default function TabunganMuridPage() {
     historyTotalPages,
     editingTx,
     deletingId,
-    handleEditTransaction,
+    confirmDelete,
+    closeConfirmDelete,
+    submitDeleteTransaction,
+    editModal,
+    editAmount,
+    setEditAmount,
+    editDate,
+    setEditDate,
+    editDescription,
+    setEditDescription,
+    editSaving,
+    openEditModal,
+    closeEditModal,
+    submitEditTransaction,
     handleDeleteTransaction,
     fetchHistoryPage,
     formatCompactRupiah,
@@ -107,18 +120,18 @@ export default function TabunganMuridPage() {
               Tabungan Murid
             </h1>
             <p className="text-indigo-200/80 text-xs md:text-sm mt-0.5">
-              Kelola simpanan siswa per kelas
+              Kelola tabungan murid per kelas
             </p>
           </div>
         </div>
       </div>
 
       {/* Filter */}
-      <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
+      <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5 relative z-20">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <label className="mb-2 block text-xs font-semibold text-gray-500 dark:text-gray-400 tracking-wider">
-              Kelas
+              Rombel
             </label>
             {userRole !== "admin" && userRole !== "kepala" ? (
               <div className="w-full rounded-xl border border-slate-300 bg-slate-100 px-4 py-2.5 text-sm text-slate-800 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100">
@@ -174,62 +187,91 @@ export default function TabunganMuridPage() {
       {activeTab === "harian" ? (
         <>
           {/* Summary Cards */}
-          <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5 animate-fadeIn">
+          <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5 animate-fadeIn relative z-10">
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
               <div className="bg-indigo-50/80 dark:bg-indigo-950/20 rounded-xl p-4 border border-indigo-200/50 dark:border-indigo-800/30">
                 <div className="flex items-center gap-1.5 mb-1">
-                  <Users size={14} className="text-indigo-500 dark:text-indigo-400 shrink-0" />
+                  <Users
+                    size={14}
+                    className="text-indigo-500 dark:text-indigo-400 shrink-0"
+                  />
                   <p className="text-xs text-gray-500 dark:text-gray-400">
                     Penabung
                   </p>
                 </div>
                 <p className="text-lg md:text-2xl font-bold text-indigo-700 dark:text-indigo-300">
-                  {summaryLoading ? <LoadingDots /> : `${summary?.totalStudents || 0} siswa`}
+                  {summaryLoading ? (
+                    <LoadingDots />
+                  ) : (
+                    `${summary?.totalStudents || 0} murid`
+                  )}
                 </p>
               </div>
               <div className="bg-emerald-50/80 dark:bg-emerald-950/20 rounded-xl p-4 border border-emerald-200/50 dark:border-emerald-800/30">
                 <div className="flex items-center gap-1.5 mb-1">
-                  <TrendingUp size={14} className="text-emerald-500 dark:text-emerald-400 shrink-0" />
+                  <TrendingUp
+                    size={14}
+                    className="text-emerald-500 dark:text-emerald-400 shrink-0"
+                  />
                   <p className="text-xs text-gray-500 dark:text-gray-400">
                     Setoran
                   </p>
                 </div>
                 <p className="text-lg md:text-2xl font-bold text-emerald-700 dark:text-emerald-300">
-                  {summaryLoading
-                    ? <LoadingDots />
-                    : formatCompactRupiah(summary?.dailyDeposits || 0)}
+                  {summaryLoading ? (
+                    <LoadingDots />
+                  ) : (
+                    formatCompactRupiah(summary?.dailyDeposits || 0)
+                  )}
                 </p>
               </div>
               <div className="bg-rose-50/80 dark:bg-rose-950/20 rounded-xl p-4 border border-rose-200/50 dark:border-rose-800/30">
                 <div className="flex items-center gap-1.5 mb-1">
-                  <TrendingDown size={14} className="text-rose-500 dark:text-rose-400 shrink-0" />
+                  <TrendingDown
+                    size={14}
+                    className="text-rose-500 dark:text-rose-400 shrink-0"
+                  />
                   <p className="text-xs text-gray-500 dark:text-gray-400">
                     Penarikan
                   </p>
                 </div>
                 <p className="text-lg md:text-2xl font-bold text-rose-700 dark:text-rose-300">
-                  {summaryLoading
-                    ? <LoadingDots />
-                    : formatCompactRupiah(summary?.dailyWithdrawals || 0)}
+                  {summaryLoading ? (
+                    <LoadingDots />
+                  ) : (
+                    formatCompactRupiah(summary?.dailyWithdrawals || 0)
+                  )}
                 </p>
               </div>
               <div className="bg-amber-50/80 dark:bg-amber-950/20 rounded-xl p-4 border border-amber-200/50 dark:border-amber-800/30">
                 <div className="flex items-center gap-1.5 mb-1">
-                  <ArrowLeftRight size={14} className="text-amber-500 dark:text-amber-400 shrink-0" />
+                  <ArrowLeftRight
+                    size={14}
+                    className="text-amber-500 dark:text-amber-400 shrink-0"
+                  />
                   <p className="text-xs text-gray-500 dark:text-gray-400">
                     Selisih
                   </p>
                 </div>
-                <p className={`text-lg md:text-2xl font-bold ${
-                  summaryLoading
-                    ? ""
-                    : (summary?.dailyDeposits || 0) - (summary?.dailyWithdrawals || 0) >= 0
-                      ? "text-emerald-700 dark:text-emerald-300"
-                      : "text-red-600 dark:text-red-400"
-                }`}>
-                  {summaryLoading
-                    ? <LoadingDots />
-                    : formatCompactRupiah((summary?.dailyDeposits || 0) - (summary?.dailyWithdrawals || 0))}
+                <p
+                  className={`text-lg md:text-2xl font-bold ${
+                    summaryLoading
+                      ? ""
+                      : (summary?.dailyDeposits || 0) -
+                            (summary?.dailyWithdrawals || 0) >=
+                          0
+                        ? "text-emerald-700 dark:text-emerald-300"
+                        : "text-red-600 dark:text-red-400"
+                  }`}
+                >
+                  {summaryLoading ? (
+                    <LoadingDots />
+                  ) : (
+                    formatCompactRupiah(
+                      (summary?.dailyDeposits || 0) -
+                        (summary?.dailyWithdrawals || 0),
+                    )
+                  )}
                 </p>
               </div>
             </div>
@@ -239,7 +281,7 @@ export default function TabunganMuridPage() {
           <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-sm md:text-base font-semibold text-gray-500 dark:text-gray-400 tracking-wider">
-                Daftar Tabungan Siswa
+                Daftar Tabungan Murid
               </h2>
               <button
                 onClick={exportExcel}
@@ -255,12 +297,24 @@ export default function TabunganMuridPage() {
               <table className="w-full">
                 <thead>
                   <tr className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-xs md:text-sm">
-                    <th className="px-3 py-3 text-left font-semibold whitespace-nowrap">No</th>
-                    <th className="px-3 py-3 text-left font-semibold whitespace-nowrap">Nama</th>
-                    <th className="px-3 py-3 text-center font-semibold whitespace-nowrap">Saldo</th>
-                    <th className="px-3 py-3 text-center font-semibold whitespace-nowrap">Setoran</th>
-                    <th className="px-3 py-3 text-center font-semibold whitespace-nowrap">Penarikan</th>
-                    <th className="px-3 py-3 text-center font-semibold whitespace-nowrap">Aksi</th>
+                    <th className="px-3 py-3 text-left font-semibold whitespace-nowrap">
+                      No
+                    </th>
+                    <th className="px-3 py-3 text-left font-semibold whitespace-nowrap">
+                      Nama
+                    </th>
+                    <th className="px-3 py-3 text-center font-semibold whitespace-nowrap">
+                      Saldo
+                    </th>
+                    <th className="px-3 py-3 text-center font-semibold whitespace-nowrap">
+                      Setoran
+                    </th>
+                    <th className="px-3 py-3 text-center font-semibold whitespace-nowrap">
+                      Penarikan
+                    </th>
+                    <th className="px-3 py-3 text-center font-semibold whitespace-nowrap">
+                      Aksi
+                    </th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
@@ -312,10 +366,14 @@ export default function TabunganMuridPage() {
                           {formatCompactRupiah(s.balance)}
                         </td>
                         <td className="px-3 py-3 text-sm text-center text-emerald-700 dark:text-emerald-300 font-medium whitespace-nowrap">
-                          {s.todayDeposit ? formatCompactRupiah(s.todayDeposit) : "-"}
+                          {s.todayDeposit
+                            ? formatCompactRupiah(s.todayDeposit)
+                            : "-"}
                         </td>
                         <td className="px-3 py-3 text-sm text-center text-orange-600 dark:text-orange-400 font-medium whitespace-nowrap">
-                          {s.todayWithdrawal ? formatCompactRupiah(s.todayWithdrawal) : "-"}
+                          {s.todayWithdrawal
+                            ? formatCompactRupiah(s.todayWithdrawal)
+                            : "-"}
                         </td>
                         <td className="px-3 py-3 whitespace-nowrap">
                           <div className="flex items-center justify-center gap-1.5">
@@ -395,14 +453,23 @@ export default function TabunganMuridPage() {
                 <thead>
                   <tr className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-xs md:text-sm">
                     <th className="px-2 py-2.5 text-left font-semibold">No</th>
-                    <th className="px-2 py-2.5 text-left font-semibold whitespace-nowrap">Nama</th>
+                    <th className="px-2 py-2.5 text-left font-semibold whitespace-nowrap">
+                      Nama
+                    </th>
                     {Array.from({ length: 12 }, (_, i) => (
-                      <th key={i} className="px-2 py-2.5 text-center font-semibold min-w-[60px] whitespace-nowrap">
+                      <th
+                        key={i}
+                        className="px-2 py-2.5 text-center font-semibold min-w-[60px] whitespace-nowrap"
+                      >
                         {String(i + 1).padStart(2, "0")}
                       </th>
                     ))}
-                    <th className="px-2 py-2.5 text-center font-semibold min-w-[70px] whitespace-nowrap">Saldo</th>
-                    <th className="px-2 py-2.5 text-center font-semibold min-w-[50px] whitespace-nowrap">Tarik</th>
+                    <th className="px-2 py-2.5 text-center font-semibold min-w-[70px] whitespace-nowrap">
+                      Saldo
+                    </th>
+                    <th className="px-2 py-2.5 text-center font-semibold min-w-[50px] whitespace-nowrap">
+                      Tarik
+                    </th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
@@ -424,13 +491,19 @@ export default function TabunganMuridPage() {
                     ))
                   ) : monthlyData.length === 0 ? (
                     <tr>
-                      <td colSpan={16} className="px-3 py-12 text-center text-gray-400">
+                      <td
+                        colSpan={16}
+                        className="px-3 py-12 text-center text-gray-400"
+                      >
                         Belum ada data tabungan untuk tahun {year}
                       </td>
                     </tr>
                   ) : (
                     monthlyData.map((s, i) => {
-                      const monthsTotal = Object.values(s.months).reduce((a, b) => a + b, 0);
+                      const monthsTotal = Object.values(s.months).reduce(
+                        (a, b) => a + b,
+                        0,
+                      );
                       return (
                         <tr
                           key={s.studentId}
@@ -455,7 +528,9 @@ export default function TabunganMuridPage() {
                                     {formatCompactRupiah(val)}
                                   </span>
                                 ) : (
-                                  <span className="text-gray-300 dark:text-gray-600">-</span>
+                                  <span className="text-gray-300 dark:text-gray-600">
+                                    -
+                                  </span>
                                 )}
                               </td>
                             );
@@ -468,14 +543,17 @@ export default function TabunganMuridPage() {
                               <button
                                 onClick={() => {
                                   closeHistoryModal();
-                                  openHistoryModal({
-                                    studentId: s.studentId,
-                                    name: s.name,
-                                    grade: s.grade,
-                                    balance: s.balance,
-                                    todayDeposit: 0,
-                                    todayWithdrawal: 0,
-                                  }, "tarik");
+                                  openHistoryModal(
+                                    {
+                                      studentId: s.studentId,
+                                      name: s.name,
+                                      grade: s.grade,
+                                      balance: s.balance,
+                                      todayDeposit: 0,
+                                      todayWithdrawal: 0,
+                                    },
+                                    "tarik",
+                                  );
                                 }}
                                 className="text-orange-600 dark:text-orange-400 hover:text-orange-800 dark:hover:text-orange-200 transition-colors cursor-pointer text-xs md:text-sm font-semibold underline decoration-dotted underline-offset-2"
                                 title="Lihat riwayat penarikan"
@@ -483,7 +561,9 @@ export default function TabunganMuridPage() {
                                 {formatCompactRupiah(s.totalWithdrawn)}
                               </button>
                             ) : (
-                              <span className="text-gray-300 dark:text-gray-600 text-xs md:text-sm">-</span>
+                              <span className="text-gray-300 dark:text-gray-600 text-xs md:text-sm">
+                                -
+                              </span>
                             )}
                           </td>
                         </tr>
@@ -496,7 +576,8 @@ export default function TabunganMuridPage() {
 
             {!monthlyLoading && monthlyData.length > 0 && (
               <p className="text-xs text-gray-400 dark:text-gray-500 mt-3 text-center">
-                Menampilkan total setoran per bulan. Tanda (-) berarti tidak ada setoran.
+                Menampilkan total setoran per bulan. Tanda (-) berarti tidak ada
+                setoran.
               </p>
             )}
           </div>
@@ -546,13 +627,19 @@ export default function TabunganMuridPage() {
               </div>
               <div>
                 <label className="text-xs text-gray-500 mb-1 block">
-                  Keterangan (opsional)
+                  {txModal.mode === "simpan"
+                    ? "Keterangan (opsional)"
+                    : "Catatan penarikan"}
                 </label>
                 <input
                   type="text"
                   value={txDescription}
                   onChange={(e) => setTxDescription(e.target.value)}
-                  placeholder="Misal: Tabungan hari Jumat"
+                  placeholder={
+                    txModal.mode === "simpan"
+                      ? "Misal: Tabungan hari Jumat"
+                      : "Alasan penarikan (misal: beli buku)"
+                  }
                   className="w-full rounded-xl border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm outline-none focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100"
                 />
               </div>
@@ -618,6 +705,9 @@ export default function TabunganMuridPage() {
                         Jumlah
                       </th>
                       <th className="px-3 py-2.5 text-center font-semibold">
+                        Keterangan
+                      </th>
+                      <th className="px-3 py-2.5 text-center font-semibold">
                         Aksi
                       </th>
                     </tr>
@@ -636,6 +726,9 @@ export default function TabunganMuridPage() {
                             <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-20 ml-auto" />
                           </td>
                           <td className="px-3 py-2.5">
+                            <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-24 mx-auto" />
+                          </td>
+                          <td className="px-3 py-2.5">
                             <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-16 mx-auto" />
                           </td>
                         </tr>
@@ -643,7 +736,7 @@ export default function TabunganMuridPage() {
                     ) : transactions.length === 0 ? (
                       <tr>
                         <td
-                    colSpan={5}
+                          colSpan={6}
                           className="px-3 py-8 text-center text-gray-400"
                         >
                           Belum ada transaksi
@@ -672,11 +765,17 @@ export default function TabunganMuridPage() {
                           <td className="px-3 py-2.5 text-sm text-right font-medium text-gray-800 dark:text-slate-100">
                             {formatCompactRupiah(tx.amount)}
                           </td>
+                          <td
+                            className="px-3 py-2.5 text-sm text-center text-gray-500 dark:text-gray-400 max-w-[150px] truncate"
+                            title={tx.description || ""}
+                          >
+                            {tx.description || "-"}
+                          </td>
                           <td className="px-3 py-2.5 text-center">
                             <div className="flex items-center justify-center gap-1">
                               <button
-                                onClick={() => handleEditTransaction(tx)}
-                                disabled={editingTx === tx._id}
+                                onClick={() => openEditModal(tx)}
+                                disabled={editSaving}
                                 className="p-1 rounded-lg text-slate-500 hover:bg-slate-100 dark:hover:bg-gray-800 transition-colors cursor-pointer disabled:opacity-40"
                               >
                                 <Pencil size={14} />
@@ -725,6 +824,131 @@ export default function TabunganMuridPage() {
                 </div>
               </div>
             )}
+          </div>
+        </div>
+      )}
+      {/* Edit Modal */}
+      {editModal.open && editModal.transaction && (
+        <div className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-xl w-full max-w-md border border-white/20 dark:border-gray-700/50 p-5">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="font-semibold text-gray-800 dark:text-slate-100">
+                Edit Transaksi
+              </h3>
+              <button
+                onClick={closeEditModal}
+                className="p-1 rounded-lg hover:bg-slate-100 dark:hover:bg-gray-800 transition-colors cursor-pointer"
+              >
+                <X size={18} className="text-gray-500" />
+              </button>
+            </div>
+
+            <div className="space-y-3">
+              <div>
+                <p className="text-xs text-gray-500">Tipe</p>
+                <p className="text-sm font-medium text-gray-800 dark:text-slate-100 uppercase">
+                  {editModal.transaction.type}
+                </p>
+              </div>
+              <div>
+                <label className="text-xs text-gray-500 mb-1 block">
+                  Jumlah
+                </label>
+                <input
+                  type="number"
+                  value={editAmount}
+                  onChange={(e) => setEditAmount(e.target.value)}
+                  className="w-full rounded-xl border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm outline-none focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100"
+                />
+              </div>
+              <div>
+                <label className="text-xs text-gray-500 mb-1 block">
+                  Tanggal
+                </label>
+                <input
+                  type="date"
+                  value={editDate}
+                  onChange={(e) => setEditDate(e.target.value)}
+                  className="w-full rounded-xl border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm outline-none focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100"
+                />
+              </div>
+              <div>
+                <label className="text-xs text-gray-500 mb-1 block">
+                  Catatan{" "}
+                  {editModal.transaction.type === "tarik" ? (
+                    <span className="text-rose-500">*</span>
+                  ) : (
+                    "(opsional)"
+                  )}
+                </label>
+                <input
+                  type="text"
+                  value={editDescription}
+                  onChange={(e) => setEditDescription(e.target.value)}
+                  placeholder={
+                    editModal.transaction.type === "tarik"
+                      ? "Alasan penarikan (wajib)"
+                      : "Misal: Beli buku"
+                  }
+                  className="w-full rounded-xl border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm outline-none focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100"
+                />
+              </div>
+            </div>
+
+            <div className="flex gap-3 mt-5">
+              <button
+                onClick={closeEditModal}
+                className="flex-1 px-4 py-2.5 rounded-xl border border-slate-300 text-sm text-gray-600 hover:bg-slate-100 transition-colors dark:border-gray-700 dark:text-slate-300 dark:hover:bg-gray-800 cursor-pointer"
+              >
+                Batal
+              </button>
+              <button
+                onClick={submitEditTransaction}
+                disabled={editSaving}
+                className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white text-sm font-semibold transition-all disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+              >
+                {editSaving ? (
+                  <Loader2 size={16} className="animate-spin" />
+                ) : (
+                  <Save size={16} />
+                )}
+                Simpan
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Confirm Delete Modal */}
+      {confirmDelete.open && (
+        <div className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-xl w-full max-w-sm border border-white/20 dark:border-gray-700/50 p-5">
+            <h3 className="font-semibold text-gray-800 dark:text-slate-100 mb-2">
+              Hapus Transaksi
+            </h3>
+            <p className="text-sm text-gray-500 dark:text-gray-400 mb-5">
+              Yakin ingin menghapus transaksi ini? Tindakan ini tidak dapat dibatalkan.
+            </p>
+            <div className="flex gap-3">
+              <button
+                onClick={closeConfirmDelete}
+                className="flex-1 px-4 py-2.5 rounded-xl border border-slate-300 text-sm text-gray-600 hover:bg-slate-100 transition-colors dark:border-gray-700 dark:text-slate-300 dark:hover:bg-gray-800 cursor-pointer"
+              >
+                Batal
+              </button>
+              <button
+                onClick={submitDeleteTransaction}
+                disabled={deletingId === confirmDelete.txId}
+                className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-red-500 hover:bg-red-600 text-white text-sm font-semibold transition-all disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+              >
+                {deletingId === confirmDelete.txId ? (
+                  <Loader2 size={16} className="animate-spin" />
+                ) : (
+                  <Trash2 size={16} />
+                )}
+                Hapus
+              </button>
+            </div>
           </div>
         </div>
       )}

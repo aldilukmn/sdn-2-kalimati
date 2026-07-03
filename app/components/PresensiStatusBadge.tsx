@@ -58,7 +58,7 @@ interface Props {
 
 export default function PresensiStatusBadge({ loading, countByStatus }: Props) {
   return (
-    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 animate-fadeInUp">
+    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
       {ITEMS.map((item) => {
         const Icon = item.icon;
         return (

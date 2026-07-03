@@ -34,7 +34,7 @@ export default function PresensiTable({
   if (!loading && totalItems === 0) {
     return (
       <div className="bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl">
-        <div className="text-center py-12 text-gray-400 dark:text-gray-500 text-sm animate-fadeInUp">
+        <div className="text-center py-12 text-gray-400 dark:text-gray-500 text-sm">
           Tidak ada siswa di kelas ini
         </div>
       </div>
@@ -56,7 +56,7 @@ export default function PresensiTable({
               <th className="px-4 py-3 text-center font-semibold">Kehadiran</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-300 dark:divide-gray-700 animate-fadeInUp">
+          <tbody className="divide-y divide-gray-300 dark:divide-gray-700">
             {loading
               ? Array.from({ length: 5 }).map((_, i) => (
                   <tr key={i} className="animate-pulse">
