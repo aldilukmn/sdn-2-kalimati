@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import DashboardService from "@/services/dashboard.service";
+import StudentAttendanceService from "@/services/student-attendance.service";
 
 export interface DashboardSummary {
   totalRegistrants: number;
@@ -10,6 +11,7 @@ export interface DashboardSummary {
   unvalidated: number;
   totalStudents: number;
   totalTeachers: number;
+  gradeCount: number;
   attendanceByStatus: {
     hadir: number;
     sakit: number;
@@ -43,14 +45,19 @@ export function useDashboard(initialSummary?: DashboardSummary | null, initialMo
 
   const fetchData = async (m: number, y: number, isInitial = false) => {
     try {
-      const res = await DashboardService.getSummary(m, y);
-      const data = res.result || res.data || {};
+      const [dashboardRes, countRes] = await Promise.all([
+        DashboardService.getSummary(m, y),
+        StudentAttendanceService.getStudentCountByGrade(),
+      ]);
+      const data = dashboardRes.result || dashboardRes.data || {};
+      const counts: Record<string, number> = countRes?.result || {};
       setSummary({
         totalRegistrants: data.totalRegistrants ?? 0,
         validated: data.validated ?? 0,
         unvalidated: data.unvalidated ?? 0,
         totalStudents: data.totalStudents ?? 0,
         totalTeachers: data.totalTeachers ?? 0,
+        gradeCount: Object.keys(counts).length,
         attendanceByStatus: data.attendanceByStatus || null,
         attendanceByGrade: data.attendanceByGrade || null,
         totalDays: data.totalDays ?? 0,
@@ -70,6 +77,13 @@ export function useDashboard(initialSummary?: DashboardSummary | null, initialMo
 
   useEffect(() => {
     if (initialSummary && month === defaultMonth && year === defaultYear) {
+      // Grade count still needed even with initial data
+      StudentAttendanceService.getStudentCountByGrade()
+        .then((res) => {
+          const counts: Record<string, number> = res?.result || {};
+          setSummary((prev) => prev ? { ...prev, gradeCount: Object.keys(counts).length } : prev);
+        })
+        .catch(() => {});
       setChartLoading(false);
       return;
     }

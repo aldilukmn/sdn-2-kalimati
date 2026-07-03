@@ -6,12 +6,14 @@ import {
   Circle,
   GraduationCap,
   School,
+  Layers,
 } from "lucide-react";
 import type { DashboardSummary } from "@/hooks/useDashboard";
 
 type StatCardKey =
   | "totalStudents"
   | "totalTeachers"
+  | "gradeCount"
   | "totalRegistrants"
   | "validated"
   | "unvalidated";
@@ -52,6 +54,18 @@ const CARDS: StatCardItem[] = [
     hoverClass:
       "hover:bg-teal-500/10 hover:border-teal-500/60 hover:shadow-teal-500/10",
     skeletonClass: "bg-teal-200 dark:bg-teal-700",
+  },
+  {
+    label: "Jumlah Kelas",
+    key: "gradeCount",
+    icon: Layers,
+    fallback: "-",
+    bgClass: "bg-indigo-500/5",
+    borderClass: "border-indigo-500/40",
+    textClass: "text-indigo-600 dark:text-indigo-400",
+    hoverClass:
+      "hover:bg-indigo-500/10 hover:border-indigo-500/60 hover:shadow-indigo-500/10",
+    skeletonClass: "bg-indigo-200 dark:bg-indigo-700",
   },
   {
     label: "Total Pendaftar",
