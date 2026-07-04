@@ -9,3 +9,9 @@ export function formatCompactRupiah(num: number): string {
     return `${sign}Rp ${abs / 1_000} rb`;
   return `${sign}Rp ${abs}`;
 }
+
+export function formatDateID(dateStr: string): string {
+  if (!dateStr) return "-";
+  const [y, m, d] = dateStr.split("-");
+  return `${d}-${m}-${y}`;
+}

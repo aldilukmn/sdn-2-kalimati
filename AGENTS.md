@@ -126,3 +126,31 @@ types/           — User interface (server-side model)
 | Setoran | `dailyDeposits` | Total nominal setoran pada tanggal dipilih |
 | Penarikan | `dailyWithdrawals` | Total nominal penarikan pada tanggal dipilih |
 | Selisih | computed frontend | `dailyDeposits - dailyWithdrawals` (hijau ≥ 0, merah < 0) |
+
+## Utility Functions
+
+### `lib/format.ts`
+- `formatCompactRupiah(num)` — compact Rupiah (e.g. `Rp 1,5 jt`), handles negative: `-Rp 50 rb`
+- `formatDateID(dateStr)` — `YYYY-MM-DD` → `DD-MM-YYYY`
+
+## Holiday System
+
+### Attendance integration
+- `hooks/usePresensi.ts` fetches holidays on mount via `HolidayService.getAll()`
+- `DateDayPicker` accepts `blockedDates` prop — disables holiday dates in calendar (grayed + line-through)
+- When selected date is a holiday: amber banner shown "Hari Libur — Tidak bisa mencatat presensi pada tanggal ini"
+- Save button disabled when `isHoliday`
+- Backend also rejects holiday saves with "Tidak bisa mencatat presensi di hari libur!"
+
+### Files
+| File | Tugas |
+|------|-------|
+| `services/holiday.service.ts` | API client: `getAll()`, `add()`, `remove()` |
+| `app/components/DateDayPicker.tsx` | Edited: `blockedDates` prop disables calendar days |
+| `hooks/usePresensi.ts` | Edited: fetch holidays + `isHoliday` + `holidayList` + `refreshHolidays` |
+| `app/(admin)/presensi-murid/page.tsx` | Edited: blockedDates + holiday banner + disabled save + **manage holiday modal (admin only)** |
+
+### Manage holiday UI (admin/kepala only)
+- Tombol "Atur Libur" di samping DateDayPicker pada halaman presensi
+- Modal: tambah libur (input date + deskripsi) + daftar libur dengan tombol hapus
+- Setelah tambah/hapus, `refreshHolidays()` dipanggil untuk update DateDayPicker secara real-time

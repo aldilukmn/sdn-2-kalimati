@@ -24,11 +24,17 @@ interface DateDayPickerProps {
   value: string;
   onChange: (date: string) => void;
   max?: string;
+  blockedDates?: string[];
 }
 
 const DAYS = ["Min", "Sen", "Sel", "Rab", "Kam", "Jum", "Sab"];
 
-export default function DateDayPicker({ value, onChange, max }: DateDayPickerProps) {
+export default function DateDayPicker({
+  value,
+  onChange,
+  max,
+  blockedDates,
+}: DateDayPickerProps) {
   const [open, setOpen] = useState(false);
   const panelRef = useRef<HTMLDivElement>(null);
 
@@ -133,14 +139,16 @@ export default function DateDayPicker({ value, onChange, max }: DateDayPickerPro
                 const isSelected = isSameDay(day, current);
                 const inMonth = isSameMonth(day, viewDate);
                 const today = isToday(day);
-                const disabled = maxDate && day > maxDate;
+                const blocked = blockedDates?.includes(dayStr);
+                const disabled = (maxDate && day > maxDate) || !!blocked;
 
                 return (
                   <button
                     key={dayStr}
                     type="button"
-                    disabled={!!disabled}
+                    disabled={disabled}
                     onClick={() => {
+                      if (blocked) return;
                       onChange(dayStr);
                       setOpen(false);
                     }}
@@ -150,7 +158,9 @@ export default function DateDayPicker({ value, onChange, max }: DateDayPickerPro
                       ${!isSelected && inMonth && !disabled ? "text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-gray-800" : ""}
                       ${today && !isSelected ? "ring-1 ring-blue-400" : ""}
                       ${disabled ? "opacity-30 cursor-not-allowed" : ""}
+                      ${blocked ? "line-through decoration-red-400" : ""}
                     `}
+                    title={blocked ? "Hari Libur" : undefined}
                   >
                     {format(day, "d")}
                   </button>

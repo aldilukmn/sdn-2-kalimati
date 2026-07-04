@@ -10,6 +10,7 @@ import {
   Loader2,
   Users,
   AlertTriangle,
+  X,
 } from "lucide-react";
 import toast from "react-hot-toast";
 import UserService from "@/services/user.service";
@@ -63,98 +64,127 @@ function Modal({
 
   return (
     <div
-      className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4"
+      className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4"
       onClick={onClose}
     >
       <div
-        className="bg-white dark:bg-gray-800 rounded-xl shadow-xl w-full max-w-md p-6"
+        className="bg-white dark:bg-gray-900 rounded-2xl shadow-xl w-full max-w-md border border-white/20 dark:border-gray-700/50 p-5"
         onClick={(e) => e.stopPropagation()}
       >
-        <h2 className="text-sm md:text-lg font-bold text-gray-800 dark:text-gray-200 mb-4">
-          {title}
-        </h2>
-        <div className="space-y-3">
-          {!isEdit && (
-            <select
-              value={formData.role}
-              onChange={(e) =>
-                setFormData({
-                  ...formData,
-                  role: e.target.value,
-                  grade: e.target.value !== "guru" ? "" : formData.grade,
-                })
-              }
-              className="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-900 px-3 py-2 text-sm outline-none focus:border-blue-500 dark:text-gray-200 text-gray-800"
-            >
-              {ROLE_OPTIONS.map((r) => (
-                <option key={r.value} value={r.value}>
-                  {r.label}
-                </option>
-              ))}
-            </select>
-          )}
-          <input
-            placeholder="Username"
-            value={formData.username}
-            onChange={(e) =>
-              setFormData({ ...formData, username: e.target.value })
-            }
-            className="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-900 px-3 py-2 text-sm outline-none focus:border-blue-500 dark:text-gray-200 text-gray-800"
-          />
-          {!isEdit && (
-            <input
-              type="password"
-              placeholder="Password"
-              value={formData.password}
-              onChange={(e) =>
-                setFormData({ ...formData, password: e.target.value })
-              }
-              className="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-900 px-3 py-2 text-sm outline-none focus:border-blue-500 dark:text-gray-200 text-gray-800"
-            />
-          )}
-          <input
-            placeholder="Nama Lengkap"
-            value={formData.fullName}
-            onChange={(e) =>
-              setFormData({ ...formData, fullName: e.target.value })
-            }
-            className="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-900 px-3 py-2 text-sm outline-none focus:border-blue-500 dark:text-gray-200 text-gray-800"
-          />
-          <input
-            placeholder="NIP"
-            value={formData.nip}
-            onChange={(e) => setFormData({ ...formData, nip: e.target.value })}
-            className="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-900 px-3 py-2 text-sm outline-none focus:border-blue-500 dark:text-gray-200 text-gray-800"
-          />
-          {isGuru && (
-            <select
-              value={formData.grade}
-              onChange={(e) =>
-                setFormData({ ...formData, grade: e.target.value })
-              }
-              className="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-900 px-3 py-2 text-sm outline-none focus:border-blue-500 dark:text-gray-200 text-gray-800"
-            >
-              <option value="">Pilih Kelas</option>
-              {GRADES.map((g) => (
-                <option key={g} value={g}>
-                  Kelas {g}
-                </option>
-              ))}
-            </select>
-          )}
-          <input
-            placeholder="Gelar (contoh: S.Pd)"
-            value={formData.title}
-            onChange={(e) =>
-              setFormData({ ...formData, title: e.target.value })
-            }
-            className="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-900 px-3 py-2 text-sm outline-none focus:border-blue-500 dark:text-gray-200 text-gray-800"
-          />
-        </div>
-        <div className="flex justify-end gap-2 mt-6">
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="font-semibold text-gray-800 dark:text-slate-100">
+            {title}
+          </h3>
           <button
             onClick={onClose}
-            className="px-4 py-2 text-sm rounded-lg border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer"
+            className="p-1 rounded-lg hover:bg-slate-100 dark:hover:bg-gray-800 transition-colors cursor-pointer"
+          >
+            <X size={18} className="text-gray-500" />
+          </button>
+        </div>
+        <div className="space-y-3">
+          {!isEdit && (
+            <div>
+              <label className="text-xs text-gray-500 dark:text-gray-400 mb-1 block">Role</label>
+              <select
+                value={formData.role}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    role: e.target.value,
+                    grade: e.target.value !== "guru" ? "" : formData.grade,
+                  })
+                }
+                className="w-full rounded-xl border border-slate-300 dark:border-gray-700 bg-slate-50 dark:bg-gray-950 px-4 py-2.5 text-sm outline-none focus:border-blue-500 dark:text-slate-100"
+              >
+                {ROLE_OPTIONS.map((r) => (
+                  <option key={r.value} value={r.value}>
+                    {r.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
+          <div>
+            <label className="text-xs text-gray-500 dark:text-gray-400 mb-1 block">Username</label>
+            <input
+              placeholder="Masukkan username"
+              value={formData.username}
+              onChange={(e) =>
+                setFormData({ ...formData, username: e.target.value })
+              }
+              className="w-full rounded-xl border border-slate-300 dark:border-gray-700 bg-slate-50 dark:bg-gray-950 px-4 py-2.5 text-sm outline-none focus:border-blue-500 dark:text-slate-100"
+            />
+          </div>
+          {!isEdit && (
+            <div>
+              <label className="text-xs text-gray-500 dark:text-gray-400 mb-1 block">Password</label>
+              <input
+                type="password"
+                placeholder="Masukkan password"
+                value={formData.password}
+                onChange={(e) =>
+                  setFormData({ ...formData, password: e.target.value })
+                }
+                className="w-full rounded-xl border border-slate-300 dark:border-gray-700 bg-slate-50 dark:bg-gray-950 px-4 py-2.5 text-sm outline-none focus:border-blue-500 dark:text-slate-100"
+              />
+            </div>
+          )}
+          <div>
+            <label className="text-xs text-gray-500 dark:text-gray-400 mb-1 block">Nama Lengkap</label>
+            <input
+              placeholder="Masukkan nama lengkap"
+              value={formData.fullName}
+              onChange={(e) =>
+                setFormData({ ...formData, fullName: e.target.value })
+              }
+              className="w-full rounded-xl border border-slate-300 dark:border-gray-700 bg-slate-50 dark:bg-gray-950 px-4 py-2.5 text-sm outline-none focus:border-blue-500 dark:text-slate-100"
+            />
+          </div>
+          <div>
+            <label className="text-xs text-gray-500 dark:text-gray-400 mb-1 block">NIP</label>
+            <input
+              placeholder="Masukkan NIP"
+              value={formData.nip}
+              onChange={(e) => setFormData({ ...formData, nip: e.target.value })}
+              className="w-full rounded-xl border border-slate-300 dark:border-gray-700 bg-slate-50 dark:bg-gray-950 px-4 py-2.5 text-sm outline-none focus:border-blue-500 dark:text-slate-100"
+            />
+          </div>
+          {isGuru && (
+            <div>
+              <label className="text-xs text-gray-500 dark:text-gray-400 mb-1 block">Kelas</label>
+              <select
+                value={formData.grade}
+                onChange={(e) =>
+                  setFormData({ ...formData, grade: e.target.value })
+                }
+                className="w-full rounded-xl border border-slate-300 dark:border-gray-700 bg-slate-50 dark:bg-gray-950 px-4 py-2.5 text-sm outline-none focus:border-blue-500 dark:text-slate-100"
+              >
+                <option value="">Pilih Kelas</option>
+                {GRADES.map((g) => (
+                  <option key={g} value={g}>
+                    Kelas {g}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
+          <div>
+            <label className="text-xs text-gray-500 dark:text-gray-400 mb-1 block">Gelar</label>
+            <input
+              placeholder="Contoh: S.Pd"
+              value={formData.title}
+              onChange={(e) =>
+                setFormData({ ...formData, title: e.target.value })
+              }
+              className="w-full rounded-xl border border-slate-300 dark:border-gray-700 bg-slate-50 dark:bg-gray-950 px-4 py-2.5 text-sm outline-none focus:border-blue-500 dark:text-slate-100"
+            />
+          </div>
+        </div>
+        <div className="flex gap-3 mt-5">
+          <button
+            onClick={onClose}
+            className="flex-1 px-4 py-2.5 rounded-xl border border-slate-300 text-sm text-gray-600 hover:bg-slate-100 transition-colors dark:border-gray-700 dark:text-slate-300 dark:hover:bg-gray-800 cursor-pointer"
           >
             Batal
           </button>
@@ -167,7 +197,7 @@ function Modal({
                   !formData.password ||
                   (isGuru && !formData.grade)))
             }
-            className="flex items-center gap-2 px-4 py-2 text-sm bg-blue-600 hover:bg-blue-700 text-white rounded-lg disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+            className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white text-sm font-semibold transition-all disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
           >
             {submitting && <Loader2 size={16} className="animate-spin" />}
             {isEdit ? "Simpan" : "Tambah"}
@@ -192,33 +222,33 @@ function ConfirmDialog({
   if (!id) return null;
   return (
     <div
-      className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4"
+      className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4"
       onClick={onClose}
     >
       <div
-        className="bg-white dark:bg-gray-800 rounded-xl shadow-xl w-full max-w-sm p-6 text-center"
+        className="bg-white dark:bg-gray-900 rounded-2xl shadow-xl w-full max-w-sm border border-white/20 dark:border-gray-700/50 p-5 text-center"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="mx-auto w-12 h-12 flex items-center justify-center rounded-full bg-red-100 dark:bg-red-900/30 mb-4">
           <AlertTriangle size={28} className="text-red-600 dark:text-red-400" />
         </div>
-<h2 className="text-sm md:text-lg font-bold text-gray-800 dark:text-gray-200 mb-2">
-            Konfirmasi Hapus
-          </h2>
+        <h3 className="font-semibold text-gray-800 dark:text-slate-100 mb-2">
+          Konfirmasi Hapus
+        </h3>
         <p className="text-sm text-gray-600 dark:text-gray-400 mb-6">
           Yakin ingin menghapus data ini? Tindakan ini tidak bisa dibatalkan.
         </p>
-        <div className="flex justify-center gap-3">
+        <div className="flex gap-3 justify-center">
           <button
             onClick={onClose}
-            className="px-5 py-2 text-sm rounded-lg border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer"
+            className="flex-1 px-4 py-2.5 rounded-xl border border-slate-300 text-sm text-gray-600 hover:bg-slate-100 transition-colors dark:border-gray-700 dark:text-slate-300 dark:hover:bg-gray-800 cursor-pointer"
           >
             Batal
           </button>
           <button
             onClick={() => onConfirm(id)}
             disabled={submitting}
-            className="flex items-center gap-2 px-5 py-2 text-sm bg-red-600 hover:bg-red-700 text-white rounded-lg disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+            className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-red-600 hover:bg-red-700 text-white text-sm font-semibold transition-all disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
           >
             {submitting && <Loader2 size={16} className="animate-spin" />}
             Ya, Hapus
@@ -460,7 +490,7 @@ export default function DataGTK() {
           >
             <table className="w-full">
               <thead>
-                <tr className="bg-indigo-700 text-indigo-50 tracking-wider text-xs md:text-sm">
+                <tr className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-xs md:text-sm">
                   {[
                     "Username",
                     "Nama Lengkap",
@@ -472,7 +502,7 @@ export default function DataGTK() {
                   ].map((h) => (
                     <th
                       key={h}
-                      className="px-3 py-3 md:px-6 md:py-4 text-left font-semibold"
+                      className="px-3 py-3 text-left font-semibold whitespace-nowrap"
                     >
                       {h}
                     </th>
@@ -507,27 +537,27 @@ export default function DataGTK() {
           >
             <table className="w-full">
               <thead>
-                <tr className="bg-indigo-700 text-indigo-50 tracking-wider text-xs md:text-sm">
-                  <th className="px-3 py-3 md:px-6 md:py-4 text-left font-semibold">
+                <tr className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-xs md:text-sm">
+                  <th className="px-3 py-3 text-left font-semibold whitespace-nowrap">
                     Username
                   </th>
-                  <th className="px-3 py-3 md:px-6 md:py-4 text-left font-semibold">
+                  <th className="px-3 py-3 text-left font-semibold whitespace-nowrap">
                     Nama Lengkap
                   </th>
-                  <th className="px-3 py-3 md:px-6 md:py-4 text-left font-semibold">
+                  <th className="px-3 py-3 text-left font-semibold whitespace-nowrap">
                     NIP
                   </th>
-                  <th className="px-3 py-3 md:px-6 md:py-4 text-left font-semibold">
+                  <th className="px-3 py-3 text-left font-semibold whitespace-nowrap">
                     Kelas
                   </th>
-                  <th className="px-3 py-3 md:px-6 md:py-4 text-center font-semibold">
+                  <th className="px-3 py-3 text-center font-semibold whitespace-nowrap">
                     Jumlah Murid
                   </th>
-                  <th className="px-3 py-3 md:px-6 md:py-4 text-left font-semibold">
+                  <th className="px-3 py-3 text-left font-semibold whitespace-nowrap">
                     Gelar
                   </th>
                   {userRole !== "kepala" && (
-                    <th className="px-3 py-3 md:px-6 md:py-4 text-center font-semibold">
+                    <th className="px-3 py-3 text-center font-semibold whitespace-nowrap">
                       Aksi
                     </th>
                   )}
@@ -601,24 +631,24 @@ export default function DataGTK() {
           >
             <table className="w-full">
               <thead>
-                <tr className="bg-indigo-700 text-indigo-50 tracking-wider text-xs md:text-sm">
-                  <th className="px-3 py-3 md:px-6 md:py-4 text-left font-semibold">
+                <tr className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-xs md:text-sm">
+                  <th className="px-3 py-3 text-left font-semibold whitespace-nowrap">
                     Username
                   </th>
-                  <th className="px-3 py-3 md:px-6 md:py-4 text-left font-semibold">
+                  <th className="px-3 py-3 text-left font-semibold whitespace-nowrap">
                     Nama Lengkap
                   </th>
-                  <th className="px-3 py-3 md:px-6 md:py-4 text-left font-semibold">
+                  <th className="px-3 py-3 text-left font-semibold whitespace-nowrap">
                     NIP
                   </th>
-                  <th className="px-3 py-3 md:px-6 md:py-4 text-left font-semibold">
+                  <th className="px-3 py-3 text-left font-semibold whitespace-nowrap">
                     Gelar
                   </th>
-                  <th className="px-3 py-3 md:px-6 md:py-4 text-center font-semibold">
+                  <th className="px-3 py-3 text-center font-semibold whitespace-nowrap">
                     Jabatan
                   </th>
                   {userRole !== "kepala" && (
-                    <th className="px-3 py-3 md:px-6 md:py-4 text-center font-semibold">
+                    <th className="px-3 py-3 text-center font-semibold whitespace-nowrap">
                       Aksi
                     </th>
                   )}
@@ -652,24 +682,24 @@ export default function DataGTK() {
           >
             <table className="w-full">
               <thead>
-                <tr className="bg-indigo-700 text-indigo-50 tracking-wider text-xs md:text-sm">
-                  <th className="px-3 py-3 md:px-6 md:py-4 text-left font-semibold">
+                <tr className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-xs md:text-sm">
+                  <th className="px-3 py-3 text-left font-semibold whitespace-nowrap">
                     Username
                   </th>
-                  <th className="px-3 py-3 md:px-6 md:py-4 text-left font-semibold">
+                  <th className="px-3 py-3 text-left font-semibold whitespace-nowrap">
                     Nama Lengkap
                   </th>
-                  <th className="px-3 py-3 md:px-6 md:py-4 text-left font-semibold">
+                  <th className="px-3 py-3 text-left font-semibold whitespace-nowrap">
                     NIP
                   </th>
-                  <th className="px-3 py-3 md:px-6 md:py-4 text-left font-semibold">
+                  <th className="px-3 py-3 text-left font-semibold whitespace-nowrap">
                     Gelar
                   </th>
-                  <th className="px-3 py-3 md:px-6 md:py-4 text-center font-semibold">
+                  <th className="px-3 py-3 text-center font-semibold whitespace-nowrap">
                     Jabatan
                   </th>
                   {userRole !== "kepala" && (
-                    <th className="px-3 py-3 md:px-6 md:py-4 text-center font-semibold">
+                    <th className="px-3 py-3 text-center font-semibold whitespace-nowrap">
                       Aksi
                     </th>
                   )}

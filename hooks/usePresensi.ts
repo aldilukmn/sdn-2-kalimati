@@ -4,6 +4,7 @@ import { useEffect, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import StudentAttendanceService from "@/services/student-attendance.service";
 import UserService from "@/services/user.service";
+import HolidayService from "@/services/holiday.service";
 
 export interface Entry {
   studentId: string;
@@ -52,6 +53,20 @@ export function usePresensi() {
   const [teacherName, setTeacherName] = useState<string | null>(null);
   const [teacherLoading, setTeacherLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+  const [holidays, setHolidays] = useState<string[]>([]);
+  const [holidayList, setHolidayList] = useState<{ date: string; description: string; type: string }[]>([]);
+
+  const refreshHolidays = useCallback(async () => {
+    try {
+      const data = await HolidayService.getAll();
+      setHolidayList(data);
+      setHolidays(data.map((h: any) => h.date));
+    } catch {}
+  }, []);
+
+  useEffect(() => {
+    refreshHolidays();
+  }, [refreshHolidays]);
 
   useEffect(() => {
     const token = sessionStorage.getItem("user_session");
@@ -202,6 +217,7 @@ export function usePresensi() {
   const totalPages = Math.ceil(entries.length / ITEMS_PER_PAGE);
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const paginatedEntries = entries.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+  const isHoliday = holidays.includes(date);
 
   return {
     grade,
@@ -227,5 +243,9 @@ export function usePresensi() {
     startIndex,
     paginatedEntries,
     itemsPerPage: ITEMS_PER_PAGE,
+    holidays,
+    isHoliday,
+    holidayList,
+    refreshHolidays,
   };
 }
