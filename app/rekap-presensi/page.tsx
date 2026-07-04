@@ -10,7 +10,7 @@ import {
   FileText,
   CalendarDays,
 } from "lucide-react";
-import { Card } from "flowbite-react";
+import { Card } from "@/components/ui/card";
 import TableSkeleton from "@/app/components/TableSkeleton";
 import StudentAttendanceService from "@/services/student-attendance.service";
 import UserService from "@/services/user.service";

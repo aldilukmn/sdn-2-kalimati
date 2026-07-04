@@ -5,7 +5,7 @@ import { useState } from "react";
 import { dataKelulusan } from "./data";
 import confetti from "canvas-confetti";
 import BackButton from "../components/BackButton";
-import { Card } from "flowbite-react";
+import { Card } from "@/components/ui/card";
 
 export default function Kelulusan() {
   const [nama, setNama] = useState("");

@@ -1,23 +1,20 @@
 ## Error Type
-Console Error
+Runtime Error
 
 ## Error Message
-React does not recognize the `isEntrance` prop on a DOM element. If you intentionally want it to appear in the DOM as a custom attribute, spell it as lowercase `isentrance` instead. If you accidentally passed it from a parent component, remove it from the DOM element.
+Base UI: SelectGroupContext is missing. SelectGroup parts must be placed within <Select.Group>.
 
 
-    at path (<anonymous>:null:null)
-    at activeBar (app/components/AttendanceBarChart.tsx:130:17)
-    at AttendanceBarChart (app/components/AttendanceBarChart.tsx:116:11)
-    at AdminDashboard (app/(admin)/dashboard/page.tsx:171:11)
-    at Dashboard (app/(admin)/dashboard/page.tsx:30:10)
+    at SelectLabel (components/ui/select.tsx:103:5)
+    at PresensiMuridPage (app/(admin)/presensi-murid/page.tsx:316:19)
 
 ## Code Frame
-  128 |               const r = 8;
-  129 |               return (
-> 130 |                 <path
-      |                 ^
-  131 |                   d={`M ${x} ${nb} L ${x} ${ny + r} Q ${x} ${ny} ${x + r} ${ny} L ${x + width - r} ${ny} Q ${x ...
-  132 |                   className="bar-grow"
-  133 |                   {...sanitizeDOMProps(rest)}
+  101 | }: SelectPrimitive.GroupLabel.Props) {
+  102 |   return (
+> 103 |     <SelectPrimitive.GroupLabel
+      |     ^
+  104 |       data-slot="select-label"
+  105 |       className={cn("px-1.5 py-1 text-xs text-muted-foreground", className)}
+  106 |       {...props}
 
 Next.js version: 16.2.6 (Turbopack)

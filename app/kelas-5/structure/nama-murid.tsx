@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { Table, TableBody, TableCell, TableHead, TableHeadCell, TableRow } from "flowbite-react";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { siswa } from "../data";
 
 const PAGE_SIZE = 5;
@@ -16,15 +16,15 @@ export default function NamaMurid() {
     <div>
       <div className="flex flex-col py-6 overflow-x-auto">
         <h1 className="text-xl font-bold mb-6 text-center tracking-wider">Daftar Nama Murid</h1>
-        <Table striped hoverable>
-          <TableHead>
-            <TableHeadCell>No</TableHeadCell>
-            <TableHeadCell>NISN</TableHeadCell>
-            <TableHeadCell>NIS</TableHeadCell>
-            <TableHeadCell>Nama Siswa</TableHeadCell>
-            <TableHeadCell>Jenis Kelamin</TableHeadCell>
-            <TableHeadCell>Status</TableHeadCell>
-          </TableHead>
+        <Table>
+          <TableHeader>
+            <TableHead>No</TableHead>
+            <TableHead>NISN</TableHead>
+            <TableHead>NIS</TableHead>
+            <TableHead>Nama Siswa</TableHead>
+            <TableHead>Jenis Kelamin</TableHead>
+            <TableHead>Status</TableHead>
+          </TableHeader>
           <TableBody className="divide-y">
             {currentData.map((data, i) => (
               <TableRow

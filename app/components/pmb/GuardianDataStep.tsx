@@ -1,6 +1,6 @@
 "use client";
 
-import { Card } from "flowbite-react";
+import { Card, CardTitle } from "@/components/ui/card";
 import InputField from "@/app/components/form/InputField";
 
 interface GuardianDataStepProps {
@@ -13,10 +13,10 @@ export default function GuardianDataStep({
   onChange,
 }: GuardianDataStepProps) {
   return (
-    <Card className="dark:bg-gray-800">
-      <h2 className="text-lg md:text-2xl font-bold mb-6 pb-3 border-b-2 border-gray-300 text-gray-800 dark:text-gray-200">
+    <Card className="dark:bg-gray-800 px-7 py-6 md:px-10 md:py-8">
+      <CardTitle className="text-lg md:text-2xl font-bold mb-6 pb-3 border-b-2 border-gray-300 dark:border-gray-200 text-gray-800 dark:text-gray-200">
         Data Wali (Jika Ada)
-      </h2>
+      </CardTitle>
 
       <div className="mb-2">
         <label className="flex items-center gap-3 cursor-pointer">

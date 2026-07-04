@@ -5,7 +5,7 @@ import { useState } from "react";
 import { dataTKA, getGrade } from "./data";
 import DataField from "../components/DataField";
 import BackButton from "../components/BackButton";
-import { Card } from "flowbite-react";
+import { Card } from "@/components/ui/card";
 
 export default function HasilTKA() {
   const [nama, setNama] = useState("");

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { ArrowLeft, ArrowRight } from "lucide-react";
-import { Card } from "flowbite-react";
+import { Card } from "@/components/ui/card";
 import RegistrationService from "@/services/registration.service";
 import LoadingModal from "@/app/components/LoadingModal";
 import RegistrationCounter from "@/app/components/RegistrationCounter";
@@ -216,10 +216,7 @@ export default function Pmb() {
                 <ParentDataStep formData={formData} onChange={handleChange} />
               )}
               {currentStep === 3 && (
-                <GuardianDataStep
-                  formData={formData}
-                  onChange={handleChange}
-                />
+                <GuardianDataStep formData={formData} onChange={handleChange} />
               )}
 
               <div className="flex justify-between gap-4 mt-8">
@@ -280,7 +277,7 @@ export default function Pmb() {
               </div>
             </form>
 
-            <Card className="text-gray-700 dark:text-gray-300 mt-8 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg">
+            <Card className="text-gray-700 dark:text-gray-300 mt-8 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg px-7 py-6 md:px-10 md:py-8">
               <p className="font-semibold">ℹ️ Informasi Penting:</p>
               <ul className="list-disc list-inside space-y-1">
                 <li>

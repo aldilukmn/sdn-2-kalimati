@@ -55,13 +55,24 @@ export function usePresensi() {
   const [currentPage, setCurrentPage] = useState(1);
   const [holidays, setHolidays] = useState<string[]>([]);
   const [holidayList, setHolidayList] = useState<{ date: string; description: string; type: string }[]>([]);
+  const [holidaysLoaded, setHolidaysLoaded] = useState(false);
 
   const refreshHolidays = useCallback(async () => {
     try {
       const data = await HolidayService.getAll();
-      setHolidayList(data);
-      setHolidays(data.map((h: any) => h.date));
+      const newHolidays = data.map((h: any) => h.date);
+      setHolidays((prev) =>
+        prev.length === newHolidays.length && prev.every((d, i) => d === newHolidays[i])
+          ? prev
+          : newHolidays,
+      );
+      setHolidayList((prev) =>
+        prev.length === data.length && prev.every((h, i) => h.date === data[i].date)
+          ? prev
+          : data,
+      );
     } catch {}
+    setHolidaysLoaded(true);
   }, []);
 
   useEffect(() => {
@@ -104,10 +115,19 @@ export function usePresensi() {
 
   useEffect(() => {
     if (!isJwtReady || !grade || !date) return;
+    if (!holidaysLoaded) return;
 
     const hasEntries = entries.length > 0;
 
     const loadData = async () => {
+      if (holidays.includes(date)) {
+        setEntries([]);
+        setIsExisting(false);
+        setMessage(null);
+        setLoadingSiswa(false);
+        setSyncing(false);
+        return;
+      }
       if (hasEntries) {
         setSyncing(true);
       } else {
@@ -164,7 +184,7 @@ export function usePresensi() {
     };
 
     loadData();
-  }, [grade, date, isJwtReady]);
+  }, [grade, date, isJwtReady, holidays, holidaysLoaded]);
 
   const handleStatusChange = useCallback(
     (studentId: string, status: Entry["status"]) => {
@@ -177,6 +197,10 @@ export function usePresensi() {
 
   const handleSave = useCallback(async () => {
     if (!date || !grade || entries.length === 0) return;
+    if (holidays.includes(date)) {
+      setMessage({ type: "error", text: "Tidak bisa menyimpan presensi di hari libur!" });
+      return;
+    }
     setSaving(true);
     setMessage(null);
     try {
@@ -246,6 +270,7 @@ export function usePresensi() {
     holidays,
     isHoliday,
     holidayList,
+    holidaysLoaded,
     refreshHolidays,
   };
 }

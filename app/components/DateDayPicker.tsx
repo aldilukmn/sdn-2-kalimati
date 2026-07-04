@@ -3,8 +3,6 @@
 import { useRef, useState, useEffect, useCallback } from "react";
 import {
   format,
-  addDays,
-  subDays,
   parseISO,
   startOfMonth,
   endOfMonth,
@@ -27,7 +25,7 @@ interface DateDayPickerProps {
   blockedDates?: string[];
 }
 
-const DAYS = ["Min", "Sen", "Sel", "Rab", "Kam", "Jum", "Sab"];
+const DAYS = ["Sen", "Sel", "Rab", "Kam", "Jum", "Sab", "Min"];
 
 export default function DateDayPicker({
   value,
@@ -38,13 +36,15 @@ export default function DateDayPicker({
   const [open, setOpen] = useState(false);
   const panelRef = useRef<HTMLDivElement>(null);
 
-  const current = parseISO(value);
-  const formatted = format(current, "EEEE, dd MMMM yyyy", { locale: id });
+  const current = value ? parseISO(value) : null;
+  const formatted = current
+    ? format(current, "EEEE, d MMMM yyyy", { locale: id })
+    : "Pilih tanggal";
 
-  const [viewDate, setViewDate] = useState(current);
+  const [viewDate, setViewDate] = useState(current || new Date());
 
   useEffect(() => {
-    setViewDate(current);
+    if (current) setViewDate(current);
   }, [value]);
 
   const handleClickOutside = useCallback((e: MouseEvent) => {
@@ -60,20 +60,6 @@ export default function DateDayPicker({
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [open, handleClickOutside]);
 
-  const prevDay = () => {
-    const prev = subDays(current, 1);
-    onChange(format(prev, "yyyy-MM-dd"));
-  };
-
-  const nextDay = () => {
-    const next = addDays(current, 1);
-    const nextStr = format(next, "yyyy-MM-dd");
-    if (max && nextStr > max) return;
-    onChange(nextStr);
-  };
-
-  const canGoNext = !max || value < max;
-
   const monthStart = startOfMonth(viewDate);
   const monthEnd = endOfMonth(viewDate);
   const calStart = startOfWeek(monthStart, { locale: id });
@@ -84,23 +70,18 @@ export default function DateDayPicker({
 
   return (
     <div className="flex items-center gap-2 z-10">
-      <button
-        type="button"
-        onClick={prevDay}
-        className="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-300 bg-slate-50 text-slate-600 transition-colors hover:bg-slate-100 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-300 dark:hover:bg-gray-900 cursor-pointer"
-        title="Hari sebelumnya"
-      >
-        <ChevronLeft size={18} />
-      </button>
-
       <div className="relative flex-1" ref={panelRef}>
         <button
           type="button"
           onClick={() => setOpen(!open)}
-          className="flex w-full items-center gap-2.5 rounded-xl border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm text-slate-800 transition-colors focus:border-blue-500 focus:ring-blue-200 outline-none dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100 dark:focus:border-blue-500 cursor-pointer"
+          className="flex w-full items-center gap-2.5 rounded-xl border border-slate-300 bg-slate-50 px-3 py-2.5 text-sm text-slate-800 transition-colors focus:border-blue-500 focus:ring-blue-200 outline-none dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100 dark:focus:border-blue-500 cursor-pointer"
         >
           <CalendarDays size={18} className="shrink-0 text-blue-500" />
-          <span className="font-medium">{formatted}</span>
+          <span
+            className={`font-medium ${current ? "" : "text-gray-400 dark:text-gray-500"} text-xs md:text-sm`}
+          >
+            {formatted}
+          </span>
         </button>
 
         {open && (
@@ -136,29 +117,29 @@ export default function DateDayPicker({
             <div className="grid grid-cols-7 gap-0.5">
               {days.map((day) => {
                 const dayStr = format(day, "yyyy-MM-dd");
-                const isSelected = isSameDay(day, current);
+                const isSelected = current && isSameDay(day, current);
                 const inMonth = isSameMonth(day, viewDate);
                 const today = isToday(day);
-                const blocked = blockedDates?.includes(dayStr);
-                const disabled = (maxDate && day > maxDate) || !!blocked;
+                const isSunday = day.getDay() === 0;
+                const blocked = blockedDates?.includes(dayStr) || isSunday;
+                const disabled = maxDate && day > maxDate;
 
                 return (
                   <button
                     key={dayStr}
                     type="button"
-                    disabled={disabled}
+                    disabled={!!disabled}
                     onClick={() => {
-                      if (blocked) return;
                       onChange(dayStr);
                       setOpen(false);
                     }}
-                    className={`rounded-lg py-1.5 text-xs font-medium transition-colors cursor-pointer
+                    className={`rounded py-1.5 text-xs font-medium transition-colors cursor-pointer
                       ${!inMonth ? "text-slate-300 dark:text-gray-700" : ""}
                       ${isSelected ? "bg-blue-600 text-white" : ""}
                       ${!isSelected && inMonth && !disabled ? "text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-gray-800" : ""}
                       ${today && !isSelected ? "ring-1 ring-blue-400" : ""}
                       ${disabled ? "opacity-30 cursor-not-allowed" : ""}
-                      ${blocked ? "line-through decoration-red-400" : ""}
+                      ${blocked && !isSelected ? "!text-red-600 dark:!text-red-600 font-semibold hover:bg-red-100 dark:hover:bg-red-900/40" : ""} 
                     `}
                     title={blocked ? "Hari Libur" : undefined}
                   >
@@ -170,16 +151,6 @@ export default function DateDayPicker({
           </div>
         )}
       </div>
-
-      <button
-        type="button"
-        onClick={nextDay}
-        disabled={!canGoNext}
-        className="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-300 bg-slate-50 text-slate-600 transition-colors hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed dark:border-gray-700 dark:bg-gray-950 dark:text-slate-300 dark:hover:bg-gray-900 cursor-pointer"
-        title="Hari berikutnya"
-      >
-        <ChevronRight size={18} />
-      </button>
     </div>
   );
 }

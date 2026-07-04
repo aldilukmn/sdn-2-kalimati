@@ -24,7 +24,7 @@ import { useStudentMonthlyBreakdown } from "@/hooks/useStudentMonthlyBreakdown";
 import Pagination from "@/app/components/Pagination";
 import DateDayPicker from "@/app/components/DateDayPicker";
 import toast from "react-hot-toast";
-import { formatCompactRupiah, formatDateID } from "@/lib/format";
+import { formatCompactRupiah, formatDateID, formatDateShort } from "@/lib/format";
 import LoadingDots from "@/app/components/LoadingDots";
 
 export default function TabunganMuridPage() {
@@ -749,7 +749,8 @@ export default function TabunganMuridPage() {
                           className="hover:bg-indigo-50/50 dark:hover:bg-indigo-900/20 transition-colors"
                         >
                           <td className="px-3 py-2.5 text-sm text-gray-600 dark:text-gray-400">
-                            {formatDateID(tx.date)}
+                            <span className="hidden md:inline">{formatDateID(tx.date)}</span>
+                            <span className="md:hidden">{formatDateShort(tx.date)}</span>
                           </td>
                           <td className="px-3 py-2.5 text-center">
                             <span

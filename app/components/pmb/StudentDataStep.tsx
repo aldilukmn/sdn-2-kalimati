@@ -1,6 +1,6 @@
 "use client";
 
-import { Card } from "flowbite-react";
+import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 import InputField from "@/app/components/form/InputField";
 import SelectField from "@/app/components/form/SelectField";
 import DatePickerField from "@/app/components/DatePickerField";
@@ -8,15 +8,22 @@ import { GENDER_OPTIONS, RELIGION_OPTIONS } from "@/app/data/form-options";
 
 interface StudentDataStepProps {
   formData: RegistrationForm;
-  onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => void;
+  onChange: (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >,
+  ) => void;
 }
 
-export default function StudentDataStep({ formData, onChange }: StudentDataStepProps) {
+export default function StudentDataStep({
+  formData,
+  onChange,
+}: StudentDataStepProps) {
   return (
-    <Card className="dark:bg-gray-800">
-      <h2 className="text-lg md:text-2xl font-bold mb-6 pb-3 border-b-2 border-gray-300 dark:border-gray-200 text-gray-800 dark:text-gray-200">
+    <Card className="dark:bg-gray-800 px-7 py-6 md:px-10 md:py-8">
+      <CardTitle className="text-lg md:text-2xl font-bold mb-6 pb-3 border-b-2 border-gray-300 dark:border-gray-200 text-gray-800 dark:text-gray-200">
         Data Calon Peserta Didik
-      </h2>
+      </CardTitle>
 
       <div className="space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
