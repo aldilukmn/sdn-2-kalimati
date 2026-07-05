@@ -15,9 +15,5 @@ export interface TeacherType {
   grade: string;
   title: string;
   role: string;
-}
-
-export interface UserApiResponse {
-  result?: TeacherType[];
-  data?: TeacherType[];
+  treasurer?: boolean;
 }

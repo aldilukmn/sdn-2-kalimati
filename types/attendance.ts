@@ -18,3 +18,13 @@ export interface StudentAttendanceRequestType {
   grade: string;
   entries: { studentId: string; status: "hadir" | "sakit" | "izin" | "absen" }[];
 }
+
+export interface AttendanceReportItem {
+  studentId: string;
+  _id?: string;
+  status?: "hadir" | "sakit" | "izin" | "absen";
+  hadir?: number;
+  sakit?: number;
+  izin?: number;
+  absen?: number;
+}

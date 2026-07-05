@@ -1,5 +1,5 @@
 import { api } from "@/lib/api";
-import type { RegistrationForm } from "@/types/registration";
+import type { RegistrationForm, Registrant, PaginatedRegistrants } from "@/types/registration";
 
 export default class RegistrationService {
   static async getAll(page?: number, limit?: number) {
@@ -7,31 +7,31 @@ export default class RegistrationService {
     if (page) params.set("page", String(page));
     if (limit) params.set("limit", String(limit));
     const qs = params.toString();
-    return await api(`/registration${qs ? `?${qs}` : ""}`);
+    return await api<PaginatedRegistrants>(`/registration${qs ? `?${qs}` : ""}`);
   }
-  
+
   static async create(data: RegistrationForm) {
-    return await api("/registration", {
+    return await api<Registrant>("/registration", {
       method: "POST",
       body: JSON.stringify(data),
     });
   }
 
   static async getById(id: string) {
-    return await api(`/registration/${id}`);
+    return await api<Registrant>(`/registration/${id}`);
   }
 
   static async updateData(
     id: string,
-    data: Record<string, any>
+    data: Record<string, unknown>
   ) {
-    return await api(`/registration/${id}`, {
+    return await api<Registrant>(`/registration/${id}`, {
       method: "PATCH",
       body: JSON.stringify(data),
     });
   }
 
   static async totalRegistrations() {
-    return await api("/registration/count");
+    return await api<{ total: number }>("/registration/count");
   }
 }

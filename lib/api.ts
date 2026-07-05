@@ -1,3 +1,4 @@
+import type { ApiResponse } from "@/types/api";
 import { API_URL } from "./constants";
 
 function getCookie(name: string): string | null {
@@ -10,7 +11,7 @@ function getCookie(name: string): string | null {
 export const api = async <T = any>(
   endpoint: string,
   options: RequestInit = {}
-): Promise<T> => {
+): Promise<ApiResponse<T>> => {
   const token =
     typeof window !== "undefined"
       ? (sessionStorage.getItem(
@@ -32,8 +33,8 @@ export const api = async <T = any>(
     }
   );
 
-  let result: any;
-  
+  let result: ApiResponse<T>;
+
   try {
     result = await response.json();
   } catch (err) {
@@ -53,11 +54,11 @@ export const api = async <T = any>(
       sessionStorage.removeItem("user_session");
       document.cookie = "user_session=; max-age=0; path=/";
       window.location.href = "/login";
-      return undefined as any;
+      throw new Error("Sesi berakhir, silakan login ulang");
     }
 
     const error = new Error(
-      result?.status?.message || result?.message || `HTTP ${response.status}`
+      result?.status?.message || (result as any)?.message || `HTTP ${response.status}`
     ) as Error & {
       status?: number;
     };

@@ -1,9 +1,10 @@
+import type { ApiResponse } from "@/types/api";
 import { API_URL } from "./constants";
 
 export async function apiServer<T = any>(
   endpoint: string,
   token: string
-): Promise<T> {
+): Promise<ApiResponse<T>> {
   const response = await fetch(`${API_URL}${endpoint}`, {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -18,5 +19,5 @@ export async function apiServer<T = any>(
     throw err;
   }
 
-  return response.json();
+  return response.json() as Promise<ApiResponse<T>>;
 }

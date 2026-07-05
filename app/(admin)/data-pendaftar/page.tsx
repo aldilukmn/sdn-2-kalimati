@@ -55,7 +55,7 @@ export default function DataPendaftar() {
     if (!loading) setPageLoading(true);
     try {
       const response = await RegistrationService.getAll(targetPage, itemsPerPage);
-      const result = response.result || response.data || {};
+      const result = response.result || response.data || {} as import("@/types/registration").PaginatedRegistrants;
       setRegistrants(result.data || []);
       setTotalItems(result.total || 0);
       setTotalPagesState(result.totalPages || 1);
@@ -104,7 +104,7 @@ export default function DataPendaftar() {
   const handleExport = async () => {
     try {
       const response = await RegistrationService.getAll();
-      const allData = response.result || response.data || [];
+      const allData = response.result?.data || [];
       exportRegistrantsToCSV(allData);
     } catch {
       toast.error("Gagal mengekspor data");

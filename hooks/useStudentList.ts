@@ -15,13 +15,7 @@ export interface StudentWithBalance {
   todayWithdrawal?: number;
 }
 
-export interface StudentSavingsSummary {
-  grade: string;
-  date: string;
-  totalStudents: number;
-  dailyDeposits: number;
-  dailyWithdrawals: number;
-}
+export type StudentSavingsSummary = import("@/types/student-savings").SavingsSummary;
 
 
 
@@ -30,6 +24,7 @@ export function useStudentList() {
 
   const [userRole, setUserRole] = useState<string | null>(null);
   const [userGrade, setUserGrade] = useState<string | null>(null);
+  const [isTreasurer, setIsTreasurer] = useState(false);
   const [grade, setGrade] = useState("1");
   const [date, setDate] = useState(() => {
     const d = new Date();
@@ -50,18 +45,33 @@ export function useStudentList() {
 
   useEffect(() => {
     const token = sessionStorage.getItem("user_session");
+    let role: string | null = null;
+    let gradeFromToken: string | null = null;
+
+    let treasurer = false;
+
     if (token) {
       try {
         const payload = decodeJWT(token);
         if (payload) {
-          setUserRole(payload.role);
-          setUserGrade(payload.grade);
-        }
-        if (payload?.role === "guru" && payload?.grade) {
-          setGrade(payload.grade);
+          role = payload.role;
+          gradeFromToken = payload.grade;
+          treasurer = payload.treasurer === true;
         }
       } catch {}
     }
+
+    if (!role) {
+      const match = document.cookie.match(/(?:^|; )user_role=([^;]*)/);
+      role = match ? decodeURIComponent(match[1]) : null;
+      const gradeMatch = document.cookie.match(/(?:^|; )user_grade=([^;]*)/);
+      gradeFromToken = gradeMatch ? decodeURIComponent(gradeMatch[1]) : null;
+    }
+
+    if (role) setUserRole(role);
+    if (gradeFromToken) setUserGrade(gradeFromToken);
+    setIsTreasurer(treasurer);
+    if (role === "guru" && gradeFromToken) setGrade(gradeFromToken);
   }, []);
 
   useEffect(() => {
@@ -87,10 +97,10 @@ export function useStudentList() {
           setStudents(res?.result || []);
           setCurrentPage(1);
         }
-      } catch (e: any) {
+      } catch (e: unknown) {
         if (!signal.aborted) {
           setStudents([]);
-          setMessage({ type: "error", text: e.message || "Gagal memuat data" });
+          setMessage({ type: "error", text: e instanceof Error ? e.message : "Gagal memuat data" });
         }
       } finally {
         if (!signal.aborted) setLoading(false);
@@ -159,6 +169,7 @@ export function useStudentList() {
   return {
     userRole,
     userGrade,
+    isTreasurer,
     grade,
     setGrade,
     date,

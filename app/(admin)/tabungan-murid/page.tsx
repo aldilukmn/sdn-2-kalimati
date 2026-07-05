@@ -33,6 +33,7 @@ export default function TabunganMuridPage() {
   const {
     userRole,
     userGrade,
+    isTreasurer,
     grade,
     setGrade,
     date,
@@ -142,7 +143,7 @@ export default function TabunganMuridPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <label className="mb-2 block text-xs font-semibold text-gray-500 dark:text-gray-400 tracking-wider">Kelas</label>
-            {userRole !== "admin" && userRole !== "kepala" ? (
+            {userRole !== "admin" && userRole !== "kepala" && !isTreasurer ? (
               <div className="w-full rounded-xl border border-slate-300 bg-slate-100 px-4 py-2.5 text-sm text-slate-800 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100">
                 {userGrade || grade}
               </div>

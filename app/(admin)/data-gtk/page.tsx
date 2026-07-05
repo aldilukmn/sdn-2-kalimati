@@ -16,6 +16,7 @@ import {
   Users,
   AlertTriangle,
   X,
+  Check,
 } from "lucide-react";
 import toast from "react-hot-toast";
 import UserService from "@/services/user.service";
@@ -251,9 +252,8 @@ export default function DataGTK() {
   const [submitting, setSubmitting] = useState(false);
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
-  const [studentCounts, setStudentCounts] = useState<Record<string, number>>(
-    {},
-  );
+  const [studentCounts, setStudentCounts] = useState<Record<string, number>>({});
+  const [treasurerLoading, setTreasurerLoading] = useState<string | null>(null);
 
   useEffect(() => {
     const token = sessionStorage.getItem("user_session");
@@ -405,6 +405,28 @@ export default function DataGTK() {
     }
   };
 
+  const handleTreasurerToggle = async (user: TeacherType) => {
+    const newValue = !user.treasurer;
+    setTreasurerLoading(user._id);
+    try {
+      await UserService.setTreasurer(user._id, newValue);
+      setTeachers((prev) =>
+        prev.map((t) =>
+          t._id === user._id ? { ...t, treasurer: newValue } : t,
+        ),
+      );
+      toast.success(
+        `Bendahara ${newValue ? "ditugaskan" : "dicabut"} untuk ${user.fullName || user.username}`,
+      );
+    } catch (err) {
+      toast.error(
+        err instanceof Error ? err.message : "Gagal mengubah status bendahara",
+      );
+    } finally {
+      setTreasurerLoading(null);
+    }
+  };
+
   const openEditModal = (user: TeacherType) => {
     setEditId(user._id);
     setFormData({
@@ -458,6 +480,7 @@ export default function DataGTK() {
                     "NIP",
                     "Kelas",
                     "Jumlah Murid",
+                    "Bendahara",
                     "Gelar",
                     ...(userRole !== "kepala" ? ["Aksi"] : []),
                   ].map((h) => (
@@ -473,7 +496,7 @@ export default function DataGTK() {
               <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
                 {Array.from({ length: 5 }).map((_, i) => (
                   <tr key={i} className="animate-pulse">
-                    {Array.from({ length: userRole !== "kepala" ? 7 : 6 }).map(
+                    {Array.from({ length: userRole !== "kepala" ? 8 : 7 }).map(
                       (_, j) => (
                         <td key={j} className="px-3 py-3 md:px-6 md:py-4">
                           <div className="h-4 w-24 bg-slate-200 dark:bg-slate-700 rounded" />
@@ -514,6 +537,9 @@ export default function DataGTK() {
                   <th className="px-3 py-3 text-center font-semibold whitespace-nowrap">
                     Jumlah Murid
                   </th>
+                  <th className="px-3 py-3 text-center font-semibold whitespace-nowrap">
+                    Bendahara
+                  </th>
                   <th className="px-3 py-3 text-left font-semibold whitespace-nowrap">
                     Gelar
                   </th>
@@ -546,6 +572,27 @@ export default function DataGTK() {
                       {guru.grade
                         ? `${studentCounts[guru.grade] ?? "-"} Murid`
                         : "-"}
+                    </td>
+                    <td className="px-3 py-3 md:px-6 md:py-4 text-center whitespace-nowrap">
+                      <button
+                        onClick={() => handleTreasurerToggle(guru)}
+                        disabled={treasurerLoading === guru._id}
+                        className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed ${
+                          guru.treasurer
+                            ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300 hover:bg-emerald-200 dark:hover:bg-emerald-900/50"
+                            : "bg-slate-100 text-slate-500 dark:bg-gray-800 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-gray-700"
+                        }`}
+                        title={guru.treasurer ? "Klik untuk cabut" : "Klik untuk tugaskan"}
+                      >
+                        {treasurerLoading === guru._id ? (
+                          <Loader2 size={14} className="animate-spin" />
+                        ) : guru.treasurer ? (
+                          <Check size={14} />
+                        ) : (
+                          <X size={14} />
+                        )}
+                        {guru.treasurer ? "Ya" : "Tidak"}
+                      </button>
                     </td>
                     <td className="px-3 py-3 md:px-6 md:py-4 text-sm text-gray-600 dark:text-gray-300 whitespace-nowrap">
                       {guru.title || "-"}

@@ -2,10 +2,11 @@
 
 import { Save, Loader2 } from "lucide-react";
 import Modal from "@/app/components/Modal";
+import type { Transaction } from "@/types/student-savings";
 
 interface EditModalProps {
   open: boolean;
-  transaction: any | null;
+  transaction: Transaction | null;
   closeEditModal: () => void;
   editAmount: string;
   setEditAmount: (v: string) => void;

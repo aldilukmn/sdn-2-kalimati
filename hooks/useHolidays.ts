@@ -14,15 +14,15 @@ export function useHolidays() {
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
-    HolidayService.getAll().then((data) => {
-      setHolidayList(data || []);
+    HolidayService.getAll().then((res) => {
+      setHolidayList(res.result || []);
       setLoaded(true);
     });
   }, []);
 
   const refresh = useCallback(async () => {
-    const data = await HolidayService.getAll();
-    setHolidayList(data || []);
+    const res = await HolidayService.getAll();
+    setHolidayList(res.result || []);
   }, []);
 
   const holidays = useMemo(() => holidayList.map((h) => h.date), [holidayList]);

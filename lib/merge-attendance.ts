@@ -1,3 +1,5 @@
+import type { MasterStudentType, AttendanceReportItem } from "@/types/attendance";
+
 export interface AttendanceRow {
   _id: string;
   studentIndex: number;
@@ -8,13 +10,15 @@ export interface AttendanceRow {
   absen: number;
 }
 
+type AttendanceMapValue = { hadir: number; sakit: number; izin: number; absen: number };
+
 export function mergeAttendance(
-  students: any[],
-  attendance: any[]
+  students: MasterStudentType[],
+  attendance: AttendanceReportItem[]
 ): { data: AttendanceRow[]; hasData: boolean } {
-  const attendanceMap = new Map<string, any>();
+  const attendanceMap = new Map<string, AttendanceMapValue>();
   for (const a of attendance) {
-    const key = a.studentId || a._id;
+    const key = a.studentId || a._id || "";
     if (!attendanceMap.has(key)) {
       attendanceMap.set(key, { hadir: 0, sakit: 0, izin: 0, absen: 0 });
     }
@@ -32,7 +36,7 @@ export function mergeAttendance(
     }
   }
 
-  const data = students.map((s: any, idx: number) => {
+  const data = students.map((s, idx: number) => {
     const a = attendanceMap.get(s.studentId);
     return {
       _id: s.studentId,

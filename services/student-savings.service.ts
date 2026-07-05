@@ -1,14 +1,23 @@
 import { api } from "@/lib/api";
+import type {
+  StudentSavingsStudent,
+  SavingsSummary,
+  MonthlyRecap,
+  MonthlyBreakdownItem,
+  Transaction,
+  PaginatedTransactions,
+  GradeRecap,
+} from "@/types/student-savings";
 
 export default class StudentSavingsService {
   static async getByGrade(grade: string, date?: string) {
     let url = `/student-savings?grade=${grade}`;
     if (date) url += `&date=${date}`;
-    return await api(url);
+    return await api<StudentSavingsStudent[]>(url);
   }
 
   static async getSummary(grade: string, date: string) {
-    return await api(
+    return await api<SavingsSummary>(
       `/student-savings/summary?grade=${grade}&date=${date}`
     );
   }
@@ -20,7 +29,7 @@ export default class StudentSavingsService {
     date: string;
     description?: string;
   }) {
-    return await api("/student-savings/transaction", {
+    return await api<Transaction>("/student-savings/transaction", {
       method: "POST",
       body: JSON.stringify(data),
     });
@@ -35,14 +44,14 @@ export default class StudentSavingsService {
       description?: string;
     }
   ) {
-    return await api(`/student-savings/transaction/${id}`, {
+    return await api<Transaction>(`/student-savings/transaction/${id}`, {
       method: "PATCH",
       body: JSON.stringify(data),
     });
   }
 
   static async deleteTransaction(id: string) {
-    return await api(`/student-savings/transaction/${id}`, {
+    return await api<void>(`/student-savings/transaction/${id}`, {
       method: "DELETE",
     });
   }
@@ -50,11 +59,11 @@ export default class StudentSavingsService {
   static async getMonthlyRecap(grade: string | undefined, month: number, year: number) {
     let url = `/student-savings/monthly-recap?month=${month}&year=${year}`;
     if (grade) url += `&grade=${grade}`;
-    return await api(url);
+    return await api<MonthlyRecap>(url);
   }
 
   static async getMonthlyBreakdown(grade: string, year: number) {
-    return await api(`/student-savings/monthly-breakdown?grade=${grade}&year=${year}`);
+    return await api<MonthlyBreakdownItem[]>(`/student-savings/monthly-breakdown?grade=${grade}&year=${year}`);
   }
 
   static async getTransactions(
@@ -71,6 +80,17 @@ export default class StudentSavingsService {
     if (type) params.set("type", type);
     if (month) params.set("month", String(month));
     if (year) params.set("year", String(year));
-    return await api(`/student-savings/transactions?${params.toString()}`);
+    return await api<PaginatedTransactions>(`/student-savings/transactions?${params.toString()}`);
+  }
+
+  static async getGradeRecap(date?: string, month?: number, year?: number) {
+    let url = "/student-savings/grade-recap";
+    const params = new URLSearchParams();
+    if (date) params.set("date", date);
+    if (month) params.set("month", String(month));
+    if (year) params.set("year", String(year));
+    const qs = params.toString();
+    if (qs) url += `?${qs}`;
+    return await api<GradeRecap[]>(url);
   }
 }

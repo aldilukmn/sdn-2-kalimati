@@ -44,7 +44,7 @@ export default function EditRegistration() {
     const fetchData = async () => {
       try {
         const res = await RegistrationService.getById(params.id as string);
-        const data = res.result || res.data || res;
+        const data = (res.result || res.data) as import("@/types/registration").Registrant;
 
         setRegistrationInfo({
           number: data.registrationNumber || "-",
@@ -64,7 +64,7 @@ export default function EditRegistration() {
             nik: student.nik || "",
             noKk: student.noKk || "",
             birthPlace: student.birthPlace || "",
-            birthDate: student.birthDate || "",
+            birthDate: student.birthDate ? String(student.birthDate) : "",
             gender: student.gender || "",
             religion: student.religion || "",
             address: {

@@ -1,4 +1,5 @@
 import { api } from "@/lib/api";
+import type { DashboardSummary, TeacherDashboardSummary } from "@/types/dashboard";
 
 export default class DashboardService {
   static async getSummary(month?: number, year?: number) {
@@ -6,10 +7,10 @@ export default class DashboardService {
     if (month) params.set("month", String(month));
     if (year) params.set("year", String(year));
     const query = params.toString();
-    return await api(`/dashboard${query ? `?${query}` : ""}`);
+    return await api<DashboardSummary>(`/dashboard${query ? `?${query}` : ""}`);
   }
 
   static async getTeacherSummary() {
-    return await api("/dashboard/teacher");
+    return await api<TeacherDashboardSummary>("/dashboard/teacher");
   }
 }

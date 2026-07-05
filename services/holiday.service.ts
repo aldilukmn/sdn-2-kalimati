@@ -1,20 +1,24 @@
 import { api } from "@/lib/api";
+import type { Holiday, HolidayCheckResult } from "@/types/holiday";
 
 export default class HolidayService {
-  static async getAll(): Promise<{ date: string; description: string; type: string }[]> {
-    const res = await api("/holidays");
-    return res?.result || [];
+  static async getAll() {
+    return await api<Holiday[]>("/holidays");
+  }
+
+  static async check(date: string) {
+    return await api<HolidayCheckResult>(`/holidays/check?date=${date}`);
   }
 
   static async add(data: { date: string; description: string; type?: string }) {
-    return await api("/holidays", {
+    return await api<Holiday>("/holidays", {
       method: "POST",
       body: JSON.stringify(data),
     });
   }
 
   static async remove(date: string) {
-    return await api(`/holidays/${date}`, {
+    return await api<void>(`/holidays/${date}`, {
       method: "DELETE",
     });
   }

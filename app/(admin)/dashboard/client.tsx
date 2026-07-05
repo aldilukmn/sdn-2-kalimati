@@ -10,7 +10,6 @@ import { useAuth } from "@/app/contexts/AuthContext";
 import DashboardStatCards from "@/app/components/DashboardStatCards";
 import AttendanceDonutChart from "@/app/components/AttendanceDonutChart";
 import AttendanceBarChart from "@/app/components/AttendanceBarChart";
-import MonthYearPicker from "@/app/components/MonthYearPicker";
 import {
   Select,
   SelectContent,
@@ -36,6 +35,8 @@ import {
 import { useDashboard } from "@/hooks/useDashboard";
 import { useTeacherChart } from "@/hooks/useTeacherChart";
 import { useSavingsRecap } from "@/hooks/useSavingsRecap";
+import { useGradeRecap } from "@/hooks/useGradeRecap";
+import GradeRecapTable from "@/app/components/tabungan/GradeRecapTable";
 import { GRADES } from "@/lib/constants";
 import { formatCompactRupiah, MONTHS_ID } from "@/lib/format";
 import StatCard from "@/app/components/StatCard";
@@ -46,6 +47,7 @@ interface Props {
   userRole: string | null;
   userName: string | null;
   userGrade: string | null;
+  isTreasurer: boolean;
   initialMonth: number;
   initialYear: number;
   guruInitialSummary?: TeacherSummary | null;
@@ -88,6 +90,8 @@ function AdminDashboardView({
 
       <TabunganSection />
 
+      <GradeRecapSection />
+
       {/* Rekapitulasi Kehadiran — satu card */}
       <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
         <div className="flex flex-col md:flex-row items-center gap-2.5 mb-4">
@@ -103,12 +107,42 @@ function AdminDashboardView({
             </h3>
           </div>
           <div className="md:ml-auto">
-            <MonthYearPicker
-              month={month}
-              year={year}
-              onMonthChange={setMonth}
-              onYearChange={setYear}
-            />
+            <div className="flex items-center gap-2">
+              <Select
+                value={String(month)}
+                onValueChange={(v) => { if (v !== null) setMonth(Number(v)); }}
+              >
+                <SelectTrigger className="h-auto rounded-lg border border-slate-300 bg-slate-50 px-2.5 py-1.5 text-xs focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100 w-[110px]">
+                  <SelectValue placeholder="Bulan" className="sr-only" />
+                  {MONTHS_ID[month - 1]}
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectLabel>Bulan</SelectLabel>
+                    {MONTHS_ID.map((name, i) => (
+                      <SelectItem key={i + 1} value={String(i + 1)}>{name}</SelectItem>
+                    ))}
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+              <Select
+                value={String(year)}
+                onValueChange={(v) => { if (v !== null) setYear(Number(v)); }}
+              >
+                <SelectTrigger className="h-auto rounded-lg border border-slate-300 bg-slate-50 px-2.5 py-1.5 text-xs focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100 w-[80px]">
+                  <SelectValue placeholder="Tahun" className="sr-only" />
+                  {year}
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectLabel>Tahun</SelectLabel>
+                    {[2026, 2027].map((y) => (
+                      <SelectItem key={y} value={String(y)}>{y}</SelectItem>
+                    ))}
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            </div>
           </div>
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -133,6 +167,63 @@ function AdminDashboardView({
           </div>
         </div>
       </div>
+    </div>
+  );
+}
+
+function GradeRecapSection() {
+  const now = new Date();
+  const [month, setMonth] = useState(now.getMonth() + 1);
+  const [year, setYear] = useState(now.getFullYear());
+  const { data, loading } = useGradeRecap(undefined, month, year);
+
+  return (
+    <div>
+      <div className="flex items-center gap-2.5 mb-3">
+        <div className="w-8 h-8 bg-indigo-100 dark:bg-indigo-900/40 rounded-lg flex items-center justify-center">
+          <Wallet size={16} className="text-indigo-600 dark:text-indigo-300" />
+        </div>
+        <h3 className="font-semibold text-gray-700 dark:text-gray-300">
+          Rekap Tabungan per Kelas
+        </h3>
+        <div className="ml-auto flex items-center gap-2">
+          <Select
+            value={String(month)}
+            onValueChange={(v) => { if (v !== null) setMonth(Number(v)); }}
+          >
+            <SelectTrigger className="h-auto rounded-lg border border-slate-300 bg-slate-50 px-2.5 py-1.5 text-xs focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100 w-[90px]">
+              <SelectValue placeholder="Bulan" className="sr-only" />
+              {MONTHS_ID[month - 1]}
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectLabel>Bulan</SelectLabel>
+                {MONTHS_ID.map((name, i) => (
+                  <SelectItem key={i + 1} value={String(i + 1)}>{name}</SelectItem>
+                ))}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+          <Select
+            value={String(year)}
+            onValueChange={(v) => { if (v !== null) setYear(Number(v)); }}
+          >
+            <SelectTrigger className="h-auto rounded-lg border border-slate-300 bg-slate-50 px-2.5 py-1.5 text-xs focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100 w-[80px]">
+              <SelectValue placeholder="Tahun" className="sr-only" />
+              {year}
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectLabel>Tahun</SelectLabel>
+                {[2026, 2027].map((y) => (
+                  <SelectItem key={y} value={String(y)}>{y}</SelectItem>
+                ))}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+        </div>
+      </div>
+      <GradeRecapTable data={data} loading={loading} mode="monthly" />
     </div>
   );
 }
@@ -297,6 +388,7 @@ function GuruDashboardView({
   initialYear,
   userName,
   userGrade,
+  isTreasurer,
 }: {
   initialSummary: TeacherSummary | null | undefined;
   initialChartData: AttendanceRow[] | undefined;
@@ -305,6 +397,7 @@ function GuruDashboardView({
   initialYear: number;
   userName: string | null;
   userGrade: string | null;
+  isTreasurer: boolean;
 }) {
   const { loading, summary } = useTeacherDashboard(initialSummary);
   const [month, setMonth] = useState(initialMonth);
@@ -426,6 +519,7 @@ function GuruDashboardView({
         ))}
       </div>
       <TabunganSection grade={userGrade} />
+      {isTreasurer && <GradeRecapSection />}
       {chartLoading ? (
         <div className="bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5 relative z-0">
           <div className="flex flex-col md:flex-row items-center md:justify-between gap-4 mb-4">
@@ -438,12 +532,42 @@ function GuruDashboardView({
               </p>
             </div>
             <div className="shrink-0">
-              <MonthYearPicker
-                month={month}
-                year={year}
-                onMonthChange={setMonth}
-                onYearChange={setYear}
-              />
+              <div className="flex items-center gap-2">
+                <Select
+                  value={String(month)}
+                  onValueChange={(v) => { if (v !== null) setMonth(Number(v)); }}
+                >
+                  <SelectTrigger className="h-auto rounded-lg border border-slate-300 bg-slate-50 px-2.5 py-1.5 text-xs focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100 w-[110px]">
+                    <SelectValue placeholder="Bulan" className="sr-only" />
+                    {MONTHS_ID[month - 1]}
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      <SelectLabel>Bulan</SelectLabel>
+                      {MONTHS_ID.map((name, i) => (
+                        <SelectItem key={i + 1} value={String(i + 1)}>{name}</SelectItem>
+                      ))}
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+                <Select
+                  value={String(year)}
+                  onValueChange={(v) => { if (v !== null) setYear(Number(v)); }}
+                >
+                  <SelectTrigger className="h-auto rounded-lg border border-slate-300 bg-slate-50 px-2.5 py-1.5 text-xs focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100 w-[80px]">
+                    <SelectValue placeholder="Tahun" className="sr-only" />
+                    {year}
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      <SelectLabel>Tahun</SelectLabel>
+                      {[2026, 2027].map((y) => (
+                        <SelectItem key={y} value={String(y)}>{y}</SelectItem>
+                      ))}
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
           </div>
           <StudentAttendanceTable
@@ -464,12 +588,42 @@ function GuruDashboardView({
               </p>
             </div>
             <div className="shrink-0">
-              <MonthYearPicker
-                month={month}
-                year={year}
-                onMonthChange={setMonth}
-                onYearChange={setYear}
-              />
+              <div className="flex items-center gap-2">
+                <Select
+                  value={String(month)}
+                  onValueChange={(v) => { if (v !== null) setMonth(Number(v)); }}
+                >
+                  <SelectTrigger className="h-auto rounded-lg border border-slate-300 bg-slate-50 px-2.5 py-1.5 text-xs focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100 w-[110px]">
+                    <SelectValue placeholder="Bulan" className="sr-only" />
+                    {MONTHS_ID[month - 1]}
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      <SelectLabel>Bulan</SelectLabel>
+                      {MONTHS_ID.map((name, i) => (
+                        <SelectItem key={i + 1} value={String(i + 1)}>{name}</SelectItem>
+                      ))}
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+                <Select
+                  value={String(year)}
+                  onValueChange={(v) => { if (v !== null) setYear(Number(v)); }}
+                >
+                  <SelectTrigger className="h-auto rounded-lg border border-slate-300 bg-slate-50 px-2.5 py-1.5 text-xs focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100 w-[80px]">
+                    <SelectValue placeholder="Tahun" className="sr-only" />
+                    {year}
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      <SelectLabel>Tahun</SelectLabel>
+                      {[2026, 2027].map((y) => (
+                        <SelectItem key={y} value={String(y)}>{y}</SelectItem>
+                      ))}
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
           </div>
           <div className="flex flex-col items-center justify-center py-16 px-4 text-center">
@@ -495,12 +649,42 @@ function GuruDashboardView({
               </p>
             </div>
             <div className="shrink-0">
-              <MonthYearPicker
-                month={month}
-                year={year}
-                onMonthChange={setMonth}
-                onYearChange={setYear}
-              />
+              <div className="flex items-center gap-2">
+                <Select
+                  value={String(month)}
+                  onValueChange={(v) => { if (v !== null) setMonth(Number(v)); }}
+                >
+                  <SelectTrigger className="h-auto rounded-lg border border-slate-300 bg-slate-50 px-2.5 py-1.5 text-xs focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100 w-[110px]">
+                    <SelectValue placeholder="Bulan" className="sr-only" />
+                    {MONTHS_ID[month - 1]}
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      <SelectLabel>Bulan</SelectLabel>
+                      {MONTHS_ID.map((name, i) => (
+                        <SelectItem key={i + 1} value={String(i + 1)}>{name}</SelectItem>
+                      ))}
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+                <Select
+                  value={String(year)}
+                  onValueChange={(v) => { if (v !== null) setYear(Number(v)); }}
+                >
+                  <SelectTrigger className="h-auto rounded-lg border border-slate-300 bg-slate-50 px-2.5 py-1.5 text-xs focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100 w-[80px]">
+                    <SelectValue placeholder="Tahun" className="sr-only" />
+                    {year}
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      <SelectLabel>Tahun</SelectLabel>
+                      {[2026, 2027].map((y) => (
+                        <SelectItem key={y} value={String(y)}>{y}</SelectItem>
+                      ))}
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
           </div>
           <StudentAttendanceTable
@@ -527,6 +711,7 @@ export default function DashboardClient({
   userRole,
   userName,
   userGrade,
+  isTreasurer,
   initialMonth,
   initialYear,
   guruInitialSummary,
@@ -554,6 +739,7 @@ export default function DashboardClient({
         initialYear={initialYear}
         userName={userName}
         userGrade={userGrade}
+        isTreasurer={isTreasurer}
       />
     );
   }

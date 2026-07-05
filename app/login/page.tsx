@@ -23,7 +23,7 @@ export default function LoginPage() {
     try {
       const response = await AuthService.login(identifier, password);
 
-      const token = response.result?.token || response.result;
+      const token = response.result || "";
       const payload = decodeJWT(token);
       const role = payload.role || "admin";
       const grade = payload.grade || "";

@@ -101,8 +101,8 @@ export default function PresensiMuridPage() {
       setNewDesc("");
       toast.success("Hari libur berhasil ditambahkan");
       setManageOpen(false);
-    } catch (e: any) {
-      toast.error(e.message || "Gagal menambah hari libur");
+    } catch (e: unknown) {
+      toast.error(e instanceof Error ? e.message : "Gagal menambah hari libur");
     } finally {
       setAddSaving(false);
     }
@@ -114,8 +114,8 @@ export default function PresensiMuridPage() {
       await HolidayService.remove(date);
       await refreshHolidays();
       toast.success("Hari libur berhasil dihapus");
-    } catch (e: any) {
-      toast.error(e.message || "Gagal menghapus hari libur");
+    } catch (e: unknown) {
+      toast.error(e instanceof Error ? e.message : "Gagal menghapus hari libur");
     } finally {
       setRemovingDate(null);
     }

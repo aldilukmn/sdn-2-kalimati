@@ -9,6 +9,16 @@ interface AttendanceRow {
   status: string;
 }
 
+interface AttendanceRecapRow {
+  studentId: string;
+  name: string;
+  grade: string;
+  hadir: number;
+  sakit: number;
+  izin: number;
+  absen: number;
+}
+
 const HEADERS = [
   "No",
   "Student ID",
@@ -16,6 +26,17 @@ const HEADERS = [
   "Kelas",
   "Tanggal",
   "Status",
+];
+
+const RECAP_HEADERS = [
+  "No",
+  "Student ID",
+  "Nama Lengkap",
+  "Kelas",
+  "Hadir",
+  "Sakit",
+  "Izin",
+  "Absen",
 ];
 
 export function exportPresensiToCSV(
@@ -36,4 +57,26 @@ export function exportPresensiToCSV(
   );
 
   downloadCSV(HEADERS, rows, `presensi-${label}-${getTodayLocal()}.csv`);
+}
+
+export function exportPresensiRecapToCSV(
+  data: AttendanceRecapRow[],
+  label: string
+): void {
+  const rows = data.map((r, i) =>
+    [
+      i + 1,
+      r.studentId,
+      r.name,
+      `Kelas ${r.grade}`,
+      r.hadir,
+      r.sakit,
+      r.izin,
+      r.absen,
+    ]
+      .map(wrap)
+      .join(",")
+  );
+
+  downloadCSV(RECAP_HEADERS, rows, `rekap-presensi-${label}-${getTodayLocal()}.csv`);
 }

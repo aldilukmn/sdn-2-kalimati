@@ -48,7 +48,7 @@ export function useDashboard(initialSummary?: DashboardSummary | null, initialMo
         DashboardService.getSummary(m, y),
         StudentAttendanceService.getStudentCountByGrade(),
       ]);
-      const data = dashboardRes.result || dashboardRes.data || {};
+      const data = (dashboardRes.result || {}) as import("@/types/dashboard").DashboardSummary;
       const counts: Record<string, number> = countRes?.result || {};
       setSummary({
         totalRegistrants: data.totalRegistrants ?? 0,
@@ -141,7 +141,7 @@ export function useTeacherDashboard(initialSummary?: TeacherSummary | null) {
     const fetchData = async () => {
       try {
         const res = await DashboardService.getTeacherSummary();
-        const data = res.result || res.data || {};
+        const data = (res.result || {}) as import("@/types/dashboard").TeacherDashboardSummary;
         setSummary({
           totalStudents: data.totalStudents ?? 0,
           maleCount: data.maleCount ?? 0,

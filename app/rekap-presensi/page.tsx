@@ -15,19 +15,19 @@ import {
 import TableSkeleton from "@/app/components/TableSkeleton";
 import StudentAttendanceService from "@/services/student-attendance.service";
 import UserService from "@/services/user.service";
-import { exportPresensiToCSV } from "@/lib/export-presensi-csv";
+import { exportPresensiRecapToCSV } from "@/lib/export-presensi-csv";
 import BackButton from "../components/BackButton";
 import Pagination from "@/app/components/Pagination";
 import MonthYearPicker from "../components/MonthYearPicker";
 import { GRADES } from "@/lib/constants";
-import type { MasterStudentType, StudentAttendanceType } from "@/types/attendance";
+import type { MasterStudentType, AttendanceReportItem } from "@/types/attendance";
 
 export default function RekapPresensi() {
   const [grade, setGrade] = useState("1");
 
   const [month, setMonth] = useState(new Date().getMonth() + 1);
   const [year, setYear] = useState(new Date().getFullYear());
-  const [dataPresensi, setDataPresensi] = useState<StudentAttendanceType[]>([]);
+  const [dataPresensi, setDataPresensi] = useState<AttendanceReportItem[]>([]);
   const [siswaList, setSiswaList] = useState<MasterStudentType[]>([]);
   const [teacherName, setTeacherName] = useState<string | null>(null);
   const [teacherLoading, setTeacherLoading] = useState(false);
@@ -87,30 +87,29 @@ export default function RekapPresensi() {
   }, [grade, month, year]);
 
   const handleExport = () => {
-    const rows = dataPresensi.map((d) => ({
-      studentId: d.studentId,
-      name: d.name,
-      grade: d.grade,
-      date: d.date,
-      status: d.status,
-    }));
-    exportPresensiToCSV(rows, `grade-${grade}-month-${month}`);
+    const rows = siswaList.map((siswa) => {
+      const stats = getStudentStats(siswa.studentId);
+      return {
+        studentId: siswa.studentId,
+        name: siswa.name,
+        grade,
+        hadir: stats.hadir,
+        sakit: stats.sakit,
+        izin: stats.izin,
+        absen: stats.absen,
+      };
+    });
+    exportPresensiRecapToCSV(rows, `grade-${grade}-month-${month}`);
   };
 
-  const countByStatus = (status: string) =>
-    dataPresensi.filter((d) => d.status === status).length;
-
-  const totalHari = new Set(dataPresensi.map((d) => d.date)).size;
-
   const getStudentStats = (studentId: string) => {
-    const studentData = dataPresensi.filter((d) => d.studentId === studentId);
-    return {
-      total: studentData.length,
-      hadir: studentData.filter((d) => d.status === "hadir").length,
-      sakit: studentData.filter((d) => d.status === "sakit").length,
-      izin: studentData.filter((d) => d.status === "izin").length,
-      absen: studentData.filter((d) => d.status === "absen").length,
-    };
+    const record = dataPresensi.find((d) => d._id === studentId);
+    if (!record) return { total: 0, hadir: 0, sakit: 0, izin: 0, absen: 0 };
+    const hadir = record.hadir ?? 0;
+    const sakit = record.sakit ?? 0;
+    const izin = record.izin ?? 0;
+    const absen = record.absen ?? 0;
+    return { total: hadir + sakit + izin + absen, hadir, sakit, izin, absen };
   };
 
   const totalPages = Math.ceil(siswaList.length / itemsPerPage);
@@ -329,7 +328,7 @@ export default function RekapPresensi() {
             )}
 
             <div className="mt-4 text-xs text-gray-500 dark:text-gray-400 text-right">
-              Total hari: {totalHari} hari
+              Total siswa: {dataPresensi.length} siswa
             </div>
           </>
         )}

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import StudentSavingsService from "@/services/student-savings.service";
 import { StudentWithBalance } from "@/hooks/useStudentList";
+import type { Transaction } from "@/types/student-savings";
 
 const HISTORY_LIMIT = 10;
 
@@ -18,7 +19,7 @@ export function useHistoryModal({
     student: StudentWithBalance | null;
   }>({ open: false, student: null });
   const [historyType, setHistoryType] = useState<string | undefined>(undefined);
-  const [transactions, setTransactions] = useState<any[]>([]);
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [historyLoading, setHistoryLoading] = useState(false);
   const [historyPage, setHistoryPage] = useState(1);
   const [historyTotal, setHistoryTotal] = useState(0);
@@ -27,7 +28,7 @@ export function useHistoryModal({
   const [historyYear, setHistoryYear] = useState(new Date().getFullYear());
   const [historyAllTime, setHistoryAllTime] = useState(false);
   const [deletingId, setDeletingId] = useState<string | null>(null);
-  const [editingTx, setEditingTx] = useState<any | null>(null);
+  const [editingTx, setEditingTx] = useState<Transaction | null>(null);
 
   const [confirmDelete, setConfirmDelete] = useState<{
     open: boolean;
@@ -36,7 +37,7 @@ export function useHistoryModal({
 
   const [editModal, setEditModal] = useState<{
     open: boolean;
-    transaction: any | null;
+    transaction: Transaction | null;
   }>({ open: false, transaction: null });
   const [editAmount, setEditAmount] = useState("");
   const [editDate, setEditDate] = useState("");
@@ -109,7 +110,7 @@ export function useHistoryModal({
     }
   };
 
-  const openEditModal = (tx: any) => {
+  const openEditModal = (tx: Transaction) => {
     setEditModal({ open: true, transaction: tx });
     setEditAmount(String(tx.amount));
     setEditDate(tx.date);
@@ -158,10 +159,10 @@ export function useHistoryModal({
           text: res?.status?.message || "Gagal memperbarui transaksi",
         });
       }
-    } catch (e: any) {
+    } catch (e: unknown) {
       setMessage({
         type: "error",
-        text: e.message || "Gagal memperbarui transaksi",
+        text: e instanceof Error ? e.message : "Gagal memperbarui transaksi",
       });
     } finally {
       setEditSaving(false);
@@ -193,10 +194,10 @@ export function useHistoryModal({
           text: res?.status?.message || "Gagal menghapus transaksi",
         });
       }
-    } catch (e: any) {
+    } catch (e: unknown) {
       setMessage({
         type: "error",
-        text: e.message || "Gagal menghapus transaksi",
+        text: e instanceof Error ? e.message : "Gagal menghapus transaksi",
       });
     } finally {
       setDeletingId(null);

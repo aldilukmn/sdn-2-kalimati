@@ -187,7 +187,141 @@ types/           — Shared types: user.ts, registration.ts, attendance.ts
 | `hooks/usePresensi.ts` | Edited: fetch holidays + `isHoliday` + `holidayList` + `refreshHolidays` |
 | `app/(admin)/presensi-murid/page.tsx` | Edited: blockedDates + holiday banner + disabled save + **manage holiday modal (admin only)** |
 
+## Error Handling — Catatan Perbaikan
+
+Perbaikan error handling dilakukan di **backend** (`api-sdn-2-kalimati`). Frontend sudah menggunakan `toast.error()` + try/catch di semua hooks; tidak ada silent hang di client.
+
+---
+
 ### Manage holiday UI (admin/kepala only)
 - Tombol "Atur Libur" di samping DateDayPicker pada halaman presensi
 - Modal: tambah libur (input date + deskripsi) + daftar libur dengan tombol hapus
 - Setelah tambah/hapus, `refreshHolidays()` dipanggil untuk update DateDayPicker secara real-time
+
+## Treasurer (Bendahara) ✅
+
+### Konsep
+Guru yang ditunjuk sebagai **treasurer** (bendahara) mendapat akses penuh ke tabungan semua kelas, tanpa mengubah role atau akses ke fitur lain (presensi tetap kelas sendiri).
+
+### Field
+```
+JWT payload: { ..., role: "guru", grade: "3", treasurer: true }
+```
+
+### Frontend Changes ✅
+
+| # | File | Perubahan | Status |
+|---|------|-----------|--------|
+| 1 | `hooks/useStudentList.ts` | Parse `treasurer` dari JWT; export `isTreasurer` state; grade lock logic via `setGrade` | ✅ |
+| 2 | `app/(admin)/tabungan-murid/page.tsx` | Grade selector: interactive jika treasurer (`!isTreasurer` → readonly), readonly jika guru biasa | ✅ |
+| 3 | `services/user.service.ts` | **New** `static setTreasurer(id, treasurer)` — PATCH `/user/:id/treasurer` | ✅ |
+| 4 | `types/user.ts` | Tambah `treasurer?: boolean` di `TeacherType` | ✅ |
+| 5 | `app/(admin)/data-gtk/page.tsx` | Kolom "Bendahara" di tabel guru — toggle badge (Check/X) visible untuk admin & kepala | ✅ |
+| 6 | **New** `hooks/useGradeRecap.ts` | Fetch `GET /student-savings/grade-recap` — per-grade breakdown per month | ✅ |
+| 7 | **New** `app/components/tabungan/GradeRecapTable.tsx` | Tabel per-kelas dengan baris total + loading/empty state | ✅ |
+| 8 | `app/(admin)/dashboard/client.tsx` | Section "Rekap Tabungan per Kelas" untuk admin/kepala (always) + guru jika `isTreasurer` | ✅ |
+
+### Grade Recap API (backend)
+```
+GET /api/student-savings/grade-recap?date=2026-07-05   → daily per grade
+GET /api/student-savings/grade-recap?month=7&year=2026 → monthly per grade
+
+Response: [
+  { grade: "1", totalStudents: 12, deposits: 45000, withdrawals: 5000, totalBalance: 500000 },
+  ...
+]
+```
+
+### Dashboard Bendahara (preview)
+```
+┌──────────────────────────────────────────┐
+│  🏦  Rekap Tabungan per Kelas            │
+│  [Harian: 05-07-2026] [Bulanan: Juli]    │
+│                                          │
+│  Kelas │ Siswa │ Setoran │ Tarik  │ ±   │
+│  1     │ 12    │ 45.000  │ 5.000  │ +40k│
+│  2     │ 15    │ 60.000  │ 10.000 │ +50k│
+│  Total │ 80    │ 350.000 │ 50.000 │+300k│
+└──────────────────────────────────────────┘
+```
+
+## Type Cleanup — `any` Fixes (Frontend)
+
+### Masalah
+
+`lib/api.ts` me-return `Promise<any>` secara default karena generic `T = any`. Ini membuat ~55+ titik `any` merembet ke services, hooks, components, dan pages.
+
+| # | Pola `any` | Lokasi | Jumlah | Dampak |
+|---|------------|--------|--------|--------|
+| 1 | `api<T = any>` default generic | `lib/api.ts`, `lib/api-server.ts` | 2 file | Root cause — semua service return `Promise<any>` |
+| 2 | Service methods tanpa generic | 7 service files | ~20 methods | Propagates untyped data ke hooks |
+| 3 | `res.result \|\| res.data \|\| []` — untyped response access | hooks + pages | ~15 titik | TypeScript tidak tahu bentuk data |
+| 4 | `any[]` di props komponen | `MonthlyTab`, `HistoryModal`, `EditModal` | 3 komponen | Props tidak ter-validasi |
+| 5 | `any[]` params di utility | `lib/merge-attendance.ts` | 2 param | Padahal `MasterStudentType` & `StudentAttendanceType` sudah ada |
+| 6 | `catch (e: any)` | page files | ~7 titik | Tidak memanfaatkan `unknown` |
+
+### Perbaikan Selesai ✅
+
+#### Layer 1 — Foundation (`ApiResponse<T>`)
+
+| # | File | Perubahan | Status |
+|---|------|-----------|--------|
+| 1 | **New** `types/api.ts` | `ApiResponse<T = any>` — `status`, `result`, `data` | ✅ |
+| 2 | `lib/api.ts` | `api<T = any>(...)` → return `Promise<ApiResponse<T>>`; ganti `let result: any` jadi `let result: ApiResponse<T>` | ✅ |
+| 3 | `lib/api-server.ts` | `apiServer<T = any>(...)` → return `Promise<ApiResponse<T>>` | ✅ |
+
+#### Layer 2 — Service Typing
+
+| # | File | Perubahan | Status |
+|---|------|-----------|--------|
+| 1 | **New** `types/auth.ts` | `type LoginResult = string` | ✅ |
+| 2 | **New** `types/student-savings.ts` | `StudentSavingsStudent`, `SavingsSummary`, `MonthlyRecap`, `MonthlyBreakdownItem`, `Transaction`, `PaginatedTransactions`, `GradeRecap` | ✅ |
+| 3 | **New** `types/dashboard.ts` | `DashboardSummary`, `TeacherDashboardSummary` | ✅ |
+| 4 | **New** `types/holiday.ts` | `Holiday`, `HolidayCheckResult` | ✅ |
+| 5 | `services/auth.service.ts` | `api<LoginResult>` / `api<void>` | ✅ |
+| 6 | `services/student-savings.service.ts` | 9 methods + generic | ✅ |
+| 7 | `services/student-attendance.service.ts` | 5 methods + generic | ✅ |
+| 8 | `services/registration.service.ts` | 5 methods + `PaginatedRegistrants` type; `Record<string, any>` → `Record<string, unknown>` | ✅ |
+| 9 | `services/user.service.ts` | 2 methods typed, hapus `UserApiResponse` import | ✅ |
+| 10 | `services/dashboard.service.ts` | 2 methods + generic | ✅ |
+| 11 | `services/holiday.service.ts` | 3 methods + generic; hapus unwrap `return res?.result \|\| []` | ✅ |
+| 12 | `types/user.ts` | Hapus `UserApiResponse` (tidak dipakai lagi) | ✅ |
+
+#### Layer 3 — Consumer Update
+
+| # | File | Perubahan | Status |
+|---|------|-----------|--------|
+| 1 | `hooks/useHolidays.ts` | `.then((data) => ...)` → `.then((res) => res.result \|\| [])` | ✅ |
+| 2 | `hooks/useStudentList.ts` | `StudentSavingsSummary` → alias ke `SavingsSummary` dari `types/` | ✅ |
+| 3 | `hooks/useDashboard.ts` | Typed `data` + ganti `res.result \|\| res.data \|\| {}` → typed cast | ✅ |
+| 4 | `hooks/useSavingsRecap.ts` | Implicit fix via `MonthlyRecap` → single object (bukan array) | ✅ |
+| 5 | `hooks/useStudentMonthlyBreakdown.ts` | Implicit fix via `MonthlyBreakdownItem` match `StudentMonthlyData` | ✅ |
+| 6 | `app/login/page.tsx` | `response.result?.token \|\| response.result` → `response.result \|\| ""` | ✅ |
+| 7 | `app/(admin)/data-pendaftar/page.tsx` | Typed `result` + `allData.result?.data` | ✅ |
+| 8 | `app/(admin)/data-pendaftar/edit/[id]/page.tsx` | Typed `data` + `birthDate` conversion | ✅ |
+
+### Perbaikan Lanjutan ✅
+
+| # | File | Perubahan | Status |
+|---|------|-----------|--------|
+| 1 | `hooks/useHistoryModal.ts` | `any[]` → `Transaction[]`; `any \| null` → `Transaction \| null`; `catch (e: any)` → `catch (e: unknown)` | ✅ |
+| 2 | `app/components/tabungan/MonthlyTab.tsx` | `monthlyData: any[]` → `MonthlyBreakdownItem[]`; `monthlyPaginated: any[]` → `MonthlyBreakdownItem[]` | ✅ |
+| 3 | `app/components/tabungan/HistoryModal.tsx` | `transactions: any[]` → `Transaction[]`; `openEditModal: (tx: any)` → `(tx: Transaction)` | ✅ |
+| 4 | `app/components/tabungan/EditModal.tsx` | `transaction: any \| null` → `Transaction \| null` | ✅ |
+| 5 | `lib/merge-attendance.ts` | `students: any[]` → `MasterStudentType[]`; `attendance: any[]` → `AttendanceReportItem[]`; `new Map<string, any>` → typed Map; `s: any` → inferred | ✅ |
+| 6 | `hooks/usePresensi.ts` | `siswaList: any[]` → typed from `getStudentsByGrade`; `s: any` → `s: MasterStudentType`; `e: any` → `e: StudentAttendanceType` | ✅ |
+| 7 | `hooks/useTeacherChart.ts` | Implicit fix via service generic `getReportByGrade` → `AttendanceReportItem[]` | ✅ |
+| 8 | `hooks/useTransactionModal.ts` | `catch (e: any)` → `catch (e: unknown)` | ✅ |
+| 9 | `hooks/useStudentList.ts` | `catch (e: any)` → `catch (e: unknown)` | ✅ |
+| 10 | `app/(admin)/presensi-murid/page.tsx` | 2x `catch (e: any)` → `catch (e: unknown)` | ✅ |
+| 11 | `services/student-attendance.service.ts` | `getReportByGrade()` tambah generic `<AttendanceReportItem[]>` | ✅ |
+| 12 | `types/attendance.ts` | New: `AttendanceReportItem` interface | ✅ |
+| 13 | `lib/export-presensi-csv.ts` | New: `exportPresensiRecapToCSV()` untuk aggregated recap data | ✅ |
+| 14 | `app/rekap-presensi/page.tsx` | `StudentAttendanceType[]` → `AttendanceReportItem[]`; `getStudentStats` pake aggregated counts; `totalHari` → `dataPresensi.length`; export pake `exportPresensiRecapToCSV` | ✅ |
+
+### Catatan
+
+- **Root cause `api<T=any>` sudah dihilangkan** — semua service sekarang return typed response
+- `ApiResponse<T>` default `= any` → **zero breaking change** sepanjang path
+- Build `npm run build` — **zero errors** ✅
+- **Semua `any` di FE sudah dibersihkan** — tidak ada sisa `any` yang tersisa di codebase FE ✅

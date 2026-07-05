@@ -5,11 +5,12 @@ import YearSelect from "@/app/components/YearSelect";
 import LoadingDots from "@/app/components/LoadingDots";
 import { formatCompactRupiah } from "@/lib/format";
 import { StudentWithBalance } from "@/hooks/useStudentList";
+import type { MonthlyBreakdownItem } from "@/types/student-savings";
 
 interface MonthlyTabProps {
   monthlyLoading: boolean;
-  monthlyData: any[];
-  monthlyPaginated: any[];
+  monthlyData: MonthlyBreakdownItem[];
+  monthlyPaginated: MonthlyBreakdownItem[];
   monthlyPage: number;
   setMonthlyPage: (page: number) => void;
   monthlyTotalPages: number;

@@ -1,13 +1,12 @@
 import { api } from "@/lib/api";
-import type { UserApiResponse } from "@/types/user";
 
 export default class UserService {
-  static async getTeachers(): Promise<UserApiResponse> {
-    return await api<UserApiResponse>("/user?role=guru");
+  static async getTeachers() {
+    return await api<import("@/types/user").TeacherType[]>("/user?role=guru");
   }
 
-  static async getStaffByRoles(roles: string): Promise<UserApiResponse> {
-    return await api<UserApiResponse>(`/user?role=${roles}`);
+  static async getStaffByRoles(roles: string) {
+    return await api<import("@/types/user").TeacherType[]>(`/user?role=${roles}`);
   }
 
   static async getTeacherByGrade(grade: string) {
@@ -52,6 +51,13 @@ export default class UserService {
   static async delete(id: string) {
     return await api(`/user/${id}`, {
       method: "DELETE",
+    });
+  }
+
+  static async setTreasurer(id: string, treasurer: boolean) {
+    return await api(`/user/${id}/treasurer`, {
+      method: "PATCH",
+      body: JSON.stringify({ treasurer }),
     });
   }
 }

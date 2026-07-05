@@ -8,7 +8,7 @@ import { getTodayLocal } from "@/lib/format";
 import { decodeJWT } from "@/lib/jwt";
 import { GRADES, ITEMS_PER_PAGE } from "@/lib/constants";
 import { useHolidays } from "@/hooks/useHolidays";
-import type { StudentAttendanceRequestType } from "@/types/attendance";
+import type { StudentAttendanceRequestType, MasterStudentType, StudentAttendanceType } from "@/types/attendance";
 
 export interface Entry {
   studentId: string;
@@ -64,16 +64,29 @@ export function usePresensi() {
 
   useEffect(() => {
     const token = sessionStorage.getItem("user_session");
+    let role: string | null = null;
+    let gradeFromToken: string | null = null;
+
     if (token) {
       try {
         const payload = decodeJWT(token);
-        if (payload) setUserRole(payload.role);
-        setUserGrade(payload.grade);
-        if (payload.role === "guru" && payload.grade) {
-          setGrade(payload.grade);
+        if (payload) {
+          role = payload.role;
+          gradeFromToken = payload.grade;
         }
       } catch {}
     }
+
+    if (!role) {
+      const match = document.cookie.match(/(?:^|; )user_role=([^;]*)/);
+      role = match ? decodeURIComponent(match[1]) : null;
+      const gradeMatch = document.cookie.match(/(?:^|; )user_grade=([^;]*)/);
+      gradeFromToken = gradeMatch ? decodeURIComponent(gradeMatch[1]) : null;
+    }
+
+    if (role) setUserRole(role);
+    if (gradeFromToken) setUserGrade(gradeFromToken);
+    if (role === "guru" && gradeFromToken) setGrade(gradeFromToken);
     setIsJwtReady(true);
   }, []);
 
@@ -122,14 +135,14 @@ export function usePresensi() {
           StudentAttendanceService.getByGradeAndDate(grade, date),
         ]);
 
-        const siswaList: any[] = siswaRes.data || siswaRes.result || [];
-        const presensiData: any[] =
+        const siswaList = siswaRes.data || siswaRes.result || [];
+        const presensiData =
           presensiRes.data || presensiRes.result || [];
 
         if (presensiData.length > 0) {
-          const merged = siswaList.map((s: any) => {
+          const merged = siswaList.map((s: MasterStudentType) => {
             const existing = presensiData.find(
-              (e: any) => e.studentId === s.studentId,
+              (e: StudentAttendanceType) => e.studentId === s.studentId,
             );
             return {
               studentId: s.studentId,
@@ -145,7 +158,7 @@ export function usePresensi() {
           });
         } else {
           setEntries(
-            siswaList.map((s: any) => ({
+            siswaList.map((s: MasterStudentType) => ({
               studentId: s.studentId,
               name: s.name,
               status: "hadir" as const,

@@ -98,3 +98,11 @@ export interface RegistrationForm {
     phoneNumber: string;
   };
 }
+
+export interface PaginatedRegistrants {
+  data: Registrant[];
+  total: number;
+  totalPages: number;
+  totalValidated: number;
+  totalUnvalidated: number;
+}

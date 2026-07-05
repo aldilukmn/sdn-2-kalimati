@@ -4,6 +4,7 @@ import { useState } from "react";
 import { X, Pencil, Trash2, Loader2, Info } from "lucide-react";
 import { formatCompactRupiah, formatDateID, formatDateShort, MONTHS_ID } from "@/lib/format";
 import { StudentWithBalance } from "@/hooks/useStudentList";
+import type { Transaction } from "@/types/student-savings";
 import Modal from "@/app/components/Modal";
 import YearSelect from "@/app/components/YearSelect";
 import {
@@ -35,14 +36,14 @@ interface HistoryModalProps {
   historyYear: number;
   setHistoryYear: (y: number) => void;
   historyAllTime: boolean;
-  transactions: any[];
+  transactions: Transaction[];
   historyLoading: boolean;
   historyPage: number;
   historyTotal: number;
   historyTotalPages: number;
   fetchHistoryPage: (page: number, type?: string, month?: number, year?: number) => void;
   editSaving: boolean;
-  openEditModal: (tx: any) => void;
+  openEditModal: (tx: Transaction) => void;
   handleDeleteTransaction: (txId: string) => void;
   deletingId: string | null;
 }
