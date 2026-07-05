@@ -1,8 +1,12 @@
 import { api } from "@/lib/api";
 
 export default class RegistrationService {
-  static async getAll() {
-    return await api("/registration");
+  static async getAll(page?: number, limit?: number) {
+    const params = new URLSearchParams();
+    if (page) params.set("page", String(page));
+    if (limit) params.set("limit", String(limit));
+    const qs = params.toString();
+    return await api(`/registration${qs ? `?${qs}` : ""}`);
   }
   
   static async create(data: RegistrationForm) {

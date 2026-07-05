@@ -1,3 +1,5 @@
+import { getTodayLocal } from "./format";
+
 interface AttendanceRow {
   studentId: string;
   name: string;
@@ -49,7 +51,7 @@ export function exportPresensiToCSV(
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
   a.href = url;
-  a.download = `presensi-${label}-${new Date().toISOString().slice(0, 10)}.csv`;
+  a.download = `presensi-${label}-${getTodayLocal()}.csv`;
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);

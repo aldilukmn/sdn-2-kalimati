@@ -5,7 +5,6 @@ import {
   Loader2,
   Save,
   CalendarCheck,
-  CalendarX,
   Trash2,
   Plus,
   X,
@@ -16,7 +15,8 @@ import PresensiTable from "@/app/components/PresensiTable";
 import { usePresensi, GRADES } from "@/hooks/usePresensi";
 import toast from "react-hot-toast";
 import HolidayService from "@/services/holiday.service";
-import { formatDateID, formatDateShort, MONTHS_ID } from "@/lib/format";
+import HolidayInfoCard from "@/app/components/HolidayInfoCard";
+import { formatDateID, formatDateShort, MONTHS_ID, getTodayLocal } from "@/lib/format";
 import {
   Select,
   SelectContent,
@@ -26,6 +26,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 
 export default function PresensiMuridPage() {
   const {
@@ -188,7 +196,7 @@ export default function PresensiMuridPage() {
               <DateDayPicker
                 value={date}
                 onChange={setDate}
-                max={new Date().toISOString().slice(0, 10)}
+                max={getTodayLocal()}
                 blockedDates={holidays}
               />
             </div>
@@ -208,47 +216,10 @@ export default function PresensiMuridPage() {
       {/* Holiday banner */}
 
       {isHoliday ? (
-        /* Holiday info card */
-        <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-6 md:p-8 text-center animate-fadeIn">
-          <div className="mx-auto w-16 h-16 flex items-center justify-center rounded-full bg-amber-100 dark:bg-amber-900/30 mb-4">
-            <CalendarX
-              size={32}
-              className="text-amber-600 dark:text-amber-400"
-            />
-          </div>
-          {currentHoliday && (
-            <>
-              <p className="text-xs font-mono text-gray-500 dark:text-gray-400 mb-1">
-                {formatDateID(currentHoliday.date)}
-              </p>
-              <h3 className="text-lg font-bold text-gray-800 dark:text-slate-100 mb-1">
-                {currentHoliday.description}
-              </h3>
-              <span
-                className={`inline-block text-[11px] font-semibold uppercase tracking-wider px-2.5 py-0.5 rounded-full mb-4 ${
-                  currentHoliday.type === "sunday"
-                    ? "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300"
-                    : "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300"
-                }`}
-              >
-                {currentHoliday.type === "sunday"
-                  ? "Hari Minggu"
-                  : "Libur Nasional"}
-              </span>
-            </>
-          )}
-          <p className="text-sm text-gray-500 dark:text-gray-400">
-            Tidak bisa mencatat presensi pada hari libur.
-          </p>
-          {(userRole === "admin" || userRole === "kepala") && (
-            <button
-              onClick={() => setManageOpen(true)}
-              className="mt-4 px-4 py-2 rounded-xl border border-slate-300 text-xs font-medium text-slate-600 hover:bg-slate-100 transition-colors dark:border-gray-700 dark:text-slate-300 dark:hover:bg-gray-800 cursor-pointer"
-            >
-              Kelola Hari Libur
-            </button>
-          )}
-        </div>
+        <HolidayInfoCard
+          currentHoliday={currentHoliday}
+          message="Tidak bisa mencatat presensi pada hari libur."
+        />
       ) : (
         <>
           {/* Status summary */}
@@ -359,50 +330,47 @@ export default function PresensiMuridPage() {
             </div>
 
             <div className="flex-1 overflow-y-auto">
-              <table className="w-full border-collapse">
-                <thead>
-                  <tr className="text-xs font-mono text-gray-400 dark:text-gray-500 tracking-wider border-b border-slate-200 dark:border-gray-700">
-                    <th className="px-3 py-1.5 text-left w-[80px] md:w-[120px]">
+              <Table>
+                <TableHeader>
+                  <TableRow className="text-xs font-semibold text-gray-400 dark:text-gray-500 tracking-wider">
+                    <TableHead className="w-[80px] md:w-[120px]">
                       Tanggal
-                    </th>
-                    <th className="px-3 py-1.5 border-x border-slate-200 dark:border-gray-700">
+                    </TableHead>
+                    <TableHead className="border-x border-slate-200 dark:border-gray-700">
                       Keterangan
-                    </th>
-                    <th className="px-3 py-1.5 w-[36px]">Aksi</th>
-                  </tr>
-                </thead>
-                <tbody>
+                    </TableHead>
+                    <TableHead className="w-[36px] text-center">Aksi</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
                   {filteredHolidays.length === 0 ? (
-                    <tr>
-                      <td
+                    <TableRow>
+                      <TableCell
                         colSpan={3}
-                        className="text-sm text-gray-400 text-center py-8"
+                        className="text-center py-8 text-gray-400"
                       >
                         {holidayMonth === null
                           ? "Pilih bulan untuk menampilkan data"
                           : holidayList.length === 0
                           ? "Belum ada hari libur"
                           : "Tidak ada hari libur di bulan ini"}
-                      </td>
-                    </tr>
+                      </TableCell>
+                    </TableRow>
                   ) : (
                     paginatedHolidays.map((h) => (
-                      <tr
-                        key={h.date}
-                        className="border-b border-slate-100 dark:border-gray-800 hover:bg-slate-50 dark:hover:bg-gray-800 text-xs md:text-sm"
-                      >
-                        <td className="px-3 py-2 font-mono text-gray-600 dark:text-gray-400 truncate">
+                      <TableRow key={h.date}>
+                        <TableCell className="font-mono text-gray-600 dark:text-gray-400 truncate">
                           <span className="hidden md:inline">
                             {formatDateID(h.date)}
                           </span>
                           <span className="md:hidden">
                             {formatDateShort(h.date)}
                           </span>
-                        </td>
-                        <td className="px-3 py-2 text-gray-800 dark:text-slate-100 border-x border-slate-200 dark:border-gray-700 truncate">
+                        </TableCell>
+                        <TableCell className="border-x border-slate-200 dark:border-gray-700 text-gray-800 dark:text-slate-100 truncate">
                           {h.description}
-                        </td>
-                        <td className="px-3 py-2 text-center">
+                        </TableCell>
+                        <TableCell className="text-center">
                           <button
                             onClick={() => handleRemoveHoliday(h.date)}
                             disabled={removingDate === h.date}
@@ -415,12 +383,12 @@ export default function PresensiMuridPage() {
                               <Trash2 size={14} />
                             )}
                           </button>
-                        </td>
-                      </tr>
+                        </TableCell>
+                      </TableRow>
                     ))
                   )}
-                </tbody>
-              </table>
+                </TableBody>
+              </Table>
             </div>
 
             {holidayTotalPages > 1 && (

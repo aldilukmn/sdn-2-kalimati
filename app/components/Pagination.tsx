@@ -1,6 +1,7 @@
 "use client";
 
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 interface PaginationProps {
   currentPage: number;
@@ -68,52 +69,43 @@ export default function Pagination({
   const endItem = Math.min(currentPage * itemsPerPage, totalItems);
 
   return (
-    <div key={currentPage} className="flex flex-col items-center gap-2 md:gap-4 mt-6 text-gray-900 dark:text-gray-200 animate-fadeIn">
-      <div className="flex items-center justify-center gap-1">
-        <button
-          onClick={handlePreviousPage}
-          disabled={!hasPreviousPage}
-          className={`p-1.5 md:p-2 rounded-lg border transition-all ${
-            hasPreviousPage
-              ? "border-blue-500/50 bg-blue-500/5 hover:bg-blue-500/15 cursor-pointer"
-              : "border-gray-500/30 bg-gray-500/5 cursor-not-allowed opacity-50"
-          }`}
-          aria-label="Previous page"
-        >
-          <ChevronLeft size={16} className="md:size-[18px]" />
-        </button>
+      <div className="flex flex-col items-center gap-2 md:gap-4 mt-6 text-gray-900 dark:text-gray-200 animate-fadeIn">
+        <div className="flex items-center justify-center gap-1">
+          <Button
+            variant="outline"
+            size="icon-sm"
+            onClick={handlePreviousPage}
+            disabled={!hasPreviousPage}
+            aria-label="Previous page"
+          >
+            <ChevronLeft size={16} />
+          </Button>
 
-        <div className="flex items-center gap-1">
-          {pageNumbers.map((page) => (
-            <button
-              key={page}
-              onClick={() => handlePageClick(page)}
-              className={`w-8 h-8 md:w-10 md:h-10 rounded-lg border transition-all font-medium text-xs md:text-sm ${
-                page === currentPage
-                  ? "border-blue-500 bg-blue-500/20 text-blue-400"
-                  : "border-blue-500/50 bg-blue-500/5 hover:bg-blue-500/15 cursor-pointer"
-              }`}
-              aria-label={`Go to page ${page}`}
-              aria-current={page === currentPage ? "page" : undefined}
-            >
-              {page}
-            </button>
-          ))}
+          <div className="flex items-center gap-1">
+            {pageNumbers.map((page) => (
+              <Button
+                key={page}
+                variant={page === currentPage ? "default" : "outline"}
+                size="icon-sm"
+                onClick={() => handlePageClick(page)}
+                aria-label={`Go to page ${page}`}
+                aria-current={page === currentPage ? "page" : undefined}
+              >
+                {page}
+              </Button>
+            ))}
+          </div>
+
+          <Button
+            variant="outline"
+            size="icon-sm"
+            onClick={handleNextPage}
+            disabled={!hasNextPage}
+            aria-label="Next page"
+          >
+            <ChevronRight size={16} />
+          </Button>
         </div>
-
-        <button
-          onClick={handleNextPage}
-          disabled={!hasNextPage}
-          className={`p-1.5 md:p-2 rounded-lg border transition-all ${
-            hasNextPage
-              ? "border-blue-500/50 bg-blue-500/5 hover:bg-blue-500/15 cursor-pointer"
-              : "border-gray-500/30 bg-gray-500/5 cursor-not-allowed opacity-50"
-          }`}
-          aria-label="Next page"
-        >
-          <ChevronRight size={16} className="md:size-[18px]" />
-        </button>
-      </div>
 
       {totalItems > 0 && (
         <p className="text-xs md:text-sm opacity-60">

@@ -61,12 +61,16 @@ export default class StudentSavingsService {
     studentId: string,
     page?: number,
     limit?: number,
-    type?: string
+    type?: string,
+    month?: number,
+    year?: number
   ) {
     const params = new URLSearchParams({ studentId });
     if (page) params.set("page", String(page));
     if (limit) params.set("limit", String(limit));
     if (type) params.set("type", type);
+    if (month) params.set("month", String(month));
+    if (year) params.set("year", String(year));
     return await api(`/student-savings/transactions?${params.toString()}`);
   }
 }

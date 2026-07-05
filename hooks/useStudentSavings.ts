@@ -23,7 +23,7 @@ export interface StudentSavingsSummary {
 }
 
 export const GRADES = ["1", "2", "3", "4", "5", "6"];
-const ITEMS_PER_PAGE = 5;
+export const ITEMS_PER_PAGE = 5;
 const HISTORY_LIMIT = 10;
 
 export function useStudentSavings() {
@@ -63,6 +63,9 @@ export function useStudentSavings() {
   const [historyPage, setHistoryPage] = useState(1);
   const [historyTotal, setHistoryTotal] = useState(0);
   const [historyTotalPages, setHistoryTotalPages] = useState(0);
+  const [historyMonth, setHistoryMonth] = useState(new Date().getMonth() + 1);
+  const [historyYear, setHistoryYear] = useState(new Date().getFullYear());
+  const [historyAllTime, setHistoryAllTime] = useState(false);
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [editingTx, setEditingTx] = useState<any | null>(null);
 
@@ -238,17 +241,29 @@ export function useStudentSavings() {
     }
   }, [txModal, txAmount, txDescription, grade, date, closeTxModal]);
 
-  const openHistoryModal = useCallback(async (student: StudentWithBalance, type?: string) => {
+  const openHistoryModal = useCallback(async (student: StudentWithBalance, type?: string, allTime?: boolean) => {
+    const curMonth = new Date().getMonth() + 1;
+    const curYear = new Date().getFullYear();
     setHistoryModal({ open: true, student });
     setHistoryPage(1);
     setHistoryType(type);
+    setHistoryAllTime(!!allTime);
+    if (allTime) {
+      setHistoryMonth(curMonth);
+      setHistoryYear(curYear);
+    } else {
+      setHistoryMonth(curMonth);
+      setHistoryYear(curYear);
+    }
     setHistoryLoading(true);
     try {
       const res = await StudentSavingsService.getTransactions(
         student.studentId,
         1,
         HISTORY_LIMIT,
-        type
+        type,
+        allTime ? undefined : curMonth,
+        allTime ? undefined : curYear
       );
       if (res?.result) {
         setTransactions(res.result.transactions || []);
@@ -266,18 +281,24 @@ export function useStudentSavings() {
     setHistoryModal({ open: false, student: null });
     setTransactions([]);
     setEditingTx(null);
+    setHistoryAllTime(false);
   }, []);
 
-  const fetchHistoryPage = useCallback(async (page: number) => {
+  const fetchHistoryPage = useCallback(async (page: number, type?: string, month?: number, year?: number) => {
     if (!historyModal.student) return;
     setHistoryLoading(true);
     setHistoryPage(page);
+    const filterType = type === "all" ? undefined : type !== undefined ? type : historyType;
+    const filterMonth = month !== undefined ? month : historyMonth;
+    const filterYear = year !== undefined ? year : historyYear;
     try {
       const res = await StudentSavingsService.getTransactions(
         historyModal.student.studentId,
         page,
         HISTORY_LIMIT,
-        historyType
+        filterType,
+        historyAllTime ? undefined : filterMonth,
+        historyAllTime ? undefined : filterYear
       );
       if (res?.result) {
         setTransactions(res.result.transactions || []);
@@ -289,7 +310,7 @@ export function useStudentSavings() {
     } finally {
       setHistoryLoading(false);
     }
-  }, [historyModal.student]);
+  }, [historyModal.student, historyType, historyMonth, historyYear, historyAllTime]);
 
   const openEditModal = useCallback((tx: any) => {
     setEditModal({ open: true, transaction: tx });
@@ -327,6 +348,7 @@ export function useStudentSavings() {
         type: tx.type,
         amount: amountNum,
         date: editDate,
+        description: editDescription.trim(),
       });
       if (res?.status?.response === "success") {
         setMessage({ type: "success", text: "Transaksi berhasil diperbarui!" });
@@ -457,10 +479,19 @@ export function useStudentSavings() {
     historyModal,
     openHistoryModal,
     closeHistoryModal,
+    historyType,
+    setHistoryType,
+    historyMonth,
+    setHistoryMonth,
+    historyYear,
+    setHistoryYear,
     transactions,
     historyLoading,
     historyPage,
+    historyTotal,
     historyTotalPages,
+    historyAllTime,
+    setHistoryAllTime,
     editingTx,
     deletingId,
     editModal,

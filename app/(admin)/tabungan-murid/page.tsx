@@ -18,14 +18,35 @@ import {
   TrendingUp,
   TrendingDown,
   ArrowLeftRight,
+  Info,
 } from "lucide-react";
-import { useStudentSavings, GRADES } from "@/hooks/useStudentSavings";
+import { useStudentSavings, GRADES, ITEMS_PER_PAGE } from "@/hooks/useStudentSavings";
 import { useStudentMonthlyBreakdown } from "@/hooks/useStudentMonthlyBreakdown";
 import Pagination from "@/app/components/Pagination";
 import DateDayPicker from "@/app/components/DateDayPicker";
 import toast from "react-hot-toast";
-import { formatCompactRupiah, formatDateID, formatDateShort } from "@/lib/format";
+import { formatCompactRupiah, formatDateID, formatDateShort, getTodayLocal, MONTHS_ID } from "@/lib/format";
 import LoadingDots from "@/app/components/LoadingDots";
+import HolidayInfoCard from "@/app/components/HolidayInfoCard";
+import YearSelect from "@/app/components/YearSelect";
+import HolidayService from "@/services/holiday.service";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 
 export default function TabunganMuridPage() {
   const {
@@ -57,10 +78,18 @@ export default function TabunganMuridPage() {
     historyModal,
     openHistoryModal,
     closeHistoryModal,
+    historyType,
+    setHistoryType,
+    historyMonth,
+    setHistoryMonth,
+    historyYear,
+    setHistoryYear,
     transactions,
     historyLoading,
     historyPage,
+    historyTotal,
     historyTotalPages,
+    historyAllTime,
     editingTx,
     deletingId,
     confirmDelete,
@@ -86,12 +115,35 @@ export default function TabunganMuridPage() {
 
   const [activeTab, setActiveTab] = useState<"harian" | "bulanan">("harian");
   const [year, setYear] = useState(new Date().getFullYear());
+  const [infoDescription, setInfoDescription] = useState<string | null>(null);
+  const [monthlyPage, setMonthlyPage] = useState(1);
+  const MONTHLY_PER_PAGE = 5;
+  const [holidayList, setHolidayList] = useState<
+    { date: string; description: string; type: string }[]
+  >([]);
+
+  useEffect(() => {
+    HolidayService.getAll().then((data) => {
+      setHolidayList(data);
+    });
+  }, []);
+
+  const blockedDates = holidayList.map((h) => h.date);
+  const isHoliday = holidayList.some((h) => h.date === date);
+  const currentHoliday = holidayList.find((h) => h.date === date);
   const [refreshKey, setRefreshKey] = useState(0);
   const { data: monthlyData, loading: monthlyLoading } = useStudentMonthlyBreakdown(
     userRole === "guru" ? userGrade || grade : grade,
     year,
     refreshKey
   );
+  const monthlyTotalPages = Math.ceil(monthlyData.length / MONTHLY_PER_PAGE);
+  const monthlyPaginated = monthlyData.slice(
+    (monthlyPage - 1) * MONTHLY_PER_PAGE,
+    monthlyPage * MONTHLY_PER_PAGE
+  );
+
+  useEffect(() => { setMonthlyPage(1); }, [grade, year]);
 
   useEffect(() => {
     if (message) {
@@ -131,456 +183,486 @@ export default function TabunganMuridPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <label className="mb-2 block text-xs font-semibold text-gray-500 dark:text-gray-400 tracking-wider">
-              Rombel
+              Kelas
             </label>
             {userRole !== "admin" && userRole !== "kepala" ? (
               <div className="w-full rounded-xl border border-slate-300 bg-slate-100 px-4 py-2.5 text-sm text-slate-800 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100">
-                Kelas {userGrade || grade}
+                {userGrade || grade}
               </div>
             ) : (
-              <select
+              <Select
                 value={grade}
-                onChange={(e) => setGrade(e.target.value)}
-                className="w-full rounded-xl border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm outline-none focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100 cursor-pointer"
+                onValueChange={(v) => {
+                  if (v !== null) setGrade(v);
+                }}
               >
-                {GRADES.map((g) => (
-                  <option key={g} value={g}>
-                    Kelas {g}
-                  </option>
-                ))}
-              </select>
+                <SelectTrigger className="w-full h-auto rounded-xl border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100">
+                  <SelectValue placeholder="Pilih kelas" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectLabel>Kelas</SelectLabel>
+                    {GRADES.map((g) => (
+                      <SelectItem key={g} value={g}>
+                        {g}
+                      </SelectItem>
+                    ))}
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
             )}
           </div>
           <div>
             <label className="mb-2 block text-xs font-semibold text-gray-500 dark:text-gray-400 tracking-wider">
               Tanggal
             </label>
-            <DateDayPicker value={date} onChange={setDate} />
+            <DateDayPicker
+              value={date}
+              onChange={setDate}
+              max={getTodayLocal()}
+              blockedDates={blockedDates}
+            />
           </div>
         </div>
       </div>
 
-      {/* Tabs */}
-      <div className="flex gap-1 bg-slate-100 dark:bg-gray-900 rounded-xl p-1 w-fit">
-        <button
-          onClick={() => setActiveTab("harian")}
-          className={`px-4 py-2 rounded-lg text-xs font-semibold transition-colors cursor-pointer ${
-            activeTab === "harian"
-              ? "bg-white dark:bg-gray-800 text-indigo-600 dark:text-indigo-300 shadow-sm"
-              : "text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
-          }`}
-        >
-          Transaksi Harian
-        </button>
-        <button
-          onClick={() => setActiveTab("bulanan")}
-          className={`px-4 py-2 rounded-lg text-xs font-semibold transition-colors cursor-pointer ${
-            activeTab === "bulanan"
-              ? "bg-white dark:bg-gray-800 text-indigo-600 dark:text-indigo-300 shadow-sm"
-              : "text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
-          }`}
-        >
-          Rekap Bulanan
-        </button>
-      </div>
-
-      {activeTab === "harian" ? (
-        <>
-          {/* Summary Cards */}
-          <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5 animate-fadeIn relative z-10">
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-              <div className="bg-indigo-50/80 dark:bg-indigo-950/20 rounded-xl p-4 border border-indigo-200/50 dark:border-indigo-800/30">
-                <div className="flex items-center gap-1.5 mb-1">
-                  <Users
-                    size={14}
-                    className="text-indigo-500 dark:text-indigo-400 shrink-0"
-                  />
-                  <p className="text-xs text-gray-500 dark:text-gray-400">
-                    Penabung
-                  </p>
-                </div>
-                <p className="text-lg md:text-2xl font-bold text-indigo-700 dark:text-indigo-300">
-                  {summaryLoading ? (
-                    <LoadingDots />
-                  ) : (
-                    `${summary?.totalStudents || 0} murid`
-                  )}
-                </p>
-              </div>
-              <div className="bg-emerald-50/80 dark:bg-emerald-950/20 rounded-xl p-4 border border-emerald-200/50 dark:border-emerald-800/30">
-                <div className="flex items-center gap-1.5 mb-1">
-                  <TrendingUp
-                    size={14}
-                    className="text-emerald-500 dark:text-emerald-400 shrink-0"
-                  />
-                  <p className="text-xs text-gray-500 dark:text-gray-400">
-                    Setoran
-                  </p>
-                </div>
-                <p className="text-lg md:text-2xl font-bold text-emerald-700 dark:text-emerald-300">
-                  {summaryLoading ? (
-                    <LoadingDots />
-                  ) : (
-                    formatCompactRupiah(summary?.dailyDeposits || 0)
-                  )}
-                </p>
-              </div>
-              <div className="bg-rose-50/80 dark:bg-rose-950/20 rounded-xl p-4 border border-rose-200/50 dark:border-rose-800/30">
-                <div className="flex items-center gap-1.5 mb-1">
-                  <TrendingDown
-                    size={14}
-                    className="text-rose-500 dark:text-rose-400 shrink-0"
-                  />
-                  <p className="text-xs text-gray-500 dark:text-gray-400">
-                    Penarikan
-                  </p>
-                </div>
-                <p className="text-lg md:text-2xl font-bold text-rose-700 dark:text-rose-300">
-                  {summaryLoading ? (
-                    <LoadingDots />
-                  ) : (
-                    formatCompactRupiah(summary?.dailyWithdrawals || 0)
-                  )}
-                </p>
-              </div>
-              <div className="bg-amber-50/80 dark:bg-amber-950/20 rounded-xl p-4 border border-amber-200/50 dark:border-amber-800/30">
-                <div className="flex items-center gap-1.5 mb-1">
-                  <ArrowLeftRight
-                    size={14}
-                    className="text-amber-500 dark:text-amber-400 shrink-0"
-                  />
-                  <p className="text-xs text-gray-500 dark:text-gray-400">
-                    Selisih
-                  </p>
-                </div>
-                <p
-                  className={`text-lg md:text-2xl font-bold ${
-                    summaryLoading
-                      ? ""
-                      : (summary?.dailyDeposits || 0) -
-                            (summary?.dailyWithdrawals || 0) >=
-                          0
-                        ? "text-emerald-700 dark:text-emerald-300"
-                        : "text-red-600 dark:text-red-400"
-                  }`}
-                >
-                  {summaryLoading ? (
-                    <LoadingDots />
-                  ) : (
-                    formatCompactRupiah(
-                      (summary?.dailyDeposits || 0) -
-                        (summary?.dailyWithdrawals || 0),
-                    )
-                  )}
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Export + Table */}
-          <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-sm md:text-base font-semibold text-gray-500 dark:text-gray-400 tracking-wider">
-                Daftar Tabungan Murid
-              </h2>
-              <button
-                onClick={exportExcel}
-                disabled={loading || students.length === 0}
-                className="flex items-center gap-1.5 text-xs font-medium text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-200 transition-colors disabled:opacity-40 cursor-pointer"
-              >
-                <FileDown size={16} />
-                Export Excel
-              </button>
-            </div>
-
-            <div className="overflow-x-auto rounded-xl border border-slate-200 dark:border-gray-700">
-              <table className="w-full">
-                <thead>
-                  <tr className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-xs md:text-sm">
-                    <th className="px-3 py-3 text-left font-semibold whitespace-nowrap">
-                      No
-                    </th>
-                    <th className="px-3 py-3 text-left font-semibold whitespace-nowrap">
-                      Nama
-                    </th>
-                    <th className="px-3 py-3 text-center font-semibold whitespace-nowrap">
-                      Saldo
-                    </th>
-                    <th className="px-3 py-3 text-center font-semibold whitespace-nowrap">
-                      Setoran
-                    </th>
-                    <th className="px-3 py-3 text-center font-semibold whitespace-nowrap">
-                      Penarikan
-                    </th>
-                    <th className="px-3 py-3 text-center font-semibold whitespace-nowrap">
-                      Aksi
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
-                  {loading ? (
-                    Array.from({ length: 5 }).map((_, i) => (
-                      <tr key={i} className="animate-pulse">
-                        <td className="px-3 py-3">
-                          <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-6" />
-                        </td>
-                        <td className="px-3 py-3">
-                          <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-40" />
-                        </td>
-                        <td className="px-3 py-3">
-                          <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-20 mx-auto" />
-                        </td>
-                        <td className="px-3 py-3">
-                          <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-20 mx-auto" />
-                        </td>
-                        <td className="px-3 py-3">
-                          <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-20 mx-auto" />
-                        </td>
-                        <td className="px-3 py-3">
-                          <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-24 md:w-32 mx-auto" />
-                        </td>
-                      </tr>
-                    ))
-                  ) : paginatedStudents.length === 0 ? (
-                    <tr>
-                      <td
-                        colSpan={6}
-                        className="px-3 py-12 text-center text-gray-400"
-                      >
-                        Belum ada data tabungan untuk kelas ini
-                      </td>
-                    </tr>
-                  ) : (
-                    paginatedStudents.map((s, i) => (
-                      <tr
-                        key={s.studentId}
-                        className="hover:bg-indigo-50/50 dark:hover:bg-indigo-900/20 transition-colors"
-                      >
-                        <td className="px-3 py-3 text-sm text-gray-600 dark:text-gray-400 whitespace-nowrap">
-                          {startIndex + i + 1}
-                        </td>
-                        <td className="px-3 py-3 text-sm font-medium text-gray-800 dark:text-slate-100 whitespace-nowrap">
-                          {s.name}
-                        </td>
-                        <td className="px-3 py-3 text-sm text-center font-semibold text-gray-800 dark:text-slate-100 whitespace-nowrap">
-                          {formatCompactRupiah(s.balance)}
-                        </td>
-                        <td className="px-3 py-3 text-sm text-center text-emerald-700 dark:text-emerald-300 font-medium whitespace-nowrap">
-                          {s.todayDeposit
-                            ? formatCompactRupiah(s.todayDeposit)
-                            : "-"}
-                        </td>
-                        <td className="px-3 py-3 text-sm text-center text-orange-600 dark:text-orange-400 font-medium whitespace-nowrap">
-                          {s.todayWithdrawal
-                            ? formatCompactRupiah(s.todayWithdrawal)
-                            : "-"}
-                        </td>
-                        <td className="px-3 py-3 whitespace-nowrap">
-                          <div className="flex items-center justify-center gap-1.5">
-                            <button
-                              title="Simpan"
-                              onClick={() => openTxModal(s, "simpan")}
-                              className="flex items-center gap-1 p-1.5 md:px-2.5 md:py-1.5 rounded-lg text-xs font-medium bg-emerald-500 hover:bg-emerald-600 text-white transition-colors cursor-pointer"
-                            >
-                              <Plus size={14} />
-                              <span className="hidden md:inline">Simpan</span>
-                            </button>
-                            <button
-                              title="Tarik"
-                              onClick={() => openTxModal(s, "tarik")}
-                              className="flex items-center gap-1 p-1.5 md:px-2.5 md:py-1.5 rounded-lg text-xs font-medium bg-orange-500 hover:bg-orange-600 text-white transition-colors cursor-pointer"
-                            >
-                              <Minus size={14} />
-                              <span className="hidden md:inline">Tarik</span>
-                            </button>
-                            <button
-                              title="Riwayat"
-                              onClick={() => openHistoryModal(s)}
-                              className="flex items-center gap-1 p-1.5 md:px-2.5 md:py-1.5 rounded-lg text-xs font-medium bg-blue-500 hover:bg-blue-600 text-white transition-colors cursor-pointer"
-                            >
-                              <History size={14} />
-                              <span className="hidden md:inline">Riwayat</span>
-                            </button>
-                          </div>
-                        </td>
-                      </tr>
-                    ))
-                  )}
-                </tbody>
-              </table>
-            </div>
-
-            {!loading && paginatedStudents.length > 0 && (
-              <Pagination
-                currentPage={currentPage}
-                totalPages={totalPages}
-                onPageChange={setCurrentPage}
-                totalItems={students.length}
-                itemsPerPage={10}
-              />
-            )}
-          </div>
-        </>
+      {isHoliday ? (
+        <HolidayInfoCard
+          currentHoliday={currentHoliday}
+          message="Tidak bisa melakukan transaksi tabungan pada hari libur."
+        />
       ) : (
         <>
-          {/* Rekap Bulanan */}
-          <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-sm font-semibold text-gray-500 dark:text-gray-400 tracking-wider">
-                Rekap Tabungan Bulanan
-              </h2>
-              <div className="flex items-center gap-2.5">
-                <button
-                  onClick={() => setYear((y) => y - 1)}
-                  className="flex h-7 w-7 items-center justify-center rounded border border-slate-300 bg-slate-50 text-slate-600 transition-colors hover:bg-slate-100 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-300 dark:hover:bg-gray-900 cursor-pointer"
-                >
-                  <ChevronLeft size={15} />
-                </button>
-                <span className="text-sm font-semibold text-gray-700 dark:text-gray-300 w-14 text-center">
-                  {year}
-                </span>
-                <button
-                  onClick={() => setYear((y) => y + 1)}
-                  className="flex h-7 w-7 items-center justify-center rounded border border-slate-300 bg-slate-50 text-slate-600 transition-colors hover:bg-slate-100 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-300 dark:hover:bg-gray-900 cursor-pointer"
-                >
-                  <ChevronRight size={15} />
-                </button>
-              </div>
-            </div>
+          {/* Tabs */}
+          <div className="flex gap-1 bg-slate-100 dark:bg-gray-900 rounded-xl p-1 w-fit">
+            <button
+              onClick={() => setActiveTab("harian")}
+              className={`px-4 py-2 rounded-lg text-xs font-semibold transition-colors cursor-pointer ${
+                activeTab === "harian"
+                  ? "bg-white dark:bg-gray-800 text-indigo-600 dark:text-indigo-300 shadow-sm"
+                  : "text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
+              }`}
+            >
+              Transaksi Harian
+            </button>
+            <button
+              onClick={() => setActiveTab("bulanan")}
+              className={`px-4 py-2 rounded-lg text-xs font-semibold transition-colors cursor-pointer ${
+                activeTab === "bulanan"
+                  ? "bg-white dark:bg-gray-800 text-indigo-600 dark:text-indigo-300 shadow-sm"
+                  : "text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
+              }`}
+            >
+              Rekap Bulanan
+            </button>
+          </div>
 
-            <div className="overflow-x-auto rounded-xl border border-slate-200 dark:border-gray-700">
-              <table className="w-full">
-                <thead>
-                  <tr className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-xs md:text-sm">
-                    <th className="px-2 py-2.5 text-left font-semibold">No</th>
-                    <th className="px-2 py-2.5 text-left font-semibold whitespace-nowrap">
-                      Nama
-                    </th>
-                    {Array.from({ length: 12 }, (_, i) => (
-                      <th
-                        key={i}
-                        className="px-2 py-2.5 text-center font-semibold min-w-[60px] whitespace-nowrap"
-                      >
-                        {String(i + 1).padStart(2, "0")}
-                      </th>
-                    ))}
-                    <th className="px-2 py-2.5 text-center font-semibold min-w-[70px] whitespace-nowrap">
-                      Saldo
-                    </th>
-                    <th className="px-2 py-2.5 text-center font-semibold min-w-[50px] whitespace-nowrap">
-                      Tarik
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
-                  {monthlyLoading ? (
-                    Array.from({ length: 8 }).map((_, i) => (
-                      <tr key={i} className="animate-pulse">
-                        <td className="px-2 py-2.5">
-                          <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-6" />
-                        </td>
-                        <td className="px-2 py-2.5">
-                          <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-32" />
-                        </td>
-                        {Array.from({ length: 14 }).map((_, j) => (
-                          <td key={j} className="px-2 py-2.5">
-                            <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-12 mx-auto" />
-                          </td>
-                        ))}
+          {activeTab === "harian" ? (
+            <>
+              {/* Summary Cards */}
+              <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5 animate-fadeIn relative z-10">
+                <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                  <div className="bg-indigo-50/80 dark:bg-indigo-950/20 rounded-xl p-4 border border-indigo-200/50 dark:border-indigo-800/30">
+                    <div className="flex items-center gap-1.5 mb-1">
+                      <Users
+                        size={14}
+                        className="text-indigo-500 dark:text-indigo-400 shrink-0"
+                      />
+                      <p className="text-xs text-gray-500 dark:text-gray-400">
+                        Penabung
+                      </p>
+                    </div>
+                    <p className="text-lg md:text-2xl font-bold text-indigo-700 dark:text-indigo-300">
+                      {summaryLoading ? (
+                        <LoadingDots />
+                      ) : (
+                        `${summary?.totalStudents || 0} murid`
+                      )}
+                    </p>
+                  </div>
+                  <div className="bg-emerald-50/80 dark:bg-emerald-950/20 rounded-xl p-4 border border-emerald-200/50 dark:border-emerald-800/30">
+                    <div className="flex items-center gap-1.5 mb-1">
+                      <TrendingUp
+                        size={14}
+                        className="text-emerald-500 dark:text-emerald-400 shrink-0"
+                      />
+                      <p className="text-xs text-gray-500 dark:text-gray-400">
+                        Setoran
+                      </p>
+                    </div>
+                    <p className="text-lg md:text-2xl font-bold text-emerald-700 dark:text-emerald-300">
+                      {summaryLoading ? (
+                        <LoadingDots />
+                      ) : (
+                        formatCompactRupiah(summary?.dailyDeposits || 0)
+                      )}
+                    </p>
+                  </div>
+                  <div className="bg-rose-50/80 dark:bg-rose-950/20 rounded-xl p-4 border border-rose-200/50 dark:border-rose-800/30">
+                    <div className="flex items-center gap-1.5 mb-1">
+                      <TrendingDown
+                        size={14}
+                        className="text-rose-500 dark:text-rose-400 shrink-0"
+                      />
+                      <p className="text-xs text-gray-500 dark:text-gray-400">
+                        Penarikan
+                      </p>
+                    </div>
+                    <p className="text-lg md:text-2xl font-bold text-rose-700 dark:text-rose-300">
+                      {summaryLoading ? (
+                        <LoadingDots />
+                      ) : (
+                        formatCompactRupiah(summary?.dailyWithdrawals || 0)
+                      )}
+                    </p>
+                  </div>
+                  <div className="bg-amber-50/80 dark:bg-amber-950/20 rounded-xl p-4 border border-amber-200/50 dark:border-amber-800/30">
+                    <div className="flex items-center gap-1.5 mb-1">
+                      <ArrowLeftRight
+                        size={14}
+                        className="text-amber-500 dark:text-amber-400 shrink-0"
+                      />
+                      <p className="text-xs text-gray-500 dark:text-gray-400">
+                        Selisih
+                      </p>
+                    </div>
+                    <p
+                      className={`text-lg md:text-2xl font-bold ${
+                        summaryLoading
+                          ? ""
+                          : (summary?.dailyDeposits || 0) -
+                                (summary?.dailyWithdrawals || 0) >=
+                              0
+                            ? "text-emerald-700 dark:text-emerald-300"
+                            : "text-red-600 dark:text-red-400"
+                      }`}
+                    >
+                      {summaryLoading ? (
+                        <LoadingDots />
+                      ) : (
+                        formatCompactRupiah(
+                          (summary?.dailyDeposits || 0) -
+                            (summary?.dailyWithdrawals || 0),
+                        )
+                      )}
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Export + Table */}
+              <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
+                <div className="flex items-center justify-between mb-4">
+                  <h2 className="text-sm md:text-base font-semibold text-gray-500 dark:text-gray-400 tracking-wider">
+                    Daftar Tabungan Murid
+                  </h2>
+                  <button
+                    onClick={exportExcel}
+                    disabled={loading || students.length === 0}
+                    className="flex items-center gap-1.5 text-xs font-medium text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-200 transition-colors disabled:opacity-40 cursor-pointer"
+                  >
+                    <FileDown size={16} />
+                    Export Excel
+                  </button>
+                </div>
+
+                <div className="overflow-x-auto rounded-xl border border-slate-200 dark:border-gray-700">
+                  <table className="w-full">
+                    <thead>
+                      <tr className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-xs md:text-sm">
+                        <th className="px-3 py-3 text-left font-semibold whitespace-nowrap">
+                          No
+                        </th>
+                        <th className="px-3 py-3 text-left font-semibold whitespace-nowrap">
+                          Nama
+                        </th>
+                        <th className="px-3 py-3 text-center font-semibold whitespace-nowrap">
+                          Saldo
+                        </th>
+                        <th className="px-3 py-3 text-center font-semibold whitespace-nowrap">
+                          Setoran
+                        </th>
+                        <th className="px-3 py-3 text-center font-semibold whitespace-nowrap">
+                          Penarikan
+                        </th>
+                        <th className="px-3 py-3 text-center font-semibold whitespace-nowrap">
+                          Aksi
+                        </th>
                       </tr>
-                    ))
-                  ) : monthlyData.length === 0 ? (
-                    <tr>
-                      <td
-                        colSpan={16}
-                        className="px-3 py-12 text-center text-gray-400"
-                      >
-                        Belum ada data tabungan untuk tahun {year}
-                      </td>
-                    </tr>
-                  ) : (
-                    monthlyData.map((s, i) => {
-                      const monthsTotal = Object.values(s.months).reduce(
-                        (a, b) => a + b,
-                        0,
-                      );
-                      return (
-                        <tr
-                          key={s.studentId}
-                          className="hover:bg-indigo-50/50 dark:hover:bg-indigo-900/20 transition-colors"
-                        >
-                          <td className="px-2 py-2.5 text-sm text-gray-600 dark:text-gray-400 whitespace-nowrap">
-                            {i + 1}
+                    </thead>
+                    <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
+                      {loading ? (
+                        Array.from({ length: 5 }).map((_, i) => (
+                          <tr key={i} className="animate-pulse">
+                            <td className="px-3 py-3">
+                              <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-6" />
+                            </td>
+                            <td className="px-3 py-3">
+                              <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-40" />
+                            </td>
+                            <td className="px-3 py-3">
+                              <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-20 mx-auto" />
+                            </td>
+                            <td className="px-3 py-3">
+                              <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-20 mx-auto" />
+                            </td>
+                            <td className="px-3 py-3">
+                              <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-20 mx-auto" />
+                            </td>
+                            <td className="px-3 py-3">
+                              <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-24 md:w-32 mx-auto" />
+                            </td>
+                          </tr>
+                        ))
+                      ) : paginatedStudents.length === 0 ? (
+                        <tr>
+                          <td
+                            colSpan={6}
+                            className="px-3 py-12 text-center text-gray-400"
+                          >
+                            Belum ada data tabungan untuk kelas ini
                           </td>
-                          <td className="px-2 py-2.5 text-sm font-medium text-gray-800 dark:text-slate-100 whitespace-nowrap">
-                            {s.name}
-                          </td>
-                          {Array.from({ length: 12 }, (_, mi) => {
-                            const monthKey = String(mi + 1).padStart(2, "0");
-                            const val = s.months[monthKey];
-                            return (
-                              <td
-                                key={mi}
-                                className="px-2 py-2.5 text-xs md:text-sm text-center font-medium whitespace-nowrap"
-                              >
-                                {val ? (
-                                  <span className="text-emerald-700 dark:text-emerald-300">
-                                    {formatCompactRupiah(val)}
+                        </tr>
+                      ) : (
+                        paginatedStudents.map((s, i) => (
+                          <tr
+                            key={s.studentId}
+                            className="hover:bg-indigo-50/50 dark:hover:bg-indigo-900/20 transition-colors"
+                          >
+                            <td className="px-3 py-3 text-sm text-gray-600 dark:text-gray-400 whitespace-nowrap">
+                              {startIndex + i + 1}
+                            </td>
+                            <td className="px-3 py-3 text-sm font-medium text-gray-800 dark:text-slate-100 whitespace-nowrap">
+                              {s.name}
+                            </td>
+                            <td className="px-3 py-3 text-sm text-center font-semibold text-gray-800 dark:text-slate-100 whitespace-nowrap">
+                              {formatCompactRupiah(s.balance)}
+                            </td>
+                            <td className="px-3 py-3 text-sm text-center text-emerald-700 dark:text-emerald-300 font-medium whitespace-nowrap">
+                              {s.todayDeposit
+                                ? formatCompactRupiah(s.todayDeposit)
+                                : "-"}
+                            </td>
+                            <td className="px-3 py-3 text-sm text-center text-orange-600 dark:text-orange-400 font-medium whitespace-nowrap">
+                              {s.todayWithdrawal
+                                ? formatCompactRupiah(s.todayWithdrawal)
+                                : "-"}
+                            </td>
+                            <td className="px-3 py-3 whitespace-nowrap">
+                              <div className="flex items-center justify-center gap-1.5">
+                                <button
+                                  title="Simpan"
+                                  onClick={() => openTxModal(s, "simpan")}
+                                  className="flex items-center gap-1 p-1.5 md:px-2.5 md:py-1.5 rounded-lg text-xs font-medium bg-emerald-500 hover:bg-emerald-600 text-white transition-colors cursor-pointer"
+                                >
+                                  <Plus size={14} />
+                                  <span className="hidden md:inline">
+                                    Simpan
                                   </span>
+                                </button>
+                                <button
+                                  title="Tarik"
+                                  onClick={() => openTxModal(s, "tarik")}
+                                  className="flex items-center gap-1 p-1.5 md:px-2.5 md:py-1.5 rounded-lg text-xs font-medium bg-orange-500 hover:bg-orange-600 text-white transition-colors cursor-pointer"
+                                >
+                                  <Minus size={14} />
+                                  <span className="hidden md:inline">
+                                    Tarik
+                                  </span>
+                                </button>
+                                <button
+                                  title="Riwayat"
+                                  onClick={() => openHistoryModal(s)}
+                                  className="flex items-center gap-1 p-1.5 md:px-2.5 md:py-1.5 rounded-lg text-xs font-medium bg-blue-500 hover:bg-blue-600 text-white transition-colors cursor-pointer"
+                                >
+                                  <History size={14} />
+                                  <span className="hidden md:inline">
+                                    Riwayat
+                                  </span>
+                                </button>
+                              </div>
+                            </td>
+                          </tr>
+                        ))
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+
+                {!loading && paginatedStudents.length > 0 && (
+                  <Pagination
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    onPageChange={setCurrentPage}
+                    totalItems={students.length}
+                    itemsPerPage={ITEMS_PER_PAGE}
+                  />
+                )}
+              </div>
+            </>
+          ) : (
+            <>
+              {/* Rekap Bulanan */}
+              <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
+                <div className="flex items-center justify-between mb-4">
+                  <h2 className="text-sm font-semibold text-gray-500 dark:text-gray-400 tracking-wider">
+                    Rekap Tabungan Bulanan
+                  </h2>
+                  <div className="flex items-center gap-2.5">
+                    <YearSelect value={year} onChange={setYear} />
+                  </div>
+                </div>
+
+                <div className="overflow-x-auto rounded-xl border border-slate-200 dark:border-gray-700">
+                  <table className="w-full">
+                    <thead>
+                      <tr className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-xs md:text-sm">
+                        <th className="px-2 py-2.5 text-left font-semibold">
+                          No
+                        </th>
+                        <th className="px-2 py-2.5 text-left font-semibold whitespace-nowrap">
+                          Nama
+                        </th>
+                        {Array.from({ length: 12 }, (_, i) => (
+                          <th
+                            key={i}
+                            className="px-2 py-2.5 text-center font-semibold min-w-[60px] whitespace-nowrap"
+                          >
+                            {String(i + 1).padStart(2, "0")}
+                          </th>
+                        ))}
+                        <th className="px-2 py-2.5 text-center font-semibold min-w-[70px] whitespace-nowrap">
+                          Saldo
+                        </th>
+                        <th className="px-2 py-2.5 text-center font-semibold min-w-[50px] whitespace-nowrap">
+                          Tarik
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
+                      {monthlyLoading ? (
+                        Array.from({ length: 8 }).map((_, i) => (
+                          <tr key={i} className="animate-pulse">
+                            <td className="px-2 py-2.5">
+                              <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-6" />
+                            </td>
+                            <td className="px-2 py-2.5">
+                              <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-32" />
+                            </td>
+                            {Array.from({ length: 14 }).map((_, j) => (
+                              <td key={j} className="px-2 py-2.5">
+                                <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-12 mx-auto" />
+                              </td>
+                            ))}
+                          </tr>
+                        ))
+                      ) : monthlyData.length === 0 ? (
+                        <tr>
+                          <td
+                            colSpan={16}
+                            className="px-3 py-12 text-center text-gray-400"
+                          >
+                            Belum ada data tabungan untuk tahun {year}
+                          </td>
+                        </tr>
+                      ) : (
+                        monthlyPaginated.map((s, i) => {
+                          const monthsTotal = Object.values(s.months).reduce(
+                            (a, b) => a + b,
+                            0,
+                          );
+                          return (
+                            <tr
+                              key={s.studentId}
+                              className="hover:bg-indigo-50/50 dark:hover:bg-indigo-900/20 transition-colors"
+                            >
+                              <td className="px-2 py-2.5 text-sm text-gray-600 dark:text-gray-400 whitespace-nowrap">
+                                {(monthlyPage - 1) * MONTHLY_PER_PAGE + i + 1}
+                              </td>
+                              <td className="px-2 py-2.5 text-sm font-medium text-gray-800 dark:text-slate-100 whitespace-nowrap">
+                                {s.name}
+                              </td>
+                              {Array.from({ length: 12 }, (_, mi) => {
+                                const monthKey = String(mi + 1).padStart(
+                                  2,
+                                  "0",
+                                );
+                                const val = s.months[monthKey];
+                                return (
+                                  <td
+                                    key={mi}
+                                    className="px-2 py-2.5 text-xs md:text-sm text-center font-medium whitespace-nowrap"
+                                  >
+                                    {val ? (
+                                      <span className="text-emerald-700 dark:text-emerald-300">
+                                        {formatCompactRupiah(val)}
+                                      </span>
+                                    ) : (
+                                      <span className="text-gray-300 dark:text-gray-600">
+                                        -
+                                      </span>
+                                    )}
+                                  </td>
+                                );
+                              })}
+                              <td className="px-2 py-2.5 text-xs md:text-sm text-center font-semibold text-gray-800 dark:text-slate-100 whitespace-nowrap">
+                                {formatCompactRupiah(s.balance)}
+                              </td>
+                              <td className="px-2 py-2.5 text-center whitespace-nowrap">
+                                {s.totalWithdrawn > 0 ? (
+                                  <button
+                                    onClick={() => {
+                                      closeHistoryModal();
+                                      openHistoryModal(
+                                        {
+                                          studentId: s.studentId,
+                                          name: s.name,
+                                          grade: s.grade,
+                                          balance: s.balance,
+                                          todayDeposit: 0,
+                                          todayWithdrawal: 0,
+                                        },
+                                        "tarik",
+                                        true,
+                                      );
+                                    }}
+                                    className="text-orange-600 dark:text-orange-400 hover:text-orange-800 dark:hover:text-orange-200 transition-colors cursor-pointer text-xs md:text-sm font-semibold underline decoration-dotted underline-offset-2"
+                                    title="Lihat riwayat penarikan"
+                                  >
+                                    {formatCompactRupiah(s.totalWithdrawn)}
+                                  </button>
                                 ) : (
-                                  <span className="text-gray-300 dark:text-gray-600">
+                                  <span className="text-gray-300 dark:text-gray-600 text-xs md:text-sm">
                                     -
                                   </span>
                                 )}
                               </td>
-                            );
-                          })}
-                          <td className="px-2 py-2.5 text-xs md:text-sm text-center font-semibold text-gray-800 dark:text-slate-100 whitespace-nowrap">
-                            {formatCompactRupiah(s.balance)}
-                          </td>
-                          <td className="px-2 py-2.5 text-center whitespace-nowrap">
-                            {s.totalWithdrawn > 0 ? (
-                              <button
-                                onClick={() => {
-                                  closeHistoryModal();
-                                  openHistoryModal(
-                                    {
-                                      studentId: s.studentId,
-                                      name: s.name,
-                                      grade: s.grade,
-                                      balance: s.balance,
-                                      todayDeposit: 0,
-                                      todayWithdrawal: 0,
-                                    },
-                                    "tarik",
-                                  );
-                                }}
-                                className="text-orange-600 dark:text-orange-400 hover:text-orange-800 dark:hover:text-orange-200 transition-colors cursor-pointer text-xs md:text-sm font-semibold underline decoration-dotted underline-offset-2"
-                                title="Lihat riwayat penarikan"
-                              >
-                                {formatCompactRupiah(s.totalWithdrawn)}
-                              </button>
-                            ) : (
-                              <span className="text-gray-300 dark:text-gray-600 text-xs md:text-sm">
-                                -
-                              </span>
-                            )}
-                          </td>
-                        </tr>
-                      );
-                    })
-                  )}
-                </tbody>
-              </table>
-            </div>
+                            </tr>
+                          );
+                        })
+                      )}
+                    </tbody>
+                  </table>
+                </div>
 
-            {!monthlyLoading && monthlyData.length > 0 && (
-              <p className="text-xs text-gray-400 dark:text-gray-500 mt-3 text-center">
-                Menampilkan total setoran per bulan. Tanda (-) berarti tidak ada
-                setoran.
-              </p>
-            )}
-          </div>
+                {!monthlyLoading && monthlyData.length > 0 && (
+                  <>
+                    <p className="text-xs text-gray-400 dark:text-gray-500 mt-3 text-center">
+                      Menampilkan total setoran per bulan. Tanda (-) berarti tidak
+                      ada setoran.
+                    </p>
+                    <Pagination
+                      currentPage={monthlyPage}
+                      totalPages={monthlyTotalPages}
+                      onPageChange={setMonthlyPage}
+                      totalItems={monthlyData.length}
+                      itemsPerPage={MONTHLY_PER_PAGE}
+                    />
+                  </>
+                )}
+              </div>
+            </>
+          )}
         </>
       )}
 
@@ -673,88 +755,175 @@ export default function TabunganMuridPage() {
       {historyModal.open && historyModal.student && (
         <div className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4">
           <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-xl w-full max-w-2xl border border-white/20 dark:border-gray-700/50 p-5 max-h-[80vh] flex flex-col">
-            <div className="flex items-center justify-between mb-4">
-              <div>
+            <div className="mb-4">
+              <div className="flex items-center justify-between">
                 <h3 className="font-semibold text-gray-800 dark:text-slate-100">
-                  Riwayat Transaksi
+                  {historyAllTime ? "Riwayat Penarikan" : "Riwayat Transaksi"}
+                  <span className="ml-1.5 text-xs font-normal text-gray-400 dark:text-gray-500">
+                    {historyLoading ? (
+                      <span className="inline-block w-8 h-3.5 bg-slate-200 dark:bg-slate-700 rounded animate-pulse align-middle" />
+                    ) : (
+                      `(${historyTotal})`
+                    )}
+                  </span>
                 </h3>
-                <p className="text-xs text-gray-500">
-                  {historyModal.student.name}
-                </p>
+                <button
+                  onClick={closeHistoryModal}
+                  className="p-1 rounded-lg hover:bg-slate-100 dark:hover:bg-gray-800 transition-colors cursor-pointer"
+                >
+                  <X size={18} className="text-gray-500" />
+                </button>
               </div>
-              <button
-                onClick={closeHistoryModal}
-                className="p-1 rounded-lg hover:bg-slate-100 dark:hover:bg-gray-800 transition-colors cursor-pointer"
-              >
-                <X size={18} className="text-gray-500" />
-              </button>
+              <p className="text-xs text-gray-500 mt-1">
+                {historyModal.student.name}
+              </p>
+              <div className="flex items-center justify-between mt-2">
+                {!historyAllTime && (
+                <div className="flex gap-1 bg-slate-100 dark:bg-gray-800 rounded-lg p-0.5">
+                  {(["all", "simpan", "tarik"] as const).map((t) => (
+                    <button
+                      key={t}
+                      onClick={() => {
+                        const newType = t === "all" ? "all" : t;
+                        setHistoryType(t === "all" ? undefined : t);
+                        fetchHistoryPage(1, newType);
+                      }}
+                      className={`px-2.5 py-1 rounded-md text-xs font-semibold transition-colors cursor-pointer ${
+                        (
+                          t === "all"
+                            ? historyType === undefined
+                            : historyType === t
+                        )
+                          ? "bg-white dark:bg-gray-700 text-indigo-600 dark:text-indigo-300 shadow-sm"
+                          : "text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
+                      }`}
+                    >
+                      {t === "all"
+                        ? "Semua"
+                        : t === "simpan"
+                          ? "Simpan"
+                          : "Tarik"}
+                    </button>
+                  ))}
+                </div>
+                )}
+                {!historyAllTime && (
+                <div className="flex items-center gap-1.5">
+                  <Select
+                    value={String(historyMonth)}
+                    onValueChange={(v) => {
+                      if (v !== null) {
+                        const newMonth = Number(v);
+                        setHistoryMonth(newMonth);
+                        fetchHistoryPage(1, historyType, newMonth, historyYear);
+                      }
+                    }}
+                  >
+                    <SelectTrigger className="h-auto rounded-lg border border-slate-300 bg-slate-50 px-2 py-1 text-xs focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100 w-[50px] md:w-[90px]">
+                      <SelectValue placeholder="Bulan">
+                        <span className="hidden md:inline">
+                          {MONTHS_ID[historyMonth - 1]}
+                        </span>
+                        <span className="md:hidden">{historyMonth}</span>
+                      </SelectValue>
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        <SelectLabel>Bulan</SelectLabel>
+                        {MONTHS_ID.map((name, i) => (
+                          <SelectItem key={i} value={String(i + 1)}>
+                            {name}
+                          </SelectItem>
+                        ))}
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                  <YearSelect
+                    value={historyYear}
+                    onChange={(y) => {
+                      setHistoryYear(y);
+                      fetchHistoryPage(1, historyType, historyMonth, y);
+                    }}
+                    compact
+                  />
+                </div>
+                )}
+              </div>
             </div>
 
             <div className="flex-1 overflow-y-auto">
-              <div className="overflow-x-auto rounded-xl border border-slate-200 dark:border-gray-700">
-                <table className="w-full">
-                  <thead>
-                    <tr className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-xs md:text-sm">
-                      <th className="px-3 py-2.5 text-left font-semibold">
+              <div className="rounded-xl border border-slate-200 dark:border-gray-700 overflow-hidden">
+                <Table>
+                  <TableHeader>
+                    <TableRow className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-xs md:text-sm hover:from-indigo-600 hover:to-purple-600">
+                      <TableHead className="font-semibold text-white">
                         Tanggal
-                      </th>
-                      <th className="px-3 py-2.5 text-center font-semibold">
+                      </TableHead>
+                      <TableHead className="font-semibold text-white">
                         Tipe
-                      </th>
-                      <th className="px-3 py-2.5 text-right font-semibold">
+                      </TableHead>
+                      <TableHead className="font-semibold text-white">
                         Jumlah
-                      </th>
-                      <th className="px-3 py-2.5 text-center font-semibold">
-                        Keterangan
-                      </th>
-                      <th className="px-3 py-2.5 text-center font-semibold">
+                      </TableHead>
+                      {historyType !== "simpan" && (
+                        <TableHead className="font-semibold text-white">
+                          Keterangan
+                        </TableHead>
+                      )}
+                      <TableHead className="font-semibold text-white">
                         Aksi
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
+                      </TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
                     {historyLoading ? (
                       Array.from({ length: 3 }).map((_, i) => (
-                        <tr key={i} className="animate-pulse">
-                          <td className="px-3 py-2.5">
+                        <TableRow key={i} className="animate-pulse">
+                          <TableCell>
                             <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-24" />
-                          </td>
-                          <td className="px-3 py-2.5">
+                          </TableCell>
+                          <TableCell>
                             <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-12 mx-auto" />
-                          </td>
-                          <td className="px-3 py-2.5">
+                          </TableCell>
+                          <TableCell>
                             <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-20 ml-auto" />
-                          </td>
-                          <td className="px-3 py-2.5">
+                          </TableCell>
+                          {historyType !== "simpan" && (
+                          <TableCell>
                             <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-24 mx-auto" />
-                          </td>
-                          <td className="px-3 py-2.5">
+                          </TableCell>
+                          )}
+                          <TableCell>
                             <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-16 mx-auto" />
-                          </td>
-                        </tr>
+                          </TableCell>
+                        </TableRow>
                       ))
                     ) : transactions.length === 0 ? (
-                      <tr>
-                        <td
-                          colSpan={6}
-                          className="px-3 py-8 text-center text-gray-400"
+                      <TableRow>
+                        <TableCell
+                          colSpan={historyType === "simpan" ? 4 : 5}
+                          className="text-center py-8 text-gray-400"
                         >
                           Belum ada transaksi
-                        </td>
-                      </tr>
+                        </TableCell>
+                      </TableRow>
                     ) : (
                       transactions.map((tx) => (
-                        <tr
+                        <TableRow
                           key={tx._id}
-                          className="hover:bg-indigo-50/50 dark:hover:bg-indigo-900/20 transition-colors"
+                          className="hover:bg-indigo-50/50 dark:hover:bg-indigo-900/20 transition-colors text-center"
                         >
-                          <td className="px-3 py-2.5 text-sm text-gray-600 dark:text-gray-400">
-                            <span className="hidden md:inline">{formatDateID(tx.date)}</span>
-                            <span className="md:hidden">{formatDateShort(tx.date)}</span>
-                          </td>
-                          <td className="px-3 py-2.5 text-center">
+                          <TableCell className="text-xs md:text-sm text-gray-600 dark:text-gray-400">
+                            <span className="hidden md:inline">
+                              {formatDateID(tx.date)}
+                            </span>
+                            <span className="md:hidden">
+                              {formatDateShort(tx.date)}
+                            </span>
+                          </TableCell>
+                          <TableCell>
                             <span
-                              className={`inline-block px-2 py-0.5 rounded-full text-xs font-medium ${
+                              className={`inline-block px-2 py-0.5 rounded-full text-xs md:text-sm ${
                                 tx.type === "simpan"
                                   ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300"
                                   : "bg-orange-100 text-orange-700 dark:bg-orange-900/40 dark:text-orange-300"
@@ -762,17 +931,26 @@ export default function TabunganMuridPage() {
                             >
                               {tx.type === "simpan" ? "Simpan" : "Tarik"}
                             </span>
-                          </td>
-                          <td className="px-3 py-2.5 text-sm text-right font-medium text-gray-800 dark:text-slate-100">
+                          </TableCell>
+                          <TableCell className="text-xs md:text-sm font-medium text-gray-800 dark:text-slate-100">
                             {formatCompactRupiah(tx.amount)}
-                          </td>
-                          <td
-                            className="px-3 py-2.5 text-sm text-center text-gray-500 dark:text-gray-400 max-w-[150px] truncate"
-                            title={tx.description || ""}
-                          >
-                            {tx.description || "-"}
-                          </td>
-                          <td className="px-3 py-2.5 text-center">
+                          </TableCell>
+                          {historyType !== "simpan" && (
+                          <TableCell className="text-center">
+                            {historyType === undefined && tx.type === "simpan" ? (
+                              "-"
+                            ) : (
+                              <button
+                                onClick={() => setInfoDescription(tx.description || "Tidak ada keterangan")}
+                                className="p-1 rounded-lg text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 transition-colors cursor-pointer"
+                                title={tx.description || ""}
+                              >
+                                <Info size={14} />
+                              </button>
+                            )}
+                          </TableCell>
+                          )}
+                          <TableCell>
                             <div className="flex items-center justify-center gap-1">
                               <button
                                 onClick={() => openEditModal(tx)}
@@ -793,12 +971,12 @@ export default function TabunganMuridPage() {
                                 )}
                               </button>
                             </div>
-                          </td>
-                        </tr>
+                          </TableCell>
+                        </TableRow>
                       ))
                     )}
-                  </tbody>
-                </table>
+                  </TableBody>
+                </Table>
               </div>
             </div>
 
@@ -825,6 +1003,32 @@ export default function TabunganMuridPage() {
                 </div>
               </div>
             )}
+          </div>
+        </div>
+      )}
+      {infoDescription && (
+        <div
+          className="fixed inset-0 z-[70] flex items-center justify-center p-4"
+          onClick={() => setInfoDescription(null)}
+        >
+          <div
+            className="bg-white dark:bg-gray-900 rounded-xl shadow-xl border border-slate-200 dark:border-gray-700 p-4 max-w-xs w-full mx-4"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between mb-2">
+              <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 tracking-wider uppercase">
+                Keterangan Penarikan
+              </p>
+              <button
+                onClick={() => setInfoDescription(null)}
+                className="p-0.5 rounded hover:bg-slate-100 dark:hover:bg-gray-800 transition-colors cursor-pointer"
+              >
+                <X size={14} className="text-gray-400" />
+              </button>
+            </div>
+            <p className="text-sm text-gray-700 dark:text-slate-100">
+              {infoDescription}
+            </p>
           </div>
         </div>
       )}
@@ -928,7 +1132,8 @@ export default function TabunganMuridPage() {
               Hapus Transaksi
             </h3>
             <p className="text-sm text-gray-500 dark:text-gray-400 mb-5">
-              Yakin ingin menghapus transaksi ini? Tindakan ini tidak dapat dibatalkan.
+              Yakin ingin menghapus transaksi ini? Tindakan ini tidak dapat
+              dibatalkan.
             </p>
             <div className="flex gap-3">
               <button

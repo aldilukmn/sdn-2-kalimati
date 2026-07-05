@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import StudentAttendanceService from "@/services/student-attendance.service";
 import UserService from "@/services/user.service";
 import HolidayService from "@/services/holiday.service";
+import { getTodayLocal } from "@/lib/format";
 
 export interface Entry {
   studentId: string;
@@ -40,7 +41,7 @@ export function usePresensi() {
   const [userGrade, setUserGrade] = useState<string | null>(null);
   const [isJwtReady, setIsJwtReady] = useState(false);
 
-  const [date, setDate] = useState(new Date().toISOString().slice(0, 10));
+  const [date, setDate] = useState(getTodayLocal());
   const [entries, setEntries] = useState<Entry[]>([]);
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState<{

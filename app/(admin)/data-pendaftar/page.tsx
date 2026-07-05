@@ -136,17 +136,28 @@ export default function DataPendaftar() {
   const { userRole: authRole, isLoading: authLoading } = useAuth();
   const [userRole, setUserRole] = useState<string | null>(null);
   const [registrants, setRegistrants] = useState<Registrant[]>([]);
+  const [totalItems, setTotalItems] = useState(0);
+  const [totalPagesState, setTotalPagesState] = useState(1);
+  const [totalValidated, setTotalValidated] = useState(0);
+  const [totalUnvalidated, setTotalUnvalidated] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [pageLoading, setPageLoading] = useState(false);
   const [validating, setValidating] = useState<Set<string>>(new Set());
   const [currentPage, setCurrentPage] = useState(1);
   const [refreshing, setRefreshing] = useState(false);
   const itemsPerPage = 5;
 
-  const fetchRegistrants = async (isRefresh?: boolean) => {
+  const fetchRegistrants = async (page?: number, isRefresh?: boolean) => {
+    const targetPage = page || currentPage;
+    if (!loading) setPageLoading(true);
     try {
-      const response = await RegistrationService.getAll();
-      const data = response.result || response.data || [];
-      setRegistrants(data);
+      const response = await RegistrationService.getAll(targetPage, itemsPerPage);
+      const result = response.result || response.data || {};
+      setRegistrants(result.data || []);
+      setTotalItems(result.total || 0);
+      setTotalPagesState(result.totalPages || 1);
+      setTotalValidated(result.totalValidated || 0);
+      setTotalUnvalidated(result.totalUnvalidated || 0);
     } catch (err) {
       const error = err as Error & { status?: number };
       if (error.status === 401) {
@@ -157,15 +168,20 @@ export default function DataPendaftar() {
     } finally {
       if (isRefresh) setRefreshing(false);
       setLoading(false);
+      setPageLoading(false);
     }
   };
 
   useEffect(() => {
     if (authLoading || (authRole !== "admin" && authRole !== "kepala")) return;
-    fetchRegistrants();
-    const interval = setInterval(() => fetchRegistrants(), 30000);
+    fetchRegistrants(currentPage);
+  }, [authRole, authLoading, currentPage]);
+
+  useEffect(() => {
+    if (authLoading || (authRole !== "admin" && authRole !== "kepala")) return;
+    const interval = setInterval(() => fetchRegistrants(currentPage), 30000);
     return () => clearInterval(interval);
-  }, [authRole, authLoading]);
+  }, [authRole, authLoading, currentPage]);
 
   useEffect(() => {
     const token = sessionStorage.getItem("user_session");
@@ -184,9 +200,19 @@ export default function DataPendaftar() {
     }
   }, [authRole, authLoading]);
 
+  const handleExport = async () => {
+    try {
+      const response = await RegistrationService.getAll();
+      const allData = response.result || response.data || [];
+      exportRegistrantsToCSV(allData);
+    } catch {
+      toast.error("Gagal mengekspor data");
+    }
+  };
+
   const handleRefresh = () => {
     setRefreshing(true);
-    fetchRegistrants(true);
+    fetchRegistrants(currentPage, true);
   };
 
   const handleValidate = async (id: string, currentStatus?: string) => {
@@ -203,6 +229,13 @@ export default function DataPendaftar() {
           reg._id === id || reg.id === id ? { ...reg, status: newStatus } : reg,
         ),
       );
+      if (newStatus === "validated") {
+        setTotalValidated((prev) => prev + 1);
+        setTotalUnvalidated((prev) => Math.max(0, prev - 1));
+      } else {
+        setTotalValidated((prev) => Math.max(0, prev - 1));
+        setTotalUnvalidated((prev) => prev + 1);
+      }
     } catch (err) {
       const error = err as Error & {
         status?: number;
@@ -462,11 +495,6 @@ export default function DataPendaftar() {
     }
   };
 
-  const totalPages = Math.ceil(registrants.length / itemsPerPage);
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-  const paginatedRegistrants = registrants.slice(startIndex, endIndex);
-
   if (authLoading || (authRole !== "admin" && authRole !== "kepala"))
     return null;
 
@@ -507,7 +535,7 @@ export default function DataPendaftar() {
                 {loading ? (
                   <span className="inline-block h-9 w-16 rounded bg-indigo-200 dark:bg-indigo-700 animate-pulse" />
                 ) : (
-                  registrants.length
+                  totalItems
                 )}
               </span>
             </div>
@@ -527,7 +555,7 @@ export default function DataPendaftar() {
                 {loading ? (
                   <span className="inline-block h-9 w-16 rounded bg-emerald-200 dark:bg-emerald-700 animate-pulse" />
                 ) : (
-                  registrants.filter((r) => r.status === "validated").length
+                  totalValidated
                 )}
               </span>
             </div>
@@ -547,7 +575,7 @@ export default function DataPendaftar() {
                 {loading ? (
                   <span className="inline-block h-9 w-16 rounded bg-amber-200 dark:bg-amber-700 animate-pulse" />
                 ) : (
-                  registrants.filter((r) => r.status === "unvalidated").length
+                  totalUnvalidated
                 )}
               </span>
             </div>
@@ -558,7 +586,7 @@ export default function DataPendaftar() {
       {/* Action Buttons */}
       <div className="flex items-center gap-3 justify-end flex-wrap animate-fadeInUp">
         <button
-          onClick={() => exportRegistrantsToCSV(registrants)}
+          onClick={handleExport}
           className="flex items-center gap-2 px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-sm font-semibold shadow-md transition-all duration-200 cursor-pointer"
           title="Export ke Excel"
         >
@@ -580,7 +608,7 @@ export default function DataPendaftar() {
 
       {/* Table */}
       <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5 overflow-hidden">
-        {loading ? (
+        {loading || pageLoading ? (
           <div
             key="skeleton"
             className="overflow-x-auto animate-fadeIn rounded-xl border border-gray-200 dark:border-gray-700 bg-white/80 md:bg-white/60 dark:bg-gray-800/30"
@@ -646,7 +674,7 @@ export default function DataPendaftar() {
               </tbody>
             </table>
           </div>
-        ) : registrants.length === 0 ? (
+        ) : totalItems === 0 ? (
           <div className="flex flex-col items-center justify-center py-12 text-center bg-white/80 md:bg-white/60 dark:bg-gray-800/30 rounded-xl border border-gray-200 dark:border-gray-700">
             <p className="text-gray-400 dark:text-gray-500 text-sm animate-fadeInUp">
               Belum ada data pendaftar
@@ -689,7 +717,7 @@ export default function DataPendaftar() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200 dark:divide-gray-700 animate-fadeInUp">
-                {paginatedRegistrants.map((registrant, index) => (
+                {registrants.map((registrant, index) => (
                   <tr
                     key={registrant._id || registrant.id}
                     className="transition-colors animate-fadeIn hover:bg-indigo-50/50 dark:hover:bg-indigo-900/20"
@@ -787,13 +815,13 @@ export default function DataPendaftar() {
         )}
 
         {/* Pagination */}
-        {!loading && registrants.length > 0 && (
+        {!loading && totalItems > 0 && (
           <Pagination
             currentPage={currentPage}
-            totalPages={totalPages}
+            totalPages={totalPagesState}
             onPageChange={(page) => setCurrentPage(page)}
             itemsPerPage={itemsPerPage}
-            totalItems={registrants.length}
+            totalItems={totalItems}
           />
         )}
       </div>
