@@ -36,9 +36,10 @@ import { useDashboard } from "@/hooks/useDashboard";
 import { useTeacherChart } from "@/hooks/useTeacherChart";
 import { useSavingsRecap } from "@/hooks/useSavingsRecap";
 import { useGradeRecap } from "@/hooks/useGradeRecap";
+import DateDayPicker from "@/app/components/DateDayPicker";
 import GradeRecapTable from "@/app/components/tabungan/GradeRecapTable";
 import { GRADES } from "@/lib/constants";
-import { formatCompactRupiah, MONTHS_ID } from "@/lib/format";
+import { formatCompactRupiah, MONTHS_ID, getTodayLocal } from "@/lib/format";
 import StatCard from "@/app/components/StatCard";
 import PageHero from "@/app/components/PageHero";
 import type { AttendanceRow } from "@/lib/merge-attendance";
@@ -173,9 +174,15 @@ function AdminDashboardView({
 
 function GradeRecapSection() {
   const now = new Date();
+  const [mode, setMode] = useState<"daily" | "monthly">("monthly");
+  const [date, setDate] = useState(getTodayLocal());
   const [month, setMonth] = useState(now.getMonth() + 1);
   const [year, setYear] = useState(now.getFullYear());
-  const { data, loading } = useGradeRecap(undefined, month, year);
+  const { data, loading } = useGradeRecap(
+    mode === "daily" ? date : undefined,
+    mode === "monthly" ? month : undefined,
+    mode === "monthly" ? year : undefined,
+  );
 
   return (
     <div>
@@ -187,43 +194,71 @@ function GradeRecapSection() {
           Rekap Tabungan per Kelas
         </h3>
         <div className="ml-auto flex items-center gap-2">
-          <Select
-            value={String(month)}
-            onValueChange={(v) => { if (v !== null) setMonth(Number(v)); }}
-          >
-            <SelectTrigger className="h-auto rounded-lg border border-slate-300 bg-slate-50 px-2.5 py-1.5 text-xs focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100 w-[90px]">
-              <SelectValue placeholder="Bulan" className="sr-only" />
-              {MONTHS_ID[month - 1]}
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                <SelectLabel>Bulan</SelectLabel>
-                {MONTHS_ID.map((name, i) => (
-                  <SelectItem key={i + 1} value={String(i + 1)}>{name}</SelectItem>
-                ))}
-              </SelectGroup>
-            </SelectContent>
-          </Select>
-          <Select
-            value={String(year)}
-            onValueChange={(v) => { if (v !== null) setYear(Number(v)); }}
-          >
-            <SelectTrigger className="h-auto rounded-lg border border-slate-300 bg-slate-50 px-2.5 py-1.5 text-xs focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100 w-[80px]">
-              <SelectValue placeholder="Tahun" className="sr-only" />
-              {year}
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                <SelectLabel>Tahun</SelectLabel>
-                {[2026, 2027].map((y) => (
-                  <SelectItem key={y} value={String(y)}>{y}</SelectItem>
-                ))}
-              </SelectGroup>
-            </SelectContent>
-          </Select>
+          <div className="flex gap-1 bg-slate-100 dark:bg-gray-900 rounded-lg p-0.5">
+            <button
+              onClick={() => setMode("daily")}
+              className={`px-2.5 py-1 rounded-md text-xs font-semibold transition-colors cursor-pointer ${
+                mode === "daily"
+                  ? "bg-white dark:bg-gray-800 text-indigo-600 dark:text-indigo-300 shadow-sm"
+                  : "text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
+              }`}
+            >
+              Harian
+            </button>
+            <button
+              onClick={() => setMode("monthly")}
+              className={`px-2.5 py-1 rounded-md text-xs font-semibold transition-colors cursor-pointer ${
+                mode === "monthly"
+                  ? "bg-white dark:bg-gray-800 text-indigo-600 dark:text-indigo-300 shadow-sm"
+                  : "text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
+              }`}
+            >
+              Bulanan
+            </button>
+          </div>
+          {mode === "daily" ? (
+            <DateDayPicker value={date} onChange={setDate} max={getTodayLocal()} />
+          ) : (
+            <>
+              <Select
+                value={String(month)}
+                onValueChange={(v) => { if (v !== null) setMonth(Number(v)); }}
+              >
+                <SelectTrigger className="h-auto rounded-lg border border-slate-300 bg-slate-50 px-2.5 py-1.5 text-xs focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100 w-[90px]">
+                  <SelectValue placeholder="Bulan" className="sr-only" />
+                  {MONTHS_ID[month - 1]}
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectLabel>Bulan</SelectLabel>
+                    {MONTHS_ID.map((name, i) => (
+                      <SelectItem key={i + 1} value={String(i + 1)}>{name}</SelectItem>
+                    ))}
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+              <Select
+                value={String(year)}
+                onValueChange={(v) => { if (v !== null) setYear(Number(v)); }}
+              >
+                <SelectTrigger className="h-auto rounded-lg border border-slate-300 bg-slate-50 px-2.5 py-1.5 text-xs focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100 w-[80px]">
+                  <SelectValue placeholder="Tahun" className="sr-only" />
+                  {year}
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectLabel>Tahun</SelectLabel>
+                    {[2026, 2027].map((y) => (
+                      <SelectItem key={y} value={String(y)}>{y}</SelectItem>
+                    ))}
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            </>
+          )}
         </div>
       </div>
-      <GradeRecapTable data={data} loading={loading} mode="monthly" />
+      <GradeRecapTable data={data} loading={loading} mode={mode} />
     </div>
   );
 }
