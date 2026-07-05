@@ -9,6 +9,7 @@ import {
   Layers,
 } from "lucide-react";
 import type { DashboardSummary } from "@/hooks/useDashboard";
+import StatCard from "@/app/components/StatCard";
 
 type StatCardKey =
   | "totalStudents"
@@ -18,91 +19,13 @@ type StatCardKey =
   | "validated"
   | "unvalidated";
 
-interface StatCardItem {
-  label: string;
-  key: StatCardKey;
-  icon: React.ElementType;
-  fallback: number | string;
-  textClass: string;
-  bgClass: string;
-  borderClass: string;
-  hoverClass: string;
-  skeletonClass: string;
-}
-
-const CARDS: StatCardItem[] = [
-  {
-    label: "Peserta Didik",
-    key: "totalStudents",
-    icon: GraduationCap,
-    fallback: "-",
-    bgClass: "bg-indigo-500/5",
-    borderClass: "border-indigo-500/40",
-    textClass: "text-indigo-600 dark:text-indigo-400",
-    hoverClass:
-      "hover:bg-indigo-500/10 hover:border-indigo-500/60 hover:shadow-indigo-500/10",
-    skeletonClass: "bg-indigo-200 dark:bg-indigo-700",
-  },
-  {
-    label: "GTK",
-    key: "totalTeachers",
-    icon: School,
-    fallback: "-",
-    bgClass: "bg-teal-500/5",
-    borderClass: "border-teal-500/40",
-    textClass: "text-teal-600 dark:text-teal-400",
-    hoverClass:
-      "hover:bg-teal-500/10 hover:border-teal-500/60 hover:shadow-teal-500/10",
-    skeletonClass: "bg-teal-200 dark:bg-teal-700",
-  },
-  {
-    label: "Jumlah Kelas",
-    key: "gradeCount",
-    icon: Layers,
-    fallback: "-",
-    bgClass: "bg-indigo-500/5",
-    borderClass: "border-indigo-500/40",
-    textClass: "text-indigo-600 dark:text-indigo-400",
-    hoverClass:
-      "hover:bg-indigo-500/10 hover:border-indigo-500/60 hover:shadow-indigo-500/10",
-    skeletonClass: "bg-indigo-200 dark:bg-indigo-700",
-  },
-  {
-    label: "Total Pendaftar",
-    key: "totalRegistrants",
-    icon: Users,
-    fallback: 0,
-    bgClass: "bg-blue-500/5",
-    borderClass: "border-blue-500/40",
-    textClass: "text-blue-600 dark:text-blue-400",
-    hoverClass:
-      "hover:bg-blue-500/10 hover:border-blue-500/60 hover:shadow-blue-500/10",
-    skeletonClass: "bg-blue-200 dark:bg-blue-700",
-  },
-  {
-    label: "Tervalidasi",
-    key: "validated",
-    icon: CheckCircle2,
-    fallback: 0,
-    bgClass: "bg-emerald-500/5",
-    borderClass: "border-emerald-500/40",
-    textClass: "text-emerald-600 dark:text-emerald-400",
-    hoverClass:
-      "hover:bg-emerald-500/10 hover:border-emerald-500/60 hover:shadow-emerald-500/10",
-    skeletonClass: "bg-emerald-200 dark:bg-emerald-700",
-  },
-  {
-    label: "Belum Tervalidasi",
-    key: "unvalidated",
-    icon: Circle,
-    fallback: 0,
-    bgClass: "bg-yellow-500/5",
-    borderClass: "border-yellow-500/40",
-    textClass: "text-amber-600 dark:text-amber-400",
-    hoverClass:
-      "hover:bg-yellow-500/10 hover:border-yellow-500/60 hover:shadow-yellow-500/10",
-    skeletonClass: "bg-yellow-200 dark:bg-yellow-700",
-  },
+const CARDS: { label: string; key: StatCardKey; icon: import("lucide-react").LucideIcon; fallback: number | string; color: string }[] = [
+  { label: "Peserta Didik", key: "totalStudents", icon: GraduationCap, fallback: "-", color: "indigo" },
+  { label: "GTK", key: "totalTeachers", icon: School, fallback: "-", color: "teal" },
+  { label: "Jumlah Kelas", key: "gradeCount", icon: Layers, fallback: "-", color: "indigo" },
+  { label: "Total Pendaftar", key: "totalRegistrants", icon: Users, fallback: 0, color: "blue" },
+  { label: "Tervalidasi", key: "validated", icon: CheckCircle2, fallback: 0, color: "emerald" },
+  { label: "Belum Tervalidasi", key: "unvalidated", icon: Circle, fallback: 0, color: "yellow" },
 ];
 
 interface Props {
@@ -113,39 +36,16 @@ interface Props {
 export default function DashboardStatCards({ summary, loading }: Props) {
   return (
     <div className="grid grid-cols-3 gap-3 md:gap-4">
-      {CARDS.map((card) => {
-        const Icon = card.icon;
-        const value = summary?.[card.key] ?? card.fallback;
-        return (
-          <div
-            key={card.label}
-            className={`${card.bgClass} md:backdrop-blur-xl border ${card.borderClass} shadow-lg rounded-2xl p-3 md:p-5 transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 hover:shadow-xl`}
-          >
-            <div className="flex items-center md:items-start justify-center md:justify-between mb-1 md:mb-3 min-h-10">
-              <span className="text-[13px] text-center md:text-base font-semibold text-gray-600 dark:text-gray-400">
-                {card.label}
-              </span>
-              <Icon
-                className={`hidden md:block w-[22px] h-[22px] ${card.textClass}`}
-              />
-            </div>
-            <div className="flex items-center justify-center md:justify-start gap-2">
-              <Icon className={`md:hidden w-4 h-4 ${card.textClass}`} />
-              <span
-                className={`text-lg md:text-3xl font-bold ${card.textClass}`}
-              >
-                {loading ? (
-                  <div
-                    className={`h-9 w-16 rounded ${card.skeletonClass} animate-pulse`}
-                  />
-                ) : (
-                  value
-                )}
-              </span>
-            </div>
-          </div>
-        );
-      })}
+      {CARDS.map((card) => (
+        <StatCard
+          key={card.label}
+          label={card.label}
+          value={summary?.[card.key] ?? card.fallback}
+          icon={card.icon}
+          color={card.color}
+          loading={loading}
+        />
+      ))}
     </div>
   );
 }

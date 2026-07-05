@@ -5,14 +5,7 @@ import { useRouter } from "next/navigation";
 import { LogOut, Loader2 } from "lucide-react";
 import AuthService from "@/services/auth.service";
 import toast from "react-hot-toast";
-
-function parseJWT(token: string) {
-  try {
-    return JSON.parse(atob(token.split(".")[1]));
-  } catch {
-    return null;
-  }
-}
+import { decodeJWT } from "@/lib/jwt";
 
 const ROLE_STYLES: Record<string, { bg: string; label: string }> = {
   admin: { bg: "bg-indigo-500", label: "Admin" },
@@ -37,7 +30,7 @@ export default function LogoutButton() {
   useEffect(() => {
     const token = sessionStorage.getItem("user_session");
     if (token) {
-      const payload = parseJWT(token);
+      const payload = decodeJWT(token);
       if (payload) {
         const fullName = payload.fullName || "User";
         const role: string = payload.role || "admin";

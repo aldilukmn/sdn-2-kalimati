@@ -1,4 +1,5 @@
 import { api } from "@/lib/api";
+import type { UserApiResponse } from "@/types/user";
 
 export default class UserService {
   static async getTeachers(): Promise<UserApiResponse> {

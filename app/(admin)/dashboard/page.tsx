@@ -1,13 +1,6 @@
 import { cookies } from "next/headers";
 import DashboardClient from "./client";
-
-function decodeJWT(token: string) {
-  try {
-    return JSON.parse(atob(token.split(".")[1]));
-  } catch {
-    return null;
-  }
-}
+import { decodeJWT } from "@/lib/jwt";
 
 export default async function DashboardPage() {
   const cookieStore = await cookies();

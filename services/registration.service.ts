@@ -1,4 +1,5 @@
 import { api } from "@/lib/api";
+import type { RegistrationForm } from "@/types/registration";
 
 export default class RegistrationService {
   static async getAll(page?: number, limit?: number) {

@@ -6,3 +6,18 @@ export interface User {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface TeacherType {
+  _id: string;
+  username: string;
+  fullName: string;
+  nip: string;
+  grade: string;
+  title: string;
+  role: string;
+}
+
+export interface UserApiResponse {
+  result?: TeacherType[];
+  data?: TeacherType[];
+}

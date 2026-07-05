@@ -7,6 +7,7 @@ import { User, Lock, ArrowRight, Loader2, Eye, EyeOff } from "lucide-react";
 import BackButton from "../components/BackButton";
 import AuthCard from "../components/AuthCard";
 import toast from "react-hot-toast";
+import { decodeJWT } from "@/lib/jwt";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -23,7 +24,7 @@ export default function LoginPage() {
       const response = await AuthService.login(identifier, password);
 
       const token = response.result?.token || response.result;
-      const payload = JSON.parse(atob(token.split('.')[1]));
+      const payload = decodeJWT(token);
       const role = payload.role || "admin";
       const grade = payload.grade || "";
       const fullName = payload.fullName || identifier;

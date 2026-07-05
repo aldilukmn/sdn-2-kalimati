@@ -1,16 +1,17 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import {
-  Loader2,
-  Download,
-  UserCheck,
-  UserX,
-  Clock,
-  FileText,
-  CalendarDays,
-} from "lucide-react";
+import { Loader2, Download } from "lucide-react";
 import { Card } from "@/components/ui/card";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import TableSkeleton from "@/app/components/TableSkeleton";
 import StudentAttendanceService from "@/services/student-attendance.service";
 import UserService from "@/services/user.service";
@@ -18,8 +19,8 @@ import { exportPresensiToCSV } from "@/lib/export-presensi-csv";
 import BackButton from "../components/BackButton";
 import Pagination from "@/app/components/Pagination";
 import MonthYearPicker from "../components/MonthYearPicker";
-
-const GRADES = ["1", "2", "3", "4", "5", "6"];
+import { GRADES } from "@/lib/constants";
+import type { MasterStudentType, StudentAttendanceType } from "@/types/attendance";
 
 export default function RekapPresensi() {
   const [grade, setGrade] = useState("1");
@@ -137,17 +138,19 @@ export default function RekapPresensi() {
             <label className="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-300">
               Kelas
             </label>
-            <select
-              value={grade}
-              onChange={(e) => setGrade(e.target.value)}
-              className="rounded-xl border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100"
-            >
-              {GRADES.map((g) => (
-                <option key={g} value={g}>
-                  Kelas {g}
-                </option>
-              ))}
-            </select>
+            <Select value={grade} onValueChange={(v) => { if (v !== null) setGrade(v); }}>
+              <SelectTrigger className="w-full md:w-32">
+                <SelectValue placeholder="Kelas" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectLabel>Kelas</SelectLabel>
+                  {GRADES.map((g) => (
+                    <SelectItem key={g} value={g}>Kelas {g}</SelectItem>
+                  ))}
+                </SelectGroup>
+              </SelectContent>
+            </Select>
           </div>
           <div>
             <label className="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-300">
@@ -228,40 +231,7 @@ export default function RekapPresensi() {
           </div>
         ) : (
           <>
-            {/* <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
-              <div className="border border-blue-500/40 bg-blue-500/5 px-4 py-3 rounded-xl text-center">
-                <div className="text-xs font-semibold text-gray-600 dark:text-gray-400">
-                  Total Presensi
-                </div>
-                <div className="text-xl font-bold text-blue-600 dark:text-blue-400">
-                  {totalHari}
-                </div>
-              </div>
-              <div className="border border-green-500/40 bg-green-500/5 px-4 py-3 rounded-xl text-center">
-                <div className="text-xs font-semibold text-gray-600 dark:text-gray-400 flex items-center justify-center gap-1">
-                  <UserCheck size={14} /> Hadir
-                </div>
-                <div className="text-xl font-bold text-green-600 dark:text-green-400">
-                  {countByStatus("hadir")}
-                </div>
-              </div>
-              <div className="border border-yellow-500/40 bg-yellow-500/5 px-4 py-3 rounded-xl text-center">
-                <div className="text-xs font-semibold text-gray-600 dark:text-gray-400 flex items-center justify-center gap-1">
-                  <Clock size={14} /> Sakit + Izin
-                </div>
-                <div className="text-xl font-bold text-yellow-600 dark:text-yellow-400">
-                  {countByStatus("sakit") + countByStatus("izin")}
-                </div>
-              </div>
-              <div className="border border-red-500/40 bg-red-500/5 px-4 py-3 rounded-xl text-center">
-                <div className="text-xs font-semibold text-gray-600 dark:text-gray-400 flex items-center justify-center gap-1">
-                  <UserX size={14} /> Absen
-                </div>
-                <div className="text-xl font-bold text-red-600 dark:text-red-400">
-                  {countByStatus("absen")}
-                </div>
-              </div>
-            </div> */}
+
 
             <div className="overflow-x-auto rounded-xl border border-slate-200 dark:border-gray-700">
               {siswaList.length === 0 ? (

@@ -2,6 +2,7 @@
 
 import { Card, CardTitle } from "@/components/ui/card";
 import InputField from "@/app/components/form/InputField";
+import type { RegistrationForm } from "@/types/registration";
 
 interface GuardianDataStepProps {
   formData: RegistrationForm;

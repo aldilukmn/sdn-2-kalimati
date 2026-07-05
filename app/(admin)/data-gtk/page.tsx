@@ -3,6 +3,11 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/app/contexts/AuthContext";
+import { decodeJWT } from "@/lib/jwt";
+import { GRADES } from "@/lib/constants";
+import Modal from "@/app/components/Modal";
+import PageHero from "@/app/components/PageHero";
+import type { TeacherType } from "@/types/user";
 import {
   Plus,
   Pencil,
@@ -26,7 +31,6 @@ interface FormData {
   role: string;
 }
 
-const GRADES = ["1", "2", "3", "4", "5", "6"];
 const emptyForm: FormData = {
   username: "",
   password: "",
@@ -43,7 +47,7 @@ const ROLE_OPTIONS = [
   { value: "penjaga", label: "Penjaga" },
 ];
 
-function Modal({
+function AddEditModal({
   title,
   formData,
   setFormData,
@@ -63,25 +67,7 @@ function Modal({
   const isGuru = formData.role === "guru";
 
   return (
-    <div
-      className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4"
-      onClick={onClose}
-    >
-      <div
-        className="bg-white dark:bg-gray-900 rounded-2xl shadow-xl w-full max-w-md border border-white/20 dark:border-gray-700/50 p-5"
-        onClick={(e) => e.stopPropagation()}
-      >
-        <div className="flex items-center justify-between mb-4">
-          <h3 className="font-semibold text-gray-800 dark:text-slate-100">
-            {title}
-          </h3>
-          <button
-            onClick={onClose}
-            className="p-1 rounded-lg hover:bg-slate-100 dark:hover:bg-gray-800 transition-colors cursor-pointer"
-          >
-            <X size={18} className="text-gray-500" />
-          </button>
-        </div>
+    <Modal open onClose={onClose} title={title} className="max-w-md">
         <div className="space-y-3">
           {!isEdit && (
             <div>
@@ -203,8 +189,7 @@ function Modal({
             {isEdit ? "Simpan" : "Tambah"}
           </button>
         </div>
-      </div>
-    </div>
+    </Modal>
   );
 }
 
@@ -221,14 +206,7 @@ function ConfirmDialog({
 }) {
   if (!id) return null;
   return (
-    <div
-      className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4"
-      onClick={onClose}
-    >
-      <div
-        className="bg-white dark:bg-gray-900 rounded-2xl shadow-xl w-full max-w-sm border border-white/20 dark:border-gray-700/50 p-5 text-center"
-        onClick={(e) => e.stopPropagation()}
-      >
+    <Modal open onClose={onClose} className="max-w-sm text-center">
         <div className="mx-auto w-12 h-12 flex items-center justify-center rounded-full bg-red-100 dark:bg-red-900/30 mb-4">
           <AlertTriangle size={28} className="text-red-600 dark:text-red-400" />
         </div>
@@ -254,8 +232,7 @@ function ConfirmDialog({
             Ya, Hapus
           </button>
         </div>
-      </div>
-    </div>
+    </Modal>
   );
 }
 
@@ -281,10 +258,8 @@ export default function DataGTK() {
   useEffect(() => {
     const token = sessionStorage.getItem("user_session");
     if (token) {
-      try {
-        const payload = JSON.parse(atob(token.split(".")[1]));
-        setUserRole(payload.role);
-      } catch {}
+      const payload = decodeJWT(token);
+      if (payload) setUserRole(payload.role);
     }
   }, []);
 
@@ -449,38 +424,24 @@ export default function DataGTK() {
 
   return (
     <div className="p-4 md:p-6 space-y-6">
-      {/* Hero */}
-      <div className="relative bg-gradient-to-br from-indigo-500 via-indigo-600 to-purple-600 rounded-2xl overflow-hidden shadow-xl">
-        <div className="absolute -top-6 -right-6 w-40 h-40 bg-white/5 rounded-full blur-2xl" />
-        <div className="absolute -bottom-8 -left-8 w-48 h-48 bg-indigo-400/20 rounded-full blur-3xl" />
-        <div className="relative p-5 md:p-6 flex items-center justify-between gap-4">
-          <div className="flex items-center gap-4">
-            <div className="shrink-0 w-12 h-12 md:w-14 md:h-14 bg-white/15 rounded-xl flex items-center justify-center animate-iconBounce">
-              <Users size={26} className="md:size-[30px] text-white" />
-            </div>
-            <div>
-              <h1 className="text-white text-sm md:text-xl font-bold">
-                Data Guru & Tenaga Kependidikan
-              </h1>
-              <p className="text-indigo-200/80 text-xs md:text-sm mt-0.5">
-                Kelola data guru dan tenaga kependidikan
-              </p>
-            </div>
-          </div>
-          {userRole !== "kepala" && (
-            <button
-              onClick={() => {
-                setFormData(emptyForm);
-                setShowAddModal(true);
-              }}
-              className="flex items-center gap-2 px-2.5 md:px-4 py-2.5 bg-white/20 hover:bg-white/30 text-white rounded-xl text-sm font-semibold transition-colors cursor-pointer shrink-0 backdrop-blur-sm"
-            >
-              <Plus size={18} />{" "}
-              <span className="hidden md:inline">Tambah</span>
-            </button>
-          )}
-        </div>
-      </div>
+      <PageHero
+        icon={Users}
+        title="Data Guru & Tenaga Kependidikan"
+        description="Kelola data guru dan tenaga kependidikan"
+      >
+        {userRole !== "kepala" && (
+          <button
+            onClick={() => {
+              setFormData(emptyForm);
+              setShowAddModal(true);
+            }}
+            className="flex items-center gap-2 px-2.5 md:px-4 py-2.5 bg-white/20 hover:bg-white/30 text-white rounded-xl text-sm font-semibold transition-colors cursor-pointer shrink-0 backdrop-blur-sm"
+          >
+            <Plus size={18} />{" "}
+            <span className="hidden md:inline">Tambah</span>
+          </button>
+        )}
+      </PageHero>
 
       <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5 overflow-hidden">
         {loading ? (
@@ -774,7 +735,7 @@ export default function DataGTK() {
       </div>
 
       {showAddModal && (
-        <Modal
+        <AddEditModal
           title="Tambah User Baru"
           formData={formData}
           setFormData={setFormData}
@@ -785,7 +746,7 @@ export default function DataGTK() {
         />
       )}
       {showEditModal && (
-        <Modal
+        <AddEditModal
           title="Edit Guru"
           formData={formData}
           setFormData={setFormData}

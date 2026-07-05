@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { cookies } from "next/headers";
 import DashboardShell from "@/app/dashboard/DashboardShell";
+import { decodeJWT } from "@/lib/jwt";
 
 export const metadata: Metadata = {
   title: "Dashboard Admin - SDN 2 Kalimati",
@@ -20,13 +21,11 @@ export default async function AdminLayout({
   let userGrade: string | null = null;
 
   if (token) {
-    try {
-      const payload = JSON.parse(atob(token.split(".")[1]));
+    const payload = decodeJWT(token);
+    if (payload) {
       userRole = payload.role || null;
       userName = payload.fullName || null;
       userGrade = payload.grade || null;
-    } catch {
-      // invalid token
     }
   }
 

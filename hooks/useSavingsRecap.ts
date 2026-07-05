@@ -19,22 +19,23 @@ export function useSavingsRecap(
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    let cancelled = false;
+    const controller = new AbortController();
+    const signal = controller.signal;
     const fetchData = async () => {
       setLoading(true);
       try {
         const res = await StudentSavingsService.getMonthlyRecap(grade, month, year);
-        if (!cancelled) {
+        if (!signal.aborted) {
           setData(res?.result || null);
         }
       } catch {
-        if (!cancelled) setData(null);
+        if (!signal.aborted) setData(null);
       } finally {
-        if (!cancelled) setLoading(false);
+        if (!signal.aborted) setLoading(false);
       }
     };
     fetchData();
-    return () => { cancelled = true; };
+    return () => controller.abort();
   }, [grade, month, year]);
 
   return { data, loading };

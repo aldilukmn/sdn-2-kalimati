@@ -8,6 +8,7 @@ import {
   EDUCATION_OPTIONS,
   INCOME_OPTIONS,
 } from "@/app/data/form-options";
+import type { RegistrationForm } from "@/types/registration";
 
 interface ParentDataStepProps {
   formData: RegistrationForm;

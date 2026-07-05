@@ -10,6 +10,7 @@ import StudentDataStep from "@/app/components/pmb/StudentDataStep";
 import ParentDataStep from "@/app/components/pmb/ParentDataStep";
 import GuardianDataStep from "@/app/components/pmb/GuardianDataStep";
 import LoadingModal from "@/app/components/LoadingModal";
+import type { RegistrationForm } from "@/types/registration";
 
 const emptyForm: RegistrationForm = {
   student: {

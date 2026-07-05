@@ -39,11 +39,11 @@ No linter, formatter, typecheck, or test scripts exist.
 app/             — Next.js App Router pages & layouts
   components/    — Shared UI (BackButton, Pagination, LoadingModal, etc.)
   data/          — Static data (class list)
-  types/         — RegistrationForm interface
+  types/         — [deprecated] Prefer `types/` at root
   reactbits/     — TextType component
-lib/             — API client, constants
+lib/             — API client, constants, CSV utils, format helpers
 services/        — AuthService, RegistrationService (static class methods)
-types/           — User interface (server-side model)
+types/           — Shared types: user.ts, registration.ts, attendance.ts
 ```
 
 ## Architecture notes
@@ -132,6 +132,43 @@ types/           — User interface (server-side model)
 ### `lib/format.ts`
 - `formatCompactRupiah(num)` — compact Rupiah (e.g. `Rp 1,5 jt`), handles negative: `-Rp 50 rb`
 - `formatDateID(dateStr)` — `YYYY-MM-DD` → `DD-MM-YYYY`
+
+## Refactoring Roadmap (Analisis 2026-07)
+
+### 🔴 High Priority
+
+| # | File/Masalah | Solusi | Perkiraan |
+|---|-------------|--------|-----------|
+| ✅ **1** | **Auth: 3 pendekatan berbeda** — `useAuth()` + JWT decode manual di **8 tempat** (`layout.tsx`, `dashboard/page.tsx`, `presensi-murid/page.tsx`, `usePresensi.ts`, `useStudentSavings.ts`, `login/page.tsx`, `data-pendaftar/page.tsx`, `data-gtk/page.tsx`) | Ekstrak `lib/jwt.ts`: `decodeJWT(token)` → hapus duplicate `atob()` di 8 file | ✅ Selesai |
+| ✅ **2** | **`tabungan-murid/page.tsx` 1159 baris** — 1 file berisi layout, 2 tab, 4 modal, holiday fetch, popup info | Pecah ke komponen terpisah: `DailyTab`, `MonthlyTab`, `TransactionModal`, `HistoryModal`, `EditModal`, `ConfirmDeleteModal` | ✅ Selesai |
+| ✅ **3** | **`useStudentSavings.ts` 516 baris / 33 state** — 1 hook urusin user role, student list, summary, CRUD, 4 modal, history filter, export | Split: `useStudentList`, `useTransactionModal`, `useHistoryModal` | ✅ Selesai |
+| ✅ **4** | **`GRADES` duplikasi 4x** — `useDashboard.ts`, `usePresensi.ts`, `useStudentList.ts`, `data-gtk/page.tsx` (+ `rekap-presensi/page.tsx`) | Pindah ke `lib/constants.ts` | ✅ Selesai |
+| ✅ **5** | **Holiday logic inkonsisten** — holiday fetch di `usePresensi.ts`, di `tabungan-murid/page.tsx`, DateDayPicker cek `blockedDates` sendiri | Buat `useHolidays` hook: `{ holidays, holidayList, isHoliday, isSunday, refresh }` | ✅ Selesai |
+| ✅ **6** | **Modal pattern duplikasi 7x** — backdrop overlay + card + close button diulang tiap modal | Buat komponen `Modal`: `{ open, onClose, title, children }` | ✅ Selesai |
+| ✅ **7** | **CSV export duplikasi** — `wrap()` + Blob download di `export-csv.ts` dan `export-presensi-csv.ts` | Ekstrak ke `lib/csv-utils.ts`: `wrap()` + `downloadCSV(headers, rows, filename)` | ✅ Selesai |
+| ✅ **8** | **Date format duplikasi** — `data-pendaftar/page.tsx` redefine `MONTHS_ID` + `formatBirthDate()`/`formatCreatedDate()` manual, padahal sudah ada `formatDateID()` di `lib/format.ts` | Ganti inline formatters dengan `formatDateID()` + `formatDateTime()` local helper | ✅ Selesai |
+
+### 🟡 Medium Priority
+
+| # | File/Masalah | Solusi |
+|---|-------------|--------|
+| ✅ **9** | **Stat card pattern duplikasi 4x** — `dashboard/client.tsx` (admin + guru + tabungan), `data-pendaftar/page.tsx`, `tabungan-murid/page.tsx` | Buat komponen `StatCard({ label, value, icon, color, loading, suffix, subtitle, valueClassName })` dengan `variant="glass"` (default) / `"simple"` — `GlassColors`/`SimpleColors` mapping | ✅ Selesai |
+| ✅ **10** | **Hero banner duplikasi 5x** — `dashboard` (admin+guru), `presensi-murid`, `tabungan-murid`, `data-pendaftar`, `data-gtk` — gradient indigo + blur circles | Buat komponen `PageHero({ icon, title, description, subtitle?, iconSize?, className?, children? })` — 6 instance direfactor ke 1 component | ✅ Selesai |
+| ✅ **11** | **`cancelled` flag di 4 hooks** — `useStudentMonthlyBreakdown`, `useSavingsRecap`, `useTeacherChart`, `useStudentList` (2 efek) | Ganti dengan `AbortController` + `signal.aborted` | ✅ Selesai |
+| ✅ **12** | **`rekap-presensi/page.tsx`** — pakai native `<select>` untuk grade, page lain pakai shadcn `<Select>` | Konsistenkan ke shadcn `<Select>` | ✅ Selesai |
+| ✅ **13** | **`build` → `dist/index.js` vs `start` → `dist/server.js`** (backend config bug) | `package.json` di backend: `"start": "node dist/server.js"` → `"start": "node dist/index.js"` | ✅ Selesai |
+| ✅ **14** | **Inline interface Address/Parent/Guardian** di `data-pendaftar/page.tsx` — duplikasi dari `lib/export-csv.ts` | `types/registration.ts` — import `Registrant` dari shared types | ✅ Selesai |
+| ✅ **15** | **`rekap-presensi/page.tsx`** — ada commented-out code (stats card grid, lines 231-264) | Hapus dead code + 5 unused imports | ✅ Selesai |
+
+### 🔵 Low Priority
+
+| # | File/Masalah | Solusi |
+|---|-------------|--------|
+| ✅ **16** | `BackButton` tanpa fallback route — `router.back()` do nothing kalau gak ada history | Ganti dari `<Link href="/">` ke `router.back()` + fallback `/dashboard` via `window.history.length` | ✅ Selesai |
+| ✅ **17** | Tipe tidak terpusat — `UserApiResponse`, `TeacherType`, `StudentAttendanceType`, `MasterStudentType`, `RegistrationForm` didefinisikan inline di berbagai file | Pindah ke `types/` — `types/user.ts` (User, TeacherType, UserApiResponse), `types/attendance.ts` (MasterStudentType, StudentAttendanceType, StudentAttendanceRequestType), `types/registration.ts` (RegistrationForm). 11 consumer files updated. `app/types/user.ts`, `app/types/presensi.ts`, `app/types/registration-form.ts` deleted. | ✅ Selesai |
+| ✅ **18** | `data-pendaftar/page.tsx` — inline print HTML string 200+ baris di `handlePrint` | Ekstrak ke file terpisah `lib/print-form.ts` — `printRegistrantForm(registrant: Registrant)` | ✅ Selesai |
+| ✅ **19** | `useCallback` wrapping di 3 hooks (14 fungsi) — `useStudentList` (2), `useTransactionModal` (3), `useHistoryModal` (9). Banyak dependency berubah tiap keystroke (txAmount, editAmount), manfaat negligible. Child components tidak pakai React.memo. | Hapus semua `useCallback` — ganti ke plain function declarations | ✅ Selesai |
+| ✅ **20** | `ITEMS_PER_PAGE` duplikasi — `usePresensi.ts` dan `useStudentList.ts` | Pindah ke `lib/constants.ts` bersamaan dengan `GRADES` |
 
 ## Holiday System
 

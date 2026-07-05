@@ -12,9 +12,12 @@ import {
 import DateDayPicker from "@/app/components/DateDayPicker";
 import PresensiStatusBadge from "@/app/components/PresensiStatusBadge";
 import PresensiTable from "@/app/components/PresensiTable";
-import { usePresensi, GRADES } from "@/hooks/usePresensi";
+import { usePresensi } from "@/hooks/usePresensi";
+import { GRADES } from "@/lib/constants";
 import toast from "react-hot-toast";
 import HolidayService from "@/services/holiday.service";
+import Modal from "@/app/components/Modal";
+import PageHero from "@/app/components/PageHero";
 import HolidayInfoCard from "@/app/components/HolidayInfoCard";
 import { formatDateID, formatDateShort, MONTHS_ID, getTodayLocal } from "@/lib/format";
 import {
@@ -134,24 +137,7 @@ export default function PresensiMuridPage() {
 
   return (
     <div className="flex flex-col gap-6 p-4 md:p-6">
-      {/* Hero */}
-      <div className="relative bg-gradient-to-br from-indigo-500 via-indigo-600 to-purple-600 rounded-2xl overflow-hidden shadow-xl ">
-        <div className="absolute -top-6 -right-6 w-40 h-40 bg-white/5 rounded-full blur-2xl" />
-        <div className="absolute -bottom-8 -left-8 w-48 h-48 bg-indigo-400/20 rounded-full blur-3xl" />
-        <div className="relative p-5 md:p-6 flex items-center gap-4">
-          <div className="shrink-0 w-12 h-12 md:w-14 md:h-14 bg-white/15 rounded-xl flex items-center justify-center animate-iconBounce">
-            <CalendarCheck size={26} className="md:size-[30px] text-white" />
-          </div>
-          <div>
-            <h1 className="text-white text-lg md:text-xl font-bold">
-              Presensi Murid Harian
-            </h1>
-            <p className="text-indigo-200/80 text-xs md:text-sm mt-0.5">
-              Input kehadiran siswa per kelas
-            </p>
-          </div>
-        </div>
-      </div>
+      <PageHero icon={CalendarCheck} title="Presensi Murid Harian" description="Input kehadiran siswa per kelas" />
 
       {/* Filters */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 ">
@@ -267,19 +253,7 @@ export default function PresensiMuridPage() {
 
       {/* Holiday Management Modal */}
       {manageOpen && (
-        <div className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-xl w-full max-w-lg border border-white/20 dark:border-gray-700/50 p-5 max-h-[80vh] flex flex-col">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="font-semibold text-gray-800 dark:text-slate-100 text-sm md:text-base">
-                Kelola Hari Libur
-              </h3>
-              <button
-                onClick={() => setManageOpen(false)}
-                className="p-1 rounded-lg hover:bg-slate-100 dark:hover:bg-gray-800 transition-colors cursor-pointer"
-              >
-                <X size={18} className="text-gray-500" />
-              </button>
-            </div>
+        <Modal open onClose={() => setManageOpen(false)} title="Kelola Hari Libur" className="max-w-lg max-h-[80vh] flex flex-col">
 
             <div className="grid grid-cols-2 gap-2 mb-4">
               <Select
@@ -416,8 +390,7 @@ export default function PresensiMuridPage() {
                 </div>
               </div>
             )}
-          </div>
-        </div>
+        </Modal>
       )}
     </div>
   );

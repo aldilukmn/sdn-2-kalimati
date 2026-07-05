@@ -11,6 +11,15 @@ import DashboardStatCards from "@/app/components/DashboardStatCards";
 import AttendanceDonutChart from "@/app/components/AttendanceDonutChart";
 import AttendanceBarChart from "@/app/components/AttendanceBarChart";
 import MonthYearPicker from "@/app/components/MonthYearPicker";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import Pagination from "@/app/components/Pagination";
 import StudentAttendanceTable from "@/app/components/StudentAttendanceTable";
 import {
@@ -21,13 +30,16 @@ import {
   LayoutDashboard,
   Wallet,
   CalendarCheck,
+  TrendingUp,
+  TrendingDown,
 } from "lucide-react";
 import { useDashboard } from "@/hooks/useDashboard";
 import { useTeacherChart } from "@/hooks/useTeacherChart";
 import { useSavingsRecap } from "@/hooks/useSavingsRecap";
-import { GRADES } from "@/hooks/useStudentSavings";
-import { formatCompactRupiah } from "@/lib/format";
-import LoadingDots from "@/app/components/LoadingDots";
+import { GRADES } from "@/lib/constants";
+import { formatCompactRupiah, MONTHS_ID } from "@/lib/format";
+import StatCard from "@/app/components/StatCard";
+import PageHero from "@/app/components/PageHero";
 import type { AttendanceRow } from "@/lib/merge-attendance";
 
 interface Props {
@@ -65,24 +77,7 @@ function AdminDashboardView({
 
   return (
     <div className="p-4 md:p-6 space-y-6">
-      {/* Hero */}
-      <div className="relative bg-gradient-to-br from-indigo-500 via-indigo-600 to-purple-600 rounded-2xl overflow-hidden shadow-xl">
-        <div className="absolute -top-6 -right-6 w-40 h-40 bg-white/5 rounded-full blur-2xl" />
-        <div className="absolute -bottom-8 -left-8 w-48 h-48 bg-indigo-400/20 rounded-full blur-3xl" />
-        <div className="relative p-5 md:p-6 flex items-center gap-4">
-          <div className="shrink-0 w-12 h-12 md:w-14 md:h-14 bg-white/15 rounded-xl flex items-center justify-center animate-iconBounce">
-            <LayoutDashboard size={26} className="md:size-[30px] text-white" />
-          </div>
-          <div>
-            <h1 className="text-white text-lg md:text-xl font-bold">
-              Dashboard Admin
-            </h1>
-            <p className="text-indigo-200/80 text-xs md:text-sm mt-0.5">
-              Ringkasan data pendaftar, guru, dan kehadiran siswa
-            </p>
-          </div>
-        </div>
-      </div>
+      <PageHero icon={LayoutDashboard} title="Dashboard Admin" description="Ringkasan data pendaftar, guru, dan kehadiran siswa" />
 
       {error && (
         <div className="p-4 bg-red-100 border border-red-400 text-red-700 rounded-lg dark:bg-red-900/30 dark:border-red-700 dark:text-red-200">
@@ -167,25 +162,69 @@ function TabunganSection({ grade }: { grade?: string | null }) {
             Rekapitulasi Tabungan
           </h3>
         </div>
-        <div className="flex items-center gap-2.5 w-full md:w-auto md:ml-auto">
-          <select
+        <div className="grid grid-cols-3 gap-1.5 w-full md:flex md:w-auto md:items-center md:gap-2.5 md:ml-auto">
+          <Select
             value={filterGrade}
-            onChange={(e) => setFilterGrade(e.target.value)}
-            className="h-8 w-32 rounded border border-slate-300 bg-slate-50 text-xs text-slate-700 text-center appearance-none  transition-colors hover:border-blue-400 hover:bg-blue-50 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-300 dark:hover:border-blue-500 dark:hover:bg-blue-950/30 cursor-pointer"
+            onValueChange={(v) => {
+              if (v !== null) setFilterGrade(v);
+            }}
           >
-            <option value="">Semua Kelas</option>
-            {GRADES.map((g) => (
-              <option key={g} value={g}>
-                Kelas {g}
-              </option>
-            ))}
-          </select>
-          <MonthYearPicker
-            month={month}
-            year={year}
-            onMonthChange={setMonth}
-            onYearChange={setYear}
-          />
+            <SelectTrigger className="h-auto w-full md:w-32 rounded-lg border border-slate-300 bg-slate-50 px-2.5 py-1.5 text-xs focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100">
+              <SelectValue placeholder="Semua Kelas" className="sr-only" />
+              {filterGrade ? `Kelas ${filterGrade}` : "Semua Kelas"}
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectLabel>Kelas</SelectLabel>
+                <SelectItem value="">Semua Kelas</SelectItem>
+                {GRADES.map((g) => (
+                  <SelectItem key={g} value={g}>
+                    Kelas {g}
+                  </SelectItem>
+                ))}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+          <Select
+            value={String(month)}
+            onValueChange={(v) => {
+              if (v !== null) setMonth(Number(v));
+            }}
+          >
+            <SelectTrigger className="h-auto rounded-lg border border-slate-300 bg-slate-50 px-2.5 py-1.5 text-xs focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100 w-full md:w-[90px]">
+              <SelectValue placeholder="Bulan" className="sr-only" />
+              {MONTHS_ID[month - 1]}
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectLabel>Bulan</SelectLabel>
+                {MONTHS_ID.map((name, i) => (
+                  <SelectItem key={i + 1} value={String(i + 1)}>
+                    {name}
+                  </SelectItem>
+                ))}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+          <Select
+            value={String(year)}
+            onValueChange={(v) => {
+              if (v !== null) setYear(Number(v));
+            }}
+          >
+            <SelectTrigger className="h-auto w-full md:w-[80px] rounded-lg border border-slate-300 bg-slate-50 px-2.5 py-1.5 text-xs focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100">
+              <SelectValue placeholder="Tahun" className="sr-only" />
+              {year}
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectLabel>Tahun</SelectLabel>
+                {[2026, 2027].map((y) => (
+                  <SelectItem key={y} value={String(y)}>{y}</SelectItem>
+                ))}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
         </div>
       </div>
 
@@ -204,74 +243,46 @@ function TabunganSection({ grade }: { grade?: string | null }) {
         </div>
       ) : (
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-          <div className="bg-sky-50/80 dark:bg-sky-950/20 rounded-xl p-4 border border-sky-200/50 dark:border-sky-800/30">
-            <p className="text-xs text-gray-500 dark:text-gray-400">
-              Total Saldo
-            </p>
-            <p className="text-lg md:text-2xl font-bold text-sky-700 dark:text-sky-300 mt-1">
-              {loading ? (
-                <LoadingDots />
-              ) : (
-                formatCompactRupiah(data?.totalBalance || 0)
-              )}
-            </p>
-            <p className="text-[11px] text-gray-400 dark:text-gray-500 mt-0.5">
-              {loading ? (
-                <LoadingDots />
-              ) : (
-                `${data?.totalStudents || 0} siswa menabung`
-              )}
-            </p>
-          </div>
-          <div className="bg-emerald-50/80 dark:bg-emerald-950/20 rounded-xl p-4 border border-emerald-200/50 dark:border-emerald-800/30">
-            <p className="text-xs text-gray-500 dark:text-gray-400">
-              Setoran Bulan Ini
-            </p>
-            <p className="text-lg md:text-2xl font-bold text-emerald-700 dark:text-emerald-300 mt-1">
-              {loading ? (
-                <LoadingDots />
-              ) : (
-                formatCompactRupiah(data?.monthlyDeposits || 0)
-              )}
-            </p>
-          </div>
-          <div className="bg-orange-50/80 dark:bg-orange-950/20 rounded-xl p-4 border border-orange-200/50 dark:border-orange-800/30">
-            <p className="text-xs text-gray-500 dark:text-gray-400">
-              Penarikan Bulan Ini
-            </p>
-            <p className="text-lg md:text-2xl font-bold text-orange-700 dark:text-orange-300 mt-1">
-              {loading ? (
-                <LoadingDots />
-              ) : (
-                formatCompactRupiah(data?.monthlyWithdrawals || 0)
-              )}
-            </p>
-          </div>
-          <div className="bg-violet-50/80 dark:bg-violet-950/20 rounded-xl p-4 border border-violet-200/50 dark:border-violet-800/30">
-            <p className="text-xs text-gray-500 dark:text-gray-400">
-              Selisih Bulan Ini
-            </p>
-            <p
-              className={`text-lg md:text-2xl font-bold mt-1 ${
-                loading
-                  ? "text-gray-700 dark:text-gray-300"
-                  : (data?.monthlyDeposits || 0) -
-                        (data?.monthlyWithdrawals || 0) >=
-                      0
-                    ? "text-emerald-700 dark:text-emerald-300"
-                    : "text-red-600 dark:text-red-400"
-              }`}
-            >
-              {loading ? (
-                <LoadingDots />
-              ) : (
-                formatCompactRupiah(
-                  (data?.monthlyDeposits || 0) -
-                    (data?.monthlyWithdrawals || 0),
-                )
-              )}
-            </p>
-          </div>
+          <StatCard
+            variant="simple"
+            label="Total Saldo"
+            value={formatCompactRupiah(data?.totalBalance || 0)}
+            icon={Wallet}
+            color="sky"
+            loading={loading}
+            subtitle={data ? `${data.totalStudents || 0} siswa menabung` : undefined}
+          />
+          <StatCard
+            variant="simple"
+            label="Setoran Bulan Ini"
+            value={formatCompactRupiah(data?.monthlyDeposits || 0)}
+            icon={TrendingUp}
+            color="emerald"
+            loading={loading}
+          />
+          <StatCard
+            variant="simple"
+            label="Penarikan Bulan Ini"
+            value={formatCompactRupiah(data?.monthlyWithdrawals || 0)}
+            icon={TrendingDown}
+            color="orange"
+            loading={loading}
+          />
+          <StatCard
+            variant="simple"
+            label="Selisih Bulan Ini"
+            value={formatCompactRupiah((data?.monthlyDeposits || 0) - (data?.monthlyWithdrawals || 0))}
+            icon={TrendingUp}
+            color="violet"
+            loading={loading}
+            valueClassName={
+              loading
+                ? ""
+                : (data?.monthlyDeposits || 0) - (data?.monthlyWithdrawals || 0) >= 0
+                  ? "text-emerald-700 dark:text-emerald-300"
+                  : "text-red-600 dark:text-red-400"
+            }
+          />
         </div>
       )}
     </div>
@@ -378,26 +389,7 @@ function GuruDashboardView({
         <div className="h-28 w-full rounded-2xl animate-pulse bg-slate-200 dark:bg-slate-700" />
       ) : (
         <>
-          <div className="relative bg-gradient-to-br from-indigo-500 via-indigo-600 to-purple-600 rounded-2xl overflow-hidden shadow-xl">
-            <div className="absolute -top-6 -right-6 w-40 h-40 bg-white/5 rounded-full blur-2xl" />
-            <div className="absolute -bottom-8 -left-8 w-48 h-48 bg-indigo-400/20 rounded-full blur-3xl" />
-            <div className="relative p-5 md:p-6 flex items-center gap-5">
-              <div className="shrink-0 w-14 h-14 md:w-16 md:h-16 bg-white/15 backdrop-blur-sm rounded-xl flex items-center justify-center animate-iconBounce">
-                <LayoutDashboard
-                  size={28}
-                  className="md:size-[32px] text-white"
-                />
-              </div>
-              <div className="min-w-0">
-                <p className="text-indigo-200/80 text-xs md:text-sm font-medium tracking-wide">
-                  Selamat Datang,
-                </p>
-                <h1 className="text-white text-lg md:text-xl font-bold truncate">
-                  {userName || "Guru"}
-                </h1>
-              </div>
-            </div>
-          </div>
+          <PageHero icon={LayoutDashboard} title={userName || "Guru"} subtitle="Selamat Datang," iconSize="large" />
         </>
       )}
 

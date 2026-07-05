@@ -8,6 +8,7 @@ import LoadingModal from "@/app/components/LoadingModal";
 import RegistrationCounter from "@/app/components/RegistrationCounter";
 import RegistrationCard from "@/app/components/RegistrationCard";
 import BackButton from "@/app/components/BackButton";
+import type { RegistrationForm } from "@/types/registration";
 import StudentDataStep from "@/app/components/pmb/StudentDataStep";
 import ParentDataStep from "@/app/components/pmb/ParentDataStep";
 import GuardianDataStep from "@/app/components/pmb/GuardianDataStep";

@@ -18,21 +18,22 @@ export function useStudentMonthlyBreakdown(grade: string, year: number, refreshK
 
   useEffect(() => {
     if (!grade || !year) return;
-    let cancelled = false;
+    const controller = new AbortController();
+    const signal = controller.signal;
     setLoading(true);
     StudentSavingsService.getMonthlyBreakdown(grade, year)
       .then((res) => {
-        if (cancelled) return;
+        if (signal.aborted) return;
         const result = res?.data || res?.result || [];
         setData(Array.isArray(result) ? result : []);
       })
       .catch(() => {
-        if (!cancelled) setData([]);
+        if (!signal.aborted) setData([]);
       })
       .finally(() => {
-        if (!cancelled) setLoading(false);
+        if (!signal.aborted) setLoading(false);
       });
-    return () => { cancelled = true; };
+    return () => controller.abort();
   }, [grade, year, refreshKey]);
 
   return { data, loading };

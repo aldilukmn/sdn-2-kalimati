@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import DashboardService from "@/services/dashboard.service";
 import StudentAttendanceService from "@/services/student-attendance.service";
+import { GRADES } from "@/lib/constants";
 
 export interface DashboardSummary {
   totalRegistrants: number;
@@ -29,8 +30,6 @@ export interface TeacherSummary {
   maleCount: number;
   femaleCount: number;
 }
-
-export const GRADES = ["1", "2", "3", "4", "5", "6"];
 
 export function useDashboard(initialSummary?: DashboardSummary | null, initialMonth?: number, initialYear?: number) {
   const router = useRouter();

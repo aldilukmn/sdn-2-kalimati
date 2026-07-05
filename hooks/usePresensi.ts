@@ -4,8 +4,11 @@ import { useEffect, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import StudentAttendanceService from "@/services/student-attendance.service";
 import UserService from "@/services/user.service";
-import HolidayService from "@/services/holiday.service";
 import { getTodayLocal } from "@/lib/format";
+import { decodeJWT } from "@/lib/jwt";
+import { GRADES, ITEMS_PER_PAGE } from "@/lib/constants";
+import { useHolidays } from "@/hooks/useHolidays";
+import type { StudentAttendanceRequestType } from "@/types/attendance";
 
 export interface Entry {
   studentId: string;
@@ -30,8 +33,7 @@ export const STATUS_BTN: Record<string, string> = {
     "bg-red-500 hover:bg-red-600 text-white ring-2 ring-red-300 dark:ring-red-700",
 };
 
-export const GRADES = ["1", "2", "3", "4", "5", "6"];
-export const ITEMS_PER_PAGE = 5;
+
 
 export function usePresensi() {
   const router = useRouter();
@@ -54,27 +56,7 @@ export function usePresensi() {
   const [teacherName, setTeacherName] = useState<string | null>(null);
   const [teacherLoading, setTeacherLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [holidays, setHolidays] = useState<string[]>([]);
-  const [holidayList, setHolidayList] = useState<{ date: string; description: string; type: string }[]>([]);
-  const [holidaysLoaded, setHolidaysLoaded] = useState(false);
-
-  const refreshHolidays = useCallback(async () => {
-    try {
-      const data = await HolidayService.getAll();
-      const newHolidays = data.map((h: any) => h.date);
-      setHolidays((prev) =>
-        prev.length === newHolidays.length && prev.every((d, i) => d === newHolidays[i])
-          ? prev
-          : newHolidays,
-      );
-      setHolidayList((prev) =>
-        prev.length === data.length && prev.every((h, i) => h.date === data[i].date)
-          ? prev
-          : data,
-      );
-    } catch {}
-    setHolidaysLoaded(true);
-  }, []);
+  const { holidayList, holidays, loaded: holidaysLoaded, refresh: refreshHolidays, isHoliday: checkHoliday } = useHolidays();
 
   useEffect(() => {
     refreshHolidays();
@@ -84,8 +66,8 @@ export function usePresensi() {
     const token = sessionStorage.getItem("user_session");
     if (token) {
       try {
-        const payload = JSON.parse(atob(token.split(".")[1]));
-        setUserRole(payload.role);
+        const payload = decodeJWT(token);
+        if (payload) setUserRole(payload.role);
         setUserGrade(payload.grade);
         if (payload.role === "guru" && payload.grade) {
           setGrade(payload.grade);
@@ -121,7 +103,7 @@ export function usePresensi() {
     const hasEntries = entries.length > 0;
 
     const loadData = async () => {
-      if (holidays.includes(date)) {
+      if (checkHoliday(date)) {
         setEntries([]);
         setIsExisting(false);
         setMessage(null);
@@ -198,7 +180,7 @@ export function usePresensi() {
 
   const handleSave = useCallback(async () => {
     if (!date || !grade || entries.length === 0) return;
-    if (holidays.includes(date)) {
+    if (checkHoliday(date)) {
       setMessage({ type: "error", text: "Tidak bisa menyimpan presensi di hari libur!" });
       return;
     }
@@ -242,7 +224,7 @@ export function usePresensi() {
   const totalPages = Math.ceil(entries.length / ITEMS_PER_PAGE);
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const paginatedEntries = entries.slice(startIndex, startIndex + ITEMS_PER_PAGE);
-  const isHoliday = holidays.includes(date);
+  const isHoliday = checkHoliday(date);
 
   return {
     grade,

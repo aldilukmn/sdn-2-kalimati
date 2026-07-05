@@ -1,7 +1,8 @@
 "use client";
 
 import type { Entry } from "@/hooks/usePresensi";
-import { STATUS_LABEL, STATUS_BTN, ITEMS_PER_PAGE } from "@/hooks/usePresensi";
+import { STATUS_LABEL, STATUS_BTN } from "@/hooks/usePresensi";
+import { ITEMS_PER_PAGE } from "@/lib/constants";
 import Pagination from "@/app/components/Pagination";
 
 interface Props {

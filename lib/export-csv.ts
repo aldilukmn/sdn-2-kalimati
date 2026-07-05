@@ -1,58 +1,6 @@
 import { getTodayLocal } from "./format";
-
-interface Address {
-  street?: string;
-  rt?: string;
-  rw?: string;
-  village?: string;
-  district?: string;
-  postalCode?: string;
-}
-
-interface Parent {
-  name?: string;
-  birthYear?: string;
-  occupation?: string;
-  education?: string;
-  monthlyIncome?: string;
-  nik?: string;
-}
-
-interface Guardian {
-  name?: string;
-  relationship?: string;
-  phoneNumber?: string;
-}
-
-interface Student {
-  address?: Address;
-  fullName?: string;
-  nik?: string;
-  nisn?: string;
-  noKk?: string;
-  birthPlace?: string;
-  birthDate?: Date;
-  gender?: string;
-  religion?: string;
-  childOrder?: string;
-  kindergartenOrigin?: string;
-  numberOfSiblings?: string;
-}
-
-interface Registrant {
-  _id?: string;
-  id?: string;
-  student?: Student;
-  father?: Parent;
-  mother?: Parent;
-  guardian?: Guardian;
-  registrationNumber?: string;
-  status?: string;
-  contactPhoneNumber?: string;
-  hasGuardian?: boolean;
-  createdAt?: string;
-  updatedAt?: string;
-}
+import { wrap, downloadCSV } from "./csv-utils";
+import type { Registrant } from "@/types/registration";
 
 const HEADERS = [
   "No. Pendaftaran",
@@ -108,14 +56,6 @@ function formatDate(dateStr?: string | Date): string {
   } catch {
     return String(dateStr);
   }
-}
-
-function wrap(value: unknown): string {
-  const str = String(value ?? "-");
-  if (str.includes(",") || str.includes('"') || str.includes("\n")) {
-    return `"${str.replace(/"/g, '""')}"`;
-  }
-  return str;
 }
 
 export function exportRegistrantsToCSV(registrants: Registrant[]): void {
@@ -174,16 +114,5 @@ export function exportRegistrantsToCSV(registrants: Registrant[]): void {
     ].map(wrap).join(",");
   });
 
-  const bom = "\uFEFF";
-  const csv = bom + HEADERS.join(",") + "\n" + rows.join("\n");
-
-  const blob = new Blob([csv], { type: "text/csv;charset=utf-8;bom" });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = `data-pendaftar-pmb-${getTodayLocal()}.csv`;
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
+  downloadCSV(HEADERS, rows, `data-pendaftar-pmb-${getTodayLocal()}.csv`);
 }

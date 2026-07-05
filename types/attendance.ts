@@ -1,10 +1,10 @@
-interface MasterStudentType {
+export interface MasterStudentType {
   studentId: string;
   name: string;
   grade: string;
 }
 
-interface StudentAttendanceType {
+export interface StudentAttendanceType {
   studentId: string;
   name: string;
   grade: string;
@@ -13,7 +13,7 @@ interface StudentAttendanceType {
   note?: string;
 }
 
-interface StudentAttendanceRequestType {
+export interface StudentAttendanceRequestType {
   date: string;
   grade: string;
   entries: { studentId: string; status: "hadir" | "sakit" | "izin" | "absen" }[];

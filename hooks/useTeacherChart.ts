@@ -27,18 +27,15 @@ export function useTeacherChart(
       return;
     }
 
-    // Skip initial fetch if data matches server-preloaded month/year
-    if (
-      initialData &&
-      month === initialMonth &&
-      year === initialYear
-    ) {
+    if (initialData && month === initialMonth && year === initialYear) {
       setLoading(false);
       return;
     }
 
-    let cancelled = false;
-    const fetchData = async () => {
+    const controller = new AbortController();
+    const signal = controller.signal;
+
+    (async () => {
       setLoading(true);
       try {
         const [studentsRes, attendanceRes] = await Promise.all([
@@ -50,23 +47,21 @@ export function useTeacherChart(
 
         const { data: merged, hasData } = mergeAttendance(students, attendance);
 
-        if (!cancelled) {
+        if (!signal.aborted) {
           setData(merged);
           setHasAttendanceData(hasData);
         }
       } catch {
-        if (!cancelled) {
+        if (!signal.aborted) {
           setData([]);
           setHasAttendanceData(false);
         }
       } finally {
-        if (!cancelled) setLoading(false);
+        if (!signal.aborted) setLoading(false);
       }
-    };
-    fetchData();
-    return () => {
-      cancelled = true;
-    };
+    })();
+
+    return () => controller.abort();
   }, [grade, month, year]);
 
   return { data, loading, hasAttendanceData };

@@ -5,6 +5,7 @@ import InputField from "@/app/components/form/InputField";
 import SelectField from "@/app/components/form/SelectField";
 import DatePickerField from "@/app/components/DatePickerField";
 import { GENDER_OPTIONS, RELIGION_OPTIONS } from "@/app/data/form-options";
+import type { RegistrationForm } from "@/types/registration";
 
 interface StudentDataStepProps {
   formData: RegistrationForm;

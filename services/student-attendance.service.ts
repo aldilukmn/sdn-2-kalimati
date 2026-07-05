@@ -1,4 +1,5 @@
 import { api } from "@/lib/api";
+import type { StudentAttendanceRequestType } from "@/types/attendance";
 
 export default class StudentAttendanceService {
   static async create(data: StudentAttendanceRequestType) {

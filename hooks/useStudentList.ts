@@ -1,0 +1,180 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import StudentSavingsService from "@/services/student-savings.service";
+import { decodeJWT } from "@/lib/jwt";
+import { GRADES, ITEMS_PER_PAGE } from "@/lib/constants";
+
+export interface StudentWithBalance {
+  studentId: string;
+  name: string;
+  grade: string;
+  balance: number;
+  todayDeposit?: number;
+  todayWithdrawal?: number;
+}
+
+export interface StudentSavingsSummary {
+  grade: string;
+  date: string;
+  totalStudents: number;
+  dailyDeposits: number;
+  dailyWithdrawals: number;
+}
+
+
+
+export function useStudentList() {
+  const router = useRouter();
+
+  const [userRole, setUserRole] = useState<string | null>(null);
+  const [userGrade, setUserGrade] = useState<string | null>(null);
+  const [grade, setGrade] = useState("1");
+  const [date, setDate] = useState(() => {
+    const d = new Date();
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+  });
+
+  const [students, setStudents] = useState<StudentWithBalance[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const [summary, setSummary] = useState<StudentSavingsSummary | null>(null);
+  const [summaryLoading, setSummaryLoading] = useState(true);
+
+  const [message, setMessage] = useState<{
+    type: "success" | "error";
+    text: string;
+  } | null>(null);
+
+  useEffect(() => {
+    const token = sessionStorage.getItem("user_session");
+    if (token) {
+      try {
+        const payload = decodeJWT(token);
+        if (payload) {
+          setUserRole(payload.role);
+          setUserGrade(payload.grade);
+        }
+        if (payload?.role === "guru" && payload?.grade) {
+          setGrade(payload.grade);
+        }
+      } catch {}
+    }
+  }, []);
+
+  useEffect(() => {
+    if (
+      userRole &&
+      userRole !== "guru" &&
+      userRole !== "admin" &&
+      userRole !== "kepala"
+    ) {
+      router.replace("/login");
+    }
+  }, [userRole, router]);
+
+  useEffect(() => {
+    if (!grade) return;
+    const controller = new AbortController();
+    const signal = controller.signal;
+    (async () => {
+      setLoading(true);
+      try {
+        const res = await StudentSavingsService.getByGrade(grade, date);
+        if (!signal.aborted) {
+          setStudents(res?.result || []);
+          setCurrentPage(1);
+        }
+      } catch (e: any) {
+        if (!signal.aborted) {
+          setStudents([]);
+          setMessage({ type: "error", text: e.message || "Gagal memuat data" });
+        }
+      } finally {
+        if (!signal.aborted) setLoading(false);
+      }
+    })();
+    return () => controller.abort();
+  }, [grade, date]);
+
+  useEffect(() => {
+    if (!grade || !date) return;
+    const controller = new AbortController();
+    const signal = controller.signal;
+    (async () => {
+      setSummaryLoading(true);
+      try {
+        const res = await StudentSavingsService.getSummary(grade, date);
+        if (!signal.aborted) {
+          setSummary(res?.result || null);
+        }
+      } catch {
+        if (!signal.aborted) setSummary(null);
+      } finally {
+        if (!signal.aborted) setSummaryLoading(false);
+      }
+    })();
+    return () => controller.abort();
+  }, [grade, date]);
+
+  const refreshList = async () => {
+    const res = await StudentSavingsService.getByGrade(grade, date);
+    setStudents(res?.result || []);
+    const res2 = await StudentSavingsService.getSummary(grade, date);
+    setSummary(res2?.result || null);
+  };
+
+  const exportExcel = () => {
+    import("xlsx").then((XLSX) => {
+      const data = students.map((s, i) => ({
+        No: i + 1,
+        "NIS": s.studentId,
+        Nama: s.name,
+        Kelas: s.grade,
+        Saldo: s.balance,
+      }));
+      const ws = XLSX.utils.json_to_sheet(data);
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, "Tabungan");
+      ws["!cols"] = [
+        { wch: 4 },
+        { wch: 12 },
+        { wch: 30 },
+        { wch: 6 },
+        { wch: 15 },
+      ];
+      XLSX.writeFile(wb, `Tabungan_Kelas_${grade}.xlsx`);
+    });
+  };
+
+  const totalPages = Math.ceil(students.length / ITEMS_PER_PAGE);
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const paginatedStudents = students.slice(
+    startIndex,
+    startIndex + ITEMS_PER_PAGE
+  );
+
+  return {
+    userRole,
+    userGrade,
+    grade,
+    setGrade,
+    date,
+    setDate,
+    students,
+    paginatedStudents,
+    loading,
+    currentPage,
+    setCurrentPage,
+    totalPages,
+    startIndex,
+    summary,
+    summaryLoading,
+    message,
+    setMessage,
+    refreshList,
+    exportExcel,
+  };
+}

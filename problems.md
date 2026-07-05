@@ -1,20 +1,27 @@
 ## Error Type
-Runtime Error
+Build Error
 
 ## Error Message
-Base UI: SelectGroupContext is missing. SelectGroup parts must be placed within <Select.Group>.
+Return statement is not allowed here
 
+## Build Output
+./app/(admin)/layout.tsx:33:3
+Return statement is not allowed here
+  31 |   }
+  32 |
+> 33 |   return (
+     |   ^^^^^^^
+> 34 |     <DashboardShell userRole={userRole} userName={userName} userGrade={userGrade}>
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 35 |       {children}
+     | ^^^^^^^^^^^^^^^^
+> 36 |     </DashboardShell>
+     | ^^^^^^^^^^^^^^^^^^^^^
+> 37 |   );
+     | ^^^^
+  38 | }
+  39 |
 
-    at SelectLabel (components/ui/select.tsx:103:5)
-    at PresensiMuridPage (app/(admin)/presensi-murid/page.tsx:316:19)
-
-## Code Frame
-  101 | }: SelectPrimitive.GroupLabel.Props) {
-  102 |   return (
-> 103 |     <SelectPrimitive.GroupLabel
-      |     ^
-  104 |       data-slot="select-label"
-  105 |       className={cn("px-1.5 py-1 text-xs text-muted-foreground", className)}
-  106 |       {...props}
+Parsing ecmascript source code failed
 
 Next.js version: 16.2.6 (Turbopack)
