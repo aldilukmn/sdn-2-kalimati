@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { Wallet } from "lucide-react";
 import { useStudentList } from "@/hooks/useStudentList";
 import { GRADES } from "@/lib/constants";
@@ -46,8 +46,6 @@ export default function TabunganMuridPage() {
     setCurrentPage,
     totalPages,
     startIndex,
-    summary,
-    summaryLoading,
     message,
     setMessage,
     students,
@@ -122,15 +120,26 @@ export default function TabunganMuridPage() {
     monthlyPage * MONTHLY_PER_PAGE
   );
 
-  const [gradeRecapMode, setGradeRecapMode] = useState<"daily" | "monthly">("monthly");
-  const [gradeRecapDate, setGradeRecapDate] = useState(getTodayLocal());
+  const [gradeRecapMode, setGradeRecapMode] = useState<"daily" | "monthly">("daily");
   const [gradeRecapMonth, setGradeRecapMonth] = useState(new Date().getMonth() + 1);
   const [gradeRecapYear, setGradeRecapYear] = useState(new Date().getFullYear());
   const { data: gradeRecapData, loading: gradeRecapLoading } = useGradeRecap(
-    gradeRecapMode === "daily" ? gradeRecapDate : undefined,
+    gradeRecapMode === "daily" ? date : undefined,
     gradeRecapMode === "monthly" ? gradeRecapMonth : undefined,
     gradeRecapMode === "monthly" ? gradeRecapYear : undefined,
+    refreshKey,
   );
+
+  const summary = useMemo(() => {
+    if (gradeRecapMode !== "daily" || gradeRecapData.length === 0 || !grade) return null;
+    const gradeData = gradeRecapData.find(g => g.grade === grade);
+    return gradeData ? {
+      totalStudents: gradeData.totalStudents,
+      dailyDeposits: gradeData.deposits,
+      dailyWithdrawals: gradeData.withdrawals,
+    } : null;
+  }, [gradeRecapData, gradeRecapMode, grade]);
+  const summaryLoading = gradeRecapLoading;
 
   useEffect(() => { setMonthlyPage(1); }, [grade, year]);
 
@@ -155,15 +164,17 @@ export default function TabunganMuridPage() {
 
       {showGradeRecap && (
         <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5 relative z-10">
-          <div className="flex items-center gap-2.5 mb-3">
-            <div className="w-8 h-8 bg-indigo-100 dark:bg-indigo-900/40 rounded-lg flex items-center justify-center">
-              <Wallet size={16} className="text-indigo-600 dark:text-indigo-300" />
+          <div className="flex flex-col md:flex-row md:items-center gap-2.5 mb-3">
+            <div className="flex items-center gap-2.5">
+              <div className="w-8 h-8 bg-indigo-100 dark:bg-indigo-900/40 rounded-lg flex items-center justify-center">
+                <Wallet size={16} className="text-indigo-600 dark:text-indigo-300" />
+              </div>
+              <h3 className="font-semibold text-gray-700 dark:text-gray-300">
+                Rekap Tabungan per Kelas
+              </h3>
             </div>
-            <h3 className="font-semibold text-gray-700 dark:text-gray-300">
-              Rekap Tabungan per Kelas
-            </h3>
-            <div className="ml-auto flex items-center gap-2">
-              <div className="flex gap-1 bg-slate-100 dark:bg-gray-900 rounded-lg p-0.5">
+            <div className="flex flex-col md:flex-row md:items-center gap-2 w-full md:w-auto md:ml-auto">
+              <div className="grid grid-cols-2 gap-1 bg-slate-100 dark:bg-gray-900 rounded-lg p-0.5 w-full md:w-auto order-2 md:order-1">
                 <button
                   onClick={() => setGradeRecapMode("daily")}
                   className={`px-2.5 py-1 rounded-md text-xs font-semibold transition-colors cursor-pointer ${
@@ -186,14 +197,16 @@ export default function TabunganMuridPage() {
                 </button>
               </div>
               {gradeRecapMode === "daily" ? (
-                <DateDayPicker value={gradeRecapDate} onChange={setGradeRecapDate} max={getTodayLocal()} />
+                <div className="w-full md:w-auto order-1 md:order-2">
+                  <DateDayPicker value={date} onChange={setDate} max={getTodayLocal()} />
+                </div>
               ) : (
-                <>
+                <div className="grid grid-cols-2 gap-1 w-full md:w-auto order-1 md:order-2">
                   <Select
                     value={String(gradeRecapMonth)}
                     onValueChange={(v) => { if (v !== null) setGradeRecapMonth(Number(v)); }}
                   >
-                    <SelectTrigger className="h-auto rounded-lg border border-slate-300 bg-slate-50 px-2.5 py-1.5 text-xs focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100 w-[90px]">
+                    <SelectTrigger className="h-auto rounded-lg border border-slate-300 bg-slate-50 px-2.5 py-1.5 text-xs focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100 w-full">
                       <SelectValue placeholder="Bulan" className="sr-only" />
                       {MONTHS_ID[gradeRecapMonth - 1]}
                     </SelectTrigger>
@@ -210,7 +223,7 @@ export default function TabunganMuridPage() {
                     value={String(gradeRecapYear)}
                     onValueChange={(v) => { if (v !== null) setGradeRecapYear(Number(v)); }}
                   >
-                    <SelectTrigger className="h-auto rounded-lg border border-slate-300 bg-slate-50 px-2.5 py-1.5 text-xs focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100 w-[80px]">
+                    <SelectTrigger className="h-auto rounded-lg border border-slate-300 bg-slate-50 px-2.5 py-1.5 text-xs focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100 w-full">
                       <SelectValue placeholder="Tahun" className="sr-only" />
                       {gradeRecapYear}
                     </SelectTrigger>
@@ -223,7 +236,7 @@ export default function TabunganMuridPage() {
                       </SelectGroup>
                     </SelectContent>
                   </Select>
-                </>
+                </div>
               )}
             </div>
           </div>

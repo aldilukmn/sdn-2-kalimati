@@ -1,7 +1,6 @@
 import { api } from "@/lib/api";
 import type {
   StudentSavingsStudent,
-  SavingsSummary,
   MonthlyRecap,
   MonthlyBreakdownItem,
   Transaction,
@@ -15,12 +14,6 @@ export default class StudentSavingsService {
     let url = `/student-savings?grade=${grade}`;
     if (date) url += `&date=${date}`;
     return await api<StudentSavingsStudent[]>(url);
-  }
-
-  static async getSummary(grade: string, date: string) {
-    return await api<SavingsSummary>(
-      `/student-savings/summary?grade=${grade}&date=${date}`
-    );
   }
 
   static async createTransaction(data: {

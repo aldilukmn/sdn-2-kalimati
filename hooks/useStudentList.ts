@@ -17,8 +17,6 @@ export interface StudentWithBalance {
 
 export type StudentSavingsSummary = import("@/types/student-savings").SavingsSummary;
 
-
-
 export function useStudentList() {
   const router = useRouter();
 
@@ -35,9 +33,6 @@ export function useStudentList() {
   const [students, setStudents] = useState<StudentWithBalance[]>([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
-
-  const [summary, setSummary] = useState<StudentSavingsSummary | null>(null);
-  const [summaryLoading, setSummaryLoading] = useState(true);
 
   const [message, setMessage] = useState<{
     type: "success" | "error";
@@ -113,31 +108,9 @@ export function useStudentList() {
     return () => controller.abort();
   }, [grade, date]);
 
-  useEffect(() => {
-    if (!grade || !date) return;
-    const controller = new AbortController();
-    const signal = controller.signal;
-    (async () => {
-      setSummaryLoading(true);
-      try {
-        const res = await StudentSavingsService.getSummary(grade, date);
-        if (!signal.aborted) {
-          setSummary(res?.result || null);
-        }
-      } catch {
-        if (!signal.aborted) setSummary(null);
-      } finally {
-        if (!signal.aborted) setSummaryLoading(false);
-      }
-    })();
-    return () => controller.abort();
-  }, [grade, date]);
-
   const refreshList = async () => {
     const res = await StudentSavingsService.getByGrade(grade, date);
     setStudents(res?.result || []);
-    const res2 = await StudentSavingsService.getSummary(grade, date);
-    setSummary(res2?.result || null);
   };
 
   const exportExcel = () => {
@@ -186,8 +159,6 @@ export function useStudentList() {
     setCurrentPage,
     totalPages,
     startIndex,
-    summary,
-    summaryLoading,
     message,
     setMessage,
     refreshList,

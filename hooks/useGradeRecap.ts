@@ -4,12 +4,11 @@ import { useEffect, useState, useCallback } from "react";
 import StudentSavingsService from "@/services/student-savings.service";
 import type { GradeRecap } from "@/types/student-savings";
 
-export function useGradeRecap(date?: string, month?: number, year?: number) {
+export function useGradeRecap(date?: string, month?: number, year?: number, refreshKey?: number) {
   const [data, setData] = useState<GradeRecap[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const refresh = useCallback(async () => {
-    setLoading(true);
     try {
       const res = await StudentSavingsService.getGradeRecap(date, month, year);
       setData(res?.result || []);
@@ -24,7 +23,6 @@ export function useGradeRecap(date?: string, month?: number, year?: number) {
     const controller = new AbortController();
     let cancelled = false;
     (async () => {
-      setLoading(true);
       try {
         const res = await StudentSavingsService.getGradeRecap(date, month, year);
         if (!cancelled) setData(res?.result || []);
@@ -35,7 +33,7 @@ export function useGradeRecap(date?: string, month?: number, year?: number) {
       }
     })();
     return () => { cancelled = true; };
-  }, [date, month, year]);
+  }, [date, month, year, refreshKey]);
 
   return { data, loading, refresh };
 }

@@ -10,7 +10,9 @@ interface GradeRecapTableProps {
 }
 
 export default function GradeRecapTable({
-  data, loading, mode,
+  data,
+  loading,
+  mode,
 }: GradeRecapTableProps) {
   const totalStudents = data.reduce((sum, g) => sum + g.totalStudents, 0);
   const totalDeposits = data.reduce((sum, g) => sum + g.deposits, 0);
@@ -25,11 +27,17 @@ export default function GradeRecapTable({
       <table className="w-full">
         <thead>
           <tr className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-xs md:text-sm">
-            <th className="px-3 py-3 text-left font-semibold whitespace-nowrap">Kelas</th>
-            <th className="px-3 py-3 text-center font-semibold whitespace-nowrap">Siswa</th>
-            <th className="px-3 py-3 text-right font-semibold whitespace-nowrap">{mode === "daily" ? "Setoran" : "Saldo"}</th>
-            <th className="px-3 py-3 text-right font-semibold whitespace-nowrap">Penarikan</th>
-            <th className="px-3 py-3 text-right font-semibold whitespace-nowrap">±</th>
+            <th className="px-3 py-3 font-semibold whitespace-nowrap">Kelas</th>
+            <th className="px-3 py-3 font-semibold whitespace-nowrap">Siswa</th>
+            <th className="px-3 py-3 font-semibold whitespace-nowrap">
+              {mode === "daily" ? "Setoran" : "Saldo"}
+            </th>
+            <th className="px-3 py-3 font-semibold whitespace-nowrap">
+              Penarikan
+            </th>
+            <th className="px-3 py-3 font-semibold whitespace-nowrap">
+              Selisih
+            </th>
           </tr>
         </thead>
         <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
@@ -38,14 +46,19 @@ export default function GradeRecapTable({
               <tr key={i} className="animate-pulse">
                 {Array.from({ length: cols }).map((_, j) => (
                   <td key={j} className="px-3 py-3">
-                    <div className={`h-4 ${j === 0 ? "w-12" : "w-20 ml-auto"} bg-slate-200 dark:bg-slate-700 rounded`} />
+                    <div
+                      className={`h-4 ${j === 0 ? "w-12" : "w-20 mx-auto"} bg-slate-200 dark:bg-slate-700 rounded`}
+                    />
                   </td>
                 ))}
               </tr>
             ))
           ) : data.length === 0 ? (
             <tr>
-              <td colSpan={cols} className="px-3 py-8 text-center text-gray-400">
+              <td
+                colSpan={cols}
+                className="px-3 py-8 text-center text-gray-400"
+              >
                 Belum ada data tabungan
               </td>
             </tr>
@@ -54,20 +67,29 @@ export default function GradeRecapTable({
               const selisih = g.deposits - g.withdrawals;
 
               return (
-                <tr key={g.grade} className="hover:bg-indigo-50/50 dark:hover:bg-indigo-900/20 transition-colors">
-                  <td className="px-3 py-3 text-sm font-medium text-gray-700 dark:text-slate-200">Kelas {g.grade}</td>
-                  <td className="px-3 py-3 text-sm text-center text-gray-600 dark:text-gray-400">{g.totalStudents}</td>
-                  <td className="px-3 py-3 text-sm text-right font-medium text-emerald-700 dark:text-emerald-300">
+                <tr
+                  key={g.grade}
+                  className="hover:bg-indigo-50/50 dark:hover:bg-indigo-900/20 transition-colors text-center"
+                >
+                  <td className="px-3 py-3 text-sm font-medium text-gray-700 dark:text-slate-200 whitespace-nowrap">
+                    Kelas {g.grade}
+                  </td>
+                  <td className="px-3 py-3 text-sm text-gray-600 dark:text-gray-400 whitespace-nowrap">
+                    {g.totalStudents}
+                  </td>
+                  <td className="px-3 py-3 text-sm font-medium text-emerald-700 dark:text-emerald-300 whitespace-nowrap">
                     {formatCompactRupiah(g.deposits)}
                   </td>
-                  <td className="px-3 py-3 text-sm text-right font-medium text-orange-600 dark:text-orange-400">
+                  <td className="px-3 py-3 text-sm font-medium text-orange-600 dark:text-orange-400 whitespace-nowrap">
                     {formatCompactRupiah(g.withdrawals)}
                   </td>
-                  <td className={`px-3 py-3 text-sm text-right font-semibold ${
-                    selisih >= 0
-                      ? "text-emerald-700 dark:text-emerald-300"
-                      : "text-red-600 dark:text-red-400"
-                  }`}>
+                  <td
+                    className={`px-3 py-3 text-sm font-semibold whitespace-nowrap ${
+                      selisih >= 0
+                        ? "text-emerald-700 dark:text-emerald-300"
+                        : "text-red-600 dark:text-red-400"
+                    }`}
+                  >
                     {formatCompactRupiah(selisih)}
                   </td>
                 </tr>
@@ -77,20 +99,26 @@ export default function GradeRecapTable({
         </tbody>
         {!loading && data.length > 0 && (
           <tfoot>
-            <tr className="bg-slate-100 dark:bg-gray-700/50 font-semibold">
-              <td className="px-3 py-3 text-sm text-gray-800 dark:text-slate-100">Total</td>
-              <td className="px-3 py-3 text-sm text-center text-gray-800 dark:text-slate-100">{totalStudents}</td>
-              <td className="px-3 py-3 text-sm text-right text-emerald-700 dark:text-emerald-300">
+            <tr className="bg-slate-100 dark:bg-gray-700/50 font-semibold text-center">
+              <td className="px-3 py-3 text-sm text-gray-800 dark:text-slate-100 whitespace-nowrap">
+                Total
+              </td>
+              <td className="px-3 py-3 text-sm text-gray-800 dark:text-slate-100 whitespace-nowrap">
+                {totalStudents}
+              </td>
+              <td className="px-3 py-3 text-sm text-emerald-700 dark:text-emerald-300 whitespace-nowrap">
                 {formatCompactRupiah(totalDeposits)}
               </td>
-              <td className="px-3 py-3 text-sm text-right text-orange-600 dark:text-orange-400">
+              <td className="px-3 py-3 text-sm text-orange-600 dark:text-orange-400 whitespace-nowrap">
                 {formatCompactRupiah(totalWithdrawals)}
               </td>
-              <td className={`px-3 py-3 text-sm text-right ${
-                diff >= 0
-                  ? "text-emerald-700 dark:text-emerald-300"
-                  : "text-red-600 dark:text-red-400"
-              }`}>
+              <td
+                className={`px-3 py-3 text-sm whitespace-nowrap ${
+                  diff >= 0
+                    ? "text-emerald-700 dark:text-emerald-300"
+                    : "text-red-600 dark:text-red-400"
+                }`}
+              >
                 {formatCompactRupiah(diff)}
               </td>
             </tr>
