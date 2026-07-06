@@ -116,7 +116,7 @@ function AdminDashboardView({
                 value={String(month)}
                 onValueChange={(v) => { if (v !== null) setMonth(Number(v)); }}
               >
-                <SelectTrigger className="h-auto rounded-lg border border-slate-300 bg-slate-50 px-2.5 py-1.5 text-xs focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100 w-[110px]">
+                <SelectTrigger className="h-auto rounded-lg border border-slate-300 bg-slate-50 px-2.5 py-1.5 text-xs focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100 flex-1">
                   <SelectValue placeholder="Bulan" className="sr-only" />
                   {MONTHS_ID[month - 1]}
                 </SelectTrigger>
@@ -133,7 +133,7 @@ function AdminDashboardView({
                 value={String(year)}
                 onValueChange={(v) => { if (v !== null) setYear(Number(v)); }}
               >
-                <SelectTrigger className="h-auto rounded-lg border border-slate-300 bg-slate-50 px-2.5 py-1.5 text-xs focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100 w-[80px]">
+                <SelectTrigger className="h-auto rounded-lg border border-slate-300 bg-slate-50 px-2.5 py-1.5 text-xs focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100 flex-1">
                   <SelectValue placeholder="Tahun" className="sr-only" />
                   {year}
                 </SelectTrigger>
@@ -276,7 +276,7 @@ function TabunganSection({ grade, userRole, isTreasurer }: { grade?: string | nu
               if (v !== null) setYear(Number(v));
             }}
           >
-            <SelectTrigger className="h-auto w-full md:w-[80px] rounded-lg border border-slate-300 bg-slate-50 px-2.5 py-1.5 text-xs focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100">
+            <SelectTrigger className="h-auto w-full md:flex-1 rounded-lg border border-slate-300 bg-slate-50 px-2.5 py-1.5 text-xs focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100">
               <SelectValue placeholder="Tahun" className="sr-only" />
               {year}
             </SelectTrigger>
@@ -329,7 +329,7 @@ function TabunganSection({ grade, userRole, isTreasurer }: { grade?: string | nu
             label="Penarikan Bulan Ini"
             value={formatCompactRupiah(data?.monthlyWithdrawals || 0)}
             icon={TrendingDown}
-            color="orange"
+            color="rose"
             loading={loading}
           />
           <StatCard
@@ -343,7 +343,7 @@ function TabunganSection({ grade, userRole, isTreasurer }: { grade?: string | nu
               loading
                 ? ""
                 : (data?.monthlyDeposits || 0) - (data?.monthlyWithdrawals || 0) >= 0
-                  ? "text-emerald-700 dark:text-emerald-300"
+                  ? "text-violet-700 dark:text-violet-300"
                   : "text-red-600 dark:text-red-400"
             }
           />
@@ -525,13 +525,13 @@ function GuruDashboardView({
                 Pantau kehadiran siswa per bulan
               </p>
             </div>
-            <div className="shrink-0">
+            <div className="shrink-0 w-full md:w-auto">
               <div className="flex items-center gap-2">
                 <Select
                   value={String(month)}
                   onValueChange={(v) => { if (v !== null) setMonth(Number(v)); }}
                 >
-                  <SelectTrigger className="h-auto rounded-lg border border-slate-300 bg-slate-50 px-2.5 py-1.5 text-xs focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100 w-[110px]">
+                  <SelectTrigger className="h-auto rounded-lg border border-slate-300 bg-slate-50 px-2.5 py-1.5 text-xs focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100 flex-1">
                     <SelectValue placeholder="Bulan" className="sr-only" />
                     {MONTHS_ID[month - 1]}
                   </SelectTrigger>
@@ -548,7 +548,7 @@ function GuruDashboardView({
                   value={String(year)}
                   onValueChange={(v) => { if (v !== null) setYear(Number(v)); }}
                 >
-                  <SelectTrigger className="h-auto rounded-lg border border-slate-300 bg-slate-50 px-2.5 py-1.5 text-xs focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100 w-[80px]">
+                  <SelectTrigger className="h-auto rounded-lg border border-slate-300 bg-slate-50 px-2.5 py-1.5 text-xs focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100 flex-1">
                     <SelectValue placeholder="Tahun" className="sr-only" />
                     {year}
                   </SelectTrigger>
@@ -581,13 +581,13 @@ function GuruDashboardView({
                 Pantau kehadiran siswa per bulan
               </p>
             </div>
-            <div className="shrink-0">
+            <div className="shrink-0 w-full md:w-auto">
               <div className="flex items-center gap-2">
                 <Select
                   value={String(month)}
                   onValueChange={(v) => { if (v !== null) setMonth(Number(v)); }}
                 >
-                  <SelectTrigger className="h-auto rounded-lg border border-slate-300 bg-slate-50 px-2.5 py-1.5 text-xs focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100 w-[110px]">
+                  <SelectTrigger className="h-auto rounded-lg border border-slate-300 bg-slate-50 px-2.5 py-1.5 text-xs focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100 flex-1">
                     <SelectValue placeholder="Bulan" className="sr-only" />
                     {MONTHS_ID[month - 1]}
                   </SelectTrigger>
@@ -604,7 +604,7 @@ function GuruDashboardView({
                   value={String(year)}
                   onValueChange={(v) => { if (v !== null) setYear(Number(v)); }}
                 >
-                  <SelectTrigger className="h-auto rounded-lg border border-slate-300 bg-slate-50 px-2.5 py-1.5 text-xs focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100 w-[80px]">
+                  <SelectTrigger className="h-auto rounded-lg border border-slate-300 bg-slate-50 px-2.5 py-1.5 text-xs focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100 flex-1">
                     <SelectValue placeholder="Tahun" className="sr-only" />
                     {year}
                   </SelectTrigger>
@@ -642,13 +642,13 @@ function GuruDashboardView({
                 Pantau kehadiran siswa per bulan
               </p>
             </div>
-            <div className="shrink-0">
+            <div className="shrink-0 w-full md:w-auto">
               <div className="flex items-center gap-2">
                 <Select
                   value={String(month)}
                   onValueChange={(v) => { if (v !== null) setMonth(Number(v)); }}
                 >
-                  <SelectTrigger className="h-auto rounded-lg border border-slate-300 bg-slate-50 px-2.5 py-1.5 text-xs focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100 w-[110px]">
+                  <SelectTrigger className="h-auto rounded-lg border border-slate-300 bg-slate-50 px-2.5 py-1.5 text-xs focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100 flex-1">
                     <SelectValue placeholder="Bulan" className="sr-only" />
                     {MONTHS_ID[month - 1]}
                   </SelectTrigger>
@@ -665,7 +665,7 @@ function GuruDashboardView({
                   value={String(year)}
                   onValueChange={(v) => { if (v !== null) setYear(Number(v)); }}
                 >
-                  <SelectTrigger className="h-auto rounded-lg border border-slate-300 bg-slate-50 px-2.5 py-1.5 text-xs focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100 w-[80px]">
+                  <SelectTrigger className="h-auto rounded-lg border border-slate-300 bg-slate-50 px-2.5 py-1.5 text-xs focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100 flex-1">
                     <SelectValue placeholder="Tahun" className="sr-only" />
                     {year}
                   </SelectTrigger>

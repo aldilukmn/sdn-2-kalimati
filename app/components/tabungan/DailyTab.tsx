@@ -1,24 +1,17 @@
 "use client";
 
 import {
-  Users,
-  TrendingUp,
-  TrendingDown,
-  ArrowLeftRight,
   FileDown,
   Plus,
   Minus,
   History,
 } from "lucide-react";
-import { StudentWithBalance, StudentSavingsSummary } from "@/hooks/useStudentList";
+import { StudentWithBalance } from "@/hooks/useStudentList";
 import { ITEMS_PER_PAGE } from "@/lib/constants";
 import Pagination from "@/app/components/Pagination";
-import StatCard from "@/app/components/StatCard";
 import { formatCompactRupiah } from "@/lib/format";
 
 interface DailyTabProps {
-  summary: StudentSavingsSummary | null;
-  summaryLoading: boolean;
   students: StudentWithBalance[];
   paginatedStudents: StudentWithBalance[];
   loading: boolean;
@@ -32,8 +25,6 @@ interface DailyTabProps {
 }
 
 export default function DailyTab({
-  summary,
-  summaryLoading,
   students,
   paginatedStudents,
   loading,
@@ -46,53 +37,7 @@ export default function DailyTab({
   openHistoryModal,
 }: DailyTabProps) {
   return (
-    <>
-      <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5 animate-fadeIn relative z-10">
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-          <StatCard
-            variant="simple"
-            label="Penabung"
-            value={summary?.totalStudents || 0}
-            icon={Users}
-            color="indigo"
-            loading={summaryLoading}
-            suffix=" murid"
-          />
-          <StatCard
-            variant="simple"
-            label="Setoran"
-            value={formatCompactRupiah(summary?.dailyDeposits || 0)}
-            icon={TrendingUp}
-            color="emerald"
-            loading={summaryLoading}
-          />
-          <StatCard
-            variant="simple"
-            label="Penarikan"
-            value={formatCompactRupiah(summary?.dailyWithdrawals || 0)}
-            icon={TrendingDown}
-            color="rose"
-            loading={summaryLoading}
-          />
-          <StatCard
-            variant="simple"
-            label="Selisih"
-            value={formatCompactRupiah((summary?.dailyDeposits || 0) - (summary?.dailyWithdrawals || 0))}
-            icon={ArrowLeftRight}
-            color="amber"
-            loading={summaryLoading}
-            valueClassName={
-              summaryLoading
-                ? ""
-                : (summary?.dailyDeposits || 0) - (summary?.dailyWithdrawals || 0) >= 0
-                  ? "text-emerald-700 dark:text-emerald-300"
-                  : "text-red-600 dark:text-red-400"
-            }
-          />
-        </div>
-      </div>
-
-      <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
+    <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-sm md:text-base font-semibold text-gray-500 dark:text-gray-400 tracking-wider">
             Daftar Tabungan Murid
@@ -194,6 +139,5 @@ export default function DailyTab({
           />
         )}
       </div>
-    </>
   );
 }

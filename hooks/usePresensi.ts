@@ -59,10 +59,6 @@ export function usePresensi() {
   const { holidayList, holidays, loaded: holidaysLoaded, refresh: refreshHolidays, isHoliday: checkHoliday } = useHolidays();
 
   useEffect(() => {
-    refreshHolidays();
-  }, [refreshHolidays]);
-
-  useEffect(() => {
     const token = sessionStorage.getItem("user_session");
     let role: string | null = null;
     let gradeFromToken: string | null = null;
@@ -113,6 +109,8 @@ export function usePresensi() {
     if (!isJwtReady || !grade || !date) return;
     if (!holidaysLoaded) return;
 
+    let cancelled = false;
+
     const hasEntries = entries.length > 0;
 
     const loadData = async () => {
@@ -135,6 +133,8 @@ export function usePresensi() {
           StudentAttendanceService.getByGradeAndDate(grade, date),
         ]);
 
+        if (cancelled) return;
+
         const siswaList = siswaRes.data || siswaRes.result || [];
         const presensiData =
           presensiRes.data || presensiRes.result || [];
@@ -152,10 +152,12 @@ export function usePresensi() {
           });
           setEntries(merged);
           setIsExisting(true);
-          setMessage({
-            type: "success",
-            text: "Data presensi sudah ada. Silakan edit jika perlu.",
-          });
+          if (!isExisting) {
+            setMessage({
+              type: "success",
+              text: "Data presensi sudah ada. Silakan edit jika perlu.",
+            });
+          }
         } else {
           setEntries(
             siswaList.map((s: MasterStudentType) => ({
@@ -167,6 +169,7 @@ export function usePresensi() {
           setIsExisting(false);
         }
       } catch (err) {
+        if (cancelled) return;
         setEntries([]);
         setIsExisting(false);
         setMessage({
@@ -174,12 +177,15 @@ export function usePresensi() {
           text: err instanceof Error ? err.message : "Gagal memuat data siswa",
         });
       } finally {
-        setLoadingSiswa(false);
-        setSyncing(false);
+        if (!cancelled) {
+          setLoadingSiswa(false);
+          setSyncing(false);
+        }
       }
     };
 
     loadData();
+    return () => { cancelled = true; };
   }, [grade, date, isJwtReady, holidays, holidaysLoaded]);
 
   const handleStatusChange = useCallback(

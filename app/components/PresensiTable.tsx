@@ -51,7 +51,7 @@ export default function PresensiTable({
       >
         <table className="w-full">
           <thead>
-            <tr className="bg-indigo-700 text-indigo-50 tracking-wider text-xs md:text-sm">
+            <tr className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-xs md:text-sm">
               <th className="px-4 py-3 text-center font-semibold w-12">No</th>
               <th className="px-4 py-3 text-left font-semibold">Nama</th>
               <th className="px-4 py-3 text-center font-semibold">Kehadiran</th>

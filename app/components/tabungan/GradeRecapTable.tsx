@@ -20,7 +20,7 @@ export default function GradeRecapTable({
   const totalBalance = data.reduce((sum, g) => sum + g.totalBalance, 0);
   const diff = totalDeposits - totalWithdrawals;
 
-  const cols = mode === "daily" ? 5 : 4;
+  const cols = 5;
 
   return (
     <div className="overflow-x-auto rounded-xl border border-slate-200 dark:border-gray-700">
@@ -80,13 +80,13 @@ export default function GradeRecapTable({
                   <td className="px-3 py-3 text-sm font-medium text-emerald-700 dark:text-emerald-300 whitespace-nowrap">
                     {formatCompactRupiah(g.deposits)}
                   </td>
-                  <td className="px-3 py-3 text-sm font-medium text-orange-600 dark:text-orange-400 whitespace-nowrap">
+                  <td className="px-3 py-3 text-sm font-medium text-red-700 dark:text-red-300 whitespace-nowrap">
                     {formatCompactRupiah(g.withdrawals)}
                   </td>
                   <td
                     className={`px-3 py-3 text-sm font-semibold whitespace-nowrap ${
                       selisih >= 0
-                        ? "text-emerald-700 dark:text-emerald-300"
+                        ? "text-orange-700 dark:text-orange-300"
                         : "text-red-600 dark:text-red-400"
                     }`}
                   >
@@ -109,13 +109,13 @@ export default function GradeRecapTable({
               <td className="px-3 py-3 text-sm text-emerald-700 dark:text-emerald-300 whitespace-nowrap">
                 {formatCompactRupiah(totalDeposits)}
               </td>
-              <td className="px-3 py-3 text-sm text-orange-600 dark:text-orange-400 whitespace-nowrap">
+              <td className="px-3 py-3 text-sm text-red-700 dark:text-red-300 whitespace-nowrap">
                 {formatCompactRupiah(totalWithdrawals)}
               </td>
               <td
                 className={`px-3 py-3 text-sm whitespace-nowrap ${
                   diff >= 0
-                    ? "text-emerald-700 dark:text-emerald-300"
+                    ? "text-orange-700 dark:text-orange-300"
                     : "text-red-600 dark:text-red-400"
                 }`}
               >

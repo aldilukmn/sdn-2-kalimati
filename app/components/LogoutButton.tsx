@@ -28,7 +28,12 @@ export default function LogoutButton() {
   });
 
   useEffect(() => {
-    const token = sessionStorage.getItem("user_session");
+    const getCookie = (name: string) => {
+      const match = document.cookie.match(new RegExp(`(?:^|; )${name}=([^;]*)`));
+      return match ? decodeURIComponent(match[1]) : null;
+    };
+
+    const token = sessionStorage.getItem("user_session") || getCookie("user_session");
     if (token) {
       const payload = decodeJWT(token);
       if (payload) {
@@ -39,6 +44,18 @@ export default function LogoutButton() {
           role,
           initial: fullName.charAt(0).toUpperCase(),
           roleStyle: ROLE_STYLES[role] || DEFAULT_ROLE_STYLE,
+        });
+      }
+    } else {
+      const cookieRole = getCookie("user_role");
+      const cookieName = getCookie("user_fullName");
+      if (cookieRole) {
+        const fullName = cookieName || "User";
+        setUser({
+          fullName,
+          role: cookieRole,
+          initial: fullName.charAt(0).toUpperCase(),
+          roleStyle: ROLE_STYLES[cookieRole] || DEFAULT_ROLE_STYLE,
         });
       }
     }
