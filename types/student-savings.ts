@@ -56,3 +56,11 @@ export interface GradeRecap {
   withdrawals: number;
   totalBalance: number;
 }
+
+export interface MonthlyTrendItem {
+  month: number;
+  deposits: number;
+  withdrawals: number;
+  transactionCount: number;
+  uniqueStudentCount: number;
+}

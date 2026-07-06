@@ -245,6 +245,44 @@ Response: [
 └──────────────────────────────────────────┘
 ```
 
+## Dashboard Improvements — Planned
+
+### Data tersedia saat ini
+
+| Data | Ada di Dashboard? |
+|------|:-:|
+| Persentase kehadiran per kelas (bar chart) | ✅ |
+| Breakdown status kehadiran (donut chart) | ✅ |
+| Rekap tabungan per kelas/bulan | ✅ |
+| Stat cards (total siswa, guru, dll) | ✅ |
+| Tabel kehadiran per siswa (paginated) | ✅ |
+| `totalDays` (hari efektif) — otomatis exclude Minggu + libur nasional | ✅ |
+| Perbandingan bulan lalu (Month-over-Month Δ) | ✅ |
+| Tren kehadiran multi-bulan (line chart) | ✅ |
+| Donut chart untuk dashboard guru | ✅ |
+| Tren tabungan multi-bulan (line chart) | ✅ |
+| Donut chart untuk dashboard guru | ❌ |
+| Tren tabungan (line chart) | ❌ |
+| Insight cards (kelas terbaik + perlu perhatian) | ✅ |
+
+### Prioritas implementasi
+
+| # | Improve | Effort | Impact | Backend? | Status |
+|---|---------|--------|--------|----------|--------|
+| 1 | **Month-over-Month Δ** | 🔵 Rendah | 🟢 Tinggi | ❌ Tidak | ✅ |
+| 2 | **Line chart tren kehadiran** | 🟡 Sedang | 🟢 Tinggi | ✅ Ya | ✅ |
+| 3 | **Dashboard guru + donut chart** | 🔵 Rendah | 🟡 Sedang | ❌ Tidak | ✅ |
+| 4 | **Tren tabungan** (line chart) | 🟡 Sedang | 🟡 Sedang | ✅ Ya | ✅ |
+| 5 | **Insight cards** | 🔵 Rendah | 🔵 Rendah | ❌ Tidak | ✅ |
+
+### Catatan implementasi
+
+- **MoM Δ (#1 ✅)**: `useDashboard` fetch bulan sebelumnya secara paralel, bandingkan `attendanceByStatus`; badge `▲`/`▼` di samping judul Distribusi Kehadiran.
+- **Line chart (#2 ✅)**: BE: `GET /api/dashboard/attendance-trend?year=&grade=` — aggregasi `attendanceRateByMonth`. FE: `AttendanceTrendChart.tsx` (recharts `LineChart`). Ditampilkan di bawah grid donut+bar.
+- **Guru donut (#3 ✅)**: `guruDonutData` dihitung dari `chartData.reduce()` (AttendanceRow[]). Ditampilkan di grid kiri (donut) + kanan (tabel) di `GuruDashboardView`.
+- **Tren tabungan (#4 ✅)**: BE: `GET /api/student-savings/monthly-trend?year=&grade=` — aggregasi `getMonthlyTrend`. FE: `SavingsTrendChart.tsx` (recharts `LineChart` dua garis: setoran hijau, penarikan merah). Ditampilkan di `TabunganSection` dashboard.
+- **Insight cards (#5 ✅)**: `InsightCards.tsx` — filter max/min dari `attendanceByGrade`, tampilkan 2 card (🏆 kelas terbaik + ⚠️ perlu perhatian) di admin dashboard antara stat cards dan tabungan.
+
 ## Type Cleanup — `any` Fixes (Frontend)
 
 ### Masalah

@@ -42,13 +42,19 @@ export function useDashboard(initialSummary?: DashboardSummary | null, initialMo
   const [error, setError] = useState<string | null>(null);
   const [summary, setSummary] = useState<DashboardSummary | null>(initialSummary ?? null);
 
+  const [attendanceDelta, setAttendanceDelta] = useState<number | null>(null);
+
   const fetchData = async (m: number, y: number, isInitial = false) => {
     try {
-      const [dashboardRes, countRes] = await Promise.all([
+      const [dashboardRes, countRes, prevRes] = await Promise.all([
         DashboardService.getSummary(m, y),
         StudentAttendanceService.getStudentCountByGrade(),
+        m === 1
+          ? DashboardService.getSummary(12, y - 1)
+          : DashboardService.getSummary(m - 1, y),
       ]);
       const data = (dashboardRes.result || {}) as import("@/types/dashboard").DashboardSummary;
+      const prevData = (prevRes.result || {}) as import("@/types/dashboard").DashboardSummary | null;
       const counts: Record<string, number> = countRes?.result || {};
       setSummary({
         totalRegistrants: data.totalRegistrants ?? 0,
@@ -61,6 +67,18 @@ export function useDashboard(initialSummary?: DashboardSummary | null, initialMo
         attendanceByGrade: data.attendanceByGrade || null,
         totalDays: data.totalDays ?? 0,
       });
+
+      const cur = data.attendanceByStatus;
+      const prev = prevData?.attendanceByStatus;
+      if (cur && prev) {
+        const curTotal = cur.hadir + cur.sakit + cur.izin + cur.absen;
+        const prevTotal = prev.hadir + prev.sakit + prev.izin + prev.absen;
+        const curRate = curTotal > 0 ? (cur.hadir / curTotal) * 100 : 0;
+        const prevRate = prevTotal > 0 ? (prev.hadir / prevTotal) * 100 : 0;
+        setAttendanceDelta(Math.round((curRate - prevRate) * 10) / 10);
+      } else {
+        setAttendanceDelta(null);
+      }
     } catch (err) {
       const error = err as Error & { status?: number };
       if (error.status === 401) {
@@ -128,6 +146,7 @@ export function useDashboard(initialSummary?: DashboardSummary | null, initialMo
     error,
     summary,
     donutData,
+    attendanceDelta,
   };
 }
 

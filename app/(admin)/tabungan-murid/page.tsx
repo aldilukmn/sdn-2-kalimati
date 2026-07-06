@@ -7,9 +7,10 @@ import { GRADES } from "@/lib/constants";
 import { useTransactionModal } from "@/hooks/useTransactionModal";
 import { useHistoryModal } from "@/hooks/useHistoryModal";
 import { useStudentMonthlyBreakdown } from "@/hooks/useStudentMonthlyBreakdown";
+import { useGradeRecap } from "@/hooks/useGradeRecap";
 import DateDayPicker from "@/app/components/DateDayPicker";
 import toast from "react-hot-toast";
-import { getTodayLocal } from "@/lib/format";
+import { getTodayLocal, MONTHS_ID } from "@/lib/format";
 import HolidayInfoCard from "@/app/components/HolidayInfoCard";
 import PageHero from "@/app/components/PageHero";
 import { useHolidays } from "@/hooks/useHolidays";
@@ -24,6 +25,7 @@ import {
 } from "@/components/ui/select";
 import DailyTab from "@/app/components/tabungan/DailyTab";
 import MonthlyTab from "@/app/components/tabungan/MonthlyTab";
+import GradeRecapTable from "@/app/components/tabungan/GradeRecapTable";
 import TransactionModal from "@/app/components/tabungan/TransactionModal";
 import HistoryModal from "@/app/components/tabungan/HistoryModal";
 import EditModal from "@/app/components/tabungan/EditModal";
@@ -120,6 +122,16 @@ export default function TabunganMuridPage() {
     monthlyPage * MONTHLY_PER_PAGE
   );
 
+  const [gradeRecapMode, setGradeRecapMode] = useState<"daily" | "monthly">("monthly");
+  const [gradeRecapDate, setGradeRecapDate] = useState(getTodayLocal());
+  const [gradeRecapMonth, setGradeRecapMonth] = useState(new Date().getMonth() + 1);
+  const [gradeRecapYear, setGradeRecapYear] = useState(new Date().getFullYear());
+  const { data: gradeRecapData, loading: gradeRecapLoading } = useGradeRecap(
+    gradeRecapMode === "daily" ? gradeRecapDate : undefined,
+    gradeRecapMode === "monthly" ? gradeRecapMonth : undefined,
+    gradeRecapMode === "monthly" ? gradeRecapYear : undefined,
+  );
+
   useEffect(() => { setMonthlyPage(1); }, [grade, year]);
 
   useEffect(() => {
@@ -134,16 +146,96 @@ export default function TabunganMuridPage() {
     }
   }, [message, setMessage]);
 
+  const showGradeRecap = userRole === "admin" || userRole === "kepala" || isTreasurer;
+
   return (
     <div className="flex flex-col gap-6 p-4 md:p-6">
       <PageHero icon={Wallet} title="Tabungan Murid" description="Kelola tabungan murid per kelas" />
+
+      {showGradeRecap && (
+        <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5 relative z-10">
+          <div className="flex items-center gap-2.5 mb-3">
+            <div className="w-8 h-8 bg-indigo-100 dark:bg-indigo-900/40 rounded-lg flex items-center justify-center">
+              <Wallet size={16} className="text-indigo-600 dark:text-indigo-300" />
+            </div>
+            <h3 className="font-semibold text-gray-700 dark:text-gray-300">
+              Rekap Tabungan per Kelas
+            </h3>
+            <div className="ml-auto flex items-center gap-2">
+              <div className="flex gap-1 bg-slate-100 dark:bg-gray-900 rounded-lg p-0.5">
+                <button
+                  onClick={() => setGradeRecapMode("daily")}
+                  className={`px-2.5 py-1 rounded-md text-xs font-semibold transition-colors cursor-pointer ${
+                    gradeRecapMode === "daily"
+                      ? "bg-white dark:bg-gray-800 text-indigo-600 dark:text-indigo-300 shadow-sm"
+                      : "text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
+                  }`}
+                >
+                  Harian
+                </button>
+                <button
+                  onClick={() => setGradeRecapMode("monthly")}
+                  className={`px-2.5 py-1 rounded-md text-xs font-semibold transition-colors cursor-pointer ${
+                    gradeRecapMode === "monthly"
+                      ? "bg-white dark:bg-gray-800 text-indigo-600 dark:text-indigo-300 shadow-sm"
+                      : "text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
+                  }`}
+                >
+                  Bulanan
+                </button>
+              </div>
+              {gradeRecapMode === "daily" ? (
+                <DateDayPicker value={gradeRecapDate} onChange={setGradeRecapDate} max={getTodayLocal()} />
+              ) : (
+                <>
+                  <Select
+                    value={String(gradeRecapMonth)}
+                    onValueChange={(v) => { if (v !== null) setGradeRecapMonth(Number(v)); }}
+                  >
+                    <SelectTrigger className="h-auto rounded-lg border border-slate-300 bg-slate-50 px-2.5 py-1.5 text-xs focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100 w-[90px]">
+                      <SelectValue placeholder="Bulan" className="sr-only" />
+                      {MONTHS_ID[gradeRecapMonth - 1]}
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        <SelectLabel>Bulan</SelectLabel>
+                        {MONTHS_ID.map((name, i) => (
+                          <SelectItem key={i + 1} value={String(i + 1)}>{name}</SelectItem>
+                        ))}
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                  <Select
+                    value={String(gradeRecapYear)}
+                    onValueChange={(v) => { if (v !== null) setGradeRecapYear(Number(v)); }}
+                  >
+                    <SelectTrigger className="h-auto rounded-lg border border-slate-300 bg-slate-50 px-2.5 py-1.5 text-xs focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100 w-[80px]">
+                      <SelectValue placeholder="Tahun" className="sr-only" />
+                      {gradeRecapYear}
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        <SelectLabel>Tahun</SelectLabel>
+                        {[2026, 2027].map((y) => (
+                          <SelectItem key={y} value={String(y)}>{y}</SelectItem>
+                        ))}
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                </>
+              )}
+            </div>
+          </div>
+          <GradeRecapTable data={gradeRecapData} loading={gradeRecapLoading} mode={gradeRecapMode} />
+        </div>
+      )}
 
       {/* Filter */}
       <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5 relative z-20">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <label className="mb-2 block text-xs font-semibold text-gray-500 dark:text-gray-400 tracking-wider">Kelas</label>
-            {userRole !== "admin" && userRole !== "kepala" && !isTreasurer ? (
+            {userRole !== "admin" && userRole !== "kepala" ? (
               <div className="w-full rounded-xl border border-slate-300 bg-slate-100 px-4 py-2.5 text-sm text-slate-800 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100">
                 {userGrade || grade}
               </div>

@@ -7,6 +7,7 @@ import type {
   Transaction,
   PaginatedTransactions,
   GradeRecap,
+  MonthlyTrendItem,
 } from "@/types/student-savings";
 
 export default class StudentSavingsService {
@@ -92,5 +93,12 @@ export default class StudentSavingsService {
     const qs = params.toString();
     if (qs) url += `?${qs}`;
     return await api<GradeRecap[]>(url);
+  }
+
+  static async getMonthlyTrend(year: number, grade?: string) {
+    const params = new URLSearchParams();
+    params.set("year", String(year));
+    if (grade) params.set("grade", grade);
+    return await api<MonthlyTrendItem[]>(`/student-savings/monthly-trend?${params.toString()}`);
   }
 }

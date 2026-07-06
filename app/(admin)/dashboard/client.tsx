@@ -10,6 +10,9 @@ import { useAuth } from "@/app/contexts/AuthContext";
 import DashboardStatCards from "@/app/components/DashboardStatCards";
 import AttendanceDonutChart from "@/app/components/AttendanceDonutChart";
 import AttendanceBarChart from "@/app/components/AttendanceBarChart";
+import AttendanceTrendChart from "@/app/components/AttendanceTrendChart";
+import SavingsTrendChart from "@/app/components/SavingsTrendChart";
+import InsightCards from "@/app/components/InsightCards";
 import {
   Select,
   SelectContent,
@@ -35,11 +38,8 @@ import {
 import { useDashboard } from "@/hooks/useDashboard";
 import { useTeacherChart } from "@/hooks/useTeacherChart";
 import { useSavingsRecap } from "@/hooks/useSavingsRecap";
-import { useGradeRecap } from "@/hooks/useGradeRecap";
-import DateDayPicker from "@/app/components/DateDayPicker";
-import GradeRecapTable from "@/app/components/tabungan/GradeRecapTable";
 import { GRADES } from "@/lib/constants";
-import { formatCompactRupiah, MONTHS_ID, getTodayLocal } from "@/lib/format";
+import { formatCompactRupiah, MONTHS_ID } from "@/lib/format";
 import StatCard from "@/app/components/StatCard";
 import PageHero from "@/app/components/PageHero";
 import type { AttendanceRow } from "@/lib/merge-attendance";
@@ -61,10 +61,12 @@ function AdminDashboardView({
   initialSummary,
   initialMonth,
   initialYear,
+  userRole,
 }: {
   initialSummary?: DashboardSummary | null;
   initialMonth?: number;
   initialYear?: number;
+  userRole?: string | null;
 }) {
   const {
     month,
@@ -76,6 +78,7 @@ function AdminDashboardView({
     error,
     summary,
     donutData,
+    attendanceDelta,
   } = useDashboard(initialSummary, initialMonth, initialYear);
 
   return (
@@ -89,9 +92,9 @@ function AdminDashboardView({
       )}
       <DashboardStatCards summary={summary} loading={loading} />
 
-      <TabunganSection />
+      <InsightCards attendanceByGrade={summary?.attendanceByGrade || null} loading={chartLoading} />
 
-      <GradeRecapSection />
+      <TabunganSection userRole={userRole} />
 
       {/* Rekapitulasi Kehadiran — satu card */}
       <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
@@ -148,9 +151,22 @@ function AdminDashboardView({
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <div className="bg-slate-50/80 dark:bg-gray-900/50 rounded-xl p-4 border border-slate-200/50 dark:border-gray-700/30">
-            <p className="text-sm md:text-base text-gray-500 dark:text-gray-400">
-              Distribusi Kehadiran
-            </p>
+            <div className="flex items-center gap-2">
+              <p className="text-sm md:text-base text-gray-500 dark:text-gray-400">
+                Distribusi Kehadiran
+              </p>
+              {attendanceDelta !== null && (
+                <span
+                  className={`inline-flex items-center gap-0.5 text-[11px] font-semibold px-1.5 py-0.5 rounded-full ${
+                    attendanceDelta >= 0
+                      ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300"
+                      : "bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-300"
+                  }`}
+                >
+                  {attendanceDelta >= 0 ? "▲" : "▼"} {Math.abs(attendanceDelta)}%
+                </span>
+              )}
+            </div>
             <AttendanceDonutChart
               data={donutData}
               loading={chartLoading}
@@ -167,103 +183,19 @@ function AdminDashboardView({
             />
           </div>
         </div>
+
+        <div className="mt-6 bg-slate-50/80 dark:bg-gray-900/50 rounded-xl p-4 border border-slate-200/50 dark:border-gray-700/30">
+          <p className="text-sm md:text-base text-gray-500 dark:text-gray-400 mb-2">
+            Tren Kehadiran {year}
+          </p>
+          <AttendanceTrendChart year={year} loading={chartLoading} />
+        </div>
       </div>
     </div>
   );
 }
 
-function GradeRecapSection() {
-  const now = new Date();
-  const [mode, setMode] = useState<"daily" | "monthly">("monthly");
-  const [date, setDate] = useState(getTodayLocal());
-  const [month, setMonth] = useState(now.getMonth() + 1);
-  const [year, setYear] = useState(now.getFullYear());
-  const { data, loading } = useGradeRecap(
-    mode === "daily" ? date : undefined,
-    mode === "monthly" ? month : undefined,
-    mode === "monthly" ? year : undefined,
-  );
-
-  return (
-    <div>
-      <div className="flex items-center gap-2.5 mb-3">
-        <div className="w-8 h-8 bg-indigo-100 dark:bg-indigo-900/40 rounded-lg flex items-center justify-center">
-          <Wallet size={16} className="text-indigo-600 dark:text-indigo-300" />
-        </div>
-        <h3 className="font-semibold text-gray-700 dark:text-gray-300">
-          Rekap Tabungan per Kelas
-        </h3>
-        <div className="ml-auto flex items-center gap-2">
-          <div className="flex gap-1 bg-slate-100 dark:bg-gray-900 rounded-lg p-0.5">
-            <button
-              onClick={() => setMode("daily")}
-              className={`px-2.5 py-1 rounded-md text-xs font-semibold transition-colors cursor-pointer ${
-                mode === "daily"
-                  ? "bg-white dark:bg-gray-800 text-indigo-600 dark:text-indigo-300 shadow-sm"
-                  : "text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
-              }`}
-            >
-              Harian
-            </button>
-            <button
-              onClick={() => setMode("monthly")}
-              className={`px-2.5 py-1 rounded-md text-xs font-semibold transition-colors cursor-pointer ${
-                mode === "monthly"
-                  ? "bg-white dark:bg-gray-800 text-indigo-600 dark:text-indigo-300 shadow-sm"
-                  : "text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
-              }`}
-            >
-              Bulanan
-            </button>
-          </div>
-          {mode === "daily" ? (
-            <DateDayPicker value={date} onChange={setDate} max={getTodayLocal()} />
-          ) : (
-            <>
-              <Select
-                value={String(month)}
-                onValueChange={(v) => { if (v !== null) setMonth(Number(v)); }}
-              >
-                <SelectTrigger className="h-auto rounded-lg border border-slate-300 bg-slate-50 px-2.5 py-1.5 text-xs focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100 w-[90px]">
-                  <SelectValue placeholder="Bulan" className="sr-only" />
-                  {MONTHS_ID[month - 1]}
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    <SelectLabel>Bulan</SelectLabel>
-                    {MONTHS_ID.map((name, i) => (
-                      <SelectItem key={i + 1} value={String(i + 1)}>{name}</SelectItem>
-                    ))}
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-              <Select
-                value={String(year)}
-                onValueChange={(v) => { if (v !== null) setYear(Number(v)); }}
-              >
-                <SelectTrigger className="h-auto rounded-lg border border-slate-300 bg-slate-50 px-2.5 py-1.5 text-xs focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100 w-[80px]">
-                  <SelectValue placeholder="Tahun" className="sr-only" />
-                  {year}
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    <SelectLabel>Tahun</SelectLabel>
-                    {[2026, 2027].map((y) => (
-                      <SelectItem key={y} value={String(y)}>{y}</SelectItem>
-                    ))}
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-            </>
-          )}
-        </div>
-      </div>
-      <GradeRecapTable data={data} loading={loading} mode={mode} />
-    </div>
-  );
-}
-
-function TabunganSection({ grade }: { grade?: string | null }) {
+function TabunganSection({ grade, userRole, isTreasurer }: { grade?: string | null; userRole?: string | null; isTreasurer?: boolean }) {
   const now = new Date();
   const [month, setMonth] = useState(now.getMonth() + 1);
   const [year, setYear] = useState(now.getFullYear());
@@ -289,28 +221,34 @@ function TabunganSection({ grade }: { grade?: string | null }) {
           </h3>
         </div>
         <div className="grid grid-cols-3 gap-1.5 w-full md:flex md:w-auto md:items-center md:gap-2.5 md:ml-auto">
-          <Select
-            value={filterGrade}
-            onValueChange={(v) => {
-              if (v !== null) setFilterGrade(v);
-            }}
-          >
-            <SelectTrigger className="h-auto w-full md:w-32 rounded-lg border border-slate-300 bg-slate-50 px-2.5 py-1.5 text-xs focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100">
-              <SelectValue placeholder="Semua Kelas" className="sr-only" />
+          {userRole === "guru" && !isTreasurer ? (
+            <div className="h-auto w-full md:w-32 rounded-lg border border-slate-300 bg-slate-50 px-2.5 py-1.5 text-xs text-center dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100">
               {filterGrade ? `Kelas ${filterGrade}` : "Semua Kelas"}
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                <SelectLabel>Kelas</SelectLabel>
-                <SelectItem value="">Semua Kelas</SelectItem>
-                {GRADES.map((g) => (
-                  <SelectItem key={g} value={g}>
-                    Kelas {g}
-                  </SelectItem>
-                ))}
-              </SelectGroup>
-            </SelectContent>
-          </Select>
+            </div>
+          ) : (
+            <Select
+              value={filterGrade}
+              onValueChange={(v) => {
+                if (v !== null) setFilterGrade(v);
+              }}
+            >
+              <SelectTrigger className="h-auto w-full md:w-32 rounded-lg border border-slate-300 bg-slate-50 px-2.5 py-1.5 text-xs focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100">
+                <SelectValue placeholder="Semua Kelas" className="sr-only" />
+                {filterGrade ? `Kelas ${filterGrade}` : "Semua Kelas"}
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectLabel>Kelas</SelectLabel>
+                  <SelectItem value="">Semua Kelas</SelectItem>
+                  {GRADES.map((g) => (
+                    <SelectItem key={g} value={g}>
+                      Kelas {g}
+                    </SelectItem>
+                  ))}
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+          )}
           <Select
             value={String(month)}
             onValueChange={(v) => {
@@ -411,6 +349,12 @@ function TabunganSection({ grade }: { grade?: string | null }) {
           />
         </div>
       )}
+      <div className="mt-4 bg-slate-50/80 dark:bg-gray-900/50 rounded-xl p-4 border border-slate-200/50 dark:border-gray-700/30">
+        <p className="text-sm md:text-base text-gray-500 dark:text-gray-400 mb-2">
+          Tren Tabungan {year}
+        </p>
+        <SavingsTrendChart year={year} grade={filterGrade || undefined} />
+      </div>
     </div>
   );
 }
@@ -423,6 +367,7 @@ function GuruDashboardView({
   initialYear,
   userName,
   userGrade,
+  userRole,
   isTreasurer,
 }: {
   initialSummary: TeacherSummary | null | undefined;
@@ -432,6 +377,7 @@ function GuruDashboardView({
   initialYear: number;
   userName: string | null;
   userGrade: string | null;
+  userRole: string | null;
   isTreasurer: boolean;
 }) {
   const { loading, summary } = useTeacherDashboard(initialSummary);
@@ -453,6 +399,15 @@ function GuruDashboardView({
     initialMonth,
     initialYear,
   );
+
+  const guruDonutData = !chartLoading && hasAttendanceData && chartData.length > 0
+    ? [
+        { name: "hadir", value: chartData.reduce((s, r) => s + r.hadir, 0), color: "#10b981" },
+        { name: "sakit", value: chartData.reduce((s, r) => s + r.sakit, 0), color: "#f59e0b" },
+        { name: "izin", value: chartData.reduce((s, r) => s + r.izin, 0), color: "#3b82f6" },
+        { name: "absen", value: chartData.reduce((s, r) => s + r.absen, 0), color: "#ef4444" },
+      ]
+    : [];
 
   const itemsPerPage = 5;
 
@@ -553,8 +508,7 @@ function GuruDashboardView({
           </div>
         ))}
       </div>
-      <TabunganSection grade={userGrade} />
-      {isTreasurer && <GradeRecapSection />}
+      <TabunganSection grade={userGrade} userRole={userRole} isTreasurer={isTreasurer} />
       {chartLoading ? (
         <div className="bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5 relative z-0">
           <div className="flex flex-col md:flex-row items-center md:justify-between gap-4 mb-4">
@@ -722,19 +676,32 @@ function GuruDashboardView({
               </div>
             </div>
           </div>
-          <StudentAttendanceTable
-            data={paginatedData}
-            loading={chartLoading}
-            totalItems={chartData.length}
-          />
-          <div className="mt-4">
-            <Pagination
-              currentPage={currentPage}
-              totalPages={totalPages}
-              onPageChange={setCurrentPage}
-              itemsPerPage={itemsPerPage}
-              totalItems={chartData.length}
-            />
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div className="bg-slate-50/80 dark:bg-gray-900/50 rounded-xl p-4 border border-slate-200/50 dark:border-gray-700/30">
+              <p className="text-sm md:text-base text-gray-500 dark:text-gray-400 mb-2">
+                Distribusi Kehadiran
+              </p>
+              <AttendanceDonutChart
+                data={guruDonutData}
+                loading={chartLoading}
+              />
+            </div>
+            <div>
+              <StudentAttendanceTable
+                data={paginatedData}
+                loading={chartLoading}
+                totalItems={chartData.length}
+              />
+              <div className="mt-4">
+                <Pagination
+                  currentPage={currentPage}
+                  totalPages={totalPages}
+                  onPageChange={setCurrentPage}
+                  itemsPerPage={itemsPerPage}
+                  totalItems={chartData.length}
+                />
+              </div>
+            </div>
           </div>
         </div>
       )}
@@ -774,6 +741,7 @@ export default function DashboardClient({
         initialYear={initialYear}
         userName={userName}
         userGrade={userGrade}
+        userRole={userRole}
         isTreasurer={isTreasurer}
       />
     );
@@ -784,6 +752,7 @@ export default function DashboardClient({
       initialSummary={adminInitialSummary}
       initialMonth={initialMonth}
       initialYear={initialYear}
+      userRole={userRole}
     />
   );
 }

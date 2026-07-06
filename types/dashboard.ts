@@ -19,3 +19,8 @@ export interface TeacherDashboardSummary {
   maleCount: number;
   femaleCount: number;
 }
+
+export interface AttendanceTrendItem {
+  month: number;
+  rate: number;
+}
