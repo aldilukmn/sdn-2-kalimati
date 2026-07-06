@@ -230,6 +230,7 @@ export default function HistoryModal({
                               onClick={() => openEditModal(tx)}
                               disabled={editSaving}
                               className="p-1 rounded-lg text-slate-500 hover:bg-slate-100 dark:hover:bg-gray-800 transition-colors cursor-pointer disabled:opacity-40"
+                              title="Edit"
                             >
                               <Pencil size={14} />
                             </button>
@@ -237,6 +238,7 @@ export default function HistoryModal({
                               onClick={() => handleDeleteTransaction(tx._id)}
                               disabled={deletingId === tx._id}
                               className="p-1 rounded-lg text-red-500 hover:bg-red-50 dark:hover:bg-red-900/30 transition-colors cursor-pointer disabled:opacity-40"
+                              title="Hapus"
                             >
                               {deletingId === tx._id ? (
                                 <Loader2 size={14} className="animate-spin" />

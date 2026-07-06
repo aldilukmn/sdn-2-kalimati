@@ -409,6 +409,11 @@ function GuruDashboardView({
       ]
     : [];
 
+  const guruTotalDays =
+    !chartLoading && hasAttendanceData && chartData.length > 0
+      ? Math.max(...chartData.map((s) => s.hadir + s.sakit + s.izin + s.absen))
+      : 0;
+
   const itemsPerPage = 5;
 
   const averageAttendance =
@@ -676,32 +681,29 @@ function GuruDashboardView({
               </div>
             </div>
           </div>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <div className="bg-slate-50/80 dark:bg-gray-900/50 rounded-xl p-4 border border-slate-200/50 dark:border-gray-700/30">
-              <p className="text-sm md:text-base text-gray-500 dark:text-gray-400 mb-2">
-                Distribusi Kehadiran
-              </p>
-              <AttendanceDonutChart
-                data={guruDonutData}
-                loading={chartLoading}
-              />
-            </div>
-            <div>
-              <StudentAttendanceTable
-                data={paginatedData}
-                loading={chartLoading}
-                totalItems={chartData.length}
-              />
-              <div className="mt-4">
-                <Pagination
-                  currentPage={currentPage}
-                  totalPages={totalPages}
-                  onPageChange={setCurrentPage}
-                  itemsPerPage={itemsPerPage}
-                  totalItems={chartData.length}
-                />
-              </div>
-            </div>
+          <div className="bg-slate-50/80 dark:bg-gray-900/50 rounded-xl p-4 border border-slate-200/50 dark:border-gray-700/30 mb-4">
+            <p className="text-sm md:text-base text-gray-500 dark:text-gray-400 mb-2">
+              Distribusi Kehadiran
+            </p>
+            <AttendanceDonutChart
+              data={guruDonutData}
+              loading={chartLoading}
+              totalDays={guruTotalDays}
+            />
+          </div>
+          <StudentAttendanceTable
+            data={paginatedData}
+            loading={chartLoading}
+            totalItems={chartData.length}
+          />
+          <div className="mt-4">
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={setCurrentPage}
+              itemsPerPage={itemsPerPage}
+              totalItems={chartData.length}
+            />
           </div>
         </div>
       )}

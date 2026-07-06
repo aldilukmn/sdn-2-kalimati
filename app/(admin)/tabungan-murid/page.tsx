@@ -148,6 +148,7 @@ export default function TabunganMuridPage() {
 
   const showGradeRecap = userRole === "admin" || userRole === "kepala" || isTreasurer;
 
+
   return (
     <div className="flex flex-col gap-6 p-4 md:p-6">
       <PageHero icon={Wallet} title="Tabungan Murid" description="Kelola tabungan murid per kelas" />
@@ -226,7 +227,11 @@ export default function TabunganMuridPage() {
               )}
             </div>
           </div>
-          <GradeRecapTable data={gradeRecapData} loading={gradeRecapLoading} mode={gradeRecapMode} />
+          <GradeRecapTable
+            data={gradeRecapData}
+            loading={gradeRecapLoading}
+            mode={gradeRecapMode}
+          />
         </div>
       )}
 
@@ -385,6 +390,7 @@ export default function TabunganMuridPage() {
         closeConfirmDelete={closeConfirmDelete}
         submitDeleteTransaction={submitDeleteTransaction}
       />
+
     </div>
   );
 }

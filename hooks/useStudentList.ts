@@ -25,6 +25,7 @@ export function useStudentList() {
   const [userRole, setUserRole] = useState<string | null>(null);
   const [userGrade, setUserGrade] = useState<string | null>(null);
   const [isTreasurer, setIsTreasurer] = useState(false);
+  const [userFullName, setUserFullName] = useState("");
   const [grade, setGrade] = useState("1");
   const [date, setDate] = useState(() => {
     const d = new Date();
@@ -49,6 +50,7 @@ export function useStudentList() {
     let gradeFromToken: string | null = null;
 
     let treasurer = false;
+    let fullName = "";
 
     if (token) {
       try {
@@ -57,6 +59,7 @@ export function useStudentList() {
           role = payload.role;
           gradeFromToken = payload.grade;
           treasurer = payload.treasurer === true;
+          fullName = payload.fullName || "";
         }
       } catch {}
     }
@@ -71,6 +74,7 @@ export function useStudentList() {
     if (role) setUserRole(role);
     if (gradeFromToken) setUserGrade(gradeFromToken);
     setIsTreasurer(treasurer);
+    setUserFullName(fullName);
     if (role === "guru" && gradeFromToken) setGrade(gradeFromToken);
   }, []);
 
@@ -172,6 +176,7 @@ export function useStudentList() {
     isTreasurer,
     grade,
     setGrade,
+    userFullName,
     date,
     setDate,
     students,

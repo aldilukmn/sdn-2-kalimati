@@ -154,7 +154,7 @@ export default function DailyTab({
                         <button
                           title="Simpan"
                           onClick={() => openTxModal(s, "simpan")}
-                          className="flex items-center gap-1 p-1.5 md:px-2.5 md:py-1.5 rounded-lg text-xs font-medium bg-emerald-500 hover:bg-emerald-600 text-white transition-colors cursor-pointer"
+                          className="flex items-center gap-1 p-1.5 md:px-2.5 md:py-1.5 rounded-lg text-xs font-medium text-white bg-emerald-500 hover:bg-emerald-600 transition-colors cursor-pointer"
                         >
                           <Plus size={14} />
                           <span className="hidden md:inline">Simpan</span>
@@ -162,7 +162,7 @@ export default function DailyTab({
                         <button
                           title="Tarik"
                           onClick={() => openTxModal(s, "tarik")}
-                          className="flex items-center gap-1 p-1.5 md:px-2.5 md:py-1.5 rounded-lg text-xs font-medium bg-orange-500 hover:bg-orange-600 text-white transition-colors cursor-pointer"
+                          className="flex items-center gap-1 p-1.5 md:px-2.5 md:py-1.5 rounded-lg text-xs font-medium text-white bg-orange-500 hover:bg-orange-600 transition-colors cursor-pointer"
                         >
                           <Minus size={14} />
                           <span className="hidden md:inline">Tarik</span>

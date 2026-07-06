@@ -10,9 +10,11 @@ import {
   ResponsiveContainer,
   CartesianGrid,
   Legend,
+  LabelList,
 } from "recharts";
 import StudentSavingsService from "@/services/student-savings.service";
 import type { MonthlyTrendItem } from "@/types/student-savings";
+import { formatCompactRupiah, MONTHS_ID } from "@/lib/format";
 
 interface Props {
   year: number;
@@ -24,16 +26,19 @@ const MONTHS_SHORT = [
   "Jul", "Agu", "Sep", "Okt", "Nov", "Des",
 ];
 
-const formatRp = (v: number) =>
-  v >= 1_000_000
-    ? `Rp${(v / 1_000_000).toFixed(1)}jt`
-    : v >= 1_000
-      ? `Rp${(v / 1_000).toFixed(0)}rb`
-      : `Rp${v}`;
+const formatRp = formatCompactRupiah;
 
 export default function SavingsTrendChart({ year, grade }: Props) {
   const [data, setData] = useState<MonthlyTrendItem[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isDesktop, setIsDesktop] = useState(false);
+
+  useEffect(() => {
+    const check = () => setIsDesktop(window.innerWidth >= 640);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
 
   useEffect(() => {
     let cancelled = false;
@@ -70,27 +75,43 @@ export default function SavingsTrendChart({ year, grade }: Props) {
   return (
     <div className="h-[300px]">
       <ResponsiveContainer width="100%" height="100%">
-        <LineChart data={data} margin={{ top: 10, right: 10, left: -10, bottom: 5 }}>
-          <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" className="dark:opacity-20" />
+        <LineChart data={data} margin={{ top: 10, right: 10, left: -10, bottom: 30 }}>
+          <CartesianGrid strokeDasharray="3 3" stroke="#94a3b8" className="dark:opacity-20" />
           <XAxis
+            type="number"
             dataKey="month"
             tickFormatter={(m) => MONTHS_SHORT[m - 1]}
-            tick={{ fontSize: 11, className: "fill-gray-500 dark:fill-gray-400" }}
-            axisLine={{ className: "stroke-gray-300 dark:stroke-gray-600" }}
+            domain={['dataMin - 0.5', 'dataMax + 0.5']}
+            allowDecimals={false}
+            ticks={data.map((d) => d.month)}
+            tick={{ fontSize: 11, className: "fill-gray-600 dark:fill-gray-300" }}
+            axisLine={{ className: "stroke-gray-400 dark:stroke-gray-500" }}
             tickLine={false}
           />
           <YAxis
             tickFormatter={formatRp}
-            tick={{ fontSize: 11, className: "fill-gray-500 dark:fill-gray-400" }}
+            tick={{ fontSize: 11, className: "fill-gray-600 dark:fill-gray-300" }}
             axisLine={false}
             tickLine={false}
           />
           <Tooltip
-            formatter={(value: any, name: any) => [
-              formatRp(value),
-              name === "deposits" ? "Setoran" : "Penarikan",
-            ]}
-            labelFormatter={(m: any) => MONTHS_SHORT[m - 1]}
+            content={({ active, payload, label }) => {
+              if (!active || !payload?.length) return null;
+              return (
+                <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2 shadow-lg text-sm">
+                  <p className="font-semibold text-gray-800 dark:text-gray-100 mb-1">
+                    {MONTHS_ID[(label as number) - 1]} {year}
+                  </p>
+                  {payload.map((entry: any) => (
+                    <p key={entry.name} className="leading-5" style={{ color: entry.color }}>
+                      <span className="w-2 h-2 rounded-full inline-block mr-1.5" style={{ backgroundColor: entry.color }} />
+                      <span className="font-medium">{entry.name === "deposits" ? "Setoran" : "Penarikan"}</span>
+                      : {formatRp(entry.value as number)}
+                    </p>
+                  ))}
+                </div>
+              );
+            }}
           />
           <Legend
             formatter={(value: string) =>
@@ -102,17 +123,28 @@ export default function SavingsTrendChart({ year, grade }: Props) {
             dataKey="deposits"
             stroke="#10b981"
             strokeWidth={2.5}
-            dot={{ r: 3, fill: "#10b981", strokeWidth: 0 }}
+            dot={{ r: 4, fill: "#10b981", strokeWidth: 0 }}
             name="deposits"
             isAnimationActive={true}
             animationDuration={1200}
-          />
+          >
+            {isDesktop && (
+              <LabelList
+                dataKey="deposits"
+                position="top"
+                formatter={(v: any) => formatRp(v)}
+                className="text-[10px]"
+                fill="#10b981"
+                fontWeight={600}
+              />
+            )}
+          </Line>
           <Line
             type="monotone"
             dataKey="withdrawals"
             stroke="#ef4444"
             strokeWidth={2.5}
-            dot={{ r: 3, fill: "#ef4444", strokeWidth: 0 }}
+            dot={{ r: 4, fill: "#ef4444", strokeWidth: 0 }}
             name="withdrawals"
             isAnimationActive={true}
             animationDuration={1200}

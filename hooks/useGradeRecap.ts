@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import StudentSavingsService from "@/services/student-savings.service";
 import type { GradeRecap } from "@/types/student-savings";
 
@@ -8,25 +8,34 @@ export function useGradeRecap(date?: string, month?: number, year?: number) {
   const [data, setData] = useState<GradeRecap[]>([]);
   const [loading, setLoading] = useState(false);
 
+  const refresh = useCallback(async () => {
+    setLoading(true);
+    try {
+      const res = await StudentSavingsService.getGradeRecap(date, month, year);
+      setData(res?.result || []);
+    } catch {
+      setData([]);
+    } finally {
+      setLoading(false);
+    }
+  }, [date, month, year]);
+
   useEffect(() => {
     const controller = new AbortController();
-    const signal = controller.signal;
-    const fetchData = async () => {
+    let cancelled = false;
+    (async () => {
       setLoading(true);
       try {
         const res = await StudentSavingsService.getGradeRecap(date, month, year);
-        if (!signal.aborted) {
-          setData(res?.result || []);
-        }
+        if (!cancelled) setData(res?.result || []);
       } catch {
-        if (!signal.aborted) setData([]);
+        if (!cancelled) setData([]);
       } finally {
-        if (!signal.aborted) setLoading(false);
+        if (!cancelled) setLoading(false);
       }
-    };
-    fetchData();
-    return () => controller.abort();
+    })();
+    return () => { cancelled = true; };
   }, [date, month, year]);
 
-  return { data, loading };
+  return { data, loading, refresh };
 }
