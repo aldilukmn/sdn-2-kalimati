@@ -2,6 +2,7 @@ export interface MasterStudentType {
   studentId: string;
   name: string;
   grade: string;
+  nisn?: string;
 }
 
 export interface StudentAttendanceType {
