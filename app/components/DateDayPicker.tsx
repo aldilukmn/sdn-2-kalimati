@@ -74,7 +74,7 @@ export default function DateDayPicker({
         <button
           type="button"
           onClick={() => setOpen(!open)}
-          className="flex w-full items-center gap-2.5 rounded-xl border border-slate-300 bg-slate-50 px-3 py-2 text-sm text-slate-800 transition-colors focus:border-blue-500 focus:ring-blue-200 outline-none dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100 dark:focus:border-blue-500 cursor-pointer"
+          className="flex w-full items-center gap-2.5 rounded-xl border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm text-slate-800 transition-colors focus:border-blue-500 focus:ring-blue-200 outline-none dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100 dark:focus:border-blue-500 cursor-pointer"
         >
           <CalendarDays size={18} className="shrink-0 text-blue-500" />
           <span

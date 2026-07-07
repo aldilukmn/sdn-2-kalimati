@@ -54,10 +54,10 @@ export default class UserService {
     });
   }
 
-  static async setTreasurer(id: string, treasurer: boolean) {
-    return await api(`/user/${id}/treasurer`, {
+  static async setSavingsHolder(id: string, savingsHolder: boolean) {
+    return await api(`/user/${id}/savings-holder`, {
       method: "PATCH",
-      body: JSON.stringify({ treasurer }),
+      body: JSON.stringify({ savingsHolder }),
     });
   }
 }

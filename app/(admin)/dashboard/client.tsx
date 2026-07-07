@@ -48,7 +48,7 @@ interface Props {
   userRole: string | null;
   userName: string | null;
   userGrade: string | null;
-  isTreasurer: boolean;
+  isSavingsHolder: boolean;
   initialMonth: number;
   initialYear: number;
   guruInitialSummary?: TeacherSummary | null;
@@ -92,62 +92,62 @@ function AdminDashboardView({
       )}
       <DashboardStatCards summary={summary} loading={loading} />
 
-      <InsightCards attendanceByGrade={summary?.attendanceByGrade || null} loading={chartLoading} />
-
       <TabunganSection userRole={userRole} />
+
+      {/* Filter Bulan/Tahun */}
+      <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
+        <div className="flex items-center gap-2 w-full md:w-auto md:ml-auto">
+          <Select
+            value={String(month)}
+            onValueChange={(v) => { if (v !== null) setMonth(Number(v)); }}
+          >
+            <SelectTrigger className="h-auto rounded-xl border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100 flex-1">
+              <SelectValue placeholder="Bulan" className="sr-only" />
+              {MONTHS_ID[month - 1]}
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectLabel>Bulan</SelectLabel>
+                {MONTHS_ID.map((name, i) => (
+                  <SelectItem key={i + 1} value={String(i + 1)}>{name}</SelectItem>
+                ))}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+          <Select
+            value={String(year)}
+            onValueChange={(v) => { if (v !== null) setYear(Number(v)); }}
+          >
+            <SelectTrigger className="h-auto rounded-xl border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100 flex-1">
+              <SelectValue placeholder="Tahun" className="sr-only" />
+              {year}
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectLabel>Tahun</SelectLabel>
+                {[2026, 2027].map((y) => (
+                  <SelectItem key={y} value={String(y)}>{y}</SelectItem>
+                ))}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+        </div>
+      </div>
+
+      <InsightCards attendanceByGrade={summary?.attendanceByGrade || null} loading={chartLoading} />
 
       {/* Rekapitulasi Kehadiran — satu card */}
       <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
-        <div className="flex flex-col md:flex-row items-center gap-2.5 mb-4">
-          <div className="flex items-center gap-2.5 mb-3 md:mb-0">
-            <div className="w-8 h-8 bg-indigo-100 dark:bg-indigo-900/40 rounded-lg flex items-center justify-center">
-              <CalendarCheck
-                size={16}
-                className="text-indigo-600 dark:text-indigo-300"
-              />
-            </div>
-            <h3 className="font-semibold text-gray-700 dark:text-gray-300">
-              Rekapitulasi Kehadiran
-            </h3>
+        <div className="flex items-center gap-2.5 mb-4">
+          <div className="w-8 h-8 bg-indigo-100 dark:bg-indigo-900/40 rounded-lg flex items-center justify-center shrink-0">
+            <CalendarCheck
+              size={16}
+              className="text-indigo-600 dark:text-indigo-300"
+            />
           </div>
-          <div className="md:ml-auto">
-            <div className="flex items-center gap-2">
-              <Select
-                value={String(month)}
-                onValueChange={(v) => { if (v !== null) setMonth(Number(v)); }}
-              >
-                <SelectTrigger className="h-auto rounded-lg border border-slate-300 bg-slate-50 px-2.5 py-1.5 text-xs focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100 flex-1">
-                  <SelectValue placeholder="Bulan" className="sr-only" />
-                  {MONTHS_ID[month - 1]}
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    <SelectLabel>Bulan</SelectLabel>
-                    {MONTHS_ID.map((name, i) => (
-                      <SelectItem key={i + 1} value={String(i + 1)}>{name}</SelectItem>
-                    ))}
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-              <Select
-                value={String(year)}
-                onValueChange={(v) => { if (v !== null) setYear(Number(v)); }}
-              >
-                <SelectTrigger className="h-auto rounded-lg border border-slate-300 bg-slate-50 px-2.5 py-1.5 text-xs focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100 flex-1">
-                  <SelectValue placeholder="Tahun" className="sr-only" />
-                  {year}
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    <SelectLabel>Tahun</SelectLabel>
-                    {[2026, 2027].map((y) => (
-                      <SelectItem key={y} value={String(y)}>{y}</SelectItem>
-                    ))}
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
+          <h3 className="font-semibold text-gray-700 dark:text-gray-300">
+            Rekapitulasi Kehadiran
+          </h3>
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <div className="bg-slate-50/80 dark:bg-gray-900/50 rounded-xl p-4 border border-slate-200/50 dark:border-gray-700/30">
@@ -195,7 +195,7 @@ function AdminDashboardView({
   );
 }
 
-function TabunganSection({ grade, userRole, isTreasurer }: { grade?: string | null; userRole?: string | null; isTreasurer?: boolean }) {
+function TabunganSection({ grade, userRole, isSavingsHolder }: { grade?: string | null; userRole?: string | null; isSavingsHolder?: boolean }) {
   const now = new Date();
   const [month, setMonth] = useState(now.getMonth() + 1);
   const [year, setYear] = useState(now.getFullYear());
@@ -221,7 +221,7 @@ function TabunganSection({ grade, userRole, isTreasurer }: { grade?: string | nu
           </h3>
         </div>
         <div className="grid grid-cols-3 gap-1.5 w-full md:flex md:w-auto md:items-center md:gap-2.5 md:ml-auto">
-          {userRole === "guru" && !isTreasurer ? (
+          {userRole === "guru" && !isSavingsHolder ? (
             <div className="h-auto w-full md:w-32 rounded-lg border border-slate-300 bg-slate-50 px-2.5 py-1.5 text-xs text-center dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100">
               {filterGrade ? `Kelas ${filterGrade}` : "Semua Kelas"}
             </div>
@@ -255,7 +255,7 @@ function TabunganSection({ grade, userRole, isTreasurer }: { grade?: string | nu
               if (v !== null) setMonth(Number(v));
             }}
           >
-            <SelectTrigger className="h-auto rounded-lg border border-slate-300 bg-slate-50 px-2.5 py-1.5 text-xs focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100 w-full md:w-[90px]">
+            <SelectTrigger className="h-auto rounded-lg border border-slate-300 bg-slate-50 px-2.5 py-1.5 text-xs focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100 w-[95%] md:w-[90px]">
               <SelectValue placeholder="Bulan" className="sr-only" />
               {MONTHS_ID[month - 1]}
             </SelectTrigger>
@@ -368,7 +368,7 @@ function GuruDashboardView({
   userName,
   userGrade,
   userRole,
-  isTreasurer,
+  isSavingsHolder,
 }: {
   initialSummary: TeacherSummary | null | undefined;
   initialChartData: AttendanceRow[] | undefined;
@@ -378,7 +378,7 @@ function GuruDashboardView({
   userName: string | null;
   userGrade: string | null;
   userRole: string | null;
-  isTreasurer: boolean;
+  isSavingsHolder: boolean;
 }) {
   const { loading, summary } = useTeacherDashboard(initialSummary);
   const [month, setMonth] = useState(initialMonth);
@@ -513,7 +513,7 @@ function GuruDashboardView({
           </div>
         ))}
       </div>
-      <TabunganSection grade={userGrade} userRole={userRole} isTreasurer={isTreasurer} />
+      <TabunganSection grade={userGrade} userRole={userRole} isSavingsHolder={isSavingsHolder} />
       {chartLoading ? (
         <div className="bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5 relative z-0">
           <div className="flex flex-col md:flex-row items-center md:justify-between gap-4 mb-4">
@@ -715,7 +715,7 @@ export default function DashboardClient({
   userRole,
   userName,
   userGrade,
-  isTreasurer,
+  isSavingsHolder,
   initialMonth,
   initialYear,
   guruInitialSummary,
@@ -744,7 +744,7 @@ export default function DashboardClient({
         userName={userName}
         userGrade={userGrade}
         userRole={userRole}
-        isTreasurer={isTreasurer}
+        isSavingsHolder={isSavingsHolder}
       />
     );
   }

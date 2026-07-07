@@ -15,5 +15,5 @@ export interface TeacherType {
   grade: string;
   title: string;
   role: string;
-  treasurer?: boolean;
+  savingsHolder?: boolean;
 }

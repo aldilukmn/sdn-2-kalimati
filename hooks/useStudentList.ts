@@ -22,7 +22,7 @@ export function useStudentList() {
 
   const [userRole, setUserRole] = useState<string | null>(null);
   const [userGrade, setUserGrade] = useState<string | null>(null);
-  const [isTreasurer, setIsTreasurer] = useState(false);
+  const [isSavingsHolder, setIsSavingsHolder] = useState(false);
   const [userFullName, setUserFullName] = useState("");
   const [grade, setGrade] = useState("1");
   const [date, setDate] = useState(() => {
@@ -44,7 +44,7 @@ export function useStudentList() {
     let role: string | null = null;
     let gradeFromToken: string | null = null;
 
-    let treasurer = false;
+    let savingsHolder = false;
     let fullName = "";
 
     if (token) {
@@ -53,7 +53,7 @@ export function useStudentList() {
         if (payload) {
           role = payload.role;
           gradeFromToken = payload.grade;
-          treasurer = payload.treasurer === true;
+          savingsHolder = payload.savingsHolder === true;
           fullName = payload.fullName || "";
         }
       } catch {}
@@ -68,7 +68,7 @@ export function useStudentList() {
 
     if (role) setUserRole(role);
     if (gradeFromToken) setUserGrade(gradeFromToken);
-    setIsTreasurer(treasurer);
+    setIsSavingsHolder(savingsHolder);
     setUserFullName(fullName);
     if (role === "guru" && gradeFromToken) setGrade(gradeFromToken);
   }, []);
@@ -146,7 +146,7 @@ export function useStudentList() {
   return {
     userRole,
     userGrade,
-    isTreasurer,
+    isSavingsHolder,
     grade,
     setGrade,
     userFullName,

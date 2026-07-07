@@ -253,7 +253,7 @@ export default function DataGTK() {
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
   const [studentCounts, setStudentCounts] = useState<Record<string, number>>({});
-  const [treasurerLoading, setTreasurerLoading] = useState<string | null>(null);
+  const [savingsHolderLoading, setSavingsHolderLoading] = useState<string | null>(null);
 
   useEffect(() => {
     const token = sessionStorage.getItem("user_session");
@@ -405,25 +405,25 @@ export default function DataGTK() {
     }
   };
 
-  const handleTreasurerToggle = async (user: TeacherType) => {
-    const newValue = !user.treasurer;
-    setTreasurerLoading(user._id);
+  const handleSavingsHolderToggle = async (user: TeacherType) => {
+    const newValue = !user.savingsHolder;
+    setSavingsHolderLoading(user._id);
     try {
-      await UserService.setTreasurer(user._id, newValue);
+      await UserService.setSavingsHolder(user._id, newValue);
       setTeachers((prev) =>
         prev.map((t) =>
-          t._id === user._id ? { ...t, treasurer: newValue } : t,
+          t._id === user._id ? { ...t, savingsHolder: newValue } : t,
         ),
       );
       toast.success(
-        `Bendahara ${newValue ? "ditugaskan" : "dicabut"} untuk ${user.fullName || user.username}`,
+        `Pengelola Tabungan ${newValue ? "ditugaskan" : "dicabut"} untuk ${user.fullName || user.username}`,
       );
     } catch (err) {
       toast.error(
-        err instanceof Error ? err.message : "Gagal mengubah status bendahara",
+        err instanceof Error ? err.message : "Gagal mengubah status Pengelola Tabungan",
       );
     } finally {
-      setTreasurerLoading(null);
+      setSavingsHolderLoading(null);
     }
   };
 
@@ -480,7 +480,7 @@ export default function DataGTK() {
                     "NIP",
                     "Kelas",
                     "Jumlah Murid",
-                    "Bendahara",
+                    "Pengelola Tabungan",
                     "Gelar",
                     ...(userRole !== "kepala" ? ["Aksi"] : []),
                   ].map((h) => (
@@ -538,7 +538,7 @@ export default function DataGTK() {
                     Jumlah Murid
                   </th>
                   <th className="px-3 py-3 text-center font-semibold whitespace-nowrap">
-                    Bendahara
+                    Pengelola Tabungan
                   </th>
                   <th className="px-3 py-3 text-left font-semibold whitespace-nowrap">
                     Gelar
@@ -575,23 +575,23 @@ export default function DataGTK() {
                     </td>
                     <td className="px-3 py-3 md:px-6 md:py-4 text-center whitespace-nowrap">
                       <button
-                        onClick={() => handleTreasurerToggle(guru)}
-                        disabled={treasurerLoading === guru._id}
+                        onClick={() => handleSavingsHolderToggle(guru)}
+                        disabled={savingsHolderLoading === guru._id}
                         className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed ${
-                          guru.treasurer
+                          guru.savingsHolder
                             ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300 hover:bg-emerald-200 dark:hover:bg-emerald-900/50"
                             : "bg-slate-100 text-slate-500 dark:bg-gray-800 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-gray-700"
                         }`}
-                        title={guru.treasurer ? "Klik untuk cabut" : "Klik untuk tugaskan"}
+                        title={guru.savingsHolder ? "Klik untuk cabut" : "Klik untuk tugaskan"}
                       >
-                        {treasurerLoading === guru._id ? (
+                        {savingsHolderLoading === guru._id ? (
                           <Loader2 size={14} className="animate-spin" />
-                        ) : guru.treasurer ? (
+                        ) : guru.savingsHolder ? (
                           <Check size={14} />
                         ) : (
                           <X size={14} />
                         )}
-                        {guru.treasurer ? "Ya" : "Tidak"}
+                        {guru.savingsHolder ? "Ya" : "Tidak"}
                       </button>
                     </td>
                     <td className="px-3 py-3 md:px-6 md:py-4 text-sm text-gray-600 dark:text-gray-300 whitespace-nowrap">

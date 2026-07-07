@@ -9,7 +9,7 @@ export default async function DashboardPage() {
   let userRole: string | null = null;
   let userName: string | null = null;
   let userGrade: string | null = null;
-  let isTreasurer = false;
+  let isSavingsHolder = false;
 
   if (token) {
     const payload = decodeJWT(token);
@@ -17,7 +17,7 @@ export default async function DashboardPage() {
       userRole = payload.role || null;
       userName = payload.fullName || null;
       userGrade = payload.grade || null;
-      isTreasurer = payload.treasurer === true;
+      isSavingsHolder = payload.savingsHolder === true;
     }
   }
 
@@ -29,7 +29,7 @@ export default async function DashboardPage() {
       userRole={userRole}
       userName={userName}
       userGrade={userGrade}
-      isTreasurer={isTreasurer}
+      isSavingsHolder={isSavingsHolder}
       initialMonth={initialMonth}
       initialYear={initialYear}
     />

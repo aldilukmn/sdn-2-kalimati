@@ -42,7 +42,7 @@ export default function TabunganMuridPage() {
   const {
     userRole,
     userGrade,
-    isTreasurer,
+    isSavingsHolder,
     grade,
     setGrade,
     date,
@@ -162,7 +162,7 @@ export default function TabunganMuridPage() {
     }
   }, [message, setMessage]);
 
-  const showGradeRecap = userRole === "admin" || userRole === "kepala" || isTreasurer;
+  const showGradeRecap = userRole === "admin" || userRole === "kepala" || isSavingsHolder;
 
 
   return (

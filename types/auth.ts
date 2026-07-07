@@ -4,7 +4,7 @@ export interface JwtPayload {
   user: string;
   role: string;
   grade?: string;
-  treasurer?: boolean;
+  savingsHolder?: boolean;
   fullName?: string;
   iat: number;
   exp: number;
