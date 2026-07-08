@@ -215,6 +215,14 @@ export function useNilaiHarian(userRole?: string | null, userGrade?: string | nu
     if (savingRef.current) return;
     savingRef.current = true;
     setSaving(true);
+    console.log("[SAVE]", {
+      chapterId: selectedChapter._id,
+      chapterName: selectedChapter.name,
+      inputMode: selectedChapter.inputMode,
+      materialId: selectedChapter.inputMode === "per_material" ? selectedMaterial : null,
+      scoresCount: entries.filter((e) => e.score !== "").length,
+      totalEntries: entries.length,
+    });
     const payload = {
       chapterId: selectedChapter._id,
       materialId: selectedChapter.inputMode === "per_material" ? selectedMaterial : undefined,
