@@ -25,7 +25,7 @@ import {
 } from "@/components/ui/table";
 
 const SEMESTERS = ["1", "2"];
-const ACADEMIC_YEARS = ["2024/2025", "2025/2026", "2026/2027"];
+const ACADEMIC_YEARS = ["2026/2027"];
 
 export default function MasterMapelPage() {
   const {

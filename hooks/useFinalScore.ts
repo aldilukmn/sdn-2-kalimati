@@ -7,11 +7,11 @@ import type { FinalScoreEntry, CalculateResponse } from "@/services/final-score.
 import type { GradeSubject } from "@/types/nilai-harian";
 
 const SEMESTERS = ["1", "2"];
-const ACADEMIC_YEARS = ["2024/2025", "2025/2026", "2026/2027"];
+const ACADEMIC_YEARS = ["2026/2027"];
 
 export function useFinalScore(userRole: string | null = null, userGrade: string | null = null) {
   const [semester, setSemester] = useState("1");
-  const [academicYear, setAcademicYear] = useState("2025/2026");
+  const [academicYear, setAcademicYear] = useState("2026/2027");
   const [grade, setGrade] = useState("1");
 
   // Lock grade for guru

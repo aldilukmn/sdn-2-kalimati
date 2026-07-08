@@ -22,7 +22,7 @@ export function useSubjects() {
   const [assignSubjectId, setAssignSubjectId] = useState("");
   const [assignGrade, setAssignGrade] = useState("1");
   const [assignSemester, setAssignSemester] = useState("1");
-  const [assignAcademicYear, setAssignAcademicYear] = useState("2025/2026");
+  const [assignAcademicYear, setAssignAcademicYear] = useState("2026/2027");
   const [assignSaving, setAssignSaving] = useState(false);
 
   const fetchSubjects = useCallback(async () => {
@@ -127,7 +127,7 @@ export function useSubjects() {
     setAssignSubjectId("");
     setAssignGrade("1");
     setAssignSemester("1");
-    setAssignAcademicYear("2025/2026");
+    setAssignAcademicYear("2026/2027");
     setAssignModal(true);
   };
 

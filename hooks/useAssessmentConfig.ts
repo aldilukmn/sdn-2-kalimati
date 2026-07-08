@@ -5,7 +5,7 @@ import AssessmentConfigService from "@/services/assessment-config.service";
 import type { AssessmentConfig, AssessmentComponent } from "@/types/nilai-harian";
 
 const SEMESTERS = ["1", "2"];
-const ACADEMIC_YEARS = ["2024/2025", "2025/2026", "2026/2027"];
+const ACADEMIC_YEARS = ["2026/2027"];
 
 export function useAssessmentConfig() {
   const [grade, setGrade] = useState("");
@@ -19,7 +19,7 @@ export function useAssessmentConfig() {
   const [editingConfig, setEditingConfig] = useState<AssessmentConfig | null>(null);
   const [modalGrade, setModalGrade] = useState("1");
   const [modalSemester, setModalSemester] = useState("1");
-  const [modalAcademicYear, setModalAcademicYear] = useState("2025/2026");
+  const [modalAcademicYear, setModalAcademicYear] = useState("2026/2027");
   const [components, setComponents] = useState<AssessmentComponent[]>([]);
   const [modalSaving, setModalSaving] = useState(false);
 
@@ -50,7 +50,7 @@ export function useAssessmentConfig() {
     setEditingConfig(null);
     setModalGrade("1");
     setModalSemester("1");
-    setModalAcademicYear("2025/2026");
+    setModalAcademicYear("2026/2027");
     setComponents([
       { key: "harian", name: "Nilai Harian", weight: 70 },
       { key: "asts", name: "ASTS", weight: 15 },

@@ -10,11 +10,11 @@ import AssessmentScoreService from "@/services/assessment-score.service";
 import type { GradeSubject, Chapter, Score, AssessmentConfig, AssessmentComponent } from "@/types/nilai-harian";
 
 const SEMESTERS = ["1", "2"];
-const ACADEMIC_YEARS = ["2024/2025", "2025/2026", "2026/2027"];
+const ACADEMIC_YEARS = ["2026/2027"];
 
 export function useAssessmentScore(userRole?: string | null, userGrade?: string | null) {
   const [semester, setSemester] = useState("1");
-  const [academicYear, setAcademicYear] = useState("2025/2026");
+  const [academicYear, setAcademicYear] = useState("2026/2027");
   const [grade, setGrade] = useState("1");
 
   useEffect(() => {

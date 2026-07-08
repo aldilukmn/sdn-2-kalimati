@@ -9,7 +9,7 @@ import type { FinalScoreEntry } from "@/services/final-score.service";
 import type { MasterStudentType } from "@/types/attendance";
 
 const SEMESTERS = ["1", "2"];
-const ACADEMIC_YEARS = ["2024/2025", "2025/2026", "2026/2027"];
+const ACADEMIC_YEARS = ["2026/2027"];
 
 export interface SubjectColumn {
   subjectId: string;
@@ -25,7 +25,7 @@ export interface MatrixRow {
 
 export function useRekapNilaiAkhir(userRole: string | null, userGrade: string | null) {
   const [semester, setSemester] = useState("1");
-  const [academicYear, setAcademicYear] = useState("2025/2026");
+  const [academicYear, setAcademicYear] = useState("2026/2027");
   const [grade, setGrade] = useState("1");
 
   const [gradeSubjects, setGradeSubjects] = useState<GradeSubject[]>([]);
