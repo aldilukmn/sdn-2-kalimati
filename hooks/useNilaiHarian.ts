@@ -218,16 +218,21 @@ export function useNilaiHarian(userRole?: string | null, userGrade?: string | nu
     const payload = {
       chapterId: selectedChapter._id,
       materialId: selectedChapter.inputMode === "per_material" ? selectedMaterial : undefined,
-      scores: entries.map((e) => ({
-        studentId: e.studentId,
-        score: e.score === "" ? 0 : Number(e.score),
-        maxScore: e.maxScore === "" ? 100 : Number(e.maxScore),
-      })),
+      scores: entries
+        .filter((e) => e.score !== "")
+        .map((e) => ({
+          studentId: e.studentId,
+          score: Number(e.score),
+          maxScore: e.maxScore === "" ? 100 : Number(e.maxScore),
+        })),
     };
     try {
       await ScoreService.bulkCreate(payload);
       setEntries((prev) =>
-        prev.map((e) => ({ ...e, status: "saved" as const }))
+        prev.map((e) => ({
+          ...e,
+          status: e.score !== "" ? "saved" as const : e.status,
+        }))
       );
     } catch (e: unknown) {
       setEntries((prev) =>

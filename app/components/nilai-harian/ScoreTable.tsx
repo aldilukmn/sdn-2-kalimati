@@ -167,11 +167,8 @@ export default function ScoreTable({
                     ref={(el) => setMaxInputRef(entry.studentId, el)}
                     type="number"
                     value={entry.maxScore}
-                    onChange={(e) => onMaxScoreChange(entry.studentId, e.target.value)}
-                    onKeyDown={(e) => handleKeyDown(entry.studentId, "max", e)}
-                    disabled={saving}
-                    min={1}
-                    className="w-14 px-2 py-1.5 text-sm text-center rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-indigo-400 disabled:opacity-50"
+                    readOnly
+                    className="w-14 px-2 py-1.5 text-sm text-center rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-gray-700/50 cursor-not-allowed opacity-70"
                   />
                 </td>
                 <td className="p-3 text-center">
@@ -228,11 +225,8 @@ export default function ScoreTable({
                   ref={(el) => setMaxInputRef(entry.studentId, el)}
                   type="number"
                   value={entry.maxScore}
-                  onChange={(e) => onMaxScoreChange(entry.studentId, e.target.value)}
-                  onKeyDown={(e) => handleKeyDown(entry.studentId, "max", e)}
-                  disabled={saving}
-                  min={1}
-                  className="w-full px-2 py-1.5 text-sm text-center rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-indigo-400 disabled:opacity-50"
+                  readOnly
+                  className="w-full px-2 py-1.5 text-sm text-center rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-gray-700/50 cursor-not-allowed opacity-70"
                 />
               </div>
             </div>
