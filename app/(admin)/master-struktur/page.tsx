@@ -197,7 +197,7 @@ export default function MasterStrukturPage() {
                   {userRole === "guru" && (
                     <span className="text-xs text-slate-400 dark:text-slate-500">Kelas {userGrade}</span>
                   )}
-                  {userRole !== "guru" && (
+                  {userRole !== null && userRole !== "guru" && (
                     <Link
                       href="/master-mapel"
                       className="text-xs text-indigo-500 hover:text-indigo-700 dark:text-indigo-400 dark:hover:text-indigo-300 font-medium flex items-center gap-1"

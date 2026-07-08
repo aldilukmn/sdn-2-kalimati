@@ -81,7 +81,7 @@ export default function DashboardSidebar({
       return pathname === "/master-struktur" || pathname === "/master-mapel" || pathname.startsWith("/master-");
     }
     if (href === "/nilai-harian") {
-      return pathname === "/nilai-harian" || pathname === "/master-struktur";
+      return pathname === "/nilai-harian";
     }
     return pathname === href || pathname.startsWith(href + "/");
   };
