@@ -76,9 +76,8 @@ export function useRekapNilaiAkhir(userRole: string | null, userGrade: string | 
     return () => ctrl.abort();
   }, [grade, semester, academicYear, retryCount]);
 
-  // Unique subjects as columns (from grade-subjects that have at least 1 entry)
+  // Unique subjects as columns (all grade-subjects for the grade)
   const uniqueSubjects: SubjectColumn[] = gradeSubjects
-    .filter((gs) => entries.some((e) => e.subjectId === gs.subjectId))
     .filter((s, i, arr) => arr.findIndex((x) => x.subjectId === s.subjectId) === i)
     .map((gs) => ({
       subjectId: gs.subjectId,
@@ -133,7 +132,7 @@ export function useRekapNilaiAkhir(userRole: string | null, userGrade: string | 
     matrix,
     classAverages,
     loading, initialLoading, error, retry,
-    hasData: matrix.length > 0,
+    hasData: students.length > 0 && uniqueSubjects.length > 0,
     SEMESTERS, ACADEMIC_YEARS,
   };
 }

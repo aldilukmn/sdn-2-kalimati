@@ -105,9 +105,9 @@ export default function RekapNilaiAkhirPage() {
         <div className="bg-white/70 dark:bg-gray-800/40 border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
           <div className="text-center py-12">
             <BarChart3 size={40} className="mx-auto text-slate-300 dark:text-slate-600 mb-3" />
-            <p className="text-slate-500 dark:text-slate-400 font-medium">Belum ada data Nilai Akhir.</p>
+            <p className="text-slate-500 dark:text-slate-400 font-medium">Belum ada data.</p>
             <p className="text-slate-400 dark:text-slate-500 text-sm mt-1">
-              Pastikan Nilai Akhir sudah dihitung melalui menu Nilai Akhir.
+              Pastikan Nilai Akhir sudah dihitung melalui menu Nilai Akhir untuk melihat nilainya.
             </p>
           </div>
         </div>

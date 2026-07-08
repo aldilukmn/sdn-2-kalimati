@@ -89,12 +89,12 @@ export default function RekapNilaiAkhirSheet({ matrix, subjects, classAverages }
               })}
               <td className="p-3 text-center">
                 <span className="text-sm font-bold text-indigo-700 dark:text-indigo-300">
-                  {matrix.length > 0
-                    ? (
-                        matrix.reduce((sum, row) => sum + (row.average ?? 0), 0) /
-                        matrix.filter((r) => r.average !== null).length
-                      ).toFixed(1)
-                    : "-"}
+                  {(() => {
+                    const validRows = matrix.filter((r) => r.average !== null);
+                    return validRows.length > 0
+                      ? (validRows.reduce((sum, r) => sum + r.average!, 0) / validRows.length).toFixed(1)
+                      : "-";
+                  })()}
                 </span>
               </td>
             </tr>
