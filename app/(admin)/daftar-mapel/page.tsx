@@ -37,6 +37,8 @@ export default function MasterStrukturPage() {
     reorderMaterials,
   } = useChapters(userRole, userGrade);
 
+  const [deleting, setDeleting] = useState(false);
+
   const [confirmDelete, setConfirmDelete] = useState<{
     type: "chapter" | "material";
     id: string;
@@ -87,24 +89,28 @@ export default function MasterStrukturPage() {
 
   const handleDeleteChapter = async () => {
     if (!confirmDelete || confirmDelete.type !== "chapter") return;
+    setDeleting(true);
     try {
       await deleteChapter(confirmDelete.id);
       toast.success("Bab berhasil dihapus");
     } catch (e: unknown) {
       toast.error(e instanceof Error ? e.message : "Gagal menghapus bab");
     } finally {
+      setDeleting(false);
       setConfirmDelete(null);
     }
   };
 
   const handleDeleteMaterial = async () => {
     if (!confirmDelete || confirmDelete.type !== "material" || !confirmDelete.chapterId) return;
+    setDeleting(true);
     try {
       await deleteMaterial(confirmDelete.chapterId, confirmDelete.id);
       toast.success("Materi berhasil dihapus");
     } catch (e: unknown) {
       toast.error(e instanceof Error ? e.message : "Gagal menghapus materi");
     } finally {
+      setDeleting(false);
       setConfirmDelete(null);
     }
   };
@@ -197,7 +203,7 @@ export default function MasterStrukturPage() {
           </div>
           <div>
             <div className="flex justify-end mb-2">
-              {userRole !== null && userRole !== "guru" && (
+              {userRole !== null && userRole !== "guru" ? (
                 <Link
                   href="/kelola-mapel"
                   className="text-xs text-indigo-500 hover:text-indigo-700 dark:text-indigo-400 dark:hover:text-indigo-300 font-medium flex items-center gap-1"
@@ -205,6 +211,8 @@ export default function MasterStrukturPage() {
                   <Settings size={12} />
                   Kelola Mapel
                 </Link>
+              ) : (
+                <span className="text-xs invisible">placeholder</span>
               )}
             </div>
             <button
@@ -403,7 +411,7 @@ export default function MasterStrukturPage() {
             <button
               onClick={handleSaveChapter}
               disabled={chapterSaving || !chapterName.trim()}
-              className="px-4 py-2 text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 rounded-lg transition-colors cursor-pointer flex items-center gap-2"
+              className="px-4 py-2 text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed rounded-lg transition-colors cursor-pointer flex items-center gap-2"
             >
               {chapterSaving && <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />}
               {chapterModal.edit ? "Simpan" : "Tambah"}
@@ -432,7 +440,7 @@ export default function MasterStrukturPage() {
             <button
               onClick={handleSaveMaterial}
               disabled={materialSaving || !materialName.trim()}
-              className="px-4 py-2 text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 rounded-lg transition-colors cursor-pointer flex items-center gap-2"
+              className="px-4 py-2 text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed rounded-lg transition-colors cursor-pointer flex items-center gap-2"
             >
               {materialSaving && <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />}
               {materialModal.edit ? "Simpan" : "Tambah"}
@@ -452,10 +460,11 @@ export default function MasterStrukturPage() {
           </span>
         </p>
         <div className="flex justify-end gap-2">
-          <button onClick={() => setConfirmDelete(null)} className="px-4 py-2 text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-gray-800 rounded-lg transition-colors cursor-pointer">Batal</button>
+          <button onClick={() => setConfirmDelete(null)} disabled={deleting} className="px-4 py-2 text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-gray-800 disabled:opacity-50 rounded-lg transition-colors cursor-pointer">Batal</button>
           <button
             onClick={confirmDelete?.type === "chapter" ? handleDeleteChapter : handleDeleteMaterial}
-            className="px-4 py-2 text-sm font-medium text-white bg-red-600 hover:bg-red-700 rounded-lg transition-colors cursor-pointer"
+            disabled={deleting}
+            className="px-4 py-2 text-sm font-medium text-white bg-red-600 hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed rounded-lg transition-colors cursor-pointer"
           >
             Hapus
           </button>
