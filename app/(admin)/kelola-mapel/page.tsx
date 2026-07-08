@@ -167,7 +167,7 @@ export default function MasterMapelPage() {
                 placeholder="Cari mata pelajaran..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="w-full pl-9 pr-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400"
+                className="w-full h-auto pl-9 pr-4 py-2.5 rounded-xl border border-slate-300 bg-slate-50 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100 dark:focus:border-indigo-500"
               />
               {search && (
                 <button onClick={() => setSearch("")} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 cursor-pointer">
@@ -338,7 +338,7 @@ export default function MasterMapelPage() {
               value={subjectName}
               onChange={(e) => setSubjectName(e.target.value)}
               placeholder="Masukkan nama mata pelajaran"
-              className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400"
+              className="w-full h-auto rounded-xl border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100 dark:focus:border-indigo-500"
               autoFocus
               onKeyDown={(e) => { if (e.key === "Enter") handleSaveSubject(); }}
             />
@@ -346,7 +346,7 @@ export default function MasterMapelPage() {
           <div className="flex justify-end gap-2">
             <button
               onClick={closeSubjectModal}
-              className="px-4 py-2 text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-gray-800 rounded-lg transition-colors cursor-pointer"
+              className="px-4 py-2 text-sm font-medium text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-gray-800 hover:bg-slate-200 dark:hover:bg-gray-700 rounded-lg transition-colors cursor-pointer"
             >
               Batal
             </button>
@@ -432,7 +432,7 @@ export default function MasterMapelPage() {
           <div className="flex justify-end gap-2 pt-2">
             <button
               onClick={closeAssignModal}
-              className="px-4 py-2 text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-gray-800 rounded-lg transition-colors cursor-pointer"
+              className="px-4 py-2 text-sm font-medium text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-gray-800 hover:bg-slate-200 dark:hover:bg-gray-700 rounded-lg transition-colors cursor-pointer"
             >
               Batal
             </button>
@@ -461,7 +461,7 @@ export default function MasterMapelPage() {
         <div className="flex justify-end gap-2">
           <button
             onClick={() => setConfirmDelete(null)}
-            className="px-4 py-2 text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-gray-800 rounded-lg transition-colors cursor-pointer"
+            className="px-4 py-2 text-sm font-medium text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-gray-800 hover:bg-slate-200 dark:hover:bg-gray-700 rounded-lg transition-colors cursor-pointer"
           >
             Batal
           </button>

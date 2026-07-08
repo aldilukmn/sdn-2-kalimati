@@ -142,10 +142,11 @@ export default function MasterStrukturPage() {
     }
   };
 
-  if (error) {
-    return (
-      <div className="flex flex-col gap-6 p-4 md:p-6">
-        <PageHero icon={BookOpen} title="Daftar Mapel" description="Atur bab dan materi pelajaran" />
+  return (
+    <div className="flex flex-col gap-6 p-4 md:p-6">
+      <PageHero icon={BookOpen} title="Daftar Mapel" description="Atur bab dan materi pelajaran" />
+
+      {error ? (
         <div className="bg-white/70 dark:bg-gray-800/40 border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
           <div className="text-center py-12">
             <AlertCircle size={40} className="mx-auto text-red-300 dark:text-red-600 mb-3" />
@@ -155,36 +156,9 @@ export default function MasterStrukturPage() {
             </button>
           </div>
         </div>
-      </div>
-    );
-  }
-
-  if (loading) {
-    return (
-      <div className="flex flex-col gap-6 p-4 md:p-6">
-        {/* Hero skeleton */}
-        <div className="animate-pulse space-y-2 px-1">
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 bg-slate-200 dark:bg-slate-700 rounded-lg" />
-            <div className="h-6 bg-slate-200 dark:bg-slate-700 rounded w-48" />
-          </div>
-          <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-72" />
-        </div>
-        <div className="animate-pulse space-y-4">
-          <div className="h-10 bg-slate-200 dark:bg-slate-700 rounded-xl w-64" />
-          {[1, 2, 3].map((i) => (
-            <div key={i} className="h-16 bg-slate-200 dark:bg-slate-700 rounded-xl" />
-          ))}
-        </div>
-      </div>
-    );
-  }
-
-  return (
-    <div className="flex flex-col gap-6 p-4 md:p-6">
-      <PageHero icon={BookOpen} title="Daftar Mapel" description="Atur bab dan materi pelajaran" />
-
-      {/* Selector */}
+      ) : (
+        <>
+          {/* Selector */}
       <div className="bg-white/70 dark:bg-gray-800/40 border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
         <div className="grid grid-cols-2 gap-4">
           <div>
@@ -379,6 +353,9 @@ export default function MasterStrukturPage() {
         </div>
       )}
 
+      </>
+    )}
+
       {/* Modal Chapter */}
       <Modal open={chapterModal.open} onClose={closeChapterModal} title={chapterModal.edit ? "Ubah Bab" : "Tambah Bab"} className="max-w-sm">
         <div className="space-y-4">
@@ -389,7 +366,7 @@ export default function MasterStrukturPage() {
               value={chapterName}
               onChange={(e) => setChapterName(e.target.value)}
               placeholder="Masukkan nama bab"
-              className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:focus:border-indigo-500"
+              className="w-full h-auto rounded-xl border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100 dark:focus:border-indigo-500"
               autoFocus
               onKeyDown={(e) => { if (e.key === "Enter") handleSaveChapter(); }}
             />
@@ -414,7 +391,7 @@ export default function MasterStrukturPage() {
             </p>
           </div>
           <div className="flex justify-end gap-2">
-            <button onClick={closeChapterModal} className="px-4 py-2 text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-gray-800 rounded-lg transition-colors cursor-pointer">Batal</button>
+            <button onClick={closeChapterModal} className="px-4 py-2 text-sm font-medium text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-gray-800 hover:bg-slate-200 dark:hover:bg-gray-700 rounded-lg transition-colors cursor-pointer">Batal</button>
             <button
               onClick={handleSaveChapter}
               disabled={chapterSaving || !chapterName.trim()}
@@ -437,13 +414,13 @@ export default function MasterStrukturPage() {
               value={materialName}
               onChange={(e) => setMaterialName(e.target.value)}
               placeholder="Masukkan nama materi"
-              className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400"
+              className="w-full h-auto rounded-xl border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100 dark:focus:border-indigo-500"
               autoFocus
               onKeyDown={(e) => { if (e.key === "Enter") handleSaveMaterial(); }}
             />
           </div>
           <div className="flex justify-end gap-2">
-            <button onClick={closeMaterialModal} className="px-4 py-2 text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-gray-800 rounded-lg transition-colors cursor-pointer">Batal</button>
+            <button onClick={closeMaterialModal} className="px-4 py-2 text-sm font-medium text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-gray-800 hover:bg-slate-200 dark:hover:bg-gray-700 rounded-lg transition-colors cursor-pointer">Batal</button>
             <button
               onClick={handleSaveMaterial}
               disabled={materialSaving || !materialName.trim()}
@@ -467,7 +444,7 @@ export default function MasterStrukturPage() {
           </span>
         </p>
         <div className="flex justify-end gap-2">
-          <button onClick={() => setConfirmDelete(null)} disabled={deleting} className="px-4 py-2 text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-gray-800 disabled:opacity-50 rounded-lg transition-colors cursor-pointer">Batal</button>
+          <button onClick={() => setConfirmDelete(null)} disabled={deleting} className="px-4 py-2 text-sm font-medium text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-gray-800 hover:bg-slate-200 dark:hover:bg-gray-700 disabled:opacity-50 rounded-lg transition-colors cursor-pointer">Batal</button>
           <button
             onClick={confirmDelete?.type === "chapter" ? handleDeleteChapter : handleDeleteMaterial}
             disabled={deleting}
