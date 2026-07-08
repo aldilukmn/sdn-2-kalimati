@@ -9,10 +9,17 @@ import type { GradeSubject } from "@/types/nilai-harian";
 const SEMESTERS = ["1", "2"];
 const ACADEMIC_YEARS = ["2024/2025", "2025/2026", "2026/2027"];
 
-export function useFinalScore() {
+export function useFinalScore(userRole: string | null = null, userGrade: string | null = null) {
   const [semester, setSemester] = useState("1");
   const [academicYear, setAcademicYear] = useState("2025/2026");
   const [grade, setGrade] = useState("1");
+
+  // Lock grade for guru
+  useEffect(() => {
+    if (userRole === "guru" && userGrade) {
+      setGrade(userGrade);
+    }
+  }, [userRole, userGrade]);
   const [gradeSubjects, setGradeSubjects] = useState<GradeSubject[]>([]);
   const [selectedGS, setSelectedGS] = useState("");
 

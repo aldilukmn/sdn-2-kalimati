@@ -36,54 +36,65 @@ export default function RekapPresensi() {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
 
-  const fetchSiswa = async () => {
+  const fetchSiswa = async (signal?: AbortSignal) => {
     try {
       const response = await StudentAttendanceService.getStudentsByGrade(grade);
+      if (signal?.aborted) return;
       const data = response.data || response.result || [];
       setSiswaList(data);
     } catch {
+      if (signal?.aborted) return;
       setSiswaList([]);
     }
   };
 
-  const fetchTeacher = async () => {
+  const fetchTeacher = async (signal?: AbortSignal) => {
     setTeacherLoading(true);
     try {
       const res = await UserService.getTeacherByGrade(grade);
+      if (signal?.aborted) return;
       const teacher = res?.result;
       setTeacherName(teacher?.fullName || null);
     } catch {
+      if (signal?.aborted) return;
       setTeacherName(null);
     } finally {
+      if (signal?.aborted) return;
       setTeacherLoading(false);
     }
   };
 
-  const fetchAllPresensi = async () => {
+  const fetchAllPresensi = async (signal?: AbortSignal) => {
     try {
       const response = await StudentAttendanceService.getReportByGrade(
         grade,
         month,
         year,
       );
+      if (signal?.aborted) return;
       const data = response.data || response.result || [];
       setDataPresensi(data);
     } catch {
+      if (signal?.aborted) return;
       setError("Gagal memuat data presensi");
     } finally {
+      if (signal?.aborted) return;
       setLoading(false);
     }
   };
 
   useEffect(() => {
+    const ctrl = new AbortController();
+    const { signal } = ctrl;
     setLoading(true);
     setError(null);
     setTeacherName(null);
     setTeacherLoading(true);
     setCurrentPage(1);
-    fetchSiswa();
-    fetchTeacher();
-    fetchAllPresensi();
+    fetchSiswa(signal);
+    fetchTeacher(signal);
+    fetchAllPresensi(signal);
+    return () => ctrl.abort();
   }, [grade, month, year]);
 
   const handleExport = () => {

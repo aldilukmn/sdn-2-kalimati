@@ -39,7 +39,7 @@ export default function NilaiAkhirPage() {
     totalStudents, completeStudents, incompleteStudents, missingByComponent,
     selectedGSData,
     SEMESTERS, ACADEMIC_YEARS,
-  } = useFinalScore();
+  } = useFinalScore(userRole, userGrade);
 
   const [expandedRow, setExpandedRow] = useState<string | null>(null);
 

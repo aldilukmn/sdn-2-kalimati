@@ -16,6 +16,9 @@ export function useHolidays() {
   useEffect(() => {
     HolidayService.getAll().then((res) => {
       setHolidayList(res.result || []);
+    }).catch(() => {
+      setHolidayList([]);
+    }).finally(() => {
       setLoaded(true);
     });
   }, []);
