@@ -189,12 +189,12 @@
 | Testable | ✅ Ya |
 
 **Definition of Done:**
-- [ ] Filter TA, semester, grade, mapel
-- [ ] Tab komponen dari config aktif
-- [ ] Tab "Nilai Harian" → readonly
-- [ ] Tab non-harian → score input (range 0-100)
-- [ ] `[💾 Simpan Semua]` → toast
-- [ ] Empty state: "Belum ada Config aktif" / "Input Nilai Harian dulu"
+- [x] Filter TA, semester, grade, mapel
+- [x] Tab komponen dari config aktif
+- [x] Tab "Nilai Harian" → readonly
+- [x] Tab non-harian → score input (range 0-100)
+- [x] `[💾 Simpan Semua]` → toast
+- [x] Empty state: "Belum ada Config aktif" / "Input Nilai Harian dulu"
 
 ---
 

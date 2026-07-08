@@ -21,6 +21,7 @@ const menuItems = [
   { label: "Dashboard", icon: LayoutDashboard, href: "/dashboard" },
   { label: "Mapel & Struktur", icon: BookOpen, href: "/master-struktur" },
   { label: "Input Nilai Harian", icon: ClipboardEdit, href: "/nilai-harian" },
+  { label: "Nilai Komponen", icon: ClipboardList, href: "/nilai-komponen" },
   { label: "Rekap Nilai", icon: ScrollText, href: "/rekap-nilai" },
   { label: "Konfigurasi Penilaian", icon: Scale, href: "/master-konfigurasi-nilai" },
   { label: "Data GTK", icon: Users, href: "/data-gtk" },
