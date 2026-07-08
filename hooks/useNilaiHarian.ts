@@ -234,6 +234,23 @@ export function useNilaiHarian(userRole?: string | null, userGrade?: string | nu
           status: e.score !== "" ? "saved" as const : e.status,
         }))
       );
+      setChapterProgress((prev) => {
+        if (!selectedChapter) return prev;
+        const current = prev[selectedChapter._id];
+        if (!current) return prev;
+        const currentCount = entries.filter((e) => e.score !== "").length;
+        const updatedGraded = Math.max(current.gradedStudents, currentCount);
+        return {
+          ...prev,
+          [selectedChapter._id]: {
+            ...current,
+            gradedStudents: updatedGraded,
+            percentage: current.totalStudents > 0
+              ? Math.round((updatedGraded / current.totalStudents) * 100)
+              : 0,
+          },
+        };
+      });
     } catch (e: unknown) {
       setEntries((prev) =>
         prev.map((e) =>
