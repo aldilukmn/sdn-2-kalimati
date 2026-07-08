@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { ClipboardEdit, Save, AlertCircle } from "lucide-react";
 import { useNilaiHarian } from "@/hooks/useNilaiHarian";
+import { decodeJWT } from "@/lib/jwt";
 import { GRADES } from "@/lib/constants";
 import toast from "react-hot-toast";
 import PageHero from "@/app/components/PageHero";
@@ -16,6 +17,18 @@ import {
 } from "@/components/ui/select";
 
 export default function NilaiHarianPage() {
+  const [userRole, setUserRole] = useState<string | null>(null);
+  const [userGrade, setUserGrade] = useState<string | null>(null);
+
+  useEffect(() => {
+    const token = sessionStorage.getItem("user_session");
+    if (token) {
+      const payload = decodeJWT(token);
+      setUserRole(payload?.role || null);
+      setUserGrade(payload?.grade || null);
+    }
+  }, []);
+
   const {
     semester, setSemester,
     academicYear, setAcademicYear,
@@ -32,7 +45,7 @@ export default function NilaiHarianPage() {
     handleMaxScoreChange,
     handleSave,
     SEMESTERS, ACADEMIC_YEARS,
-  } = useNilaiHarian();
+  } = useNilaiHarian(userRole, userGrade);
 
   useEffect(() => {
     if (selectedChapter) {
@@ -82,7 +95,7 @@ export default function NilaiHarianPage() {
           </div>
           <div>
             <label className="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">Kelas</label>
-            <Select value={grade} onValueChange={(v) => v && setGrade(v)}>
+            <Select value={grade} onValueChange={(v) => v && setGrade(v)} disabled={userRole === "guru"}>
               <SelectTrigger><SelectValue /></SelectTrigger>
               <SelectContent>
                 {GRADES.map((g) => (
