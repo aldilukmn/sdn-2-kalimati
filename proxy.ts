@@ -13,6 +13,7 @@ const ROLE_ROUTES: Record<string, string[]> = {
   "/tabungan-murid": ["admin", "kepala", "guru"],
   "/rekap-presensi": ["admin", "kepala", "guru"],
   "/beranda-penjaga": ["penjaga"],
+  "/master-mapel": ["admin", "kepala"],
 };
 
 const BASE64_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
@@ -123,5 +124,6 @@ export const config = {
     "/tabungan-murid/:path*",
     "/rekap-presensi",
     "/beranda-penjaga",
+    "/master-mapel",
   ],
 };

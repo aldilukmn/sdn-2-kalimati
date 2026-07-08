@@ -9,12 +9,14 @@ import {
   CalendarCheck,
   Users,
   Wallet,
+  BookOpen,
   X,
   GraduationCap,
 } from "lucide-react";
 
 const menuItems = [
   { label: "Dashboard", icon: LayoutDashboard, href: "/dashboard" },
+  { label: "Mapel & Struktur", icon: BookOpen, href: "/master-mapel" },
   { label: "Data GTK", icon: Users, href: "/data-gtk" },
   { label: "Data Pendaftar", icon: ClipboardList, href: "/data-pendaftar" },
   { label: "Presensi Murid", icon: CalendarCheck, href: "/presensi-murid" },
@@ -47,6 +49,9 @@ export default function DashboardSidebar({
           item.href === "/presensi-murid" ||
           item.href === "/tabungan-murid",
       );
+    }
+    if (userRole === "kepala") {
+      return menuItems;
     }
     if (userRole === "penjaga") {
       return penjagaMenuItems;
