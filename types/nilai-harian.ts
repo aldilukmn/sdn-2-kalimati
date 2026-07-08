@@ -24,6 +24,13 @@ export interface GradeSubject {
   updatedAt?: string;
 }
 
+export interface BulkGradeSubjectCreateRequest {
+  subjectId: string;
+  grades: string[];
+  semester: string;
+  academicYear: string;
+}
+
 export interface GradeSubjectCreateRequest {
   subjectId: string;
   grade: string;

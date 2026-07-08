@@ -1,5 +1,5 @@
 import { api } from "@/lib/api";
-import type { GradeSubject, GradeSubjectCreateRequest, GradeSubjectUpdateRequest, GradeSubjectQueryParams } from "@/types/nilai-harian";
+import type { GradeSubject, GradeSubjectCreateRequest, GradeSubjectUpdateRequest, GradeSubjectQueryParams, BulkGradeSubjectCreateRequest } from "@/types/nilai-harian";
 
 export default class GradeSubjectService {
   static async getAll(params?: GradeSubjectQueryParams) {
@@ -10,6 +10,13 @@ export default class GradeSubjectService {
     const qs = searchParams.toString();
     const url = qs ? `/grade-subjects?${qs}` : "/grade-subjects";
     return await api<GradeSubject[]>(url);
+  }
+
+  static async bulkCreate(data: BulkGradeSubjectCreateRequest) {
+    return await api<GradeSubject[]>("/grade-subjects/bulk", {
+      method: "POST",
+      body: JSON.stringify(data),
+    });
   }
 
   static async create(data: GradeSubjectCreateRequest) {

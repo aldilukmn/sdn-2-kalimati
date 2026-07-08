@@ -20,7 +20,7 @@ export function useSubjects() {
 
   const [assignModal, setAssignModal] = useState(false);
   const [assignSubjectId, setAssignSubjectId] = useState("");
-  const [assignGrade, setAssignGrade] = useState("1");
+  const [assignGrades, setAssignGrades] = useState<string[]>([]);
   const [assignSemester, setAssignSemester] = useState("1");
   const [assignAcademicYear, setAssignAcademicYear] = useState("2026/2027");
   const [assignSaving, setAssignSaving] = useState(false);
@@ -125,7 +125,7 @@ export function useSubjects() {
   // GradeSubject CRUD
   const openAssignModal = () => {
     setAssignSubjectId("");
-    setAssignGrade("1");
+    setAssignGrades([]);
     setAssignSemester("1");
     setAssignAcademicYear("2026/2027");
     setAssignModal(true);
@@ -135,16 +135,31 @@ export function useSubjects() {
     setAssignModal(false);
   };
 
+  const toggleGrade = (grade: string) => {
+    setAssignGrades((prev) =>
+      prev.includes(grade) ? prev.filter((g) => g !== grade) : [...prev, grade]
+    );
+  };
+
   const saveAssign = async () => {
     if (!assignSubjectId) return;
     setAssignSaving(true);
     try {
-      await GradeSubjectService.create({
-        subjectId: assignSubjectId,
-        grade: assignGrade,
-        semester: assignSemester,
-        academicYear: assignAcademicYear,
-      });
+      if (assignGrades.length > 1) {
+        await GradeSubjectService.bulkCreate({
+          subjectId: assignSubjectId,
+          grades: assignGrades,
+          semester: assignSemester,
+          academicYear: assignAcademicYear,
+        });
+      } else {
+        await GradeSubjectService.create({
+          subjectId: assignSubjectId,
+          grade: assignGrades[0] || "1",
+          semester: assignSemester,
+          academicYear: assignAcademicYear,
+        });
+      }
       await fetchGradeSubjects();
       closeAssignModal();
     } catch {
@@ -186,8 +201,8 @@ export function useSubjects() {
     assignModal,
     assignSubjectId,
     setAssignSubjectId,
-    assignGrade,
-    setAssignGrade,
+    assignGrades,
+    toggleGrade,
     assignSemester,
     setAssignSemester,
     assignAcademicYear,
