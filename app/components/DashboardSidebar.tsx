@@ -58,8 +58,11 @@ export default function DashboardSidebar({
         (item) =>
           item.href === "/dashboard" ||
           item.href === "/nilai-harian" ||
+          item.href === "/nilai-komponen" ||
           item.href === "/rekap-nilai" ||
           item.href === "/rekap-nilai-akhir" ||
+          item.href === "/nilai-akhir" ||
+          item.href === "/master-struktur" ||
           item.href === "/presensi-murid" ||
           item.href === "/tabungan-murid",
       );
