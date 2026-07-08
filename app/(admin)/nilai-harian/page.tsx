@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { ClipboardEdit, Save, AlertCircle } from "lucide-react";
+import { ClipboardEdit, Save, AlertCircle, BookOpen } from "lucide-react";
 import { useNilaiHarian } from "@/hooks/useNilaiHarian";
 import { decodeJWT } from "@/lib/jwt";
 import { GRADES } from "@/lib/constants";
@@ -141,9 +141,9 @@ export default function NilaiHarianPage() {
         <div className="bg-white/70 dark:bg-gray-800/40 border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
           <div className="text-center py-12">
             <ClipboardEdit size={40} className="mx-auto text-slate-300 dark:text-slate-600 mb-3" />
-            <p className="text-slate-500 dark:text-slate-400 font-medium">Belum ada Bab yang dapat dinilai.</p>
+            <p className="text-slate-500 dark:text-slate-400 font-medium">Belum ada Mapel untuk kelas ini.</p>
             <p className="text-slate-400 dark:text-slate-500 text-sm mt-1">
-              Hubungi Admin untuk membuat Struktur Akademik terlebih dahulu.
+              Hubungi Admin untuk menetapkan Mata Pelajaran terlebih dahulu.
             </p>
           </div>
         </div>
@@ -161,6 +161,16 @@ export default function NilaiHarianPage() {
               <div className="bg-white/70 dark:bg-gray-800/40 border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
                 <div className="text-center py-8">
                   <p className="text-slate-500 dark:text-slate-400 font-medium">Belum ada Bab untuk mapel ini.</p>
+                  <p className="text-slate-400 dark:text-slate-500 text-sm mt-1">
+                    Buat Bab dan Materi terlebih dahulu di Struktur Akademik.
+                  </p>
+                  <a
+                    href="/master-struktur"
+                    className="inline-flex items-center gap-2 mt-4 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-sm font-medium transition-colors"
+                  >
+                    <BookOpen size={16} />
+                    Kelola Struktur Akademik
+                  </a>
                 </div>
               </div>
             ) : (
