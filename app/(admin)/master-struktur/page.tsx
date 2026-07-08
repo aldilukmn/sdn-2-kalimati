@@ -208,11 +208,11 @@ export default function MasterStrukturPage() {
             </Select>
           </div>
           <div>
-            <div className="mb-2">&nbsp;</div>
+            <div className="mb-2 text-xs">&nbsp;</div>
             <button
               onClick={openCreateChapter}
               disabled={!selectedGS}
-              className="w-full h-10 rounded-xl border border-slate-300 bg-slate-50 text-sm font-medium text-slate-600 hover:bg-slate-100 disabled:opacity-50 transition-colors dark:border-gray-700 dark:bg-gray-950 dark:text-slate-300 dark:hover:bg-gray-900 cursor-pointer"
+              className="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white rounded-xl text-sm font-semibold transition-all duration-300 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
             >
               Tambah Bab
             </button>
@@ -361,7 +361,7 @@ export default function MasterStrukturPage() {
       )}
 
       {/* Modal Chapter */}
-      <Modal open={chapterModal.open} onClose={closeChapterModal} title={chapterModal.edit ? "Ubah Bab" : "Tambah Bab"}>
+      <Modal open={chapterModal.open} onClose={closeChapterModal} title={chapterModal.edit ? "Ubah Bab" : "Tambah Bab"} className="max-w-sm">
         <div className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Nama Bab</label>
@@ -370,7 +370,7 @@ export default function MasterStrukturPage() {
               value={chapterName}
               onChange={(e) => setChapterName(e.target.value)}
               placeholder="Masukkan nama bab"
-              className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400"
+              className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:focus:border-indigo-500"
               autoFocus
               onKeyDown={(e) => { if (e.key === "Enter") handleSaveChapter(); }}
             />
@@ -379,7 +379,9 @@ export default function MasterStrukturPage() {
             <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Metode Input</label>
             <Select value={chapterInputMode} onValueChange={(v) => v && setChapterInputMode(v as "per_chapter" | "per_material")}>
               <SelectTrigger className="w-full">
-                <SelectValue />
+                <SelectValue placeholder="Pilih metode input">
+                  {chapterInputMode === "per_material" ? "Per Materi (sub-bab)" : "Per Bab (langsung)"}
+                </SelectValue>
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="per_material">Per Materi (sub-bab)</SelectItem>
@@ -407,7 +409,7 @@ export default function MasterStrukturPage() {
       </Modal>
 
       {/* Modal Material */}
-      <Modal open={materialModal.open} onClose={closeMaterialModal} title={materialModal.edit ? "Ubah Materi" : "Tambah Materi"}>
+      <Modal open={materialModal.open} onClose={closeMaterialModal} title={materialModal.edit ? "Ubah Materi" : "Tambah Materi"} className="max-w-sm">
         <div className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Nama Materi</label>
