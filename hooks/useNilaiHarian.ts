@@ -44,6 +44,7 @@ export function useNilaiHarian(userRole?: string | null, userGrade?: string | nu
 
   const ITEMS_PER_PAGE = 10;
   const inputRef = useRef<HTMLInputElement | null>(null);
+  const savingRef = useRef(false);
 
   // Fetch grade-subjects when grade changes
   useEffect(() => {
@@ -211,6 +212,8 @@ export function useNilaiHarian(userRole?: string | null, userGrade?: string | nu
 
   const handleSave = async () => {
     if (!selectedChapter) return;
+    if (savingRef.current) return;
+    savingRef.current = true;
     setSaving(true);
     const payload = {
       chapterId: selectedChapter._id,
@@ -234,6 +237,7 @@ export function useNilaiHarian(userRole?: string | null, userGrade?: string | nu
       );
       throw e;
     } finally {
+      savingRef.current = false;
       setSaving(false);
     }
   };
