@@ -162,14 +162,14 @@
 | Testable | ✅ Ya |
 
 **Definition of Done:**
-- [ ] Filter grade → table configs
-- [ ] Modal create: dynamic component rows (key, name, weight)
-- [ ] `[+ Tambah Komponen]`, `🗑` hapus row
-- [ ] Live total bobot: hijau ✅ = 100%, merah ❌ ≠ 100%
-- [ ] Live formula preview
-- [ ] Tombol Simpan disabled jika total ≠ 100%
-- [ ] Key `"harian"` reserved + harus ada
-- [ ] Empty state, skeleton, toast
+- [x] Filter grade → table configs
+- [x] Modal create: dynamic component rows (key, name, weight)
+- [x] `[+ Tambah Komponen]`, `🗑` hapus row
+- [x] Live total bobot: hijau ✅ = 100%, merah ❌ ≠ 100%
+- [x] Live formula preview
+- [x] Tombol Simpan disabled jika total ≠ 100%
+- [x] Key `"harian"` reserved + harus ada
+- [x] Empty state, skeleton, toast
 
 ---
 

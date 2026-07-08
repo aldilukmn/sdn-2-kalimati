@@ -12,6 +12,7 @@ import {
   BookOpen,
   ClipboardEdit,
   ScrollText,
+  Scale,
   X,
   GraduationCap,
 } from "lucide-react";
@@ -21,6 +22,7 @@ const menuItems = [
   { label: "Mapel & Struktur", icon: BookOpen, href: "/master-struktur" },
   { label: "Input Nilai Harian", icon: ClipboardEdit, href: "/nilai-harian" },
   { label: "Rekap Nilai", icon: ScrollText, href: "/rekap-nilai" },
+  { label: "Konfigurasi Penilaian", icon: Scale, href: "/master-konfigurasi-nilai" },
   { label: "Data GTK", icon: Users, href: "/data-gtk" },
   { label: "Data Pendaftar", icon: ClipboardList, href: "/data-pendaftar" },
   { label: "Presensi Murid", icon: CalendarCheck, href: "/presensi-murid" },

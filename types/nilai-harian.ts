@@ -154,3 +154,19 @@ export interface ClassAverageItem {
   average: number;
   overallAverage: number;
 }
+
+export interface AssessmentComponent {
+  key: string;
+  name: string;
+  weight: number;
+}
+
+export interface AssessmentConfig {
+  _id: string;
+  grade: string;
+  semester: string;
+  academicYear: string;
+  components: AssessmentComponent[];
+  createdAt?: string;
+  updatedAt?: string;
+}

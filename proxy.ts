@@ -15,6 +15,7 @@ const ROLE_ROUTES: Record<string, string[]> = {
   "/beranda-penjaga": ["penjaga"],
   "/master-mapel": ["admin", "kepala"],
   "/master-struktur": ["admin", "kepala"],
+  "/master-konfigurasi-nilai": ["admin", "kepala"],
   "/nilai-harian": ["admin", "kepala", "guru"],
   "/rekap-nilai": ["admin", "kepala", "guru"],
 };
@@ -129,6 +130,7 @@ export const config = {
     "/beranda-penjaga",
     "/master-mapel",
     "/master-struktur",
+    "/master-konfigurasi-nilai",
     "/nilai-harian",
     "/rekap-nilai",
   ],
