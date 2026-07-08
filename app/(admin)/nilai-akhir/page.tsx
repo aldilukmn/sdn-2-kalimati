@@ -159,7 +159,7 @@ export default function NilaiAkhirPage() {
             <Calculator size={40} className="mx-auto text-slate-300 dark:text-slate-600 mb-3" />
             <p className="text-slate-500 dark:text-slate-400 font-medium">Belum ada Nilai Akhir yang dapat ditampilkan.</p>
             <p className="text-slate-400 dark:text-slate-500 text-sm mt-1">
-              Pastikan Nilai Harian dan Nilai Komponen sudah lengkap, kemudian lakukan Hitung Nilai Akhir.
+              Pastikan Nilai Harian dan Komponen Nilai sudah lengkap, kemudian lakukan Hitung Nilai Akhir.
             </p>
             <button
               onClick={onCalculate}

@@ -23,7 +23,7 @@ const menuItems = [
   { label: "Dashboard", icon: LayoutDashboard, href: "/dashboard" },
   { label: "Mapel & Struktur", icon: BookOpen, href: "/master-struktur" },
   { label: "Input Nilai Harian", icon: ClipboardEdit, href: "/nilai-harian" },
-  { label: "Nilai Komponen", icon: ClipboardList, href: "/nilai-komponen" },
+  { label: "Komponen Nilai", icon: ClipboardList, href: "/nilai-komponen" },
   { label: "Rekap Nilai", icon: ScrollText, href: "/rekap-nilai" },
   { label: "Nilai Akhir", icon: Calculator, href: "/nilai-akhir" },
   { label: "Rekap Nilai Akhir", icon: BarChart3, href: "/rekap-nilai-akhir" },
