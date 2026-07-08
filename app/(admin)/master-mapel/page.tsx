@@ -1,7 +1,8 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
-import { BookOpen, Plus, Pencil, Trash2, Search, X, AlertCircle } from "lucide-react";
+import { BookOpen, Plus, Pencil, Trash2, Search, X, AlertCircle, ArrowLeft } from "lucide-react";
 import { useSubjects } from "@/hooks/useSubjects";
 import { GRADES } from "@/lib/constants";
 import toast from "react-hot-toast";
@@ -117,6 +118,15 @@ export default function MasterMapelPage() {
   return (
     <div className="flex flex-col gap-6 p-4 md:p-6">
       <PageHero icon={BookOpen} title="Master Mapel" description="Kelola mata pelajaran dan penetapan ke kelas" />
+
+      {/* Back link */}
+      <Link
+        href="/master-struktur"
+        className="flex items-center gap-1.5 text-sm text-indigo-500 hover:text-indigo-700 dark:text-indigo-400 dark:hover:text-indigo-300 font-medium -mt-2"
+      >
+        <ArrowLeft size={14} />
+        Kembali ke Struktur Akademik
+      </Link>
 
       {/* Tab */}
       <div className="flex gap-1 bg-slate-100 dark:bg-gray-900 rounded-xl p-1 w-full md:w-fit">
