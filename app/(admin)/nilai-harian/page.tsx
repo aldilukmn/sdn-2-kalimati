@@ -165,7 +165,7 @@ export default function NilaiHarianPage() {
                     Buat Bab dan Materi terlebih dahulu di Struktur Akademik.
                   </p>
                   <a
-                    href="/master-struktur"
+                    href="/daftar-mapel"
                     className="inline-flex items-center gap-2 mt-4 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-sm font-medium transition-colors"
                   >
                     <BookOpen size={16} />

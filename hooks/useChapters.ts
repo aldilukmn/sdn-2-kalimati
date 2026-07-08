@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import ChapterService from "@/services/chapter.service";
 import MaterialService from "@/services/material.service";
 import GradeSubjectService from "@/services/grade-subject.service";
@@ -26,6 +26,9 @@ export function useChapters(userRole?: string | null, userGrade?: string | null)
   const [materialModal, setMaterialModal] = useState<{ open: boolean; chapterId: string; edit?: Material }>({ open: false, chapterId: "" });
   const [materialName, setMaterialName] = useState("");
   const [materialSaving, setMaterialSaving] = useState(false);
+
+  const chapterSavingRef = useRef(false);
+  const materialSavingRef = useRef(false);
 
   const fetchGradeSubjects = useCallback(async () => {
     try {
@@ -134,6 +137,8 @@ export function useChapters(userRole?: string | null, userGrade?: string | null)
 
   const saveChapter = async () => {
     if (!chapterName.trim() || !selectedGS) return;
+    if (chapterSavingRef.current) return;
+    chapterSavingRef.current = true;
     setChapterSaving(true);
     try {
       if (chapterModal.edit) {
@@ -152,6 +157,7 @@ export function useChapters(userRole?: string | null, userGrade?: string | null)
       closeChapterModal();
     } finally {
       setChapterSaving(false);
+      chapterSavingRef.current = false;
     }
   };
 
@@ -191,6 +197,8 @@ export function useChapters(userRole?: string | null, userGrade?: string | null)
 
   const saveMaterial = async () => {
     if (!materialName.trim() || !materialModal.chapterId) return;
+    if (materialSavingRef.current) return;
+    materialSavingRef.current = true;
     setMaterialSaving(true);
     try {
       if (materialModal.edit) {
@@ -205,6 +213,7 @@ export function useChapters(userRole?: string | null, userGrade?: string | null)
       closeMaterialModal();
     } finally {
       setMaterialSaving(false);
+      materialSavingRef.current = false;
     }
   };
 
@@ -218,12 +227,8 @@ export function useChapters(userRole?: string | null, userGrade?: string | null)
   };
 
   const reorderMaterials = async (chapterId: string, items: ReorderItem[]) => {
-    try {
-      await MaterialService.reorder(chapterId, items);
-      await fetchMaterials(chapterId);
-    } catch {
-      // handled by caller
-    }
+    await MaterialService.reorder(chapterId, items);
+    await fetchMaterials(chapterId);
   };
 
   return {

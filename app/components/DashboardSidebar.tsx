@@ -21,7 +21,7 @@ import {
 
 const menuItems = [
   { label: "Dashboard", icon: LayoutDashboard, href: "/dashboard" },
-  { label: "Mapel & Struktur", icon: BookOpen, href: "/master-struktur" },
+  { label: "Daftar Mapel", icon: BookOpen, href: "/daftar-mapel" },
   { label: "Input Nilai Harian", icon: ClipboardEdit, href: "/nilai-harian" },
   { label: "Komponen Nilai", icon: ClipboardList, href: "/komponen-nilai" },
   { label: "Rekap Nilai", icon: ScrollText, href: "/rekap-nilai" },
@@ -62,7 +62,7 @@ export default function DashboardSidebar({
           item.href === "/rekap-nilai" ||
           item.href === "/rekap-nilai-akhir" ||
           item.href === "/nilai-akhir" ||
-          item.href === "/master-struktur" ||
+          item.href === "/daftar-mapel" ||
           item.href === "/presensi-murid" ||
           item.href === "/tabungan-murid",
       );
@@ -77,8 +77,8 @@ export default function DashboardSidebar({
   }, [userRole]);
 
   const isActive = (href: string) => {
-    if (href === "/master-struktur") {
-      return pathname === "/master-struktur" || pathname === "/master-mapel" || pathname.startsWith("/master-");
+    if (href === "/daftar-mapel") {
+      return pathname === "/daftar-mapel" || pathname === "/kelola-mapel";
     }
     if (href === "/nilai-harian") {
       return pathname === "/nilai-harian";

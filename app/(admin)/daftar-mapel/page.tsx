@@ -34,6 +34,7 @@ export default function MasterStrukturPage() {
     openCreateChapter, openEditChapter, closeChapterModal, saveChapter, deleteChapter,
     materialModal, materialName, setMaterialName, materialSaving,
     openCreateMaterial, openEditMaterial, closeMaterialModal, saveMaterial, deleteMaterial,
+    reorderMaterials,
   } = useChapters(userRole, userGrade);
 
   const [confirmDelete, setConfirmDelete] = useState<{
@@ -128,9 +129,7 @@ export default function MasterStrukturPage() {
     items.splice(newIndex, 0, removed);
     const reorderPayload = items.map((m, idx) => ({ _id: m._id, order: idx + 1 }));
     try {
-      const svc = (await import("@/services/material.service")).default;
-      await svc.reorder(chapterId, reorderPayload);
-      await fetchMaterials(chapterId);
+      await reorderMaterials(chapterId, reorderPayload);
       toast.success("Urutan materi berhasil diperbarui");
     } catch (e: unknown) {
       toast.error(e instanceof Error ? e.message : "Gagal mengubah urutan");
@@ -140,7 +139,7 @@ export default function MasterStrukturPage() {
   if (error) {
     return (
       <div className="flex flex-col gap-6 p-4 md:p-6">
-        <PageHero icon={BookOpen} title="Struktur Akademik" description="Atur bab dan materi pelajaran" />
+        <PageHero icon={BookOpen} title="Daftar Mapel" description="Atur bab dan materi pelajaran" />
         <div className="bg-white/70 dark:bg-gray-800/40 border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
           <div className="text-center py-12">
             <AlertCircle size={40} className="mx-auto text-red-300 dark:text-red-600 mb-3" />
@@ -157,7 +156,7 @@ export default function MasterStrukturPage() {
   if (loading) {
     return (
       <div className="flex flex-col gap-6 p-4 md:p-6">
-        <PageHero icon={BookOpen} title="Struktur Akademik" description="Atur bab dan materi pelajaran" />
+        <PageHero icon={BookOpen} title="Daftar Mapel" description="Atur bab dan materi pelajaran" />
         <div className="animate-pulse space-y-4">
           <div className="h-10 bg-slate-200 dark:bg-slate-700 rounded-xl w-64" />
           {[1, 2, 3].map((i) => (
@@ -170,24 +169,13 @@ export default function MasterStrukturPage() {
 
   return (
     <div className="flex flex-col gap-6 p-4 md:p-6">
-      <PageHero icon={BookOpen} title="Struktur Akademik" description="Atur bab dan materi pelajaran" />
+      <PageHero icon={BookOpen} title="Daftar Mapel" description="Atur bab dan materi pelajaran" />
 
       {/* Selector */}
       <div className="bg-white/70 dark:bg-gray-800/40 border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <div className="flex items-center justify-between mb-2">
-              <label className="block text-xs font-semibold text-gray-500 dark:text-gray-400 tracking-wider">Mata Pelajaran</label>
-              {userRole !== null && userRole !== "guru" && (
-                <Link
-                  href="/master-mapel"
-                  className="text-xs text-indigo-500 hover:text-indigo-700 dark:text-indigo-400 dark:hover:text-indigo-300 font-medium flex items-center gap-1"
-                >
-                  <Settings size={12} />
-                  Kelola Mapel
-                </Link>
-              )}
-            </div>
+            <label className="block text-xs font-semibold text-gray-500 dark:text-gray-400 tracking-wider mb-2">Mata Pelajaran</label>
             <Select value={selectedGS} onValueChange={(v) => v && setSelectedGS(v)}>
               <SelectTrigger className="w-full h-auto rounded-xl border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100">
                 <SelectValue placeholder="Pilih mapel">
@@ -208,7 +196,17 @@ export default function MasterStrukturPage() {
             </Select>
           </div>
           <div>
-            <div className="mb-2 text-xs">&nbsp;</div>
+            <div className="flex justify-end mb-2">
+              {userRole !== null && userRole !== "guru" && (
+                <Link
+                  href="/kelola-mapel"
+                  className="text-xs text-indigo-500 hover:text-indigo-700 dark:text-indigo-400 dark:hover:text-indigo-300 font-medium flex items-center gap-1"
+                >
+                  <Settings size={12} />
+                  Kelola Mapel
+                </Link>
+              )}
+            </div>
             <button
               onClick={openCreateChapter}
               disabled={!selectedGS}
@@ -240,8 +238,8 @@ export default function MasterStrukturPage() {
       ) : (
         <div className="space-y-2">
           {sortedChapters.map((chapter, idx) => {
-            const materials = materialsMap[chapter._id] || [];
-            const sortedMaterials = [...materials].sort((a, b) => a.order - b.order);
+            const materials = materialsMap[chapter._id];
+            const sortedMaterials = materials ? [...materials].sort((a, b) => a.order - b.order) : [];
 
             return (
               <div
@@ -296,7 +294,13 @@ export default function MasterStrukturPage() {
                   <div className="border-t border-slate-100 dark:border-slate-700/50 px-4 py-3 pl-14 bg-slate-50/50 dark:bg-gray-900/30 space-y-2">
                     {chapter.inputMode === "per_material" ? (
                       <>
-                        {sortedMaterials.length === 0 ? (
+                        {materials === undefined ? (
+                          <div className="animate-pulse space-y-2">
+                            {[1, 2, 3].map((i) => (
+                              <div key={i} className="h-9 bg-slate-200 dark:bg-slate-700 rounded-lg" />
+                            ))}
+                          </div>
+                        ) : sortedMaterials.length === 0 ? (
                           <p className="text-sm text-slate-400 dark:text-slate-500 italic">Belum ada Materi.</p>
                         ) : (
                           <div className="space-y-1.5">
@@ -378,7 +382,7 @@ export default function MasterStrukturPage() {
           <div>
             <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Metode Input</label>
             <Select value={chapterInputMode} onValueChange={(v) => v && setChapterInputMode(v as "per_chapter" | "per_material")}>
-              <SelectTrigger className="w-full">
+              <SelectTrigger className="w-full h-auto rounded-xl border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100">
                 <SelectValue placeholder="Pilih metode input">
                   {chapterInputMode === "per_material" ? "Per Materi (sub-bab)" : "Per Bab (langsung)"}
                 </SelectValue>

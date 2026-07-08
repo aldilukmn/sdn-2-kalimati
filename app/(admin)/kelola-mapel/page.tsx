@@ -121,15 +121,15 @@ export default function MasterMapelPage() {
 
   return (
     <div className="flex flex-col gap-6 p-4 md:p-6">
-      <PageHero icon={BookOpen} title="Master Mapel" description="Kelola mata pelajaran dan penetapan ke kelas" />
+      <PageHero icon={BookOpen} title="Kelola Mapel" description="Kelola mata pelajaran dan penetapan ke kelas" />
 
       {/* Back link */}
       <Link
-        href="/master-struktur"
+        href="/daftar-mapel"
         className="flex items-center gap-1.5 text-sm text-indigo-500 hover:text-indigo-700 dark:text-indigo-400 dark:hover:text-indigo-300 font-medium -mt-2"
       >
         <ArrowLeft size={14} />
-        Kembali ke Struktur Akademik
+        Kembali ke Daftar Mapel
       </Link>
 
       {/* Tab */}
