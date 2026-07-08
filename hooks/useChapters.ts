@@ -31,9 +31,15 @@ export function useChapters(userRole?: string | null, userGrade?: string | null)
     try {
       const params = userRole === "guru" && userGrade ? { grade: userGrade } : undefined;
       const res = await GradeSubjectService.getAll(params);
-      setGradeSubjects(res?.result || []);
-      if ((res?.result || []).length > 0 && !selectedGS) {
-        setSelectedGS(res!.result![0]._id);
+      const result = res?.result || [];
+      setGradeSubjects(result);
+      if (result.length > 0) {
+        const stillExists = result.find((gs) => gs._id === selectedGS);
+        if (!stillExists) {
+          setSelectedGS(result[0]._id);
+        }
+      } else {
+        setSelectedGS("");
       }
     } catch {
       setGradeSubjects([]);
