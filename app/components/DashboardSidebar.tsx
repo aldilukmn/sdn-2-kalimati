@@ -14,6 +14,7 @@ import {
   ScrollText,
   Scale,
   Calculator,
+  BarChart3,
   X,
   GraduationCap,
 } from "lucide-react";
@@ -25,6 +26,7 @@ const menuItems = [
   { label: "Nilai Komponen", icon: ClipboardList, href: "/nilai-komponen" },
   { label: "Rekap Nilai", icon: ScrollText, href: "/rekap-nilai" },
   { label: "Nilai Akhir", icon: Calculator, href: "/nilai-akhir" },
+  { label: "Rekap Nilai Akhir", icon: BarChart3, href: "/rekap-nilai-akhir" },
   { label: "Konfigurasi Penilaian", icon: Scale, href: "/master-konfigurasi-nilai" },
   { label: "Data GTK", icon: Users, href: "/data-gtk" },
   { label: "Data Pendaftar", icon: ClipboardList, href: "/data-pendaftar" },
@@ -57,6 +59,7 @@ export default function DashboardSidebar({
           item.href === "/dashboard" ||
           item.href === "/nilai-harian" ||
           item.href === "/rekap-nilai" ||
+          item.href === "/rekap-nilai-akhir" ||
           item.href === "/presensi-murid" ||
           item.href === "/tabungan-murid",
       );

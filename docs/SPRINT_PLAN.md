@@ -237,10 +237,10 @@
 | Testable | ❌ Tidak |
 
 **Definition of Done:**
-- [ ] Tabel rekap: baris = siswa, kolom = mapel, rata-rata
-- [ ] Filter grade
-- [ ] Semua halaman Phase 2: empty state, skeleton, toast, error, responsive
-- [ ] **E2E flow:** create mapel → assign → bab → materi → input nilai → konfigurasi → input komponen → hitung akhir → rekap
+- [x] Tabel rekap: baris = siswa, kolom = mapel, rata-rata
+- [x] Filter grade
+- [x] Semua halaman Phase 2: empty state, skeleton, toast, error, responsive
+- [x] **E2E flow:** create mapel → assign → bab → materi → input nilai → konfigurasi → input komponen → hitung akhir → rekap
 
 ---
 
