@@ -214,14 +214,14 @@
 | Testable | ✅ Ya |
 
 **Definition of Done:**
-- [ ] Filter TA, semester, grade, mapel
-- [ ] RingkasanPanel: ✅ lengkap, ⚠️ belum lengkap
-- [ ] Info "Terakhir dihitung: ..."
-- [ ] StaleBanner jika `isStale`
-- [ ] FinalScoreTable + expand detail per komponen
-- [ ] `[🔄 Hitung Ulang]` → loading → toast → auto-refresh
-- [ ] Empty state (belum dihitung): `[Hitung Sekarang]`
-- [ ] Empty state (filter kosong)
+- [x] Filter TA, semester, grade, mapel
+- [x] RingkasanPanel: ✅ lengkap, ⚠️ belum lengkap
+- [x] Info "Terakhir dihitung: ..."
+- [x] StaleBanner jika `isStale`
+- [x] FinalScoreTable + expand detail per komponen
+- [x] `[🔄 Hitung Ulang]` → loading → toast → auto-refresh
+- [x] Empty state (belum dihitung): `[Hitung Sekarang]`
+- [x] Empty state (filter kosong)
 
 ---
 
