@@ -174,27 +174,22 @@ export default function MasterStrukturPage() {
 
       {/* Selector */}
       <div className="bg-white/70 dark:bg-gray-800/40 border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
-        <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-end">
-          <div className="w-full sm:w-72">
-              <div className="flex items-center justify-between mb-1">
-                <label className="text-sm font-medium text-slate-700 dark:text-slate-300">Mata Pelajaran</label>
-                <div className="flex items-center gap-2">
-                  {userRole === "guru" && (
-                    <span className="text-xs text-slate-400 dark:text-slate-500">Kelas {userGrade}</span>
-                  )}
-                  {userRole !== null && userRole !== "guru" && (
-                    <Link
-                      href="/master-mapel"
-                      className="text-xs text-indigo-500 hover:text-indigo-700 dark:text-indigo-400 dark:hover:text-indigo-300 font-medium flex items-center gap-1"
-                    >
-                      <Settings size={12} />
-                      Kelola Mapel
-                    </Link>
-                  )}
-                </div>
-              </div>
+        <div className="grid grid-cols-2 gap-4">
+          <div>
+            <div className="flex items-center justify-between mb-2">
+              <label className="block text-xs font-semibold text-gray-500 dark:text-gray-400 tracking-wider">Mata Pelajaran</label>
+              {userRole !== null && userRole !== "guru" && (
+                <Link
+                  href="/master-mapel"
+                  className="text-xs text-indigo-500 hover:text-indigo-700 dark:text-indigo-400 dark:hover:text-indigo-300 font-medium flex items-center gap-1"
+                >
+                  <Settings size={12} />
+                  Kelola Mapel
+                </Link>
+              )}
+            </div>
             <Select value={selectedGS} onValueChange={(v) => v && setSelectedGS(v)}>
-              <SelectTrigger className="w-full">
+              <SelectTrigger className="w-full h-auto rounded-xl border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100">
                 <SelectValue placeholder="Pilih mapel">
                   {selectedGSData
                     ? userRole === "guru"
@@ -212,14 +207,16 @@ export default function MasterStrukturPage() {
               </SelectContent>
             </Select>
           </div>
-          <button
-            onClick={openCreateChapter}
-            disabled={!selectedGS}
-            className="flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 text-white rounded-lg text-sm font-medium transition-colors cursor-pointer"
-          >
-            <Plus size={16} />
-            Tambah Bab
-          </button>
+          <div>
+            <div className="mb-2">&nbsp;</div>
+            <button
+              onClick={openCreateChapter}
+              disabled={!selectedGS}
+              className="w-full h-10 rounded-xl border border-slate-300 bg-slate-50 text-sm font-medium text-slate-600 hover:bg-slate-100 disabled:opacity-50 transition-colors dark:border-gray-700 dark:bg-gray-950 dark:text-slate-300 dark:hover:bg-gray-900 cursor-pointer"
+            >
+              Tambah Bab
+            </button>
+          </div>
         </div>
       </div>
 
