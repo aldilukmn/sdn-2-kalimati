@@ -67,7 +67,9 @@ export default function RekapNilaiPage() {
           <div>
             <label className="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">Mata Pelajaran</label>
             <Select value={selectedGS} onValueChange={(v) => v && setSelectedGS(v)} disabled={gradeSubjects.length === 0}>
-              <SelectTrigger><SelectValue placeholder={gradeSubjects.length === 0 ? "Tidak ada mapel" : "Pilih mapel"} /></SelectTrigger>
+              <SelectTrigger><SelectValue placeholder={gradeSubjects.length === 0 ? "Tidak ada mapel" : "Pilih mapel"}>
+                {selectedGS ? gradeSubjects.find(gs => gs._id === selectedGS)?.subjectName || "-" : null}
+              </SelectValue></SelectTrigger>
               <SelectContent>
                 {gradeSubjects.map((gs) => (
                   <SelectItem key={gs._id} value={gs._id}>{gs.subjectName || "-"}</SelectItem>
