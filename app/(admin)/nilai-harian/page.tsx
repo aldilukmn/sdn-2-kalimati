@@ -66,7 +66,7 @@ export default function NilaiHarianPage() {
 
   return (
     <div className="flex flex-col gap-6 p-4 md:p-6">
-      <PageHero icon={ClipboardEdit} title="Input Nilai Harian" description="Input nilai siswa per bab atau per materi" />
+      <PageHero icon={ClipboardEdit} title="Nilai Harian" description="Input nilai siswa per bab atau per materi" />
 
       {/* Filter */}
       <div className="bg-white/70 dark:bg-gray-800/40 border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">

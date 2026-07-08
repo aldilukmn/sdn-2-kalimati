@@ -164,7 +164,7 @@ export default function MasterStrukturPage() {
           <div>
             <label className="block text-xs font-semibold text-gray-500 dark:text-gray-400 tracking-wider mb-2">Mata Pelajaran</label>
             <Select value={selectedGS} onValueChange={(v) => v && setSelectedGS(v)}>
-              <SelectTrigger className="w-full h-auto rounded-xl border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100">
+              <SelectTrigger className="w-full h-auto rounded-xl border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm focus:border-blue-500 dark:focus:border-blue-400 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100">
                 <SelectValue placeholder="Pilih mapel">
                   {selectedGSData
                     ? userRole === "guru"
@@ -366,7 +366,7 @@ export default function MasterStrukturPage() {
               value={chapterName}
               onChange={(e) => setChapterName(e.target.value)}
               placeholder="Masukkan nama bab"
-              className="w-full h-auto rounded-xl border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100 dark:focus:border-indigo-500"
+              className="w-full h-auto rounded-xl border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm focus:outline-none focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100 dark:focus:border-blue-400"
               autoFocus
               onKeyDown={(e) => { if (e.key === "Enter") handleSaveChapter(); }}
             />
@@ -374,7 +374,7 @@ export default function MasterStrukturPage() {
           <div>
             <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Metode Input</label>
             <Select value={chapterInputMode} onValueChange={(v) => v && setChapterInputMode(v as "per_chapter" | "per_material")}>
-              <SelectTrigger className="w-full h-auto rounded-xl border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100">
+              <SelectTrigger className="w-full h-auto rounded-xl border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm focus:border-blue-500 dark:focus:border-blue-400 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100">
                 <SelectValue placeholder="Pilih metode input">
                   {chapterInputMode === "per_material" ? "Per Materi (sub-bab)" : "Per Bab (langsung)"}
                 </SelectValue>
@@ -414,7 +414,7 @@ export default function MasterStrukturPage() {
               value={materialName}
               onChange={(e) => setMaterialName(e.target.value)}
               placeholder="Masukkan nama materi"
-              className="w-full h-auto rounded-xl border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100 dark:focus:border-indigo-500"
+              className="w-full h-auto rounded-xl border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm focus:outline-none focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100 dark:focus:border-blue-400"
               autoFocus
               onKeyDown={(e) => { if (e.key === "Enter") handleSaveMaterial(); }}
             />
