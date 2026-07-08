@@ -217,7 +217,7 @@ export default function NilaiKomponenPage() {
                           <td className="px-4 py-2.5 font-medium text-slate-700 dark:text-slate-300">{s.name}</td>
                           <td className="px-4 py-2.5 text-center">
                             <span className="text-sm font-semibold text-slate-700 dark:text-slate-300">
-                              {harianScores[s.studentId] !== undefined ? `${harianScores[s.studentId]}` : "-"}
+                              {harianScores[s.studentId] !== undefined ? harianScores[s.studentId].toFixed(2) : "-"}
                             </span>
                           </td>
                         </tr>

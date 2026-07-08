@@ -75,7 +75,7 @@ export function useDashboard(initialSummary?: DashboardSummary | null, initialMo
         const prevTotal = prev.hadir + prev.sakit + prev.izin + prev.absen;
         const curRate = curTotal > 0 ? (cur.hadir / curTotal) * 100 : 0;
         const prevRate = prevTotal > 0 ? (prev.hadir / prevTotal) * 100 : 0;
-        setAttendanceDelta(Math.round((curRate - prevRate) * 10) / 10);
+        setAttendanceDelta(Math.round((curRate - prevRate) * 100) / 100);
       } else {
         setAttendanceDelta(null);
       }

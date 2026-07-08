@@ -156,7 +156,7 @@ export function useAssessmentScore(userRole?: string | null, userGrade?: string 
             chapterCount++;
           }
         });
-        computed[s.studentId] = chapterCount > 0 ? Math.round((totalPct / chapterCount) * 100 * 10) / 10 : 0;
+        computed[s.studentId] = chapterCount > 0 ? Math.round((totalPct / chapterCount) * 100 * 100) / 100 : 0;
       });
       setHarianScores(computed);
     } catch {
