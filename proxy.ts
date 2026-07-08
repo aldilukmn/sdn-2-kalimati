@@ -14,6 +14,7 @@ const ROLE_ROUTES: Record<string, string[]> = {
   "/rekap-presensi": ["admin", "kepala", "guru"],
   "/beranda-penjaga": ["penjaga"],
   "/master-mapel": ["admin", "kepala"],
+  "/master-struktur": ["admin", "kepala"],
 };
 
 const BASE64_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
@@ -125,5 +126,6 @@ export const config = {
     "/rekap-presensi",
     "/beranda-penjaga",
     "/master-mapel",
+    "/master-struktur",
   ],
 };

@@ -16,7 +16,7 @@ import {
 
 const menuItems = [
   { label: "Dashboard", icon: LayoutDashboard, href: "/dashboard" },
-  { label: "Mapel & Struktur", icon: BookOpen, href: "/master-mapel" },
+  { label: "Mapel & Struktur", icon: BookOpen, href: "/master-struktur" },
   { label: "Data GTK", icon: Users, href: "/data-gtk" },
   { label: "Data Pendaftar", icon: ClipboardList, href: "/data-pendaftar" },
   { label: "Presensi Murid", icon: CalendarCheck, href: "/presensi-murid" },
@@ -60,6 +60,9 @@ export default function DashboardSidebar({
   }, [userRole]);
 
   const isActive = (href: string) => {
+    if (href === "/master-struktur") {
+      return pathname === "/master-struktur" || pathname === "/master-mapel" || pathname.startsWith("/master-");
+    }
     return pathname === href || pathname.startsWith(href + "/");
   };
 

@@ -54,15 +54,15 @@
 | Testable | ✅ Ya |
 
 **Definition of Done:**
-- [ ] Dropdown pilih mapel → load bab
-- [ ] CRUD bab (name + inputMode)
-- [ ] CRUD materi
-- [ ] Native DnD reorder (fallback: up/down button)
-- [ ] Bab yang punya nilai tidak bisa diubah inputMode / dihapus
-- [ ] Materi yang punya nilai tidak bisa dihapus
-- [ ] Empty state: "Belum ada Bab" / "Bab ini belum memiliki Materi"
-- [ ] Loading skeleton, error toast
-- [ ] Proxy guard: admin/kepala only
+- [x] Dropdown pilih mapel → load bab
+- [x] CRUD bab (name + inputMode)
+- [x] CRUD materi
+- [x] Native DnD reorder (fallback: up/down button)
+- [x] Bab yang punya nilai tidak bisa diubah inputMode / dihapus
+- [x] Materi yang punya nilai tidak bisa dihapus
+- [x] Empty state: "Belum ada Bab" / "Bab ini belum memiliki Materi"
+- [x] Loading skeleton, error toast
+- [x] Proxy guard: admin/kepala only
 
 ---
 
