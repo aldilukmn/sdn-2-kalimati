@@ -6,7 +6,7 @@ import MaterialService from "@/services/material.service";
 import GradeSubjectService from "@/services/grade-subject.service";
 import type { Chapter, Material, GradeSubject, ReorderItem } from "@/types/nilai-harian";
 
-export function useChapters() {
+export function useChapters(userRole?: string | null, userGrade?: string | null) {
   const [gradeSubjects, setGradeSubjects] = useState<GradeSubject[]>([]);
   const [selectedGS, setSelectedGS] = useState<string>("");
   const [chapters, setChapters] = useState<Chapter[]>([]);
@@ -29,7 +29,8 @@ export function useChapters() {
 
   const fetchGradeSubjects = useCallback(async () => {
     try {
-      const res = await GradeSubjectService.getAll();
+      const params = userRole === "guru" && userGrade ? { grade: userGrade } : undefined;
+      const res = await GradeSubjectService.getAll(params);
       setGradeSubjects(res?.result || []);
       if ((res?.result || []).length > 0 && !selectedGS) {
         setSelectedGS(res!.result![0]._id);
@@ -37,7 +38,7 @@ export function useChapters() {
     } catch {
       setGradeSubjects([]);
     }
-  }, []);
+  }, [userRole, userGrade]);
 
   const fetchChapters = useCallback(async (gsId: string) => {
     if (!gsId) return;

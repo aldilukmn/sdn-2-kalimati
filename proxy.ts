@@ -14,7 +14,7 @@ const ROLE_ROUTES: Record<string, string[]> = {
   "/rekap-presensi": ["admin", "kepala", "guru"],
   "/beranda-penjaga": ["penjaga"],
   "/master-mapel": ["admin", "kepala"],
-  "/master-struktur": ["admin", "kepala"],
+  "/master-struktur": ["admin", "kepala", "guru"],
   "/master-konfigurasi-nilai": ["admin", "kepala"],
   "/nilai-harian": ["admin", "kepala", "guru"],
   "/rekap-nilai": ["admin", "kepala", "guru"],

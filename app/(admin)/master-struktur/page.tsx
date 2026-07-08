@@ -1,12 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { useState, useCallback, useRef } from "react";
+import { useState, useCallback, useRef, useEffect } from "react";
 import {
   BookOpen, Plus, Pencil, Trash2, ChevronDown, ChevronRight,
   GripVertical, ArrowUp, ArrowDown, AlertCircle, Settings,
 } from "lucide-react";
 import { useChapters } from "@/hooks/useChapters";
+import { decodeJWT } from "@/lib/jwt";
 import toast from "react-hot-toast";
 import Modal from "@/app/components/Modal";
 import PageHero from "@/app/components/PageHero";
@@ -19,6 +20,18 @@ import {
 } from "@/components/ui/select";
 
 export default function MasterStrukturPage() {
+  const [userRole, setUserRole] = useState<string | null>(null);
+  const [userGrade, setUserGrade] = useState<string | null>(null);
+
+  useEffect(() => {
+    const token = sessionStorage.getItem("user_session");
+    if (token) {
+      const payload = decodeJWT(token);
+      setUserRole(payload?.role || null);
+      setUserGrade(payload?.grade || null);
+    }
+  }, []);
+
   const {
     gradeSubjects, selectedGS, setSelectedGS,
     chapters, materialsMap, expandedChapter, toggleExpandChapter,
@@ -28,7 +41,7 @@ export default function MasterStrukturPage() {
     openCreateChapter, openEditChapter, closeChapterModal, saveChapter, deleteChapter,
     materialModal, materialName, setMaterialName, materialSaving,
     openCreateMaterial, openEditMaterial, closeMaterialModal, saveMaterial, deleteMaterial,
-  } = useChapters();
+  } = useChapters(userRole, userGrade);
 
   const [confirmDelete, setConfirmDelete] = useState<{
     type: "chapter" | "material";
@@ -170,16 +183,23 @@ export default function MasterStrukturPage() {
       <div className="bg-white/70 dark:bg-gray-800/40 border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
         <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-end">
           <div className="w-full sm:w-72">
-            <div className="flex items-center justify-between mb-1">
-              <label className="text-sm font-medium text-slate-700 dark:text-slate-300">Mata Pelajaran</label>
-              <Link
-                href="/master-mapel"
-                className="text-xs text-indigo-500 hover:text-indigo-700 dark:text-indigo-400 dark:hover:text-indigo-300 font-medium flex items-center gap-1"
-              >
-                <Settings size={12} />
-                Kelola Mapel
-              </Link>
-            </div>
+              <div className="flex items-center justify-between mb-1">
+                <label className="text-sm font-medium text-slate-700 dark:text-slate-300">Mata Pelajaran</label>
+                <div className="flex items-center gap-2">
+                  {userRole === "guru" && (
+                    <span className="text-xs text-slate-400 dark:text-slate-500">Kelas {userGrade}</span>
+                  )}
+                  {userRole !== "guru" && (
+                    <Link
+                      href="/master-mapel"
+                      className="text-xs text-indigo-500 hover:text-indigo-700 dark:text-indigo-400 dark:hover:text-indigo-300 font-medium flex items-center gap-1"
+                    >
+                      <Settings size={12} />
+                      Kelola Mapel
+                    </Link>
+                  )}
+                </div>
+              </div>
             <Select value={selectedGS} onValueChange={(v) => v && setSelectedGS(v)}>
               <SelectTrigger className="w-full">
                 <SelectValue placeholder="Pilih mapel">
