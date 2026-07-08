@@ -14,7 +14,13 @@ const ACADEMIC_YEARS = ["2024/2025", "2025/2026", "2026/2027"];
 export function useRekapNilai(userRole?: string | null, userGrade?: string | null) {
   const [semester, setSemester] = useState("1");
   const [academicYear, setAcademicYear] = useState("2025/2026");
-  const [grade, setGrade] = useState(userRole === "guru" && userGrade ? userGrade : "1");
+  const [grade, setGrade] = useState("1");
+
+  useEffect(() => {
+    if (userRole === "guru" && userGrade) {
+      setGrade(userGrade);
+    }
+  }, [userRole, userGrade]);
   const [gradeSubjects, setGradeSubjects] = useState<GradeSubject[]>([]);
   const [selectedGS, setSelectedGS] = useState("");
   const [chapters, setChapters] = useState<Chapter[]>([]);
