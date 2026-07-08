@@ -23,7 +23,7 @@ const menuItems = [
   { label: "Dashboard", icon: LayoutDashboard, href: "/dashboard" },
   { label: "Mapel & Struktur", icon: BookOpen, href: "/master-struktur" },
   { label: "Input Nilai Harian", icon: ClipboardEdit, href: "/nilai-harian" },
-  { label: "Komponen Nilai", icon: ClipboardList, href: "/nilai-komponen" },
+  { label: "Komponen Nilai", icon: ClipboardList, href: "/komponen-nilai" },
   { label: "Rekap Nilai", icon: ScrollText, href: "/rekap-nilai" },
   { label: "Nilai Akhir", icon: Calculator, href: "/nilai-akhir" },
   { label: "Rekap Nilai Akhir", icon: BarChart3, href: "/rekap-nilai-akhir" },
@@ -58,7 +58,7 @@ export default function DashboardSidebar({
         (item) =>
           item.href === "/dashboard" ||
           item.href === "/nilai-harian" ||
-          item.href === "/nilai-komponen" ||
+          item.href === "/komponen-nilai" ||
           item.href === "/rekap-nilai" ||
           item.href === "/rekap-nilai-akhir" ||
           item.href === "/nilai-akhir" ||
