@@ -89,3 +89,46 @@ export interface MaterialUpdateRequest {
   name?: string;
   order?: number;
 }
+
+export interface Score {
+  _id: string;
+  studentId: string;
+  studentName: string;
+  grade: string;
+  materialId: string | null;
+  chapterId: string;
+  subjectId: string;
+  score: number;
+  maxScore: number;
+  semester: string;
+  academicYear: string;
+  recordedBy: string;
+}
+
+export interface BulkScoreItem {
+  studentId: string;
+  score: number;
+  maxScore?: number;
+}
+
+export interface BulkScoreRequest {
+  chapterId: string;
+  materialId?: string;
+  scores: BulkScoreItem[];
+}
+
+export interface ScoreEntry {
+  studentId: string;
+  studentName: string;
+  score: string;
+  maxScore: string;
+  status: "saved" | "unsaved" | "error";
+  existingId?: string;
+}
+
+export interface ChapterProgress {
+  chapter: Chapter;
+  totalStudents: number;
+  gradedStudents: number;
+  percentage: number;
+}

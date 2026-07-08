@@ -82,16 +82,16 @@
 | Testable | ✅ Ya |
 
 **Definition of Done:**
-- [ ] Filter TA, semester, grade, mapel → load chapter cards
-- [ ] Card: nama, badge `[Per Bab]`/`[Per Materi]`, progress bar
-- [ ] Klik card → select chapter → load score table
-- [ ] Jika per_material: tab materi di atas tabel
-- [ ] Tabel: No, Nama, Nilai (numeric), Maks, Status (✅/⏳/❌)
+- [x] Filter TA, semester, grade, mapel → load chapter cards
+- [x] Card: nama, badge `[Per Bab]`/`[Per Materi]`, progress bar
+- [x] Klik card → select chapter → load score table
+- [x] Jika per_material: tab materi di atas tabel
+- [x] Tabel: No, Nama, Nilai (numeric), Maks, Status (✅/⏳/❌)
 - [ ] Tab/Enter navigation
-- [ ] `[💾 Simpan Semua]` → bulk save → toast
-- [ ] Auto-select chapter pertama yang belum selesai
-- [ ] Empty state: "Belum ada Bab yang dapat dinilai"
-- [ ] Skeleton, toast, error state
+- [x] `[💾 Simpan Semua]` → bulk save → toast
+- [x] Auto-select chapter pertama yang belum selesai
+- [x] Empty state: "Belum ada Bab yang dapat dinilai"
+- [x] Skeleton, toast, error state
 - [ ] Responsive
 
 ---

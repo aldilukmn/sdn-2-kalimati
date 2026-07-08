@@ -1,0 +1,133 @@
+"use client";
+
+import type { ScoreEntry } from "@/types/nilai-harian";
+import Pagination from "@/app/components/Pagination";
+
+const ITEMS_PER_PAGE = 10;
+
+interface Props {
+  entries: ScoreEntry[];
+  paginatedEntries: ScoreEntry[];
+  startIndex: number;
+  currentPage: number;
+  totalPages: number;
+  saving: boolean;
+  loading: boolean;
+  onScoreChange: (studentId: string, value: string) => void;
+  onMaxScoreChange: (studentId: string, value: string) => void;
+  onPageChange: (page: number) => void;
+  saveButton?: React.ReactNode;
+}
+
+export default function ScoreTable({
+  entries,
+  paginatedEntries,
+  startIndex,
+  currentPage,
+  totalPages,
+  saving,
+  loading,
+  onScoreChange,
+  onMaxScoreChange,
+  onPageChange,
+  saveButton,
+}: Props) {
+  if (!loading && paginatedEntries.length === 0 && entries.length === 0) {
+    return (
+      <div className="bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl">
+        <div className="text-center py-12 text-gray-400 dark:text-gray-500 text-sm">
+          Tidak ada siswa di kelas ini
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5 overflow-hidden">
+      <div className="overflow-x-auto animate-fadeIn rounded-xl border border-gray-200 dark:border-gray-700 bg-white/80 md:bg-white/60 dark:bg-gray-800/30 backdrop-blur-sm">
+        <table className="w-full">
+          <thead>
+            <tr className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-xs md:text-sm">
+              <th className="px-3 py-3 text-center font-semibold w-12">No</th>
+              <th className="px-3 py-3 text-left font-semibold">Nama Siswa</th>
+              <th className="px-3 py-3 text-center font-semibold w-24">Nilai</th>
+              <th className="px-3 py-3 text-center font-semibold w-20">Maks</th>
+              <th className="px-3 py-3 text-center font-semibold w-28">Status</th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-gray-300 dark:divide-gray-700">
+            {loading
+              ? Array.from({ length: 5 }).map((_, i) => (
+                  <tr key={i} className="animate-pulse">
+                    <td className="px-3 py-3"><div className="h-4 w-4 bg-gray-200 dark:bg-gray-700 rounded mx-auto" /></td>
+                    <td className="px-3 py-3"><div className="h-4 w-40 bg-gray-200 dark:bg-gray-700 rounded" /></td>
+                    <td className="px-3 py-3"><div className="h-8 w-20 bg-gray-200 dark:bg-gray-700 rounded mx-auto" /></td>
+                    <td className="px-3 py-3"><div className="h-8 w-14 bg-gray-200 dark:bg-gray-700 rounded mx-auto" /></td>
+                    <td className="px-3 py-3"><div className="h-4 w-24 bg-gray-200 dark:bg-gray-700 rounded mx-auto" /></td>
+                  </tr>
+                ))
+              : paginatedEntries.map((entry, i) => (
+                  <tr
+                    key={entry.studentId}
+                    className="hover:bg-indigo-50/50 dark:hover:bg-indigo-900/20 transition-colors"
+                  >
+                    <td className="p-3 text-sm text-gray-800 dark:text-gray-300 text-center">
+                      {startIndex + i + 1}
+                    </td>
+                    <td className="p-3">
+                      <span className="text-sm text-gray-800 dark:text-gray-200 truncate">
+                        {entry.studentName}
+                      </span>
+                    </td>
+                    <td className="p-3">
+                      <input
+                        type="number"
+                        value={entry.score}
+                        onChange={(e) => onScoreChange(entry.studentId, e.target.value)}
+                        disabled={saving}
+                        min={0}
+                        max={Number(entry.maxScore)}
+                        className="w-20 px-2 py-1.5 text-sm text-center rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-indigo-400 disabled:opacity-50"
+                      />
+                    </td>
+                    <td className="p-3">
+                      <input
+                        type="number"
+                        value={entry.maxScore}
+                        onChange={(e) => onMaxScoreChange(entry.studentId, e.target.value)}
+                        disabled={saving}
+                        min={1}
+                        className="w-14 px-2 py-1.5 text-sm text-center rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-indigo-400 disabled:opacity-50"
+                      />
+                    </td>
+                    <td className="p-3 text-center">
+                      {entry.status === "saved" && (
+                        <span className="text-xs font-semibold text-emerald-600 dark:text-emerald-400">✅ Tersimpan</span>
+                      )}
+                      {entry.status === "unsaved" && (
+                        <span className="text-xs font-semibold text-amber-600 dark:text-amber-400">⏳ Belum simpan</span>
+                      )}
+                      {entry.status === "error" && (
+                        <span className="text-xs font-semibold text-red-600 dark:text-red-400">❌ Gagal</span>
+                      )}
+                    </td>
+                  </tr>
+                ))}
+          </tbody>
+        </table>
+      </div>
+
+      {!loading && totalPages > 1 && (
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={onPageChange}
+          itemsPerPage={ITEMS_PER_PAGE}
+          totalItems={entries.length}
+        />
+      )}
+
+      {saveButton && <div className="mt-4">{saveButton}</div>}
+    </div>
+  );
+}
