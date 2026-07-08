@@ -196,13 +196,17 @@ export default function MasterStrukturPage() {
             <Select value={selectedGS} onValueChange={(v) => v && setSelectedGS(v)}>
               <SelectTrigger className="w-full">
                 <SelectValue placeholder="Pilih mapel">
-                  {selectedGSData ? `${selectedGSData.subjectName || "-"} — Kelas ${selectedGSData.grade}` : "Pilih mapel"}
+                  {selectedGSData
+                    ? userRole === "guru"
+                      ? selectedGSData.subjectName || "-"
+                      : `${selectedGSData.subjectName || "-"} — Kelas ${selectedGSData.grade}`
+                    : "Pilih mapel"}
                 </SelectValue>
               </SelectTrigger>
               <SelectContent>
                 {gradeSubjects.map((gs) => (
                   <SelectItem key={gs._id} value={gs._id}>
-                    {gs.subjectName || "-"} — Kelas {gs.grade}
+                    {userRole === "guru" ? (gs.subjectName || "-") : `${gs.subjectName || "-"} — Kelas ${gs.grade}`}
                   </SelectItem>
                 ))}
               </SelectContent>
