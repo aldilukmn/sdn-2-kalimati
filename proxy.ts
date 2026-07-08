@@ -19,7 +19,7 @@ const ROLE_ROUTES: Record<string, string[]> = {
   "/komponen-nilai": ["admin", "kepala", "guru"],
   "/nilai-akhir": ["admin", "kepala", "guru"],
   "/nilai-harian": ["admin", "kepala", "guru"],
-  "/rekap-nilai": ["admin", "kepala", "guru"],
+  "/rekap-nilai-harian": ["admin", "kepala", "guru"],
   "/rekap-nilai-akhir": ["admin", "kepala", "guru"],
 };
 
@@ -137,7 +137,7 @@ export const config = {
     "/komponen-nilai",
     "/nilai-akhir",
     "/nilai-harian",
-    "/rekap-nilai",
+    "/rekap-nilai-harian",
     "/rekap-nilai-akhir",
   ],
 };

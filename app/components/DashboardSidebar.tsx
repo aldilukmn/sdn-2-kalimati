@@ -43,8 +43,8 @@ const menuItems: SidebarItem[] = [
   {
     label: "Penilaian", icon: Folder, children: [
       { label: "Nilai Harian", icon: ClipboardEdit, href: "/nilai-harian" },
+      { label: "Rekap Nilai Harian", icon: ScrollText, href: "/rekap-nilai-harian" },
       { label: "Komponen Nilai", icon: ClipboardList, href: "/komponen-nilai" },
-      { label: "Rekap Nilai", icon: ScrollText, href: "/rekap-nilai" },
       { label: "Nilai Akhir", icon: Calculator, href: "/nilai-akhir" },
       { label: "Rekap Nilai Akhir", icon: BarChart3, href: "/rekap-nilai-akhir" },
       { label: "Konfigurasi Nilai", icon: Scale, href: "/konfigurasi-nilai" },
@@ -75,7 +75,7 @@ export default function DashboardSidebar({
   const [penilaianOpen, setPenilaianOpen] = useState(true);
 
   const guruAllowedHrefs = new Set([
-    "/dashboard", "/nilai-harian", "/komponen-nilai", "/rekap-nilai",
+    "/dashboard", "/nilai-harian", "/komponen-nilai", "/rekap-nilai-harian",
     "/rekap-nilai-akhir", "/nilai-akhir", "/daftar-mapel",
     "/presensi-murid", "/tabungan-murid",
   ]);
@@ -170,7 +170,7 @@ export default function DashboardSidebar({
                     {penilaianOpen ? <ChevronDown size={16} /> : <ChevronRight size={16} />}
                   </button>
                   <div
-                    className={`ml-5 mt-0.5 space-y-0.5 border-l-2 border-slate-200 dark:border-slate-700 overflow-hidden transition-all duration-300 ${
+                    className={`ml-5 mt-0.5 space-y-0.5 border-l-2 border-slate-200 dark:border-slate-700 overflow-hidden transition-all duration-500 ${
                       penilaianOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
                     }`}
                   >
