@@ -16,6 +16,7 @@ const ROLE_ROUTES: Record<string, string[]> = {
   "/master-mapel": ["admin", "kepala"],
   "/master-struktur": ["admin", "kepala"],
   "/nilai-harian": ["admin", "kepala", "guru"],
+  "/rekap-nilai": ["admin", "kepala", "guru"],
 };
 
 const BASE64_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
@@ -129,5 +130,6 @@ export const config = {
     "/master-mapel",
     "/master-struktur",
     "/nilai-harian",
+    "/rekap-nilai",
   ],
 };

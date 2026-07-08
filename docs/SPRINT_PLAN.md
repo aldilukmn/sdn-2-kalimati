@@ -87,12 +87,12 @@
 - [x] Klik card → select chapter → load score table
 - [x] Jika per_material: tab materi di atas tabel
 - [x] Tabel: No, Nama, Nilai (numeric), Maks, Status (✅/⏳/❌)
-- [ ] Tab/Enter navigation
+- [x] Tab/Enter navigation
 - [x] `[💾 Simpan Semua]` → bulk save → toast
 - [x] Auto-select chapter pertama yang belum selesai
 - [x] Empty state: "Belum ada Bab yang dapat dinilai"
 - [x] Skeleton, toast, error state
-- [ ] Responsive
+- [x] Responsive
 
 ---
 
@@ -112,11 +112,11 @@
 | Testable | ✅ Ya |
 
 **Definition of Done:**
-- [ ] Filter TA, semester, grade, mapel
-- [ ] Tabel: baris = siswa, kolom = chapter, kolom akhir = rata-rata
-- [ ] Footer: rata-rata kelas per chapter
-- [ ] Expand baris → detail per materi
-- [ ] Empty state, skeleton, toast, responsive
+- [x] Filter TA, semester, grade, mapel
+- [x] Tabel: baris = siswa, kolom = chapter, kolom akhir = rata-rata
+- [x] Footer: rata-rata kelas per chapter
+- [x] Expand baris → detail per materi
+- [x] Empty state, skeleton, toast, responsive
 
 ---
 
@@ -132,13 +132,13 @@
 | Testable | ❌ Tidak |
 
 **Definition of Done:**
-- [ ] Semua empty state sesuai UI_FLOW.md
-- [ ] Skeleton saat loading
-- [ ] Toast setelah setiap aksi
-- [ ] Badge metode input konsisten
-- [ ] Tombol disable + spinner saat proses
-- [ ] Error state + retry button
-- [ ] Responsive di 320px, 768px, 1280px
+- [x] Semua empty state sesuai UI_FLOW.md
+- [x] Skeleton saat loading
+- [x] Toast setelah setiap aksi
+- [x] Badge metode input konsisten
+- [x] Tombol disable + spinner saat proses
+- [x] Error state + retry button
+- [x] Responsive di 320px, 768px, 1280px
 
 ---
 

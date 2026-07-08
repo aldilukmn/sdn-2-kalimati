@@ -11,6 +11,7 @@ export function useSubjects() {
   const [gradeSubjects, setGradeSubjects] = useState<GradeSubject[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
+  const [error, setError] = useState<string | null>(null);
 
   // Modal states
   const [subjectModal, setSubjectModal] = useState<{ open: boolean; edit?: Subject }>({ open: false });
@@ -42,12 +43,34 @@ export function useSubjects() {
     }
   }, []);
 
+  const retry = useCallback(() => {
+    setError(null);
+    const ctrl = new AbortController();
+    (async () => {
+      setLoading(true);
+      try {
+        await Promise.all([fetchSubjects(), fetchGradeSubjects()]);
+      } catch {
+        setError("Gagal memuat data. Silakan coba lagi.");
+      } finally {
+        setLoading(false);
+      }
+    })();
+    return () => ctrl.abort();
+  }, [fetchSubjects, fetchGradeSubjects]);
+
   useEffect(() => {
     const controller = new AbortController();
     (async () => {
       setLoading(true);
-      await Promise.all([fetchSubjects(), fetchGradeSubjects()]);
-      setLoading(false);
+      try {
+        await Promise.all([fetchSubjects(), fetchGradeSubjects()]);
+        setError(null);
+      } catch {
+        setError("Gagal memuat data. Silakan coba lagi.");
+      } finally {
+        setLoading(false);
+      }
     })();
     return () => controller.abort();
   }, [fetchSubjects, fetchGradeSubjects]);
@@ -145,6 +168,8 @@ export function useSubjects() {
     filteredSubjects,
     gradeSubjects,
     loading,
+    error,
+    retry,
     search,
     setSearch,
     // Subject modal

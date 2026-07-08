@@ -14,6 +14,7 @@ export function useChapters() {
   const [expandedChapter, setExpandedChapter] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [chaptersLoading, setChaptersLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   // Chapter modal
   const [chapterModal, setChapterModal] = useState<{ open: boolean; edit?: Chapter }>({ open: false });
@@ -60,12 +61,34 @@ export function useChapters() {
     }
   }, []);
 
+  const retry = useCallback(() => {
+    setError(null);
+    const ctrl = new AbortController();
+    (async () => {
+      setLoading(true);
+      try {
+        await fetchGradeSubjects();
+      } catch {
+        setError("Gagal memuat data. Silakan coba lagi.");
+      } finally {
+        setLoading(false);
+      }
+    })();
+    return () => ctrl.abort();
+  }, [fetchGradeSubjects]);
+
   useEffect(() => {
     const ctrl = new AbortController();
     (async () => {
       setLoading(true);
-      await fetchGradeSubjects();
-      setLoading(false);
+      setError(null);
+      try {
+        await fetchGradeSubjects();
+      } catch {
+        setError("Gagal memuat data. Silakan coba lagi.");
+      } finally {
+        setLoading(false);
+      }
     })();
     return () => ctrl.abort();
   }, [fetchGradeSubjects]);
@@ -205,6 +228,8 @@ export function useChapters() {
     expandedChapter,
     toggleExpandChapter,
     loading,
+    error,
+    retry,
     chaptersLoading,
     fetchMaterials,
     // Chapter modal

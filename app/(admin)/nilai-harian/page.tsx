@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { ClipboardEdit, Save } from "lucide-react";
+import { ClipboardEdit, Save, AlertCircle } from "lucide-react";
 import { useNilaiHarian } from "@/hooks/useNilaiHarian";
 import { GRADES } from "@/lib/constants";
 import toast from "react-hot-toast";
@@ -21,11 +21,11 @@ export default function NilaiHarianPage() {
     academicYear, setAcademicYear,
     grade, setGrade,
     gradeSubjects, selectedGS, setSelectedGS,
-    chapters, chaptersLoading,
+    chapters, chapterProgress, chaptersLoading,
     selectedChapter, setSelectedChapter,
     materials, selectedMaterial, setSelectedMaterial,
     entries, paginatedEntries,
-    saving, initialLoading, scoresLoading,
+    saving, error, retry, initialLoading, scoresLoading,
     currentPage, setCurrentPage,
     totalPages, startIndex,
     handleScoreChange,
@@ -106,7 +106,17 @@ export default function NilaiHarianPage() {
       </div>
 
       {/* Chapter cards */}
-      {initialLoading ? (
+      {error ? (
+        <div className="bg-white/70 dark:bg-gray-800/40 border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
+          <div className="text-center py-12">
+            <AlertCircle size={40} className="mx-auto text-red-300 dark:text-red-600 mb-3" />
+            <p className="text-red-500 dark:text-red-400 font-medium">{error}</p>
+            <button onClick={retry} className="mt-3 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-sm font-medium transition-colors cursor-pointer">
+              Coba Lagi
+            </button>
+          </div>
+        </div>
+      ) : initialLoading ? (
         <div className="animate-pulse space-y-2">
           {[1, 2, 3].map((i) => (
             <div key={i} className="h-14 bg-slate-200 dark:bg-slate-700 rounded-xl" />
@@ -141,6 +151,7 @@ export default function NilaiHarianPage() {
             ) : (
               sortedChapters.map((ch) => {
                 const isActive = selectedChapter?._id === ch._id;
+                const prog = chapterProgress[ch._id];
                 return (
                   <button
                     key={ch._id}
@@ -148,26 +159,49 @@ export default function NilaiHarianPage() {
                       setSelectedChapter(ch);
                       setSelectedMaterial("");
                     }}
-                    className={`w-full text-left flex items-center gap-3 px-4 py-3 rounded-xl border transition-all cursor-pointer ${
+                    className={`w-full text-left flex flex-col sm:flex-row sm:items-center gap-2 px-4 py-3 rounded-xl border transition-all cursor-pointer ${
                       isActive
                         ? "bg-indigo-50 dark:bg-indigo-900/30 border-indigo-300 dark:border-indigo-700 shadow-sm"
                         : "bg-white/70 dark:bg-gray-800/40 border-white/20 dark:border-gray-700/50 hover:border-indigo-200 dark:hover:border-indigo-700"
                     }`}
                   >
-                    <span className="text-lg">{isActive ? "📘" : "📕"}</span>
-                    <span className={`flex-1 text-sm font-medium ${isActive ? "text-indigo-700 dark:text-indigo-300" : "text-slate-700 dark:text-slate-300"}`}>
-                      {ch.name}
-                    </span>
-                    <span className={`text-[11px] font-semibold px-2 py-0.5 rounded-full ${
-                      ch.inputMode === "per_material"
-                        ? "bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300"
-                        : "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300"
-                    }`}>
-                      {ch.inputMode === "per_material" ? "Per Materi" : "Per Bab"}
-                    </span>
-                    {isActive && (
-                      <span className="text-xs text-indigo-500 dark:text-indigo-400 font-medium">(Sedang aktif)</span>
-                    )}
+                    <div className="flex items-center gap-3 flex-1 min-w-0">
+                      <span className="text-lg shrink-0">{isActive ? "📘" : "📕"}</span>
+                      <span className={`text-sm font-medium truncate ${isActive ? "text-indigo-700 dark:text-indigo-300" : "text-slate-700 dark:text-slate-300"}`}>
+                        {ch.name}
+                      </span>
+                      <span className={`text-[11px] font-semibold px-2 py-0.5 rounded-full shrink-0 ${
+                        ch.inputMode === "per_material"
+                          ? "bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300"
+                          : "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300"
+                      }`}>
+                        {ch.inputMode === "per_material" ? "Per Materi" : "Per Bab"}
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-3 sm:gap-4">
+                      {prog && (
+                        <div className="flex items-center gap-2 flex-1 sm:flex-none">
+                          <div className="w-24 sm:w-28 h-2 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden shrink-0">
+                            <div
+                              className={`h-full rounded-full transition-all duration-500 ${
+                                prog.percentage === 100
+                                  ? "bg-emerald-500"
+                                  : prog.percentage > 0
+                                  ? "bg-amber-500"
+                                  : "bg-slate-300 dark:bg-slate-600"
+                              }`}
+                              style={{ width: `${prog.percentage}%` }}
+                            />
+                          </div>
+                          <span className="text-[11px] font-medium text-slate-500 dark:text-slate-400 whitespace-nowrap">
+                            {prog.gradedStudents}/{prog.totalStudents}
+                          </span>
+                        </div>
+                      )}
+                      {isActive && (
+                        <span className="text-[11px] text-indigo-500 dark:text-indigo-400 font-medium shrink-0">(Sedang aktif)</span>
+                      )}
+                    </div>
                   </button>
                 );
               })

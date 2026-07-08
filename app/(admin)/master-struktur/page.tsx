@@ -1,9 +1,10 @@
 "use client";
 
+import Link from "next/link";
 import { useState, useCallback, useRef } from "react";
 import {
   BookOpen, Plus, Pencil, Trash2, ChevronDown, ChevronRight,
-  GripVertical, ArrowUp, ArrowDown,
+  GripVertical, ArrowUp, ArrowDown, AlertCircle, Settings,
 } from "lucide-react";
 import { useChapters } from "@/hooks/useChapters";
 import toast from "react-hot-toast";
@@ -21,7 +22,7 @@ export default function MasterStrukturPage() {
   const {
     gradeSubjects, selectedGS, setSelectedGS,
     chapters, materialsMap, expandedChapter, toggleExpandChapter,
-    loading, chaptersLoading, fetchMaterials,
+    loading, error, retry, chaptersLoading, fetchMaterials,
     chapterModal, chapterName, setChapterName,
     chapterInputMode, setChapterInputMode, chapterSaving,
     openCreateChapter, openEditChapter, closeChapterModal, saveChapter, deleteChapter,
@@ -130,6 +131,23 @@ export default function MasterStrukturPage() {
     }
   };
 
+  if (error) {
+    return (
+      <div className="flex flex-col gap-6 p-4 md:p-6">
+        <PageHero icon={BookOpen} title="Struktur Akademik" description="Atur bab dan materi pelajaran" />
+        <div className="bg-white/70 dark:bg-gray-800/40 border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
+          <div className="text-center py-12">
+            <AlertCircle size={40} className="mx-auto text-red-300 dark:text-red-600 mb-3" />
+            <p className="text-red-500 dark:text-red-400 font-medium">{error}</p>
+            <button onClick={retry} className="mt-3 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-sm font-medium transition-colors cursor-pointer">
+              Coba Lagi
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   if (loading) {
     return (
       <div className="flex flex-col gap-6 p-4 md:p-6">
@@ -152,7 +170,16 @@ export default function MasterStrukturPage() {
       <div className="bg-white/70 dark:bg-gray-800/40 border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
         <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-end">
           <div className="w-full sm:w-72">
-            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Mata Pelajaran</label>
+            <div className="flex items-center justify-between mb-1">
+              <label className="text-sm font-medium text-slate-700 dark:text-slate-300">Mata Pelajaran</label>
+              <Link
+                href="/master-mapel"
+                className="text-xs text-indigo-500 hover:text-indigo-700 dark:text-indigo-400 dark:hover:text-indigo-300 font-medium flex items-center gap-1"
+              >
+                <Settings size={12} />
+                Kelola Mapel
+              </Link>
+            </div>
             <Select value={selectedGS} onValueChange={(v) => v && setSelectedGS(v)}>
               <SelectTrigger className="w-full">
                 <SelectValue placeholder="Pilih mapel" />

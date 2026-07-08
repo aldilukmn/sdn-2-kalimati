@@ -6,7 +6,7 @@ import ChapterService from "@/services/chapter.service";
 import MaterialService from "@/services/material.service";
 import ScoreService from "@/services/score.service";
 import StudentAttendanceService from "@/services/student-attendance.service";
-import type { GradeSubject, Chapter, Material, ScoreEntry, ChapterProgress } from "@/types/nilai-harian";
+import type { GradeSubject, Chapter, Material, ScoreEntry, ChapterProgress, Score } from "@/types/nilai-harian";
 
 const SEMESTERS = ["1", "2"];
 const ACADEMIC_YEARS = ["2024/2025", "2025/2026", "2026/2027"];
@@ -18,6 +18,7 @@ export function useNilaiHarian() {
   const [gradeSubjects, setGradeSubjects] = useState<GradeSubject[]>([]);
   const [selectedGS, setSelectedGS] = useState("");
   const [chapters, setChapters] = useState<Chapter[]>([]);
+  const [chapterProgress, setChapterProgress] = useState<Record<string, ChapterProgress>>({});
   const [materials, setMaterials] = useState<Material[]>([]);
   const [selectedChapter, setSelectedChapter] = useState<Chapter | null>(null);
   const [selectedMaterial, setSelectedMaterial] = useState<string>("");
@@ -27,6 +28,13 @@ export function useNilaiHarian() {
   const [chaptersLoading, setChaptersLoading] = useState(false);
   const [scoresLoading, setScoresLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+  const [error, setError] = useState<string | null>(null);
+  const [retryCount, setRetryCount] = useState(0);
+
+  const retry = useCallback(() => {
+    setError(null);
+    setRetryCount((c) => c + 1);
+  }, []);
 
   const ITEMS_PER_PAGE = 10;
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -36,6 +44,7 @@ export function useNilaiHarian() {
     const ctrl = new AbortController();
     (async () => {
       setInitialLoading(true);
+      setError(null);
       setSelectedChapter(null);
       setSelectedMaterial("");
       setEntries([]);
@@ -50,16 +59,17 @@ export function useNilaiHarian() {
       } catch {
         setGradeSubjects([]);
         setSelectedGS("");
+        setError("Gagal memuat data mapel.");
       } finally {
         setInitialLoading(false);
       }
     })();
     return () => ctrl.abort();
-  }, [grade, semester, academicYear]);
+  }, [grade, semester, academicYear, retryCount]);
 
-  // Fetch chapters when selectedGS changes
+  // Fetch chapters & compute progress when selectedGS changes
   useEffect(() => {
-    if (!selectedGS) { setChapters([]); setSelectedChapter(null); return; }
+    if (!selectedGS) { setChapters([]); setChapterProgress({}); setSelectedChapter(null); return; }
     const ctrl = new AbortController();
     (async () => {
       setChaptersLoading(true);
@@ -70,18 +80,41 @@ export function useNilaiHarian() {
         const res = await ChapterService.getAll(selectedGS);
         const chs = res?.result || [];
         setChapters(chs);
+
         if (chs.length > 0) {
-          const firstIncomplete = chs.find((ch) => false);
+          const [studentsRes, ...scoreResults] = await Promise.all([
+            StudentAttendanceService.getStudentsByGrade(grade),
+            ...chs.map((ch) => ScoreService.getAll(ch._id).catch(() => ({ result: [] as Score[] }))),
+          ]);
+          const totalStudents = (studentsRes?.result || []).length;
+          const progressMap: Record<string, ChapterProgress> = {};
+          chs.forEach((ch, idx) => {
+            const chapterScores = (scoreResults[idx]?.result || []) as Score[];
+            const uniqueStudents = new Set(chapterScores.map((s) => s.studentId)).size;
+            progressMap[ch._id] = {
+              chapter: ch,
+              totalStudents,
+              gradedStudents: uniqueStudents,
+              percentage: totalStudents > 0 ? Math.round((uniqueStudents / totalStudents) * 100) : 0,
+            };
+          });
+          setChapterProgress(progressMap);
+
+          const firstIncomplete = chs.find((ch) => (progressMap[ch._id]?.gradedStudents || 0) < totalStudents);
           setSelectedChapter(firstIncomplete || chs[0]);
+        } else {
+          setChapterProgress({});
         }
       } catch {
         setChapters([]);
+        setChapterProgress({});
+        setError("Gagal memuat data bab.");
       } finally {
         setChaptersLoading(false);
       }
     })();
     return () => ctrl.abort();
-  }, [selectedGS]);
+  }, [selectedGS, grade, retryCount]);
 
   // Fetch materials when selectedChapter changes to per_material
   useEffect(() => {
@@ -142,12 +175,13 @@ export function useNilaiHarian() {
         setEntries(merged);
       } catch {
         setEntries([]);
+        setError("Gagal memuat data nilai.");
       } finally {
         setScoresLoading(false);
       }
     })();
     return () => ctrl.abort();
-  }, [selectedChapter, selectedMaterial, grade]);
+  }, [selectedChapter, selectedMaterial, grade, retryCount]);
 
   const handleScoreChange = (studentId: string, value: string) => {
     setEntries((prev) =>
@@ -207,11 +241,11 @@ export function useNilaiHarian() {
     academicYear, setAcademicYear,
     grade, setGrade,
     gradeSubjects, selectedGS, setSelectedGS,
-    chapters, chaptersLoading,
+    chapters, chapterProgress, chaptersLoading,
     selectedChapter, setSelectedChapter,
     materials, selectedMaterial, setSelectedMaterial,
     entries, paginatedEntries,
-    saving, initialLoading, scoresLoading,
+    saving, error, retry, initialLoading, scoresLoading,
     currentPage, setCurrentPage,
     totalPages, startIndex,
     ITEMS_PER_PAGE,

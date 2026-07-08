@@ -132,3 +132,25 @@ export interface ChapterProgress {
   gradedStudents: number;
   percentage: number;
 }
+
+export interface RekapMaterialDetail {
+  materialName: string;
+  score: number;
+  maxScore: number;
+}
+
+export interface RekapEntry {
+  studentId: string;
+  studentName: string;
+  chapterScores: Record<string, number>;
+  chapterMaxScores: Record<string, number>;
+  materialDetails: Record<string, RekapMaterialDetail[]>;
+  average: number;
+}
+
+export interface ClassAverageItem {
+  chapterId: string;
+  chapterName: string;
+  average: number;
+  overallAverage: number;
+}
