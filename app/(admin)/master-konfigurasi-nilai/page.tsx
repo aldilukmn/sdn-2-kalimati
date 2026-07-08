@@ -199,7 +199,7 @@ export default function MasterKonfigurasiNilaiPage() {
                   <div>
                     <label className="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">Kelas</label>
                     <Select value={modalGrade} onValueChange={(v) => v && setModalGrade(v)}>
-                      <SelectTrigger><SelectValue /></SelectTrigger>
+                      <SelectTrigger className="w-full h-auto rounded-xl border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100"><SelectValue /></SelectTrigger>
                       <SelectContent>
                         {GRADES.map((g) => (
                           <SelectItem key={g} value={g}>Kelas {g}</SelectItem>
@@ -210,7 +210,7 @@ export default function MasterKonfigurasiNilaiPage() {
                   <div>
                     <label className="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">Semester</label>
                     <Select value={modalSemester} onValueChange={(v) => v && setModalSemester(v)}>
-                      <SelectTrigger><SelectValue /></SelectTrigger>
+                      <SelectTrigger className="w-full h-auto rounded-xl border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100"><SelectValue /></SelectTrigger>
                       <SelectContent>
                         {SEMESTERS.map((s) => (
                           <SelectItem key={s} value={s}>Semester {s}</SelectItem>
@@ -221,7 +221,7 @@ export default function MasterKonfigurasiNilaiPage() {
                   <div>
                     <label className="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">Tahun Ajaran</label>
                     <Select value={modalAcademicYear} onValueChange={(v) => v && setModalAcademicYear(v)}>
-                      <SelectTrigger><SelectValue /></SelectTrigger>
+                      <SelectTrigger className="w-full h-auto rounded-xl border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100"><SelectValue /></SelectTrigger>
                       <SelectContent>
                         {ACADEMIC_YEARS.map((y) => (
                           <SelectItem key={y} value={y}>{y}</SelectItem>

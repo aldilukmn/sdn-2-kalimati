@@ -329,7 +329,7 @@ export default function MasterMapelPage() {
       )}
 
       {/* Modal Subject */}
-      <Modal open={subjectModal.open} onClose={closeSubjectModal} title={subjectModal.edit ? "Ubah Mata Pelajaran" : "Tambah Mata Pelajaran"}>
+      <Modal open={subjectModal.open} onClose={closeSubjectModal} title={subjectModal.edit ? "Ubah Mata Pelajaran" : "Tambah Mata Pelajaran"} className="max-w-sm">
         <div className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Nama Mata Pelajaran</label>
@@ -363,12 +363,12 @@ export default function MasterMapelPage() {
       </Modal>
 
       {/* Modal Assign */}
-      <Modal open={assignModal} onClose={closeAssignModal} title="Tetapkan Mata Pelajaran ke Kelas">
+      <Modal open={assignModal} onClose={closeAssignModal} title="Tetapkan Mata Pelajaran ke Kelas" className="max-w-sm">
         <div className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Mata Pelajaran</label>
             <Select value={assignSubjectId} onValueChange={(v) => v && setAssignSubjectId(v)}>
-              <SelectTrigger className="w-full">
+              <SelectTrigger className="w-full h-auto rounded-xl border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100">
                 <SelectValue placeholder="Pilih mapel">
                   {assignSubjectId ? subjects.find(s => s._id === assignSubjectId)?.name : "Pilih mapel"}
                 </SelectValue>
@@ -406,7 +406,7 @@ export default function MasterMapelPage() {
           <div>
             <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Semester</label>
             <Select value={assignSemester} onValueChange={(v) => v && setAssignSemester(v)}>
-              <SelectTrigger className="w-full">
+              <SelectTrigger className="w-full h-auto rounded-xl border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100">
                 <SelectValue placeholder="Pilih semester" />
               </SelectTrigger>
               <SelectContent>
@@ -419,7 +419,7 @@ export default function MasterMapelPage() {
           <div>
             <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Tahun Ajaran</label>
             <Select value={assignAcademicYear} onValueChange={(v) => v && setAssignAcademicYear(v)}>
-              <SelectTrigger className="w-full">
+              <SelectTrigger className="w-full h-auto rounded-xl border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100">
                 <SelectValue placeholder="Pilih tahun ajaran" />
               </SelectTrigger>
               <SelectContent>
@@ -449,7 +449,7 @@ export default function MasterMapelPage() {
       </Modal>
 
       {/* Confirm Delete Modal */}
-      <Modal open={confirmDelete !== null} onClose={() => setConfirmDelete(null)} title="Konfirmasi Hapus">
+      <Modal open={confirmDelete !== null} onClose={() => setConfirmDelete(null)} title="Konfirmasi Hapus" className="max-w-sm">
         <p className="text-slate-600 dark:text-slate-400 text-sm mb-4">
           Yakin ingin menghapus{confirmDelete?.type === "subject" ? " mata pelajaran" : " penetapan"} <strong>{confirmDelete?.name}</strong>?
           {confirmDelete?.type === "subject" && (

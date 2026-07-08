@@ -162,7 +162,14 @@ export default function MasterStrukturPage() {
   if (loading) {
     return (
       <div className="flex flex-col gap-6 p-4 md:p-6">
-        <PageHero icon={BookOpen} title="Daftar Mapel" description="Atur bab dan materi pelajaran" />
+        {/* Hero skeleton */}
+        <div className="animate-pulse space-y-2 px-1">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 bg-slate-200 dark:bg-slate-700 rounded-lg" />
+            <div className="h-6 bg-slate-200 dark:bg-slate-700 rounded w-48" />
+          </div>
+          <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-72" />
+        </div>
         <div className="animate-pulse space-y-4">
           <div className="h-10 bg-slate-200 dark:bg-slate-700 rounded-xl w-64" />
           {[1, 2, 3].map((i) => (
@@ -450,7 +457,7 @@ export default function MasterStrukturPage() {
       </Modal>
 
       {/* Confirm Delete */}
-      <Modal open={confirmDelete !== null} onClose={() => setConfirmDelete(null)} title="Konfirmasi Hapus">
+      <Modal open={confirmDelete !== null} onClose={() => setConfirmDelete(null)} title="Konfirmasi Hapus" className="max-w-sm">
         <p className="text-slate-600 dark:text-slate-400 text-sm mb-4">
           Yakin ingin menghapus {confirmDelete?.type === "chapter" ? "bab" : "materi"} <strong>{confirmDelete?.name}</strong>?
           <span className="block mt-1 text-xs text-slate-400">
@@ -464,8 +471,9 @@ export default function MasterStrukturPage() {
           <button
             onClick={confirmDelete?.type === "chapter" ? handleDeleteChapter : handleDeleteMaterial}
             disabled={deleting}
-            className="px-4 py-2 text-sm font-medium text-white bg-red-600 hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed rounded-lg transition-colors cursor-pointer"
+            className="px-4 py-2 text-sm font-medium text-white bg-red-600 hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed rounded-lg transition-colors cursor-pointer flex items-center gap-2"
           >
+            {deleting && <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />}
             Hapus
           </button>
         </div>
