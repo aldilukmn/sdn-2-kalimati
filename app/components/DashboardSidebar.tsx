@@ -47,7 +47,7 @@ const menuItems: SidebarItem[] = [
       { label: "Rekap Nilai", icon: ScrollText, href: "/rekap-nilai" },
       { label: "Nilai Akhir", icon: Calculator, href: "/nilai-akhir" },
       { label: "Rekap Nilai Akhir", icon: BarChart3, href: "/rekap-nilai-akhir" },
-      { label: "Konfigurasi Penilaian", icon: Scale, href: "/master-konfigurasi-nilai" },
+      { label: "Konfigurasi Nilai", icon: Scale, href: "/konfigurasi-nilai" },
     ],
   },
   { label: "Data GTK", icon: Users, href: "/data-gtk" },
@@ -169,9 +169,14 @@ export default function DashboardSidebar({
                     <span className="flex-1 text-left">{item.label}</span>
                     {penilaianOpen ? <ChevronDown size={16} /> : <ChevronRight size={16} />}
                   </button>
-                  {penilaianOpen && (
-                    <div className="ml-5 mt-0.5 space-y-0.5 border-l-2 border-slate-200 dark:border-slate-700">
-                      {item.children.map((child) => {
+                  <div
+                    className={`ml-5 mt-0.5 space-y-0.5 border-l-2 border-slate-200 dark:border-slate-700 overflow-hidden transition-all duration-300 ${
+                      penilaianOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
+                    }`}
+                  >
+                    {item.children
+                      .filter((child) => userRole !== "guru" || guruAllowedHrefs.has(child.href))
+                      .map((child) => {
                         const active = isActive(child.href);
                         const ChildIcon = child.icon;
                         return (
@@ -191,7 +196,6 @@ export default function DashboardSidebar({
                         );
                       })}
                     </div>
-                  )}
                 </div>
               );
             }

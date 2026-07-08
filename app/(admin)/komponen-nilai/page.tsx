@@ -153,8 +153,8 @@ export default function NilaiKomponenPage() {
         <div className="bg-white/70 dark:bg-gray-800/40 border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
           <div className="text-center py-12">
             <AlertCircle size={40} className="mx-auto text-amber-300 dark:text-amber-600 mb-3" />
-            <p className="text-slate-500 dark:text-slate-400 font-medium">Belum ada Konfigurasi Penilaian aktif.</p>
-            <p className="text-slate-400 dark:text-slate-500 text-sm mt-1">Hubungi Admin untuk membuat Konfigurasi Penilaian terlebih dahulu.</p>
+            <p className="text-slate-500 dark:text-slate-400 font-medium">Belum ada Konfigurasi Nilai aktif.</p>
+            <p className="text-slate-400 dark:text-slate-500 text-sm mt-1">Hubungi Admin untuk membuat Konfigurasi Nilai terlebih dahulu.</p>
           </div>
         </div>
       ) : (

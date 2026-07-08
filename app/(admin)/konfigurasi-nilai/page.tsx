@@ -50,7 +50,7 @@ export default function MasterKonfigurasiNilaiPage() {
 
   return (
     <div className="flex flex-col gap-6 p-4 md:p-6">
-      <PageHero icon={Scale} title="Konfigurasi Penilaian" description="Atur komponen dan bobot penilaian" />
+      <PageHero icon={Scale} title="Konfigurasi Nilai" description="Atur komponen dan bobot penilaian" />
 
       {/* Filter */}
       <div className="bg-white/70 dark:bg-gray-800/40 border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
@@ -98,7 +98,7 @@ export default function MasterKonfigurasiNilaiPage() {
         <div className="bg-white/70 dark:bg-gray-800/40 border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
           <div className="text-center py-12">
             <Scale size={40} className="mx-auto text-slate-300 dark:text-slate-600 mb-3" />
-            <p className="text-slate-500 dark:text-slate-400 font-medium">Belum ada Konfigurasi Penilaian.</p>
+            <p className="text-slate-500 dark:text-slate-400 font-medium">Belum ada Konfigurasi Nilai.</p>
             <p className="text-slate-400 dark:text-slate-500 text-sm mt-1">
               Buat konfigurasi penilaian agar guru dapat menghitung Nilai Akhir Semester.
             </p>
@@ -185,7 +185,7 @@ export default function MasterKonfigurasiNilaiPage() {
             {/* Header */}
             <div className="flex items-center justify-between p-5 border-b border-slate-200 dark:border-slate-700">
               <h2 className="text-lg font-bold text-slate-800 dark:text-slate-100">
-                {editingConfig ? "Ubah Konfigurasi Penilaian" : "Buat Konfigurasi Penilaian"}
+                {editingConfig ? "Ubah Konfigurasi Nilai" : "Buat Konfigurasi Nilai"}
               </h2>
               <button onClick={closeModal} className="p-1.5 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors cursor-pointer">
                 <X size={18} className="text-slate-500" />
