@@ -55,14 +55,14 @@ export default function RekapNilaiAkhirSheet({ matrix, subjects, classAverages }
                             : "text-gray-300 dark:text-gray-600"
                         }`}
                       >
-                        {score !== null ? score.toFixed(1) : "-"}
+                        {score !== null ? score.toFixed(2) : "-"}
                       </span>
                     </td>
                   );
                 })}
                 <td className="p-3 text-center">
                   <span className="text-sm font-bold text-indigo-600 dark:text-indigo-400">
-                    {row.average !== null ? row.average.toFixed(1) : "-"}
+                    {row.average !== null ? row.average.toFixed(2) : "-"}
                   </span>
                 </td>
               </tr>
@@ -82,7 +82,7 @@ export default function RekapNilaiAkhirSheet({ matrix, subjects, classAverages }
                 return (
                   <td key={subj.subjectId} className="p-3 text-center">
                     <span className="text-sm font-bold text-indigo-600 dark:text-indigo-400">
-                      {avg !== null ? avg.toFixed(1) : "-"}
+                      {avg !== null ? avg.toFixed(2) : "-"}
                     </span>
                   </td>
                 );
@@ -92,7 +92,7 @@ export default function RekapNilaiAkhirSheet({ matrix, subjects, classAverages }
                   {(() => {
                     const validRows = matrix.filter((r) => r.average !== null);
                     return validRows.length > 0
-                      ? (validRows.reduce((sum, r) => sum + r.average!, 0) / validRows.length).toFixed(1)
+                      ? (validRows.reduce((sum, r) => sum + r.average!, 0) / validRows.length).toFixed(2)
                       : "-";
                   })()}
                 </span>

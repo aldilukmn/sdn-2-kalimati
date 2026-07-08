@@ -270,7 +270,7 @@ export default function NilaiAkhirPage() {
                           <td className="px-4 py-3 text-center">
                             {entry.finalScore !== null ? (
                               <span className="font-semibold text-slate-700 dark:text-slate-200">
-                                {Math.round(entry.finalScore * 10) / 10}
+                                {Math.round(entry.finalScore * 100) / 100}
                               </span>
                             ) : (
                               <span className="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-300">
@@ -300,7 +300,7 @@ export default function NilaiAkhirPage() {
                                         <td className="text-right py-0.5 pr-4">{c.rawScore > 0 ? c.rawScore : "-"}</td>
                                         <td className="text-right py-0.5 pr-4">{c.weight}%</td>
                                         <td className="text-right py-0.5">
-                                          {c.weightedScore > 0 ? Math.round(c.weightedScore * 10) / 10 : "-"}
+                                          {c.weightedScore > 0 ? Math.round(c.weightedScore * 100) / 100 : "-"}
                                         </td>
                                       </tr>
                                     ))}

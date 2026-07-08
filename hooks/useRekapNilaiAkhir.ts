@@ -108,7 +108,7 @@ export function useRekapNilaiAkhir(userRole: string | null, userGrade: string | 
         studentId: student.studentId,
         studentName: student.name,
         scores,
-        average: scoreCount > 0 ? Math.round((totalScore / scoreCount) * 10) / 10 : null,
+        average: scoreCount > 0 ? Math.round((totalScore / scoreCount) * 100) / 100 : null,
       };
     });
 
@@ -120,7 +120,7 @@ export function useRekapNilaiAkhir(userRole: string | null, userGrade: string | 
       .filter((s): s is number => s !== null);
     classAverages[subj.subjectId] =
       scores.length > 0
-        ? Math.round((scores.reduce((a, b) => a + b, 0) / scores.length) * 10) / 10
+        ? Math.round((scores.reduce((a, b) => a + b, 0) / scores.length) * 100) / 100
         : null;
   });
 

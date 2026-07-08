@@ -108,14 +108,14 @@ export default function RekapTable({ chapters, entries, classAverages, loading }
                             : "text-gray-300 dark:text-gray-600"
                         }`}>
                           {entry.chapterScores[ch._id] > 0
-                            ? entry.chapterScores[ch._id].toFixed(1)
+                            ? entry.chapterScores[ch._id].toFixed(2)
                             : "-"}
                         </span>
                       </td>
                     ))}
                     <td className="p-3 text-center">
                       <span className="text-sm font-bold text-indigo-600 dark:text-indigo-400">
-                        {entry.average > 0 ? entry.average.toFixed(1) : "-"}
+                        {entry.average > 0 ? entry.average.toFixed(2) : "-"}
                       </span>
                     </td>
                   </tr>
@@ -159,14 +159,14 @@ export default function RekapTable({ chapters, entries, classAverages, loading }
                 return (
                   <td key={ch._id} className="p-3 text-center">
                     <span className="text-sm font-bold text-indigo-600 dark:text-indigo-400">
-                      {ca && ca.average > 0 ? ca.average.toFixed(1) : "-"}
+                      {ca && ca.average > 0 ? ca.average.toFixed(2) : "-"}
                     </span>
                   </td>
                 );
               })}
               <td className="p-3 text-center">
                 <span className="text-sm font-bold text-indigo-700 dark:text-indigo-300">
-                  {classAverages.find((a) => a.chapterId === "overall")?.average.toFixed(1) || "-"}
+                  {classAverages.find((a) => a.chapterId === "overall")?.average.toFixed(2) || "-"}
                 </span>
               </td>
             </tr>
