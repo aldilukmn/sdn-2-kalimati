@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useState, useCallback, useRef, useEffect } from "react";
 import {
   BookOpen, Plus, Pencil, Trash2, ChevronDown, ChevronRight,
-  GripVertical, ArrowUp, ArrowDown, AlertCircle, Settings,
+  GripVertical, ArrowUp, ArrowDown, AlertCircle, Settings, ArrowLeft,
 } from "lucide-react";
 import { useChapters } from "@/hooks/useChapters";
 import { decodeJWT } from "@/lib/jwt";
@@ -178,6 +178,14 @@ export default function MasterStrukturPage() {
   return (
     <div className="flex flex-col gap-6 p-4 md:p-6">
       <PageHero icon={BookOpen} title="Struktur Akademik" description="Atur bab dan materi pelajaran" />
+
+      <Link
+        href="/nilai-harian"
+        className="inline-flex items-center gap-1.5 text-sm text-indigo-500 hover:text-indigo-700 dark:text-indigo-400 dark:hover:text-indigo-300 font-medium -mt-2"
+      >
+        <ArrowLeft size={14} />
+        Kembali ke Input Nilai Harian
+      </Link>
 
       {/* Selector */}
       <div className="bg-white/70 dark:bg-gray-800/40 border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
