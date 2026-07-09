@@ -1,9 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { ClipboardEdit, Save, AlertCircle, BookOpen } from "lucide-react";
 import { useNilaiHarian } from "@/hooks/useNilaiHarian";
-import { decodeJWT } from "@/lib/jwt";
 import { GRADES } from "@/lib/constants";
 import toast from "react-hot-toast";
 import PageHero from "@/app/components/PageHero";
@@ -11,28 +10,19 @@ import ScoreTable from "@/app/components/nilai-harian/ScoreTable";
 import {
   Select,
   SelectContent,
+  SelectGroup,
   SelectItem,
+  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
 
 export default function NilaiHarianPage() {
-  const [userRole, setUserRole] = useState<string | null>(null);
-  const [userGrade, setUserGrade] = useState<string | null>(null);
-
-  useEffect(() => {
-    const token = sessionStorage.getItem("user_session");
-    if (token) {
-      const payload = decodeJWT(token);
-      setUserRole(payload?.role || null);
-      setUserGrade(payload?.grade || null);
-    }
-  }, []);
-
   const {
     semester, setSemester,
     academicYear, setAcademicYear,
     grade, setGrade,
+    userRole,
     gradeSubjects, selectedGS, setSelectedGS,
     chapters, chapterProgress, chaptersLoading,
     selectedChapter, setSelectedChapter,
@@ -45,7 +35,7 @@ export default function NilaiHarianPage() {
     handleMaxScoreChange,
     handleSave,
     SEMESTERS, ACADEMIC_YEARS,
-  } = useNilaiHarian(userRole, userGrade);
+  } = useNilaiHarian();
 
   useEffect(() => {
     if (selectedChapter) {
@@ -100,9 +90,12 @@ export default function NilaiHarianPage() {
                 {selectedGS ? gradeSubjects.find(gs => gs._id === selectedGS)?.subjectName || "-" : null}
               </SelectValue></SelectTrigger>
               <SelectContent>
-                {gradeSubjects.map((gs) => (
-                  <SelectItem key={gs._id} value={gs._id}>{gs.subjectName || "-"}</SelectItem>
-                ))}
+                <SelectGroup>
+                  <SelectLabel>Mata Pelajaran</SelectLabel>
+                  {gradeSubjects.map((gs) => (
+                    <SelectItem key={gs._id} value={gs._id}>{gs.subjectName || "-"}</SelectItem>
+                  ))}
+                </SelectGroup>
               </SelectContent>
             </Select>
           </div>

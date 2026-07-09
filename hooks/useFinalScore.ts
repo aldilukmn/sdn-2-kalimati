@@ -3,23 +3,42 @@
 import { useEffect, useState, useCallback } from "react";
 import GradeSubjectService from "@/services/grade-subject.service";
 import FinalScoreService from "@/services/final-score.service";
+import { decodeJWT } from "@/lib/jwt";
+import { GRADES } from "@/lib/constants";
 import type { FinalScoreEntry, CalculateResponse } from "@/services/final-score.service";
 import type { GradeSubject } from "@/types/nilai-harian";
 
 const SEMESTERS = ["1", "2"];
 const ACADEMIC_YEARS = ["2026/2027"];
 
-export function useFinalScore(userRole: string | null = null, userGrade: string | null = null) {
+export function useFinalScore() {
   const [semester, setSemester] = useState("1");
   const [academicYear, setAcademicYear] = useState("2026/2027");
-  const [grade, setGrade] = useState("1");
+  const [grade, setGrade] = useState("");
+  const [userRole, setUserRole] = useState<string | null>(null);
+  const [isJwtReady, setIsJwtReady] = useState(false);
 
-  // Lock grade for guru
   useEffect(() => {
-    if (userRole === "guru" && userGrade) {
-      setGrade(userGrade);
+    const token = sessionStorage.getItem("user_session");
+    let role: string | null = null;
+    let gradeFromToken: string | null = null;
+    if (token) {
+      try {
+        const payload = decodeJWT(token);
+        if (payload) { role = payload.role; gradeFromToken = payload.grade; }
+      } catch {}
     }
-  }, [userRole, userGrade]);
+    if (!role) {
+      const match = document.cookie.match(/(?:^|; )user_role=([^;]*)/);
+      role = match ? decodeURIComponent(match[1]) : null;
+      const gradeMatch = document.cookie.match(/(?:^|; )user_grade=([^;]*)/);
+      gradeFromToken = gradeMatch ? decodeURIComponent(gradeMatch[1]) : null;
+    }
+    if (role) setUserRole(role);
+    if (role === "guru" && gradeFromToken) setGrade(gradeFromToken);
+    else if (role && role !== "guru") setGrade("1");
+    setIsJwtReady(true);
+  }, []);
   const [gradeSubjects, setGradeSubjects] = useState<GradeSubject[]>([]);
   const [selectedGS, setSelectedGS] = useState("");
 
@@ -40,6 +59,7 @@ export function useFinalScore(userRole: string | null = null, userGrade: string 
 
   // Fetch grade-subjects
   useEffect(() => {
+    if (!isJwtReady || !grade) return;
     const ctrl = new AbortController();
     (async () => {
       setInitialLoading(true);
@@ -131,6 +151,7 @@ export function useFinalScore(userRole: string | null = null, userGrade: string 
     semester, setSemester,
     academicYear, setAcademicYear,
     grade, setGrade,
+    userRole,
     gradeSubjects, selectedGS, setSelectedGS,
     entries, loading, initialLoading, error, retry,
     isStale, lastCalculatedAt,

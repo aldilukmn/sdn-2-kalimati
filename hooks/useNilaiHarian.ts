@@ -6,23 +6,41 @@ import ChapterService from "@/services/chapter.service";
 import MaterialService from "@/services/material.service";
 import ScoreService from "@/services/score.service";
 import StudentAttendanceService from "@/services/student-attendance.service";
+import { decodeJWT } from "@/lib/jwt";
+import { GRADES } from "@/lib/constants";
 import type { GradeSubject, Chapter, Material, ScoreEntry, ChapterProgress, Score } from "@/types/nilai-harian";
 
 const SEMESTERS = ["1", "2"];
 const ACADEMIC_YEARS = ["2026/2027"];
 
-export function useNilaiHarian(userRole?: string | null, userGrade?: string | null) {
+export function useNilaiHarian() {
   const [semester, setSemester] = useState("1");
   const [academicYear, setAcademicYear] = useState("2026/2027");
   const [grade, setGrade] = useState("");
+  const [userRole, setUserRole] = useState<string | null>(null);
+  const [isJwtReady, setIsJwtReady] = useState(false);
 
   useEffect(() => {
-    if (userRole === "guru" && userGrade) {
-      setGrade(userGrade);
-    } else if (userRole !== "guru") {
-      setGrade("1");
+    const token = sessionStorage.getItem("user_session");
+    let role: string | null = null;
+    let gradeFromToken: string | null = null;
+    if (token) {
+      try {
+        const payload = decodeJWT(token);
+        if (payload) { role = payload.role; gradeFromToken = payload.grade; }
+      } catch {}
     }
-  }, [userRole, userGrade]);
+    if (!role) {
+      const match = document.cookie.match(/(?:^|; )user_role=([^;]*)/);
+      role = match ? decodeURIComponent(match[1]) : null;
+      const gradeMatch = document.cookie.match(/(?:^|; )user_grade=([^;]*)/);
+      gradeFromToken = gradeMatch ? decodeURIComponent(gradeMatch[1]) : null;
+    }
+    if (role) setUserRole(role);
+    if (role === "guru" && gradeFromToken) setGrade(gradeFromToken);
+    else if (role && role !== "guru") setGrade("1");
+    setIsJwtReady(true);
+  }, []);
   const [gradeSubjects, setGradeSubjects] = useState<GradeSubject[]>([]);
   const [selectedGS, setSelectedGS] = useState("");
   const [chapters, setChapters] = useState<Chapter[]>([]);
@@ -50,7 +68,7 @@ export function useNilaiHarian(userRole?: string | null, userGrade?: string | nu
 
   // Fetch grade-subjects when grade changes
   useEffect(() => {
-    if (!grade) return;
+    if (!isJwtReady || !grade) return;
     const ctrl = new AbortController();
     (async () => {
       setInitialLoading(true);
@@ -278,6 +296,7 @@ export function useNilaiHarian(userRole?: string | null, userGrade?: string | nu
     semester, setSemester,
     academicYear, setAcademicYear,
     grade, setGrade,
+    userRole,
     gradeSubjects, selectedGS, setSelectedGS,
     chapters, chapterProgress, chaptersLoading,
     selectedChapter, setSelectedChapter,

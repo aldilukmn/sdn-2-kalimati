@@ -7,21 +7,41 @@ import ScoreService from "@/services/score.service";
 import StudentAttendanceService from "@/services/student-attendance.service";
 import AssessmentConfigService from "@/services/assessment-config.service";
 import AssessmentScoreService from "@/services/assessment-score.service";
+import { decodeJWT } from "@/lib/jwt";
+import { GRADES } from "@/lib/constants";
 import type { GradeSubject, Chapter, Score, AssessmentConfig, AssessmentComponent } from "@/types/nilai-harian";
 
 const SEMESTERS = ["1", "2"];
 const ACADEMIC_YEARS = ["2026/2027"];
 
-export function useAssessmentScore(userRole?: string | null, userGrade?: string | null) {
+export function useAssessmentScore() {
   const [semester, setSemester] = useState("1");
   const [academicYear, setAcademicYear] = useState("2026/2027");
-  const [grade, setGrade] = useState("1");
+  const [grade, setGrade] = useState("");
+  const [userRole, setUserRole] = useState<string | null>(null);
+  const [isJwtReady, setIsJwtReady] = useState(false);
 
   useEffect(() => {
-    if (userRole === "guru" && userGrade) {
-      setGrade(userGrade);
+    const token = sessionStorage.getItem("user_session");
+    let role: string | null = null;
+    let gradeFromToken: string | null = null;
+    if (token) {
+      try {
+        const payload = decodeJWT(token);
+        if (payload) { role = payload.role; gradeFromToken = payload.grade; }
+      } catch {}
     }
-  }, [userRole, userGrade]);
+    if (!role) {
+      const match = document.cookie.match(/(?:^|; )user_role=([^;]*)/);
+      role = match ? decodeURIComponent(match[1]) : null;
+      const gradeMatch = document.cookie.match(/(?:^|; )user_grade=([^;]*)/);
+      gradeFromToken = gradeMatch ? decodeURIComponent(gradeMatch[1]) : null;
+    }
+    if (role) setUserRole(role);
+    if (role === "guru" && gradeFromToken) setGrade(gradeFromToken);
+    else if (role && role !== "guru") setGrade("1");
+    setIsJwtReady(true);
+  }, []);
   const [gradeSubjects, setGradeSubjects] = useState<GradeSubject[]>([]);
   const [selectedGS, setSelectedGS] = useState("");
 
@@ -51,6 +71,7 @@ export function useAssessmentScore(userRole?: string | null, userGrade?: string 
 
   // Fetch grade-subjects when filters change
   useEffect(() => {
+    if (!isJwtReady || !grade) return;
     const ctrl = new AbortController();
     (async () => {
       setInitialLoading(true);
@@ -72,7 +93,7 @@ export function useAssessmentScore(userRole?: string | null, userGrade?: string 
 
   // Fetch active config
   useEffect(() => {
-    if (!grade) { setConfig(null); return; }
+    if (!isJwtReady || !grade) { setConfig(null); return; }
     const ctrl = new AbortController();
     (async () => {
       setConfigLoading(true);
@@ -103,7 +124,7 @@ export function useAssessmentScore(userRole?: string | null, userGrade?: string 
 
   // Fetch students
   useEffect(() => {
-    if (!grade) { setStudents([]); return; }
+    if (!isJwtReady || !grade) { setStudents([]); return; }
     const ctrl = new AbortController();
     (async () => {
       try {
@@ -265,6 +286,7 @@ export function useAssessmentScore(userRole?: string | null, userGrade?: string 
     semester, setSemester,
     academicYear, setAcademicYear,
     grade, setGrade,
+    userRole,
     gradeSubjects, selectedGS, setSelectedGS,
     config, configLoading, configError,
     components, nonHarianComponents,

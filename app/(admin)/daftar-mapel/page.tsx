@@ -7,7 +7,6 @@ import {
   GripVertical, ArrowUp, ArrowDown, AlertCircle, Settings,
 } from "lucide-react";
 import { useChapters } from "@/hooks/useChapters";
-import { decodeJWT } from "@/lib/jwt";
 import { GRADES } from "@/lib/constants";
 import toast from "react-hot-toast";
 import Modal from "@/app/components/Modal";
@@ -21,12 +20,6 @@ import {
 } from "@/components/ui/select";
 
 export default function MasterStrukturPage() {
-  const initialToken = typeof window !== "undefined" ? sessionStorage.getItem("user_session") : null;
-  const initialPayload = initialToken ? decodeJWT(initialToken) : null;
-  const [userRole] = useState<string | null>(initialPayload?.role || null);
-  const [userGrade] = useState<string | null>(initialPayload?.grade || null);
-  const [grade, setGrade] = useState(userRole === "guru" && userGrade ? userGrade : "1");
-
   const {
     gradeSubjects, selectedGS, setSelectedGS,
     chapters, materialsMap, expandedChapter, toggleExpandChapter,
@@ -37,7 +30,8 @@ export default function MasterStrukturPage() {
     materialModal, materialName, setMaterialName, materialSaving,
     openCreateMaterial, openEditMaterial, closeMaterialModal, saveMaterial, deleteMaterial,
     reorderMaterials,
-  } = useChapters(userRole, grade);
+    grade, setGrade, userRole,
+  } = useChapters();
 
   const [deleting, setDeleting] = useState(false);
 
@@ -162,7 +156,7 @@ export default function MasterStrukturPage() {
         <>
           {/* Selector */}
       <div className="bg-white/70 dark:bg-gray-800/40 border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
           <div>
             <label className="block text-xs font-semibold text-gray-500 dark:text-gray-400 tracking-wider mb-2">Mata Pelajaran</label>
             <Select value={selectedGS} onValueChange={(v) => v && setSelectedGS(v)}>
@@ -198,7 +192,7 @@ export default function MasterStrukturPage() {
             </Select>
           </div>
           <div className="sm:col-span-1 col-span-2">
-            <div className="flex justify-end sm:justify-start mb-2">
+            <div className="flex justify-end sm:justify-start">
               {userRole !== null && userRole !== "guru" ? (
                 <Link
                   href="/kelola-mapel"

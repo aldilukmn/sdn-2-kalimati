@@ -4,9 +4,11 @@ import { useEffect, useState, useCallback, useRef } from "react";
 import ChapterService from "@/services/chapter.service";
 import MaterialService from "@/services/material.service";
 import GradeSubjectService from "@/services/grade-subject.service";
+import { decodeJWT } from "@/lib/jwt";
+import { GRADES } from "@/lib/constants";
 import type { Chapter, Material, GradeSubject, ReorderItem } from "@/types/nilai-harian";
 
-export function useChapters(userRole?: string | null, userGrade?: string | null) {
+export function useChapters() {
   const [gradeSubjects, setGradeSubjects] = useState<GradeSubject[]>([]);
   const [selectedGS, setSelectedGS] = useState<string>("");
   const [chapters, setChapters] = useState<Chapter[]>([]);
@@ -15,6 +17,32 @@ export function useChapters(userRole?: string | null, userGrade?: string | null)
   const [loading, setLoading] = useState(true);
   const [chaptersLoading, setChaptersLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [grade, setGrade] = useState("");
+  const [userRole, setUserRole] = useState<string | null>(null);
+  const [isJwtReady, setIsJwtReady] = useState(false);
+  const [retryCount, setRetryCount] = useState(0);
+
+  useEffect(() => {
+    const token = sessionStorage.getItem("user_session");
+    let role: string | null = null;
+    let gradeFromToken: string | null = null;
+    if (token) {
+      try {
+        const payload = decodeJWT(token);
+        if (payload) { role = payload.role; gradeFromToken = payload.grade; }
+      } catch {}
+    }
+    if (!role) {
+      const match = document.cookie.match(/(?:^|; )user_role=([^;]*)/);
+      role = match ? decodeURIComponent(match[1]) : null;
+      const gradeMatch = document.cookie.match(/(?:^|; )user_grade=([^;]*)/);
+      gradeFromToken = gradeMatch ? decodeURIComponent(gradeMatch[1]) : null;
+    }
+    if (role) setUserRole(role);
+    if (role === "guru" && gradeFromToken) setGrade(gradeFromToken);
+    else if (role && role !== "guru") setGrade("1");
+    setIsJwtReady(true);
+  }, []);
 
   // Chapter modal
   const [chapterModal, setChapterModal] = useState<{ open: boolean; edit?: Chapter }>({ open: false });
@@ -32,7 +60,7 @@ export function useChapters(userRole?: string | null, userGrade?: string | null)
 
   const fetchGradeSubjects = useCallback(async () => {
     try {
-      const params = userRole === "guru" && userGrade ? { grade: userGrade } : undefined;
+      const params = userRole === "guru" && grade ? { grade } : undefined;
       const res = await GradeSubjectService.getAll(params);
       const result = res?.result || [];
       setGradeSubjects(result);
@@ -42,7 +70,7 @@ export function useChapters(userRole?: string | null, userGrade?: string | null)
     } catch {
       setGradeSubjects([]);
     }
-  }, [userRole, userGrade]);
+  }, [userRole, grade]);
 
   const fetchChapters = useCallback(async (gsId: string) => {
     if (!gsId) return;
@@ -68,21 +96,11 @@ export function useChapters(userRole?: string | null, userGrade?: string | null)
 
   const retry = useCallback(() => {
     setError(null);
-    const ctrl = new AbortController();
-    (async () => {
-      setLoading(true);
-      try {
-        await fetchGradeSubjects();
-      } catch {
-        setError("Gagal memuat data. Silakan coba lagi.");
-      } finally {
-        setLoading(false);
-      }
-    })();
-    return () => ctrl.abort();
-  }, [fetchGradeSubjects]);
+    setRetryCount((c) => c + 1);
+  }, []);
 
   useEffect(() => {
+    if (!isJwtReady || !grade) return;
     const ctrl = new AbortController();
     (async () => {
       setLoading(true);
@@ -96,7 +114,7 @@ export function useChapters(userRole?: string | null, userGrade?: string | null)
       }
     })();
     return () => ctrl.abort();
-  }, [fetchGradeSubjects]);
+  }, [fetchGradeSubjects, isJwtReady, grade, retryCount]);
 
   useEffect(() => {
     fetchChapters(selectedGS);
@@ -228,6 +246,9 @@ export function useChapters(userRole?: string | null, userGrade?: string | null)
 
   return {
     gradeSubjects,
+    grade,
+    setGrade,
+    userRole,
     selectedGS,
     setSelectedGS,
     chapters,
