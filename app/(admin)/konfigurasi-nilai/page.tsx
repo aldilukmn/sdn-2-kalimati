@@ -18,23 +18,47 @@ import {
 
 export default function MasterKonfigurasiNilaiPage() {
   const {
-    grade, setGrade,
-    configs, loading, error, retry,
-    modalOpen, editingConfig, openCreateModal, openEditModal, closeModal,
-    modalGrade, setModalGrade,
-    modalSemester, setModalSemester,
-    modalAcademicYear, setModalAcademicYear,
-    components, addComponent, removeComponent, updateComponent,
-    totalWeight, isValid, canSave, hasDuplicateKeys,
+    grade,
+    setGrade,
+    configs,
+    loading,
+    error,
+    retry,
+    modalOpen,
+    editingConfig,
+    openCreateModal,
+    openEditModal,
+    closeModal,
+    modalGrade,
+    setModalGrade,
+    modalSemester,
+    setModalSemester,
+    modalAcademicYear,
+    setModalAcademicYear,
+    components,
+    addComponent,
+    removeComponent,
+    updateComponent,
+    totalWeight,
+    isValid,
+    canSave,
+    hasDuplicateKeys,
     formulaPreview,
-    modalSaving, handleSave, handleDelete,
-    SEMESTERS, ACADEMIC_YEARS,
+    modalSaving,
+    handleSave,
+    handleDelete,
+    SEMESTERS,
+    ACADEMIC_YEARS,
   } = useAssessmentConfig();
 
   const onSave = async () => {
     const ok = await handleSave();
     if (ok) {
-      toast.success(editingConfig ? "Konfigurasi berhasil diubah" : "Konfigurasi berhasil dibuat");
+      toast.success(
+        editingConfig
+          ? "Konfigurasi berhasil diubah"
+          : "Konfigurasi berhasil dibuat",
+      );
     } else {
       toast.error("Gagal menyimpan konfigurasi");
     }
@@ -52,14 +76,23 @@ export default function MasterKonfigurasiNilaiPage() {
 
   return (
     <div className="flex flex-col gap-6 p-4 md:p-6">
-      <PageHero icon={Scale} title="Konfigurasi Nilai" description="Atur komponen dan bobot penilaian" />
+      <PageHero
+        icon={Scale}
+        title="Konfigurasi Nilai"
+        description="Atur komponen dan bobot penilaian"
+      />
 
       {/* Filter */}
       <div className="bg-white/70 dark:bg-gray-800/40 border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
         <div className="grid grid-cols-2 gap-2 sm:gap-4">
           <div>
-            <label className="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">Kelas</label>
-            <Select value={grade || "all"} onValueChange={(v) => setGrade(v === "all" ? "" : (v ?? ""))}>
+            <label className="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">
+              Kelas
+            </label>
+            <Select
+              value={grade || "all"}
+              onValueChange={(v) => setGrade(v === "all" ? "" : (v ?? ""))}
+            >
               <SelectTrigger className="w-full h-auto rounded-xl border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm focus:border-blue-500 dark:focus:border-blue-400 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100">
                 <span>{grade || "Semua Kelas"}</span>
                 <SelectValue className="sr-only" />
@@ -69,7 +102,9 @@ export default function MasterKonfigurasiNilaiPage() {
                   <SelectLabel>Kelas</SelectLabel>
                   <SelectItem value="all">Semua Kelas</SelectItem>
                   {GRADES.map((g) => (
-                    <SelectItem key={g} value={g}>Kelas {g}</SelectItem>
+                    <SelectItem key={g} value={g}>
+                      Kelas {g}
+                    </SelectItem>
                   ))}
                 </SelectGroup>
               </SelectContent>
@@ -84,16 +119,24 @@ export default function MasterKonfigurasiNilaiPage() {
               Buat Konfigurasi
             </button>
           </div>
-      </div>
+        </div>
       </div>
 
       {/* Content */}
       {error ? (
         <div className="bg-white/70 dark:bg-gray-800/40 border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
           <div className="text-center py-12">
-            <AlertCircle size={40} className="mx-auto text-red-300 dark:text-red-600 mb-3" />
-            <p className="text-red-500 dark:text-red-400 font-medium">{error}</p>
-            <button onClick={retry} className="mt-3 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-sm font-medium transition-colors cursor-pointer">
+            <AlertCircle
+              size={40}
+              className="mx-auto text-red-300 dark:text-red-600 mb-3"
+            />
+            <p className="text-red-500 dark:text-red-400 font-medium">
+              {error}
+            </p>
+            <button
+              onClick={retry}
+              className="mt-3 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-sm font-medium transition-colors cursor-pointer"
+            >
               Coba Lagi
             </button>
           </div>
@@ -106,15 +149,22 @@ export default function MasterKonfigurasiNilaiPage() {
                 <thead>
                   <tr className="border-b border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800/50">
                     {[1, 2, 3, 4, 5].map((j) => (
-                      <th key={j} className="px-4 py-3"><div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-full" /></th>
+                      <th key={j} className="px-4 py-3">
+                        <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-full" />
+                      </th>
                     ))}
                   </tr>
                 </thead>
                 <tbody>
                   {[1, 2, 3].map((i) => (
-                    <tr key={i} className="border-b border-slate-100 dark:border-slate-700/50">
+                    <tr
+                      key={i}
+                      className="border-b border-slate-100 dark:border-slate-700/50"
+                    >
                       {[1, 2, 3, 4, 5].map((j) => (
-                        <td key={j} className="px-4 py-3"><div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-full" /></td>
+                        <td key={j} className="px-4 py-3">
+                          <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-full" />
+                        </td>
                       ))}
                     </tr>
                   ))}
@@ -126,10 +176,16 @@ export default function MasterKonfigurasiNilaiPage() {
       ) : configs.length === 0 ? (
         <div className="bg-white/70 dark:bg-gray-800/40 border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
           <div className="text-center py-12">
-            <Scale size={40} className="mx-auto text-slate-300 dark:text-slate-600 mb-3" />
-            <p className="text-slate-500 dark:text-slate-400 font-medium">Belum ada Konfigurasi Nilai.</p>
+            <Scale
+              size={40}
+              className="mx-auto text-slate-300 dark:text-slate-600 mb-3"
+            />
+            <p className="text-slate-500 dark:text-slate-400 font-medium">
+              Belum ada Konfigurasi Nilai.
+            </p>
             <p className="text-slate-400 dark:text-slate-500 text-sm mt-1">
-              Buat konfigurasi penilaian agar guru dapat menghitung Nilai Akhir Semester.
+              Buat konfigurasi penilaian agar guru dapat menghitung Nilai Akhir
+              Semester.
             </p>
             <button
               onClick={openCreateModal}
@@ -145,42 +201,71 @@ export default function MasterKonfigurasiNilaiPage() {
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800/50">
-                  <th className="text-center px-4 py-3 font-semibold text-slate-600 dark:text-slate-300 whitespace-nowrap">Kelas</th>
-                  <th className="text-center px-4 py-3 font-semibold text-slate-600 dark:text-slate-300 whitespace-nowrap">Semester</th>
-                  <th className="text-center px-4 py-3 font-semibold text-slate-600 dark:text-slate-300 whitespace-nowrap">Tahun Ajaran</th>
-                  <th className="text-left px-4 py-3 font-semibold text-slate-600 dark:text-slate-300 whitespace-nowrap">Komponen</th>
-                  <th className="text-center px-4 py-3 font-semibold text-slate-600 dark:text-slate-300 whitespace-nowrap">Status</th>
-                  <th className="text-right px-4 py-3 font-semibold text-slate-600 dark:text-slate-300 whitespace-nowrap">Aksi</th>
+                  <th className="px-4 py-3 font-semibold text-slate-600 dark:text-slate-300 whitespace-nowrap">
+                    Kelas
+                  </th>
+                  <th className="px-4 py-3 font-semibold text-slate-600 dark:text-slate-300 whitespace-nowrap">
+                    Semester
+                  </th>
+                  <th className="px-4 py-3 font-semibold text-slate-600 dark:text-slate-300 whitespace-nowrap">
+                    Tahun Ajaran
+                  </th>
+                  <th className="px-4 py-3 font-semibold text-slate-600 dark:text-slate-300 whitespace-nowrap">
+                    Komponen
+                  </th>
+                  <th className="px-4 py-3 font-semibold text-slate-600 dark:text-slate-300 whitespace-nowrap">
+                    Status
+                  </th>
+                  <th className="px-4 py-3 font-semibold text-slate-600 dark:text-slate-300 whitespace-nowrap">
+                    Aksi
+                  </th>
                 </tr>
               </thead>
               <tbody>
                 {configs.map((cfg) => {
-                  const total = cfg.components.reduce((s, c) => s + c.weight, 0);
+                  const total = cfg.components.reduce(
+                    (s, c) => s + c.weight,
+                    0,
+                  );
                   return (
-                    <tr key={cfg._id} className="border-b border-slate-100 dark:border-slate-700/50 hover:bg-slate-50/50 dark:hover:bg-slate-800/30">
-                      <td className="px-4 py-3 text-center font-medium text-slate-700 dark:text-slate-300 whitespace-nowrap">Kelas {cfg.grade}</td>
-                      <td className="px-4 py-3 text-center text-slate-600 dark:text-slate-400 whitespace-nowrap">Semester {cfg.semester}</td>
-                      <td className="px-4 py-3 text-center text-slate-600 dark:text-slate-400 whitespace-nowrap">{cfg.academicYear}</td>
+                    <tr
+                      key={cfg._id}
+                      className="border-b border-slate-100 dark:border-slate-700/50 hover:bg-slate-50/50 dark:hover:bg-slate-800/30 text-center"
+                    >
+                      <td className="px-4 py-3 font-medium text-slate-700 dark:text-slate-300 whitespace-nowrap">
+                        Kelas {cfg.grade}
+                      </td>
+                      <td className="px-4 py-3 text-slate-600 dark:text-slate-400 whitespace-nowrap">
+                        Semester {cfg.semester}
+                      </td>
+                      <td className="px-4 py-3 text-slate-600 dark:text-slate-400 whitespace-nowrap">
+                        {cfg.academicYear}
+                      </td>
                       <td className="px-4 py-3 whitespace-nowrap">
-                        <div className="flex flex-nowrap gap-1">
+                        <>
                           {cfg.components.map((comp) => (
-                            <span key={comp.key} className="text-[11px] px-2 py-0.5 rounded-full bg-indigo-100 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-300 whitespace-nowrap">
+                            <span
+                              key={comp.key}
+                              className="text-[11px] px-2 py-0.5 rounded-full bg-indigo-100 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-300 whitespace-nowrap"
+                            >
                               {comp.name} ({comp.weight}%)
                             </span>
                           ))}
-                        </div>
+                        </>
                       </td>
-                      <td className="px-4 py-3 text-center whitespace-nowrap">
-                        <span className={`text-[11px] font-semibold px-2 py-0.5 rounded-full ${
-                          total === 100
-                            ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300"
-                            : "bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-300"
-                        }`}>
+                      <td className="px-4 py-3 whitespace-nowrap">
+                        <span
+                          className={`text-[11px] font-semibold px-2 py-0.5 rounded-full ${
+                            total === 100
+                              ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300"
+                              : "bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-300"
+                          }`}
+                        >
                           {total === 100 ? "Valid" : "Invalid"}
                         </span>
                       </td>
-                      <td className="px-4 py-3 text-right whitespace-nowrap">
-                        <div className="flex items-center justify-end gap-2">
+                      <td className="px-4 py-3 whitespace-nowrap">
+                        <div className="flex justify-center gap-2">
                           <button
                             onClick={() => openEditModal(cfg)}
                             className="px-3 py-1.5 text-xs font-medium bg-indigo-100 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-300 hover:bg-indigo-200 dark:hover:bg-indigo-900/60 rounded-lg transition-colors cursor-pointer"
@@ -206,7 +291,10 @@ export default function MasterKonfigurasiNilaiPage() {
 
       {/* Modal */}
       {modalOpen && (
-        <div className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4" onClick={closeModal}>
+        <div
+          className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+          onClick={closeModal}
+        >
           <div
             className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto"
             onClick={(e) => e.stopPropagation()}
@@ -214,9 +302,14 @@ export default function MasterKonfigurasiNilaiPage() {
             {/* Header */}
             <div className="flex items-center justify-between p-5 border-b border-slate-200 dark:border-slate-700">
               <h2 className="text-lg font-bold text-slate-800 dark:text-slate-100">
-                {editingConfig ? "Ubah Konfigurasi Nilai" : "Buat Konfigurasi Nilai"}
+                {editingConfig
+                  ? "Ubah Konfigurasi Nilai"
+                  : "Buat Konfigurasi Nilai"}
               </h2>
-              <button onClick={closeModal} className="p-1.5 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors cursor-pointer">
+              <button
+                onClick={closeModal}
+                className="p-1.5 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors cursor-pointer"
+              >
                 <X size={18} className="text-slate-500" />
               </button>
             </div>
@@ -226,42 +319,69 @@ export default function MasterKonfigurasiNilaiPage() {
               {!editingConfig && (
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                   <div>
-                    <label className="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">Kelas</label>
-                    <Select value={modalGrade} onValueChange={(v) => v && setModalGrade(v)}>
-                      <SelectTrigger className="w-full h-auto rounded-xl border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100"><SelectValue /></SelectTrigger>
+                    <label className="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">
+                      Kelas
+                    </label>
+                    <Select
+                      value={modalGrade}
+                      onValueChange={(v) => v && setModalGrade(v)}
+                    >
+                      <SelectTrigger className="w-full h-auto rounded-xl border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100">
+                        <SelectValue />
+                      </SelectTrigger>
                       <SelectContent>
                         <SelectGroup>
                           <SelectLabel>Kelas</SelectLabel>
                           {GRADES.map((g) => (
-                            <SelectItem key={g} value={g}>Kelas {g}</SelectItem>
+                            <SelectItem key={g} value={g}>
+                              Kelas {g}
+                            </SelectItem>
                           ))}
                         </SelectGroup>
                       </SelectContent>
                     </Select>
                   </div>
                   <div>
-                    <label className="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">Semester</label>
-                    <Select value={modalSemester} onValueChange={(v) => v && setModalSemester(v)}>
-                      <SelectTrigger className="w-full h-auto rounded-xl border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100"><SelectValue /></SelectTrigger>
+                    <label className="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">
+                      Semester
+                    </label>
+                    <Select
+                      value={modalSemester}
+                      onValueChange={(v) => v && setModalSemester(v)}
+                    >
+                      <SelectTrigger className="w-full h-auto rounded-xl border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100">
+                        <SelectValue />
+                      </SelectTrigger>
                       <SelectContent>
                         <SelectGroup>
                           <SelectLabel>Semester</SelectLabel>
                           {SEMESTERS.map((s) => (
-                            <SelectItem key={s} value={s}>Semester {s}</SelectItem>
+                            <SelectItem key={s} value={s}>
+                              Semester {s}
+                            </SelectItem>
                           ))}
                         </SelectGroup>
                       </SelectContent>
                     </Select>
                   </div>
                   <div>
-                    <label className="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">Tahun Ajaran</label>
-                    <Select value={modalAcademicYear} onValueChange={(v) => v && setModalAcademicYear(v)}>
-                      <SelectTrigger className="w-full h-auto rounded-xl border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100"><SelectValue /></SelectTrigger>
+                    <label className="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">
+                      Tahun Ajaran
+                    </label>
+                    <Select
+                      value={modalAcademicYear}
+                      onValueChange={(v) => v && setModalAcademicYear(v)}
+                    >
+                      <SelectTrigger className="w-full h-auto rounded-xl border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100">
+                        <SelectValue />
+                      </SelectTrigger>
                       <SelectContent>
                         <SelectGroup>
                           <SelectLabel>Tahun Ajaran</SelectLabel>
                           {ACADEMIC_YEARS.map((y) => (
-                            <SelectItem key={y} value={y}>{y}</SelectItem>
+                            <SelectItem key={y} value={y}>
+                              {y}
+                            </SelectItem>
                           ))}
                         </SelectGroup>
                       </SelectContent>
@@ -272,13 +392,16 @@ export default function MasterKonfigurasiNilaiPage() {
 
               {editingConfig && (
                 <div className="text-sm text-slate-500 dark:text-slate-400 bg-slate-50 dark:bg-slate-900/50 rounded-xl px-4 py-3">
-                  Kelas {editingConfig.grade} — Semester {editingConfig.semester} — {editingConfig.academicYear}
+                  Kelas {editingConfig.grade} — Semester{" "}
+                  {editingConfig.semester} — {editingConfig.academicYear}
                 </div>
               )}
 
               {/* Component rows */}
               <div>
-                <label className="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-2">Komponen Penilaian</label>
+                <label className="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-2">
+                  Komponen Penilaian
+                </label>
                 <div className="space-y-2">
                   {components.map((comp, index) => (
                     <div key={index} className="flex items-center gap-2">
@@ -286,21 +409,31 @@ export default function MasterKonfigurasiNilaiPage() {
                         type="text"
                         placeholder="Kode"
                         value={comp.key}
-                        onChange={(e) => updateComponent(index, "key", e.target.value)}
+                        onChange={(e) =>
+                          updateComponent(index, "key", e.target.value)
+                        }
                         className="w-24 px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-gray-900 text-sm text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                       />
                       <input
                         type="text"
                         placeholder="Nama Komponen"
                         value={comp.name}
-                        onChange={(e) => updateComponent(index, "name", e.target.value)}
+                        onChange={(e) =>
+                          updateComponent(index, "name", e.target.value)
+                        }
                         className="flex-1 px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-gray-900 text-sm text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                       />
                       <input
                         type="number"
                         placeholder="Bobot"
                         value={comp.weight === 0 ? "" : comp.weight}
-                        onChange={(e) => updateComponent(index, "weight", e.target.value === "" ? 0 : Number(e.target.value))}
+                        onChange={(e) =>
+                          updateComponent(
+                            index,
+                            "weight",
+                            e.target.value === "" ? 0 : Number(e.target.value),
+                          )
+                        }
                         className="w-20 px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-gray-900 text-sm text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 [&::-webkit-inner-spin-button]:appearance-none [&::-moz-appearance]:textfield"
                       />
                       <span className="text-xs text-slate-400 w-4">%</span>
@@ -323,11 +456,14 @@ export default function MasterKonfigurasiNilaiPage() {
               </div>
 
               {/* Total weight indicator */}
-              <div className={`flex items-center gap-2 text-sm font-semibold ${
-                totalWeight === 100 ? "text-emerald-600 dark:text-emerald-400" : "text-red-500 dark:text-red-400"
-              }`}>
-                Total Bobot: {totalWeight}%
-                {totalWeight === 100 ? " ✅" : " ❌"}
+              <div
+                className={`flex items-center gap-2 text-sm font-semibold ${
+                  totalWeight === 100
+                    ? "text-emerald-600 dark:text-emerald-400"
+                    : "text-red-500 dark:text-red-400"
+                }`}
+              >
+                Total Bobot: {totalWeight}%{totalWeight === 100 ? " ✅" : " ❌"}
               </div>
 
               {/* Duplicate key warning */}
@@ -347,7 +483,9 @@ export default function MasterKonfigurasiNilaiPage() {
               {/* Formula preview */}
               {formulaPreview && (
                 <div className="bg-slate-50 dark:bg-gray-900/50 rounded-xl p-4 border border-slate-200 dark:border-slate-700">
-                  <label className="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-2">Pratinjau Rumus</label>
+                  <label className="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-2">
+                    Pratinjau Rumus
+                  </label>
                   <pre className="text-sm text-slate-700 dark:text-slate-300 font-mono whitespace-pre-wrap">
                     Nilai Akhir ={formulaPreview ? `\n  ${formulaPreview}` : ""}
                   </pre>
