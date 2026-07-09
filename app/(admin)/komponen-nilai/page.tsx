@@ -97,6 +97,20 @@ export default function NilaiKomponenPage() {
             </Select>
           </div>
           <div>
+            <label className="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">Kelas</label>
+            <Select value={grade} onValueChange={(v) => v && setGrade(v)} disabled={userRole === "guru"}>
+              <SelectTrigger className="w-full h-auto rounded-xl border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100"><SelectValue /></SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectLabel>Kelas</SelectLabel>
+                  {GRADES.map((g) => (
+                    <SelectItem key={g} value={g}>Kelas {g}</SelectItem>
+                  ))}
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+          </div>
+          <div>
             <label className="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">Mata Pelajaran</label>
             <Select value={selectedGS} onValueChange={(v) => v && setSelectedGS(v)} disabled={gradeSubjects.length === 0}>
               <SelectTrigger className="w-full h-auto rounded-xl border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100"><SelectValue placeholder={gradeSubjects.length === 0 ? "Tidak Ada Mapel" : "Pilih Mapel"}>
@@ -107,20 +121,6 @@ export default function NilaiKomponenPage() {
                   <SelectLabel>Mata Pelajaran</SelectLabel>
                   {gradeSubjects.map((gs) => (
                     <SelectItem key={gs._id} value={gs._id}>{gs.subjectName || "-"}</SelectItem>
-                  ))}
-                </SelectGroup>
-              </SelectContent>
-            </Select>
-          </div>
-          <div>
-            <label className="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">Kelas</label>
-            <Select value={grade} onValueChange={(v) => v && setGrade(v)} disabled={userRole === "guru"}>
-              <SelectTrigger className="w-full h-auto rounded-xl border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100"><SelectValue /></SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  <SelectLabel>Kelas</SelectLabel>
-                  {GRADES.map((g) => (
-                    <SelectItem key={g} value={g}>Kelas {g}</SelectItem>
                   ))}
                 </SelectGroup>
               </SelectContent>
@@ -343,7 +343,7 @@ export default function NilaiKomponenPage() {
                                   max={100}
                                   value={score}
                                   onChange={(e) => handleScoreChange(s.studentId, e.target.value)}
-                                  className="w-24 px-3 py-1.5 text-center rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-gray-900 text-sm text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 [&::-webkit-inner-spin-button]:appearance-none [&::-moz-appearance]:textfield"
+                                  className="w-24 px-3 py-1.5 text-center rounded-lg border border-slate-300 bg-slate-50 dark:border-gray-700 dark:bg-gray-950 focus:outline-none focus:border-blue-500 dark:focus:border-blue-400 [&::-webkit-inner-spin-button]:appearance-none [&::-moz-appearance]:textfield"
                                 />
                               </td>
                               <td className="px-4 py-2.5 text-center">

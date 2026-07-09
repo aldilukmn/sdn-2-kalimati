@@ -169,7 +169,7 @@ export default function MasterMapelPage() {
                 placeholder="Cari mata pelajaran..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="w-full h-auto pl-9 pr-4 py-2.5 rounded-xl border border-slate-300 bg-slate-50 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100 dark:focus:border-indigo-500"
+                className="w-full h-auto pl-9 pr-4 py-2.5 rounded-xl border border-slate-300 bg-slate-50 text-sm focus:outline-none focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:focus:border-blue-400"
               />
               {search && (
                 <button onClick={() => setSearch("")} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 cursor-pointer">
@@ -362,7 +362,7 @@ export default function MasterMapelPage() {
               value={subjectName}
               onChange={(e) => setSubjectName(e.target.value)}
               placeholder="Masukkan nama mata pelajaran"
-              className="w-full h-auto rounded-xl border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100 dark:focus:border-indigo-500"
+              className="w-full h-auto rounded-xl border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm focus:outline-none focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:focus:border-blue-400"
               autoFocus
               onKeyDown={(e) => { if (e.key === "Enter") handleSaveSubject(); }}
             />

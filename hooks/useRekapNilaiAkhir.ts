@@ -26,7 +26,7 @@ export interface MatrixRow {
 export function useRekapNilaiAkhir(userRole: string | null, userGrade: string | null) {
   const [semester, setSemester] = useState("1");
   const [academicYear, setAcademicYear] = useState("2026/2027");
-  const [grade, setGrade] = useState("1");
+  const [grade, setGrade] = useState(userGrade ?? "");
 
   const [gradeSubjects, setGradeSubjects] = useState<GradeSubject[]>([]);
   const [entries, setEntries] = useState<FinalScoreEntry[]>([]);

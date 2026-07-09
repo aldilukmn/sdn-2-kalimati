@@ -48,7 +48,7 @@ export default function RekapNilaiAkhirPage() {
 
       {/* Filter */}
       <div className="bg-white/70 dark:bg-gray-800/40 border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
           <div>
             <label className="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">Tahun Ajaran</label>
             <Select value={academicYear} onValueChange={(v) => v && setAcademicYear(v)}>
@@ -77,7 +77,7 @@ export default function RekapNilaiAkhirPage() {
               </SelectContent>
             </Select>
           </div>
-          <div>
+          <div className="col-span-2 sm:col-span-1">
             <label className="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">Kelas</label>
             <Select value={grade} onValueChange={(v) => v && setGrade(v)} disabled={userRole === "guru"}>
               <SelectTrigger className="w-full h-auto rounded-xl border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100"><SelectValue /></SelectTrigger>

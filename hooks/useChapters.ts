@@ -186,8 +186,8 @@ export function useChapters() {
     try {
       await ChapterService.remove(id);
       await fetchChapters(selectedGS);
-    } catch {
-      // handled by caller
+    } catch (e) {
+      throw e;
     }
   };
 
@@ -242,8 +242,8 @@ export function useChapters() {
     try {
       await MaterialService.remove(materialId);
       await fetchMaterials(chapterId);
-    } catch {
-      // handled by caller
+    } catch (e) {
+      throw e;
     }
   };
 
