@@ -94,7 +94,7 @@ export function useFinalScore() {
   useEffect(() => {
     if (!selectedGS) { setEntries([]); return; }
     const gs = gradeSubjects.find((g) => g._id === selectedGS);
-    if (!gs) return;
+    if (!gs || gs.grade !== grade) { setEntries([]); return; }
 
     const ctrl = new AbortController();
     (async () => {

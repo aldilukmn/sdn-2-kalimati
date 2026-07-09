@@ -331,7 +331,15 @@ export default function NilaiKomponenPage() {
                                     ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300"
                                     : "bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300"
                                 }`}>
-                                  {status === "saved" ? "✅ Tersimpan" : "⏳ Belum simpan"}
+                                  {status === "saved" ? (
+                                    <span title="Tersimpan" className="inline-flex items-center text-emerald-600 dark:text-emerald-400">
+                                      <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+                                    </span>
+                                  ) : (
+                                    <span title="Belum simpan" className="inline-flex items-center text-amber-600 dark:text-amber-400">
+                                      <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                                    </span>
+                                  )}
                                 </span>
                               </td>
                             </tr>

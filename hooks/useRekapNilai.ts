@@ -93,6 +93,8 @@ export function useRekapNilai() {
   // Fetch chapters & compute rekap
   useEffect(() => {
     if (!selectedGS) { setChapters([]); setRekapEntries([]); return; }
+    const gs = gradeSubjects.find((g) => g._id === selectedGS);
+    if (!gs || gs.grade !== grade) return;
     const ctrl = new AbortController();
     (async () => {
       setLoading(true);

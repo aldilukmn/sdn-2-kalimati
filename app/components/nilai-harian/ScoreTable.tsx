@@ -173,13 +173,19 @@ export default function ScoreTable({
                 </td>
                 <td className="p-3 text-center">
                   {entry.status === "saved" && (
-                    <span className="text-xs font-semibold text-emerald-600 dark:text-emerald-400">✅ Tersimpan</span>
+                    <span title="Tersimpan" className="inline-flex items-center text-emerald-600 dark:text-emerald-400">
+                      <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+                    </span>
                   )}
                   {entry.status === "unsaved" && (
-                    <span className="text-xs font-semibold text-amber-600 dark:text-amber-400">⏳ Belum simpan</span>
+                    <span title="Belum simpan" className="inline-flex items-center text-amber-600 dark:text-amber-400">
+                      <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                    </span>
                   )}
                   {entry.status === "error" && (
-                    <span className="text-xs font-semibold text-red-600 dark:text-red-400">❌ Gagal</span>
+                    <span title="Gagal" className="inline-flex items-center text-red-600 dark:text-red-400">
+                      <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>
+                    </span>
                   )}
                 </td>
               </tr>
@@ -199,9 +205,9 @@ export default function ScoreTable({
               <span className="text-xs text-gray-400 dark:text-gray-500 font-medium">
                 #{startIndex + i + 1}
               </span>
-              {entry.status === "saved" && <span className="text-xs font-semibold text-emerald-600 dark:text-emerald-400">✅ Tersimpan</span>}
-              {entry.status === "unsaved" && <span className="text-xs font-semibold text-amber-600 dark:text-amber-400">⏳ Belum simpan</span>}
-              {entry.status === "error" && <span className="text-xs font-semibold text-red-600 dark:text-red-400">❌ Gagal</span>}
+              {entry.status === "saved" && <span title="Tersimpan" className="inline-flex items-center text-emerald-600 dark:text-emerald-400"><svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg></span>}
+              {entry.status === "unsaved" && <span title="Belum simpan" className="inline-flex items-center text-amber-600 dark:text-amber-400"><svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span>}
+              {entry.status === "error" && <span title="Gagal" className="inline-flex items-center text-red-600 dark:text-red-400"><svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg></span>}
             </div>
             <p className="text-sm font-medium text-gray-800 dark:text-gray-200 mb-2">{entry.studentName}</p>
             <div className="flex items-center gap-2">

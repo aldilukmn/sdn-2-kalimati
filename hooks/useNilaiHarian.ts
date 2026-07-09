@@ -105,6 +105,8 @@ export function useNilaiHarian() {
   // Fetch chapters & compute progress when selectedGS changes
   useEffect(() => {
     if (!selectedGS) { setChapters([]); setChapterProgress({}); setSelectedChapter(null); return; }
+    const gs = gradeSubjects.find((g) => g._id === selectedGS);
+    if (!gs || gs.grade !== grade) return;
     const ctrl = new AbortController();
     (async () => {
       setChaptersLoading(true);
@@ -265,7 +267,10 @@ export function useNilaiHarian() {
     try {
       await ScoreService.bulkCreate(payload);
       setEntries((prev) =>
-        prev.map((e) => ({ ...e, status: "saved" as const }))
+        prev.map((e) => ({
+          ...e,
+          status: e.score !== "" ? "saved" as const : e.status,
+        }))
       );
       setChapterProgress((prev) => {
         if (!selectedChapter) return prev;
