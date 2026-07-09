@@ -36,12 +36,7 @@ export function useChapters(userRole?: string | null, userGrade?: string | null)
       const res = await GradeSubjectService.getAll(params);
       const result = res?.result || [];
       setGradeSubjects(result);
-      if (result.length > 0) {
-        const stillExists = result.find((gs) => gs._id === selectedGS);
-        if (!stillExists) {
-          setSelectedGS(result[0]._id);
-        }
-      } else {
+      if (result.length === 0) {
         setSelectedGS("");
       }
     } catch {

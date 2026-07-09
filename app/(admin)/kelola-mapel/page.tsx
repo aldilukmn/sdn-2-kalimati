@@ -369,8 +369,8 @@ export default function MasterMapelPage() {
             <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Mata Pelajaran</label>
             <Select value={assignSubjectId} onValueChange={(v) => v && setAssignSubjectId(v)}>
               <SelectTrigger className="w-full h-auto rounded-xl border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100">
-                <SelectValue placeholder="Pilih mapel">
-                  {assignSubjectId ? subjects.find(s => s._id === assignSubjectId)?.name : "Pilih mapel"}
+                <SelectValue placeholder="Pilih Mapel">
+                  {assignSubjectId ? subjects.find(s => s._id === assignSubjectId)?.name : "Pilih Mapel"}
                 </SelectValue>
               </SelectTrigger>
               <SelectContent>

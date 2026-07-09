@@ -14,11 +14,13 @@ const ACADEMIC_YEARS = ["2026/2027"];
 export function useNilaiHarian(userRole?: string | null, userGrade?: string | null) {
   const [semester, setSemester] = useState("1");
   const [academicYear, setAcademicYear] = useState("2026/2027");
-  const [grade, setGrade] = useState("1");
+  const [grade, setGrade] = useState("");
 
   useEffect(() => {
     if (userRole === "guru" && userGrade) {
       setGrade(userGrade);
+    } else if (userRole !== "guru") {
+      setGrade("1");
     }
   }, [userRole, userGrade]);
   const [gradeSubjects, setGradeSubjects] = useState<GradeSubject[]>([]);
@@ -48,6 +50,7 @@ export function useNilaiHarian(userRole?: string | null, userGrade?: string | nu
 
   // Fetch grade-subjects when grade changes
   useEffect(() => {
+    if (!grade) return;
     const ctrl = new AbortController();
     (async () => {
       setInitialLoading(true);
@@ -58,9 +61,7 @@ export function useNilaiHarian(userRole?: string | null, userGrade?: string | nu
       try {
         const res = await GradeSubjectService.getAll({ grade, semester, academicYear });
         setGradeSubjects(res?.result || []);
-        if ((res?.result || []).length > 0) {
-          setSelectedGS(res!.result![0]._id);
-        } else {
+        if ((res?.result || []).length === 0) {
           setSelectedGS("");
         }
       } catch {

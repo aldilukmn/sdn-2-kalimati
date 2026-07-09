@@ -8,6 +8,7 @@ import {
 } from "lucide-react";
 import { useChapters } from "@/hooks/useChapters";
 import { decodeJWT } from "@/lib/jwt";
+import { GRADES } from "@/lib/constants";
 import toast from "react-hot-toast";
 import Modal from "@/app/components/Modal";
 import PageHero from "@/app/components/PageHero";
@@ -24,6 +25,7 @@ export default function MasterStrukturPage() {
   const initialPayload = initialToken ? decodeJWT(initialToken) : null;
   const [userRole] = useState<string | null>(initialPayload?.role || null);
   const [userGrade] = useState<string | null>(initialPayload?.grade || null);
+  const [grade, setGrade] = useState(userRole === "guru" && userGrade ? userGrade : "1");
 
   const {
     gradeSubjects, selectedGS, setSelectedGS,
@@ -35,7 +37,7 @@ export default function MasterStrukturPage() {
     materialModal, materialName, setMaterialName, materialSaving,
     openCreateMaterial, openEditMaterial, closeMaterialModal, saveMaterial, deleteMaterial,
     reorderMaterials,
-  } = useChapters(userRole, userGrade);
+  } = useChapters(userRole, grade);
 
   const [deleting, setDeleting] = useState(false);
 
@@ -160,17 +162,17 @@ export default function MasterStrukturPage() {
         <>
           {/* Selector */}
       <div className="bg-white/70 dark:bg-gray-800/40 border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
           <div>
             <label className="block text-xs font-semibold text-gray-500 dark:text-gray-400 tracking-wider mb-2">Mata Pelajaran</label>
             <Select value={selectedGS} onValueChange={(v) => v && setSelectedGS(v)}>
               <SelectTrigger className="w-full h-auto rounded-xl border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm focus:border-blue-500 dark:focus:border-blue-400 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100">
-                <SelectValue placeholder="Pilih mapel">
+                <SelectValue placeholder="Pilih Mapel">
                   {selectedGSData
                     ? userRole === "guru"
                       ? selectedGSData.subjectName || "-"
                       : `${selectedGSData.subjectName || "-"} — Kelas ${selectedGSData.grade}`
-                    : "Pilih mapel"}
+                    : "Pilih Mapel"}
                 </SelectValue>
               </SelectTrigger>
               <SelectContent>
@@ -183,7 +185,20 @@ export default function MasterStrukturPage() {
             </Select>
           </div>
           <div>
-            <div className="flex justify-end mb-2">
+            <label className="block text-xs font-semibold text-gray-500 dark:text-gray-400 tracking-wider mb-2">Kelas</label>
+            <Select value={grade} onValueChange={(v) => v && setGrade(v)} disabled={userRole === "guru"}>
+              <SelectTrigger className="w-full h-auto rounded-xl border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm focus:border-blue-500 dark:focus:border-blue-400 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {GRADES.map((g) => (
+                  <SelectItem key={g} value={g}>Kelas {g}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="sm:col-span-1 col-span-2">
+            <div className="flex justify-end sm:justify-start mb-2">
               {userRole !== null && userRole !== "guru" ? (
                 <Link
                   href="/kelola-mapel"

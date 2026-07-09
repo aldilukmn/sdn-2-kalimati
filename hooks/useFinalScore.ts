@@ -47,7 +47,7 @@ export function useFinalScore(userRole: string | null = null, userGrade: string 
       try {
         const res = await GradeSubjectService.getAll({ grade, semester, academicYear });
         setGradeSubjects(res?.result || []);
-        setSelectedGS((res?.result || []).length > 0 ? res!.result![0]._id : "");
+        if ((res?.result || []).length === 0) setSelectedGS("");
       } catch {
         setGradeSubjects([]);
         setSelectedGS("");
