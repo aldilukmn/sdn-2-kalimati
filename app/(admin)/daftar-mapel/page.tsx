@@ -200,26 +200,28 @@ export default function MasterStrukturPage() {
             </Select>
           </div>
           <div className="sm:col-span-1 col-span-2">
-            <div className="flex justify-end sm:justify-start">
-              {userRole !== null && userRole !== "guru" ? (
-                <Link
-                  href="/kelola-mapel"
-                  className="text-xs text-indigo-500 hover:text-indigo-700 dark:text-indigo-400 dark:hover:text-indigo-300 font-medium flex items-center gap-1"
-                >
-                  <Settings size={12} />
-                  Kelola Mapel
-                </Link>
-              ) : (
-                <span className="text-xs invisible">placeholder</span>
-              )}
+            <div className="flex flex-col-reverse sm:flex-col gap-2 h-full justify-end">
+              <div className="flex justify-end sm:justify-end">
+                {userRole !== null && userRole !== "guru" ? (
+                  <Link
+                    href="/kelola-mapel"
+                    className="text-xs text-indigo-500 hover:text-indigo-700 dark:text-indigo-400 dark:hover:text-indigo-300 font-medium flex items-center gap-1"
+                  >
+                    <Settings size={12} />
+                    Kelola Mapel
+                  </Link>
+                ) : (
+                  <span className="text-xs invisible">placeholder</span>
+                )}
+              </div>
+              <button
+                onClick={openCreateChapter}
+                disabled={!selectedGS}
+                className="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white rounded-xl text-sm font-semibold transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer h-[42px]"
+              >
+                Tambah Bab
+              </button>
             </div>
-            <button
-              onClick={openCreateChapter}
-              disabled={!selectedGS}
-              className="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white rounded-xl text-sm font-semibold transition-all duration-300 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
-            >
-              Tambah Bab
-            </button>
           </div>
         </div>
       </div>

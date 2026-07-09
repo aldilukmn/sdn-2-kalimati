@@ -78,8 +78,11 @@ export function useNilaiHarian() {
       setEntries([]);
       try {
         const res = await GradeSubjectService.getAll({ grade, semester, academicYear });
-        setGradeSubjects(res?.result || []);
-        if ((res?.result || []).length === 0) {
+        const result = res?.result || [];
+        setGradeSubjects(result);
+        if (result.length === 0) {
+          setSelectedGS("");
+        } else if (selectedGS && !result.some((gs: { _id: string }) => gs._id === selectedGS)) {
           setSelectedGS("");
         }
       } catch {

@@ -66,6 +66,8 @@ export function useChapters() {
       setGradeSubjects(result);
       if (result.length === 0) {
         setSelectedGS("");
+      } else if (selectedGS && !result.some((gs: { _id: string }) => gs._id === selectedGS)) {
+        setSelectedGS("");
       }
     } catch {
       setGradeSubjects([]);

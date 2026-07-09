@@ -56,14 +56,14 @@ export default function MasterKonfigurasiNilaiPage() {
 
       {/* Filter */}
       <div className="bg-white/70 dark:bg-gray-800/40 border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
-        <div className="flex flex-col sm:flex-row sm:items-end gap-4">
-          <div className="w-full sm:w-48">
-            <label className="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">Filter Kelas</label>
+        <div className="grid grid-cols-2 gap-4">
+          <div>
+            <label className="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">Kelas</label>
             <Select value={grade || "all"} onValueChange={(v) => setGrade(v === "all" ? "" : (v ?? ""))}>
               <SelectTrigger><SelectValue placeholder="Semua Kelas" /></SelectTrigger>
               <SelectContent>
                 <SelectGroup>
-                  <SelectLabel>Filter Kelas</SelectLabel>
+                  <SelectLabel>Kelas</SelectLabel>
                   <SelectItem value="all">Semua Kelas</SelectItem>
                   {GRADES.map((g) => (
                     <SelectItem key={g} value={g}>Kelas {g}</SelectItem>
@@ -72,14 +72,16 @@ export default function MasterKonfigurasiNilaiPage() {
               </SelectContent>
             </Select>
           </div>
-          <button
-            onClick={openCreateModal}
-            className="flex items-center gap-2 px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-sm font-medium transition-colors cursor-pointer"
-          >
-            <Plus size={16} />
-            Buat Konfigurasi
-          </button>
-        </div>
+          <div className="flex items-end justify-end">
+            <button
+              onClick={openCreateModal}
+              className="flex items-center gap-2 px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-sm font-medium transition-colors cursor-pointer"
+            >
+              <Plus size={16} />
+              Buat Konfigurasi
+            </button>
+          </div>
+      </div>
       </div>
 
       {/* Content */}

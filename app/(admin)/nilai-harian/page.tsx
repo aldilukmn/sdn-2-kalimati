@@ -66,9 +66,12 @@ export default function NilaiHarianPage() {
             <Select value={academicYear} onValueChange={(v) => v && setAcademicYear(v)}>
               <SelectTrigger className="w-full h-auto rounded-xl border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100"><SelectValue /></SelectTrigger>
               <SelectContent>
-                {ACADEMIC_YEARS.map((y) => (
-                  <SelectItem key={y} value={y}>{y}</SelectItem>
-                ))}
+                <SelectGroup>
+                  <SelectLabel>Tahun Ajaran</SelectLabel>
+                  {ACADEMIC_YEARS.map((y) => (
+                    <SelectItem key={y} value={y}>{y}</SelectItem>
+                  ))}
+                </SelectGroup>
               </SelectContent>
             </Select>
           </div>
@@ -77,9 +80,12 @@ export default function NilaiHarianPage() {
             <Select value={semester} onValueChange={(v) => v && setSemester(v)}>
               <SelectTrigger className="w-full h-auto rounded-xl border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100"><SelectValue /></SelectTrigger>
               <SelectContent>
-                {SEMESTERS.map((s) => (
-                  <SelectItem key={s} value={s}>Semester {s}</SelectItem>
-                ))}
+                <SelectGroup>
+                  <SelectLabel>Semester</SelectLabel>
+                  {SEMESTERS.map((s) => (
+                    <SelectItem key={s} value={s}>Semester {s}</SelectItem>
+                  ))}
+                </SelectGroup>
               </SelectContent>
             </Select>
           </div>
@@ -104,9 +110,12 @@ export default function NilaiHarianPage() {
             <Select value={grade} onValueChange={(v) => v && setGrade(v)} disabled={userRole === "guru"}>
               <SelectTrigger className="w-full h-auto rounded-xl border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100"><SelectValue /></SelectTrigger>
               <SelectContent>
-                {GRADES.map((g) => (
-                  <SelectItem key={g} value={g}>Kelas {g}</SelectItem>
-                ))}
+                <SelectGroup>
+                  <SelectLabel>Kelas</SelectLabel>
+                  {GRADES.map((g) => (
+                    <SelectItem key={g} value={g}>Kelas {g}</SelectItem>
+                  ))}
+                </SelectGroup>
               </SelectContent>
             </Select>
           </div>
