@@ -7,7 +7,7 @@ import MaterialService from "@/services/material.service";
 import ScoreService from "@/services/score.service";
 import StudentAttendanceService from "@/services/student-attendance.service";
 import { decodeJWT } from "@/lib/jwt";
-import { GRADES } from "@/lib/constants";
+import { GRADES, ITEMS_PER_PAGE } from "@/lib/constants";
 import type { GradeSubject, Chapter, Material, ScoreEntry, ChapterProgress, Score } from "@/types/nilai-harian";
 
 const SEMESTERS = ["1", "2"];
@@ -62,7 +62,6 @@ export function useNilaiHarian() {
     setRetryCount((c) => c + 1);
   }, []);
 
-  const ITEMS_PER_PAGE = 10;
   const inputRef = useRef<HTMLInputElement | null>(null);
   const savingRef = useRef(false);
 

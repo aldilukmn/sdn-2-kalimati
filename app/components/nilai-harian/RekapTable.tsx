@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { ChevronDown, ChevronRight } from "lucide-react";
 import type { Chapter, RekapEntry, ClassAverageItem } from "@/types/nilai-harian";
+import { ITEMS_PER_PAGE } from "@/lib/constants";
+import Pagination from "@/app/components/Pagination";
 
 interface Props {
   chapters: Chapter[];
@@ -13,6 +15,10 @@ interface Props {
 
 export default function RekapTable({ chapters, entries, classAverages, loading }: Props) {
   const [expanded, setExpanded] = useState<Set<string>>(new Set());
+  const [currentPage, setCurrentPage] = useState(1);
+  const totalPages = Math.ceil(entries.length / ITEMS_PER_PAGE);
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const paginatedEntries = entries.slice(startIndex, startIndex + ITEMS_PER_PAGE);
 
   const toggleExpand = (studentId: string) => {
     setExpanded((prev) => {
@@ -78,7 +84,7 @@ export default function RekapTable({ chapters, entries, classAverages, loading }
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-300 dark:divide-gray-700">
-            {entries.map((entry) => {
+            {paginatedEntries.map((entry) => {
               const isExpanded = expanded.has(entry.studentId);
               const hasDetail = hasMaterialDetail(entry);
               return (
@@ -173,6 +179,16 @@ export default function RekapTable({ chapters, entries, classAverages, loading }
           </tfoot>
         </table>
       </div>
+
+      {totalPages > 1 && (
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={setCurrentPage}
+          itemsPerPage={ITEMS_PER_PAGE}
+          totalItems={entries.length}
+        />
+      )}
     </div>
   );
 }

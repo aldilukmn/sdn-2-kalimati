@@ -229,7 +229,7 @@ export default function MasterMapelPage() {
               <Table>
                 <TableHeader>
                   <TableRow className="bg-indigo-700 hover:bg-indigo-700">
-                    <TableHead className="text-white whitespace-nowrap">No</TableHead>
+                    <TableHead className="text-white text-center whitespace-nowrap">No</TableHead>
                     <TableHead className="text-white whitespace-nowrap">Nama Mapel</TableHead>
                     <TableHead className="text-white text-right whitespace-nowrap">Aksi</TableHead>
                   </TableRow>
@@ -237,7 +237,7 @@ export default function MasterMapelPage() {
                 <TableBody>
                   {filteredSubjects.map((subject, index) => (
                     <TableRow key={subject._id} className="hover:bg-slate-50 dark:hover:bg-gray-800/50">
-                      <TableCell className="font-medium text-slate-600 dark:text-slate-300 whitespace-nowrap">{index + 1}</TableCell>
+                      <TableCell className="font-medium text-slate-600 dark:text-slate-300 text-center whitespace-nowrap">{index + 1}</TableCell>
                       <TableCell className="text-slate-800 dark:text-slate-200 font-medium whitespace-nowrap">{subject.name}</TableCell>
                       <TableCell className="text-right">
                         <div className="flex items-center justify-end gap-1">
@@ -318,7 +318,7 @@ export default function MasterMapelPage() {
               <Table>
                 <TableHeader>
                   <TableRow className="bg-indigo-700 hover:bg-indigo-700">
-                    <TableHead className="text-white whitespace-nowrap">No</TableHead>
+                    <TableHead className="text-white text-center whitespace-nowrap">No</TableHead>
                     <TableHead className="text-white whitespace-nowrap">Mapel</TableHead>
                     <TableHead className="text-white whitespace-nowrap">Kelas</TableHead>
                     <TableHead className="text-white whitespace-nowrap">Semester</TableHead>
@@ -329,7 +329,7 @@ export default function MasterMapelPage() {
                 <TableBody>
                   {gradeSubjects.map((gs, index) => (
                     <TableRow key={gs._id} className="hover:bg-slate-50 dark:hover:bg-gray-800/50">
-                      <TableCell className="font-medium text-slate-600 dark:text-slate-300 whitespace-nowrap">{index + 1}</TableCell>
+                      <TableCell className="font-medium text-slate-600 dark:text-slate-300 text-center whitespace-nowrap">{index + 1}</TableCell>
                       <TableCell className="text-slate-800 dark:text-slate-200 font-medium whitespace-nowrap">{gs.subjectName || "-"}</TableCell>
                       <TableCell className="text-slate-600 dark:text-slate-300 whitespace-nowrap">Kelas {gs.grade}</TableCell>
                       <TableCell className="text-slate-600 dark:text-slate-300 whitespace-nowrap">Semester {gs.semester}</TableCell>
@@ -377,7 +377,7 @@ export default function MasterMapelPage() {
             <button
               onClick={handleSaveSubject}
               disabled={subjectSaving || !subjectName.trim()}
-              className="px-4 py-2 text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 rounded-lg transition-colors cursor-pointer flex items-center gap-2"
+              className="px-4 py-2 text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed rounded-lg transition-colors cursor-pointer flex items-center gap-2"
             >
               {subjectSaving && <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />}
               {subjectModal.edit ? "Simpan" : "Tambah"}
@@ -472,7 +472,7 @@ export default function MasterMapelPage() {
             <button
               onClick={handleSaveAssign}
               disabled={assignSaving || !assignSubjectId || assignGrades.length === 0}
-              className="px-4 py-2 text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 rounded-lg transition-colors cursor-pointer flex items-center gap-2"
+              className="px-4 py-2 text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed rounded-lg transition-colors cursor-pointer flex items-center gap-2"
             >
               {assignSaving && <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />}
               Tetapkan{assignGrades.length > 0 ? ` ke ${assignGrades.length} Kelas` : ""}

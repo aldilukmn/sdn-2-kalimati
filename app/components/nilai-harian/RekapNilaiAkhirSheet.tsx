@@ -1,6 +1,9 @@
 "use client";
 
+import { useState } from "react";
 import type { SubjectColumn, MatrixRow } from "@/hooks/useRekapNilaiAkhir";
+import { ITEMS_PER_PAGE } from "@/lib/constants";
+import Pagination from "@/app/components/Pagination";
 
 interface Props {
   matrix: MatrixRow[];
@@ -9,6 +12,10 @@ interface Props {
 }
 
 export default function RekapNilaiAkhirSheet({ matrix, subjects, classAverages }: Props) {
+  const [currentPage, setCurrentPage] = useState(1);
+  const totalPages = Math.ceil(matrix.length / ITEMS_PER_PAGE);
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const paginatedMatrix = matrix.slice(startIndex, startIndex + ITEMS_PER_PAGE);
   return (
     <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5 overflow-hidden">
       <div className="overflow-x-auto animate-fadeIn rounded-xl border border-gray-200 dark:border-gray-700 bg-white/80 dark:bg-gray-800/30 backdrop-blur-sm">
@@ -31,13 +38,13 @@ export default function RekapNilaiAkhirSheet({ matrix, subjects, classAverages }
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-300 dark:divide-gray-700">
-            {matrix.map((row, idx) => (
+            {paginatedMatrix.map((row, i) => (
               <tr
                 key={row.studentId}
                 className="hover:bg-indigo-50/50 dark:hover:bg-indigo-900/20 transition-colors"
               >
                 <td className="p-3 text-center text-sm text-slate-500 dark:text-slate-400">
-                  {idx + 1}
+                  {startIndex + i + 1}
                 </td>
                 <td className="p-3 whitespace-nowrap">
                   <span className="text-sm text-gray-800 dark:text-gray-200 font-medium">
@@ -101,6 +108,16 @@ export default function RekapNilaiAkhirSheet({ matrix, subjects, classAverages }
           </tfoot>
         </table>
       </div>
+
+      {totalPages > 1 && (
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={setCurrentPage}
+          itemsPerPage={ITEMS_PER_PAGE}
+          totalItems={matrix.length}
+        />
+      )}
     </div>
   );
 }

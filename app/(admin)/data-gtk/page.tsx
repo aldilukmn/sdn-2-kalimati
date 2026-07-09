@@ -611,7 +611,7 @@ export default function DataGTK() {
                           <button
                             onClick={() => setConfirmDeleteId(guru._id)}
                             disabled={deletingId === guru._id}
-                            className="p-2 text-red-600 hover:bg-red-100 rounded-lg transition-colors dark:text-red-400 dark:hover:bg-red-900/30 disabled:opacity-50 cursor-pointer"
+                            className="p-2 text-red-600 hover:bg-red-100 rounded-lg transition-colors dark:text-red-400 dark:hover:bg-red-900/30 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
                             title="Hapus"
                           >
                             {deletingId === guru._id ? (
@@ -760,7 +760,7 @@ export default function DataGTK() {
                             <button
                               onClick={() => setConfirmDeleteId(user._id)}
                               disabled={deletingId === user._id}
-                              className="p-2 text-red-600 hover:bg-red-100 rounded-lg transition-colors dark:text-red-400 dark:hover:bg-red-900/30 disabled:opacity-50 cursor-pointer"
+                              className="p-2 text-red-600 hover:bg-red-100 rounded-lg transition-colors dark:text-red-400 dark:hover:bg-red-900/30 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
                               title="Hapus"
                             >
                               {deletingId === user._id ? (

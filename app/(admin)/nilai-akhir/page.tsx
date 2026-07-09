@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Calculator, AlertCircle, RefreshCw, ChevronDown, ChevronRight, AlertTriangle } from "lucide-react";
 import { useFinalScore } from "@/hooks/useFinalScore";
-import { GRADES } from "@/lib/constants";
+import { GRADES, ITEMS_PER_PAGE } from "@/lib/constants";
+import Pagination from "@/app/components/Pagination";
 import toast from "react-hot-toast";
 import PageHero from "@/app/components/PageHero";
 import {
@@ -32,6 +33,16 @@ export default function NilaiAkhirPage() {
   } = useFinalScore();
 
   const [expandedRow, setExpandedRow] = useState<string | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+
+  useEffect(() => {
+    setCurrentPage(1);
+    setExpandedRow(null);
+  }, [selectedGS]);
+
+  const totalPages = Math.ceil(entries.length / ITEMS_PER_PAGE);
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const paginatedEntries = entries.slice(startIndex, startIndex + ITEMS_PER_PAGE);
 
   const onCalculate = async () => {
     const ok = await handleCalculate();
@@ -222,7 +233,7 @@ export default function NilaiAkhirPage() {
             <button
               onClick={onCalculate}
               disabled={calculating}
-              className="mt-4 flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 text-white rounded-lg text-sm font-medium transition-colors cursor-pointer mx-auto"
+              className="mt-4 flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-lg text-sm font-medium transition-colors cursor-pointer mx-auto"
             >
               {calculating ? (
                 <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
@@ -258,7 +269,8 @@ export default function NilaiAkhirPage() {
                   </p>
                   {Object.keys(missingByComponent).length > 0 && (
                     <div className="text-sm text-red-500 dark:text-red-400">
-                      ⚠️ Belum lengkap: {incompleteStudents} siswa
+                      <span title={`${incompleteStudents} siswa belum lengkap`}><AlertCircle size={16} className="inline shrink-0 mr-1" /></span>
+                      Belum lengkap: {incompleteStudents} siswa
                       <ul className="list-disc list-inside ml-4 text-xs text-red-400 dark:text-red-500 mt-0.5">
                         {Object.entries(missingByComponent).map(([key, count]) => (
                           <li key={key}>{key}: {count} siswa belum diisi</li>
@@ -276,7 +288,7 @@ export default function NilaiAkhirPage() {
               <button
                 onClick={onCalculate}
                 disabled={calculating}
-                className="flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 text-white rounded-lg text-sm font-medium transition-colors cursor-pointer shrink-0"
+                className="flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-lg text-sm font-medium transition-colors cursor-pointer shrink-0"
               >
                 {calculating ? (
                   <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
@@ -294,16 +306,15 @@ export default function NilaiAkhirPage() {
               <table className="w-full text-sm">
                 <thead>
                   <tr className="border-b border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800/50">
-                    <th className="text-left px-4 py-3 font-semibold text-slate-600 dark:text-slate-300 w-10 whitespace-nowrap" />
-                    <th className="text-left px-4 py-3 font-semibold text-slate-600 dark:text-slate-300 w-12 whitespace-nowrap">No</th>
+                    <th className="text-center px-4 py-3 font-semibold text-slate-600 dark:text-slate-300 w-10 whitespace-nowrap" />
+                    <th className="text-center px-4 py-3 font-semibold text-slate-600 dark:text-slate-300 w-12 whitespace-nowrap">No</th>
                     <th className="text-left px-4 py-3 font-semibold text-slate-600 dark:text-slate-300 whitespace-nowrap">Siswa</th>
-                    <th className="text-left px-4 py-3 font-semibold text-slate-600 dark:text-slate-300 whitespace-nowrap">Mapel</th>
-                    <th className="text-left px-4 py-3 font-semibold text-slate-600 dark:text-slate-300 whitespace-nowrap">Komponen</th>
+                    <th className="text-center px-4 py-3 font-semibold text-slate-600 dark:text-slate-300 whitespace-nowrap">Komponen</th>
                     <th className="text-center px-4 py-3 font-semibold text-slate-600 dark:text-slate-300 w-24 whitespace-nowrap">Nilai Akhir</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {entries.map((entry, idx) => {
+                  {paginatedEntries.map((entry, i) => {
                     const isExpanded = expandedRow === entry._id;
                     const compSummary = entry.componentScores
                       .filter((c) => c.rawScore > 0)
@@ -319,10 +330,9 @@ export default function NilaiAkhirPage() {
                           <td className="px-4 py-3 text-slate-400">
                             {isExpanded ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
                           </td>
-                          <td className="px-4 py-3 text-slate-500 dark:text-slate-400">{idx + 1}</td>
-                          <td className="px-4 py-3 font-medium text-slate-700 dark:text-slate-300 whitespace-nowrap">{entry.studentName}</td>
-                          <td className="px-4 py-3 text-slate-600 dark:text-slate-400 whitespace-nowrap">{entry.subjectName}</td>
-                          <td className="px-4 py-3 text-xs text-slate-500 dark:text-slate-400 truncate max-w-[200px] whitespace-nowrap">
+                          <td className="px-4 py-3 text-center text-slate-500 dark:text-slate-400">{startIndex + i + 1}</td>
+                          <td className="px-4 py-3 text-left font-medium text-slate-700 dark:text-slate-300 whitespace-nowrap">{entry.studentName}</td>
+                          <td className="px-4 py-3 text-center text-xs text-slate-500 dark:text-slate-400 truncate max-w-[200px] whitespace-nowrap">
                             {compSummary || "-"}
                           </td>
                           <td className="px-4 py-3 text-center">
@@ -331,15 +341,16 @@ export default function NilaiAkhirPage() {
                                 {Math.round(entry.finalScore * 100) / 100}
                               </span>
                             ) : (
-                              <span className="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-300">
-                                ⚠️ {entry.missingComponents.length} komp
+                              <span className="inline-flex items-center gap-1 text-[11px] font-semibold px-2 py-0.5 rounded-full bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-300" title={`${entry.missingComponents.length} komponen belum diisi`}>
+                                <AlertCircle size={12} />
+                                {entry.missingComponents.length} komp
                               </span>
                             )}
                           </td>
                         </tr>
                         {isExpanded && (
                           <tr key={`${entry._id}-detail`}>
-                            <td colSpan={6} className="px-4 py-3 bg-slate-50/70 dark:bg-slate-900/50">
+                            <td colSpan={5} className="px-4 py-3 bg-slate-50/70 dark:bg-slate-900/50">
                               <div className="pl-8 space-y-1">
                                 <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1.5">Detail Komponen:</p>
                                 <table className="w-full text-xs max-w-md">
@@ -382,6 +393,16 @@ export default function NilaiAkhirPage() {
               </table>
             </div>
           </div>
+
+          {totalPages > 1 && (
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={(page) => { setCurrentPage(page); setExpandedRow(null); }}
+              itemsPerPage={ITEMS_PER_PAGE}
+              totalItems={entries.length}
+            />
+          )}
         </>
       )}
     </div>

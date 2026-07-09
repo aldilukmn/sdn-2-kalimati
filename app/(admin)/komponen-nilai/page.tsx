@@ -1,10 +1,12 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { ClipboardList, Save, AlertCircle } from "lucide-react";
 import { useAssessmentScore } from "@/hooks/useAssessmentScore";
-import { GRADES } from "@/lib/constants";
+import { GRADES, ITEMS_PER_PAGE } from "@/lib/constants";
 import toast from "react-hot-toast";
 import PageHero from "@/app/components/PageHero";
+import Pagination from "@/app/components/Pagination";
 import {
   Select,
   SelectContent,
@@ -32,6 +34,16 @@ export default function NilaiKomponenPage() {
     handleScoreChange, handleSave,
     SEMESTERS, ACADEMIC_YEARS,
   } = useAssessmentScore();
+
+  const [currentPage, setCurrentPage] = useState(1);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [selectedComponentKey, selectedGS]);
+
+  const totalPages = Math.ceil(students.length / ITEMS_PER_PAGE);
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const paginatedStudents = students.slice(startIndex, startIndex + ITEMS_PER_PAGE);
 
   const onSave = async () => {
     const ok = await handleSave();
@@ -260,15 +272,15 @@ export default function NilaiKomponenPage() {
                   <table className="w-full text-sm">
                     <thead>
                       <tr className="border-b border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800/50">
-                        <th className="text-left px-4 py-3 font-semibold text-slate-600 dark:text-slate-300 w-12 whitespace-nowrap">No</th>
+                        <th className="text-center px-4 py-3 font-semibold text-slate-600 dark:text-slate-300 w-12 whitespace-nowrap">No</th>
                         <th className="text-left px-4 py-3 font-semibold text-slate-600 dark:text-slate-300 whitespace-nowrap">Nama Siswa</th>
                         <th className="text-center px-4 py-3 font-semibold text-slate-600 dark:text-slate-300 w-32 whitespace-nowrap">Rata-rata Nilai Harian</th>
                       </tr>
                     </thead>
                     <tbody>
-                      {students.map((s, idx) => (
+                      {paginatedStudents.map((s, i) => (
                         <tr key={s.studentId} className="border-b border-slate-100 dark:border-slate-700/50">
-                          <td className="px-4 py-2.5 text-slate-500 dark:text-slate-400">{idx + 1}</td>
+                          <td className="px-4 py-2.5 text-center text-slate-500 dark:text-slate-400">{startIndex + i + 1}</td>
                           <td className="px-4 py-2.5 font-medium text-slate-700 dark:text-slate-300 whitespace-nowrap">{s.name}</td>
                           <td className="px-4 py-2.5 text-center">
                             <span className="text-sm font-semibold text-slate-700 dark:text-slate-300">
@@ -280,6 +292,15 @@ export default function NilaiKomponenPage() {
                     </tbody>
                   </table>
                 </div>
+              )}
+              {totalPages > 1 && students.length > 0 && (
+                <Pagination
+                  currentPage={currentPage}
+                  totalPages={totalPages}
+                  onPageChange={setCurrentPage}
+                  itemsPerPage={ITEMS_PER_PAGE}
+                  totalItems={students.length}
+                />
               )}
             </div>
           ) : (
@@ -298,7 +319,7 @@ export default function NilaiKomponenPage() {
                     <table className="w-full text-sm">
                       <thead>
                         <tr className="border-b border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800/50">
-                          <th className="text-left px-4 py-3 font-semibold text-slate-600 dark:text-slate-300 w-12 whitespace-nowrap">No</th>
+                          <th className="text-center px-4 py-3 font-semibold text-slate-600 dark:text-slate-300 w-12 whitespace-nowrap">No</th>
                           <th className="text-left px-4 py-3 font-semibold text-slate-600 dark:text-slate-300 whitespace-nowrap">Nama Siswa</th>
                           <th className="text-center px-4 py-3 font-semibold text-slate-600 dark:text-slate-300 w-40 whitespace-nowrap">
                             {components.find((c) => c.key === selectedComponentKey)?.name || selectedComponentKey}
@@ -307,13 +328,13 @@ export default function NilaiKomponenPage() {
                         </tr>
                       </thead>
                       <tbody>
-                        {students.map((s, idx) => {
+                        {paginatedStudents.map((s, i) => {
                           const entry = nonHarianScores[s.studentId];
                           const score = entry?.score || "";
                           const status = entry?.status || "unsaved";
                           return (
                             <tr key={s.studentId} className="border-b border-slate-100 dark:border-slate-700/50">
-                              <td className="px-4 py-2.5 text-slate-500 dark:text-slate-400">{idx + 1}</td>
+                              <td className="px-4 py-2.5 text-center text-slate-500 dark:text-slate-400">{startIndex + i + 1}</td>
                               <td className="px-4 py-2.5 font-medium text-slate-700 dark:text-slate-300 whitespace-nowrap">{s.name}</td>
                               <td className="px-4 py-2.5 text-center">
                                 <input
@@ -322,7 +343,7 @@ export default function NilaiKomponenPage() {
                                   max={100}
                                   value={score}
                                   onChange={(e) => handleScoreChange(s.studentId, e.target.value)}
-                                  className="w-24 px-3 py-1.5 text-center rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-gray-900 text-sm text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                  className="w-24 px-3 py-1.5 text-center rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-gray-900 text-sm text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 [&::-webkit-inner-spin-button]:appearance-none [&::-moz-appearance]:textfield"
                                 />
                               </td>
                               <td className="px-4 py-2.5 text-center">
@@ -351,10 +372,20 @@ export default function NilaiKomponenPage() {
                 )}
               </div>
 
+              {totalPages > 1 && students.length > 0 && (
+                <Pagination
+                  currentPage={currentPage}
+                  totalPages={totalPages}
+                  onPageChange={setCurrentPage}
+                  itemsPerPage={ITEMS_PER_PAGE}
+                  totalItems={students.length}
+                />
+              )}
+
               <button
                 onClick={onSave}
                 disabled={saving || nonHarianLoading || students.length === 0}
-                className="flex items-center justify-center gap-2 px-4 py-3 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 text-white rounded-xl text-sm font-medium transition-colors cursor-pointer w-full"
+                className="flex items-center justify-center gap-2 px-4 py-3 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-xl text-sm font-medium transition-colors cursor-pointer w-full"
               >
                 {saving ? (
                   <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />

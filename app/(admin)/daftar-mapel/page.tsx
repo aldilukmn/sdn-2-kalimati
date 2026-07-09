@@ -327,7 +327,7 @@ export default function MasterStrukturPage() {
                                   <button
                                     onClick={() => moveMaterial(chapter._id, sortedMaterials, midx, -1)}
                                     disabled={midx === 0}
-                                    className="p-1 rounded text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 disabled:opacity-30 cursor-pointer"
+                                    className="p-1 rounded text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer"
                                     title="Naik"
                                   >
                                     <ArrowUp size={12} />
@@ -335,7 +335,7 @@ export default function MasterStrukturPage() {
                                   <button
                                     onClick={() => moveMaterial(chapter._id, sortedMaterials, midx, 1)}
                                     disabled={midx === sortedMaterials.length - 1}
-                                    className="p-1 rounded text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 disabled:opacity-30 cursor-pointer"
+                                    className="p-1 rounded text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer"
                                     title="Turun"
                                   >
                                     <ArrowDown size={12} />
@@ -474,7 +474,7 @@ export default function MasterStrukturPage() {
           </span>
         </p>
         <div className="flex justify-end gap-2">
-          <button onClick={() => setConfirmDelete(null)} disabled={deleting} className="px-4 py-2 text-sm font-medium text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-gray-800 hover:bg-slate-200 dark:hover:bg-gray-700 disabled:opacity-50 rounded-lg transition-colors cursor-pointer">Batal</button>
+          <button onClick={() => setConfirmDelete(null)} disabled={deleting} className="px-4 py-2 text-sm font-medium text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-gray-800 hover:bg-slate-200 dark:hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed rounded-lg transition-colors cursor-pointer">Batal</button>
           <button
             onClick={confirmDelete?.type === "chapter" ? handleDeleteChapter : handleDeleteMaterial}
             disabled={deleting}

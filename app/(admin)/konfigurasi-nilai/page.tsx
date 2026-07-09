@@ -145,11 +145,11 @@ export default function MasterKonfigurasiNilaiPage() {
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800/50">
-                  <th className="text-left px-4 py-3 font-semibold text-slate-600 dark:text-slate-300 whitespace-nowrap">Kelas</th>
-                  <th className="text-left px-4 py-3 font-semibold text-slate-600 dark:text-slate-300 whitespace-nowrap">Semester</th>
-                  <th className="text-left px-4 py-3 font-semibold text-slate-600 dark:text-slate-300 whitespace-nowrap">Tahun Ajaran</th>
+                  <th className="text-center px-4 py-3 font-semibold text-slate-600 dark:text-slate-300 whitespace-nowrap">Kelas</th>
+                  <th className="text-center px-4 py-3 font-semibold text-slate-600 dark:text-slate-300 whitespace-nowrap">Semester</th>
+                  <th className="text-center px-4 py-3 font-semibold text-slate-600 dark:text-slate-300 whitespace-nowrap">Tahun Ajaran</th>
                   <th className="text-left px-4 py-3 font-semibold text-slate-600 dark:text-slate-300 whitespace-nowrap">Komponen</th>
-                  <th className="text-left px-4 py-3 font-semibold text-slate-600 dark:text-slate-300 whitespace-nowrap">Status</th>
+                  <th className="text-center px-4 py-3 font-semibold text-slate-600 dark:text-slate-300 whitespace-nowrap">Status</th>
                   <th className="text-right px-4 py-3 font-semibold text-slate-600 dark:text-slate-300 whitespace-nowrap">Aksi</th>
                 </tr>
               </thead>
@@ -158,9 +158,9 @@ export default function MasterKonfigurasiNilaiPage() {
                   const total = cfg.components.reduce((s, c) => s + c.weight, 0);
                   return (
                     <tr key={cfg._id} className="border-b border-slate-100 dark:border-slate-700/50 hover:bg-slate-50/50 dark:hover:bg-slate-800/30">
-                      <td className="px-4 py-3 font-medium text-slate-700 dark:text-slate-300 whitespace-nowrap">Kelas {cfg.grade}</td>
-                      <td className="px-4 py-3 text-slate-600 dark:text-slate-400 whitespace-nowrap">Semester {cfg.semester}</td>
-                      <td className="px-4 py-3 text-slate-600 dark:text-slate-400 whitespace-nowrap">{cfg.academicYear}</td>
+                      <td className="px-4 py-3 text-center font-medium text-slate-700 dark:text-slate-300 whitespace-nowrap">Kelas {cfg.grade}</td>
+                      <td className="px-4 py-3 text-center text-slate-600 dark:text-slate-400 whitespace-nowrap">Semester {cfg.semester}</td>
+                      <td className="px-4 py-3 text-center text-slate-600 dark:text-slate-400 whitespace-nowrap">{cfg.academicYear}</td>
                       <td className="px-4 py-3 whitespace-nowrap">
                         <div className="flex flex-nowrap gap-1">
                           {cfg.components.map((comp) => (
@@ -170,7 +170,7 @@ export default function MasterKonfigurasiNilaiPage() {
                           ))}
                         </div>
                       </td>
-                      <td className="px-4 py-3 whitespace-nowrap">
+                      <td className="px-4 py-3 text-center whitespace-nowrap">
                         <span className={`text-[11px] font-semibold px-2 py-0.5 rounded-full ${
                           total === 100
                             ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300"
@@ -299,9 +299,9 @@ export default function MasterKonfigurasiNilaiPage() {
                       <input
                         type="number"
                         placeholder="Bobot"
-                        value={comp.weight}
-                        onChange={(e) => updateComponent(index, "weight", Number(e.target.value))}
-                        className="w-20 px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-gray-900 text-sm text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                        value={comp.weight === 0 ? "" : comp.weight}
+                        onChange={(e) => updateComponent(index, "weight", e.target.value === "" ? 0 : Number(e.target.value))}
+                        className="w-20 px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-gray-900 text-sm text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 [&::-webkit-inner-spin-button]:appearance-none [&::-moz-appearance]:textfield"
                       />
                       <span className="text-xs text-slate-400 w-4">%</span>
                       <button
@@ -369,7 +369,7 @@ export default function MasterKonfigurasiNilaiPage() {
               <button
                 onClick={onSave}
                 disabled={!canSave || modalSaving}
-                className="flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 text-white rounded-lg text-sm font-medium transition-colors cursor-pointer"
+                className="flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-lg text-sm font-medium transition-colors cursor-pointer"
               >
                 {modalSaving ? (
                   <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />

@@ -229,7 +229,7 @@ export default function HistoryModal({
                             <button
                               onClick={() => openEditModal(tx)}
                               disabled={editSaving}
-                              className="p-1 rounded-lg text-slate-500 hover:bg-slate-100 dark:hover:bg-gray-800 transition-colors cursor-pointer disabled:opacity-40"
+                              className="p-1 rounded-lg text-slate-500 hover:bg-slate-100 dark:hover:bg-gray-800 transition-colors cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
                               title="Edit"
                             >
                               <Pencil size={14} />
@@ -237,7 +237,7 @@ export default function HistoryModal({
                             <button
                               onClick={() => handleDeleteTransaction(tx._id)}
                               disabled={deletingId === tx._id}
-                              className="p-1 rounded-lg text-red-500 hover:bg-red-50 dark:hover:bg-red-900/30 transition-colors cursor-pointer disabled:opacity-40"
+                              className="p-1 rounded-lg text-red-500 hover:bg-red-50 dark:hover:bg-red-900/30 transition-colors cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
                               title="Hapus"
                             >
                               {deletingId === tx._id ? (

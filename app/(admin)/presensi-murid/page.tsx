@@ -349,7 +349,7 @@ export default function PresensiMuridPage() {
                           <button
                             onClick={() => handleRemoveHoliday(h.date)}
                             disabled={removingDate === h.date}
-                            className="mx-auto p-1 rounded-lg text-red-400 hover:bg-red-50 dark:hover:bg-red-900/30 transition-colors disabled:opacity-40 cursor-pointer"
+                            className="mx-auto p-1 rounded-lg text-red-400 hover:bg-red-50 dark:hover:bg-red-900/30 transition-colors disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
                             title="Hapus"
                           >
                             {removingDate === h.date ? (
