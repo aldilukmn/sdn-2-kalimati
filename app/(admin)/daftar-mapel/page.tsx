@@ -14,7 +14,9 @@ import PageHero from "@/app/components/PageHero";
 import {
   Select,
   SelectContent,
+  SelectGroup,
   SelectItem,
+  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
@@ -170,11 +172,14 @@ export default function MasterStrukturPage() {
                 </SelectValue>
               </SelectTrigger>
               <SelectContent>
-                {gradeSubjects.map((gs) => (
-                  <SelectItem key={gs._id} value={gs._id}>
-                    {userRole === "guru" ? (gs.subjectName || "-") : `${gs.subjectName || "-"} — Kelas ${gs.grade}`}
-                  </SelectItem>
-                ))}
+                <SelectGroup>
+                  <SelectLabel>Mata Pelajaran</SelectLabel>
+                  {gradeSubjects.map((gs) => (
+                    <SelectItem key={gs._id} value={gs._id}>
+                      {userRole === "guru" ? (gs.subjectName || "-") : `${gs.subjectName || "-"} — Kelas ${gs.grade}`}
+                    </SelectItem>
+                  ))}
+                </SelectGroup>
               </SelectContent>
             </Select>
           </div>
@@ -185,9 +190,12 @@ export default function MasterStrukturPage() {
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                {GRADES.map((g) => (
-                  <SelectItem key={g} value={g}>Kelas {g}</SelectItem>
-                ))}
+                <SelectGroup>
+                  <SelectLabel>Kelas</SelectLabel>
+                  {GRADES.map((g) => (
+                    <SelectItem key={g} value={g}>Kelas {g}</SelectItem>
+                  ))}
+                </SelectGroup>
               </SelectContent>
             </Select>
           </div>
@@ -220,7 +228,14 @@ export default function MasterStrukturPage() {
       {chaptersLoading ? (
         <div className="animate-pulse space-y-3">
           {[1, 2, 3].map((i) => (
-            <div key={i} className="h-16 bg-slate-200 dark:bg-slate-700 rounded-xl" />
+            <div key={i} className="bg-white/70 dark:bg-gray-800/40 border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl overflow-hidden">
+              <div className="flex items-center gap-2 px-4 py-3">
+                <div className="h-5 w-5 bg-slate-200 dark:bg-slate-700 rounded shrink-0" />
+                <div className="h-5 w-5 bg-slate-200 dark:bg-slate-700 rounded shrink-0" />
+                <div className="h-5 bg-slate-200 dark:bg-slate-700 rounded flex-1" />
+                <div className="h-5 bg-slate-200 dark:bg-slate-700 rounded w-20" />
+              </div>
+            </div>
           ))}
         </div>
       ) : sortedChapters.length === 0 ? (
@@ -389,8 +404,11 @@ export default function MasterStrukturPage() {
                 </SelectValue>
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="per_material">Per Materi (sub-bab)</SelectItem>
-                <SelectItem value="per_chapter">Per Bab (langsung)</SelectItem>
+                <SelectGroup>
+                  <SelectLabel>Metode Input</SelectLabel>
+                  <SelectItem value="per_material">Per Materi (sub-bab)</SelectItem>
+                  <SelectItem value="per_chapter">Per Bab (langsung)</SelectItem>
+                </SelectGroup>
               </SelectContent>
             </Select>
             <p className="text-xs text-slate-400 dark:text-slate-500 mt-1">

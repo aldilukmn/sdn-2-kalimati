@@ -8,7 +8,9 @@ import PageHero from "@/app/components/PageHero";
 import {
   Select,
   SelectContent,
+  SelectGroup,
   SelectItem,
+  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
@@ -59,9 +61,12 @@ export default function NilaiKomponenPage() {
             <Select value={academicYear} onValueChange={(v) => v && setAcademicYear(v)}>
               <SelectTrigger className="w-full h-auto rounded-xl border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100"><SelectValue /></SelectTrigger>
               <SelectContent>
-                {ACADEMIC_YEARS.map((y) => (
-                  <SelectItem key={y} value={y}>{y}</SelectItem>
-                ))}
+                <SelectGroup>
+                  <SelectLabel>Tahun Ajaran</SelectLabel>
+                  {ACADEMIC_YEARS.map((y) => (
+                    <SelectItem key={y} value={y}>{y}</SelectItem>
+                  ))}
+                </SelectGroup>
               </SelectContent>
             </Select>
           </div>
@@ -70,9 +75,12 @@ export default function NilaiKomponenPage() {
             <Select value={semester} onValueChange={(v) => v && setSemester(v)}>
               <SelectTrigger className="w-full h-auto rounded-xl border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100"><SelectValue /></SelectTrigger>
               <SelectContent>
-                {SEMESTERS.map((s) => (
-                  <SelectItem key={s} value={s}>Semester {s}</SelectItem>
-                ))}
+                <SelectGroup>
+                  <SelectLabel>Semester</SelectLabel>
+                  {SEMESTERS.map((s) => (
+                    <SelectItem key={s} value={s}>Semester {s}</SelectItem>
+                  ))}
+                </SelectGroup>
               </SelectContent>
             </Select>
           </div>
@@ -83,9 +91,12 @@ export default function NilaiKomponenPage() {
                 {selectedGS ? gradeSubjects.find(gs => gs._id === selectedGS)?.subjectName || "-" : null}
               </SelectValue></SelectTrigger>
               <SelectContent>
-                {gradeSubjects.map((gs) => (
-                  <SelectItem key={gs._id} value={gs._id}>{gs.subjectName || "-"}</SelectItem>
-                ))}
+                <SelectGroup>
+                  <SelectLabel>Mata Pelajaran</SelectLabel>
+                  {gradeSubjects.map((gs) => (
+                    <SelectItem key={gs._id} value={gs._id}>{gs.subjectName || "-"}</SelectItem>
+                  ))}
+                </SelectGroup>
               </SelectContent>
             </Select>
           </div>
@@ -94,9 +105,12 @@ export default function NilaiKomponenPage() {
             <Select value={grade} onValueChange={(v) => v && setGrade(v)} disabled={userRole === "guru"}>
               <SelectTrigger className="w-full h-auto rounded-xl border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100"><SelectValue /></SelectTrigger>
               <SelectContent>
-                {GRADES.map((g) => (
-                  <SelectItem key={g} value={g}>Kelas {g}</SelectItem>
-                ))}
+                <SelectGroup>
+                  <SelectLabel>Kelas</SelectLabel>
+                  {GRADES.map((g) => (
+                    <SelectItem key={g} value={g}>Kelas {g}</SelectItem>
+                  ))}
+                </SelectGroup>
               </SelectContent>
             </Select>
           </div>
@@ -116,9 +130,37 @@ export default function NilaiKomponenPage() {
         </div>
       ) : initialLoading ? (
         <div className="animate-pulse space-y-3">
-          {[1, 2, 3].map((i) => (
-            <div key={i} className="h-14 bg-slate-200 dark:bg-slate-700 rounded-xl" />
-          ))}
+          <div className="bg-indigo-50/50 dark:bg-indigo-900/20 border border-indigo-200 dark:border-indigo-800/50 rounded-2xl px-5 py-3">
+            <div className="h-3 bg-slate-200 dark:bg-slate-700 rounded w-28 mb-1" />
+            <div className="h-5 bg-slate-200 dark:bg-slate-700 rounded w-72" />
+          </div>
+          <div className="flex gap-1 bg-slate-100 dark:bg-gray-900 rounded-xl p-1 w-fit">
+            {[1, 2, 3].map((i) => (
+              <div key={i} className="h-9 bg-slate-200 dark:bg-slate-700 rounded-lg w-24" />
+            ))}
+          </div>
+          <div className="bg-white/70 dark:bg-gray-800/40 border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl overflow-hidden">
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead>
+                  <tr className="border-b border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800/50">
+                    {[1, 2, 3].map((j) => (
+                      <th key={j} className="px-4 py-3"><div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-full" /></th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {[1, 2, 3, 4, 5].map((i) => (
+                    <tr key={i} className="border-b border-slate-100 dark:border-slate-700/50">
+                      {[1, 2, 3].map((j) => (
+                        <td key={j} className="px-4 py-2.5"><div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-full" /></td>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
       ) : !selectedGS || gradeSubjects.length === 0 ? (
         <div className="bg-white/70 dark:bg-gray-800/40 border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
@@ -130,11 +172,37 @@ export default function NilaiKomponenPage() {
         </div>
       ) : configLoading ? (
         <div className="animate-pulse space-y-3">
-          <div className="h-20 bg-slate-200 dark:bg-slate-700 rounded-xl" />
-          <div className="h-10 bg-slate-200 dark:bg-slate-700 rounded-xl w-64" />
-          {[1, 2, 3].map((i) => (
-            <div key={i} className="h-12 bg-slate-200 dark:bg-slate-700 rounded-xl" />
-          ))}
+          <div className="bg-indigo-50/50 dark:bg-indigo-900/20 border border-indigo-200 dark:border-indigo-800/50 rounded-2xl px-5 py-3">
+            <div className="h-3 bg-slate-200 dark:bg-slate-700 rounded w-28 mb-1" />
+            <div className="h-5 bg-slate-200 dark:bg-slate-700 rounded w-72" />
+          </div>
+          <div className="flex gap-1 bg-slate-100 dark:bg-gray-900 rounded-xl p-1 w-fit">
+            {[1, 2, 3].map((i) => (
+              <div key={i} className="h-9 bg-slate-200 dark:bg-slate-700 rounded-lg w-24" />
+            ))}
+          </div>
+          <div className="bg-white/70 dark:bg-gray-800/40 border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl overflow-hidden">
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead>
+                  <tr className="border-b border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800/50">
+                    {[1, 2, 3].map((j) => (
+                      <th key={j} className="px-4 py-3"><div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-full" /></th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {[1, 2, 3, 4, 5].map((i) => (
+                    <tr key={i} className="border-b border-slate-100 dark:border-slate-700/50">
+                      {[1, 2, 3].map((j) => (
+                        <td key={j} className="px-4 py-2.5"><div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-full" /></td>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
       ) : !config ? (
         <div className="bg-white/70 dark:bg-gray-800/40 border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">

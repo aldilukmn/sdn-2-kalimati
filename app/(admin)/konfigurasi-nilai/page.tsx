@@ -9,7 +9,9 @@ import PageHero from "@/app/components/PageHero";
 import {
   Select,
   SelectContent,
+  SelectGroup,
   SelectItem,
+  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
@@ -60,10 +62,13 @@ export default function MasterKonfigurasiNilaiPage() {
             <Select value={grade || "all"} onValueChange={(v) => setGrade(v === "all" ? "" : (v ?? ""))}>
               <SelectTrigger><SelectValue placeholder="Semua Kelas" /></SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">Semua Kelas</SelectItem>
-                {GRADES.map((g) => (
-                  <SelectItem key={g} value={g}>Kelas {g}</SelectItem>
-                ))}
+                <SelectGroup>
+                  <SelectLabel>Filter Kelas</SelectLabel>
+                  <SelectItem value="all">Semua Kelas</SelectItem>
+                  {GRADES.map((g) => (
+                    <SelectItem key={g} value={g}>Kelas {g}</SelectItem>
+                  ))}
+                </SelectGroup>
               </SelectContent>
             </Select>
           </div>
@@ -90,9 +95,28 @@ export default function MasterKonfigurasiNilaiPage() {
         </div>
       ) : loading ? (
         <div className="animate-pulse space-y-3">
-          {[1, 2, 3].map((i) => (
-            <div key={i} className="h-16 bg-slate-200 dark:bg-slate-700 rounded-xl" />
-          ))}
+          <div className="bg-white/70 dark:bg-gray-800/40 border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl overflow-hidden">
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead>
+                  <tr className="border-b border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800/50">
+                    {[1, 2, 3, 4, 5].map((j) => (
+                      <th key={j} className="px-4 py-3"><div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-full" /></th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {[1, 2, 3].map((i) => (
+                    <tr key={i} className="border-b border-slate-100 dark:border-slate-700/50">
+                      {[1, 2, 3, 4, 5].map((j) => (
+                        <td key={j} className="px-4 py-3"><div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-full" /></td>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
       ) : configs.length === 0 ? (
         <div className="bg-white/70 dark:bg-gray-800/40 border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
@@ -201,9 +225,12 @@ export default function MasterKonfigurasiNilaiPage() {
                     <Select value={modalGrade} onValueChange={(v) => v && setModalGrade(v)}>
                       <SelectTrigger className="w-full h-auto rounded-xl border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100"><SelectValue /></SelectTrigger>
                       <SelectContent>
-                        {GRADES.map((g) => (
-                          <SelectItem key={g} value={g}>Kelas {g}</SelectItem>
-                        ))}
+                        <SelectGroup>
+                          <SelectLabel>Kelas</SelectLabel>
+                          {GRADES.map((g) => (
+                            <SelectItem key={g} value={g}>Kelas {g}</SelectItem>
+                          ))}
+                        </SelectGroup>
                       </SelectContent>
                     </Select>
                   </div>
@@ -212,9 +239,12 @@ export default function MasterKonfigurasiNilaiPage() {
                     <Select value={modalSemester} onValueChange={(v) => v && setModalSemester(v)}>
                       <SelectTrigger className="w-full h-auto rounded-xl border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100"><SelectValue /></SelectTrigger>
                       <SelectContent>
-                        {SEMESTERS.map((s) => (
-                          <SelectItem key={s} value={s}>Semester {s}</SelectItem>
-                        ))}
+                        <SelectGroup>
+                          <SelectLabel>Semester</SelectLabel>
+                          {SEMESTERS.map((s) => (
+                            <SelectItem key={s} value={s}>Semester {s}</SelectItem>
+                          ))}
+                        </SelectGroup>
                       </SelectContent>
                     </Select>
                   </div>
@@ -223,9 +253,12 @@ export default function MasterKonfigurasiNilaiPage() {
                     <Select value={modalAcademicYear} onValueChange={(v) => v && setModalAcademicYear(v)}>
                       <SelectTrigger className="w-full h-auto rounded-xl border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100"><SelectValue /></SelectTrigger>
                       <SelectContent>
-                        {ACADEMIC_YEARS.map((y) => (
-                          <SelectItem key={y} value={y}>{y}</SelectItem>
-                        ))}
+                        <SelectGroup>
+                          <SelectLabel>Tahun Ajaran</SelectLabel>
+                          {ACADEMIC_YEARS.map((y) => (
+                            <SelectItem key={y} value={y}>{y}</SelectItem>
+                          ))}
+                        </SelectGroup>
                       </SelectContent>
                     </Select>
                   </div>

@@ -11,7 +11,9 @@ import PageHero from "@/app/components/PageHero";
 import {
   Select,
   SelectContent,
+  SelectGroup,
   SelectItem,
+  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
@@ -194,9 +196,20 @@ export default function MasterMapelPage() {
               </button>
             </div>
           ) : loading ? (
-            <div className="animate-pulse space-y-3">
+            <div className="animate-pulse rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
+              <div className="bg-indigo-700 px-4 py-3 flex gap-4">
+                {[1, 2, 3].map((j) => (
+                  <div key={j} className="h-4 bg-white/20 rounded w-16" />
+                ))}
+                <div className="h-4 bg-white/20 rounded w-16 ml-auto" />
+              </div>
               {[1, 2, 3].map((i) => (
-                <div key={i} className="h-10 bg-slate-200 dark:bg-slate-700 rounded" />
+                <div key={i} className="flex gap-4 px-4 py-3 border-b border-gray-100 dark:border-gray-700">
+                  {[1, 2, 3].map((j) => (
+                    <div key={j} className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-16" />
+                  ))}
+                  <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-16 ml-auto" />
+                </div>
               ))}
             </div>
           ) : filteredSubjects.length === 0 ? (
@@ -274,9 +287,20 @@ export default function MasterMapelPage() {
               </button>
             </div>
           ) : loading ? (
-            <div className="animate-pulse space-y-3">
+            <div className="animate-pulse rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
+              <div className="bg-indigo-700 px-4 py-3 flex gap-4">
+                {[1, 2, 3, 4, 5].map((j) => (
+                  <div key={j} className="h-4 bg-white/20 rounded w-16" />
+                ))}
+                <div className="h-4 bg-white/20 rounded w-16 ml-auto" />
+              </div>
               {[1, 2, 3].map((i) => (
-                <div key={i} className="h-10 bg-slate-200 dark:bg-slate-700 rounded" />
+                <div key={i} className="flex gap-4 px-4 py-3 border-b border-gray-100 dark:border-gray-700">
+                  {[1, 2, 3, 4, 5].map((j) => (
+                    <div key={j} className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-16" />
+                  ))}
+                  <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-16 ml-auto" />
+                </div>
               ))}
             </div>
           ) : gradeSubjects.length === 0 ? (
@@ -374,9 +398,12 @@ export default function MasterMapelPage() {
                 </SelectValue>
               </SelectTrigger>
               <SelectContent>
-                {subjects.map((s) => (
-                  <SelectItem key={s._id} value={s._id}>{s.name}</SelectItem>
-                ))}
+                <SelectGroup>
+                  <SelectLabel>Mata Pelajaran</SelectLabel>
+                  {subjects.map((s) => (
+                    <SelectItem key={s._id} value={s._id}>{s.name}</SelectItem>
+                  ))}
+                </SelectGroup>
               </SelectContent>
             </Select>
           </div>
@@ -410,9 +437,12 @@ export default function MasterMapelPage() {
                 <SelectValue placeholder="Pilih semester" />
               </SelectTrigger>
               <SelectContent>
-                {SEMESTERS.map((s) => (
-                  <SelectItem key={s} value={s}>Semester {s}</SelectItem>
-                ))}
+                <SelectGroup>
+                  <SelectLabel>Semester</SelectLabel>
+                  {SEMESTERS.map((s) => (
+                    <SelectItem key={s} value={s}>Semester {s}</SelectItem>
+                  ))}
+                </SelectGroup>
               </SelectContent>
             </Select>
           </div>
@@ -423,9 +453,12 @@ export default function MasterMapelPage() {
                 <SelectValue placeholder="Pilih tahun ajaran" />
               </SelectTrigger>
               <SelectContent>
-                {ACADEMIC_YEARS.map((y) => (
-                  <SelectItem key={y} value={y}>{y}</SelectItem>
-                ))}
+                <SelectGroup>
+                  <SelectLabel>Tahun Ajaran</SelectLabel>
+                  {ACADEMIC_YEARS.map((y) => (
+                    <SelectItem key={y} value={y}>{y}</SelectItem>
+                  ))}
+                </SelectGroup>
               </SelectContent>
             </Select>
           </div>

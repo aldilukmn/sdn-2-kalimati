@@ -8,7 +8,9 @@ import RekapTable from "@/app/components/nilai-harian/RekapTable";
 import {
   Select,
   SelectContent,
+  SelectGroup,
   SelectItem,
+  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
@@ -37,9 +39,12 @@ export default function RekapNilaiPage() {
             <Select value={academicYear} onValueChange={(v) => v && setAcademicYear(v)}>
               <SelectTrigger className="w-full h-auto rounded-xl border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100"><SelectValue /></SelectTrigger>
               <SelectContent>
-                {ACADEMIC_YEARS.map((y) => (
-                  <SelectItem key={y} value={y}>{y}</SelectItem>
-                ))}
+                <SelectGroup>
+                  <SelectLabel>Tahun Ajaran</SelectLabel>
+                  {ACADEMIC_YEARS.map((y) => (
+                    <SelectItem key={y} value={y}>{y}</SelectItem>
+                  ))}
+                </SelectGroup>
               </SelectContent>
             </Select>
           </div>
@@ -48,9 +53,12 @@ export default function RekapNilaiPage() {
             <Select value={semester} onValueChange={(v) => v && setSemester(v)}>
               <SelectTrigger className="w-full h-auto rounded-xl border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100"><SelectValue /></SelectTrigger>
               <SelectContent>
-                {SEMESTERS.map((s) => (
-                  <SelectItem key={s} value={s}>Semester {s}</SelectItem>
-                ))}
+                <SelectGroup>
+                  <SelectLabel>Semester</SelectLabel>
+                  {SEMESTERS.map((s) => (
+                    <SelectItem key={s} value={s}>Semester {s}</SelectItem>
+                  ))}
+                </SelectGroup>
               </SelectContent>
             </Select>
           </div>
@@ -61,9 +69,12 @@ export default function RekapNilaiPage() {
                 {selectedGS ? gradeSubjects.find(gs => gs._id === selectedGS)?.subjectName || "-" : null}
               </SelectValue></SelectTrigger>
               <SelectContent>
-                {gradeSubjects.map((gs) => (
-                  <SelectItem key={gs._id} value={gs._id}>{gs.subjectName || "-"}</SelectItem>
-                ))}
+                <SelectGroup>
+                  <SelectLabel>Mata Pelajaran</SelectLabel>
+                  {gradeSubjects.map((gs) => (
+                    <SelectItem key={gs._id} value={gs._id}>{gs.subjectName || "-"}</SelectItem>
+                  ))}
+                </SelectGroup>
               </SelectContent>
             </Select>
           </div>
@@ -72,9 +83,12 @@ export default function RekapNilaiPage() {
             <Select value={grade} onValueChange={(v) => v && setGrade(v)} disabled={userRole === "guru"}>
               <SelectTrigger className="w-full h-auto rounded-xl border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100"><SelectValue /></SelectTrigger>
               <SelectContent>
-                {GRADES.map((g) => (
-                  <SelectItem key={g} value={g}>Kelas {g}</SelectItem>
-                ))}
+                <SelectGroup>
+                  <SelectLabel>Kelas</SelectLabel>
+                  {GRADES.map((g) => (
+                    <SelectItem key={g} value={g}>Kelas {g}</SelectItem>
+                  ))}
+                </SelectGroup>
               </SelectContent>
             </Select>
           </div>
@@ -93,10 +107,18 @@ export default function RekapNilaiPage() {
           </div>
         </div>
       ) : initialLoading ? (
-        <div className="animate-pulse space-y-2">
-          {[1, 2, 3].map((i) => (
-            <div key={i} className="h-14 bg-slate-200 dark:bg-slate-700 rounded-xl" />
-          ))}
+        <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5 overflow-hidden">
+          <div className="animate-pulse rounded-xl border border-gray-200 dark:border-gray-700 bg-white/80 dark:bg-gray-800/30">
+            <div className="h-10 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-t-xl" />
+            {[1, 2, 3, 4, 5].map((i) => (
+              <div key={i} className="flex gap-2 p-3 border-b border-gray-200 dark:border-gray-700">
+                <div className="h-4 w-4 bg-slate-200 dark:bg-slate-700 rounded shrink-0" />
+                <div className="h-4 w-32 bg-slate-200 dark:bg-slate-700 rounded" />
+                <div className="h-4 w-16 bg-slate-200 dark:bg-slate-700 rounded ml-auto" />
+                <div className="h-4 w-16 bg-slate-200 dark:bg-slate-700 rounded ml-auto" />
+              </div>
+            ))}
+          </div>
         </div>
       ) : !selectedGS || gradeSubjects.length === 0 ? (
         <div className="bg-white/70 dark:bg-gray-800/40 border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
