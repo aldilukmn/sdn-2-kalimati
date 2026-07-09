@@ -70,8 +70,14 @@ export function useFinalScore() {
         setGradeSubjects(result);
         if (result.length === 0) {
           setSelectedGS("");
-        } else if (selectedGS && !result.some((gs: { _id: string }) => gs._id === selectedGS)) {
-          setSelectedGS("");
+        } else if (selectedGS) {
+          const currentSubjectId = gradeSubjects.find((gs) => gs._id === selectedGS)?.subjectId;
+          if (currentSubjectId) {
+            const newGS = result.find((gs: { subjectId: string }) => gs.subjectId === currentSubjectId);
+            setSelectedGS(newGS ? newGS._id : "");
+          } else {
+            setSelectedGS("");
+          }
         }
       } catch {
         setGradeSubjects([]);

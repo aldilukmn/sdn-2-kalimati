@@ -56,11 +56,11 @@ export default function MasterKonfigurasiNilaiPage() {
 
       {/* Filter */}
       <div className="bg-white/70 dark:bg-gray-800/40 border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
           <div>
             <label className="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">Kelas</label>
             <Select value={grade || "all"} onValueChange={(v) => setGrade(v === "all" ? "" : (v ?? ""))}>
-              <SelectTrigger><SelectValue placeholder="Semua Kelas" /></SelectTrigger>
+              <SelectTrigger><SelectValue /></SelectTrigger>
               <SelectContent>
                 <SelectGroup>
                   <SelectLabel>Kelas</SelectLabel>
