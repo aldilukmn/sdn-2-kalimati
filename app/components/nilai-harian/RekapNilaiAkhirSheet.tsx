@@ -39,7 +39,7 @@ export default function RekapNilaiAkhirSheet({ matrix, subjects, classAverages }
                 <td className="p-3 text-center text-sm text-slate-500 dark:text-slate-400">
                   {idx + 1}
                 </td>
-                <td className="p-3">
+                <td className="p-3 whitespace-nowrap">
                   <span className="text-sm text-gray-800 dark:text-gray-200 font-medium">
                     {row.studentName}
                   </span>
@@ -72,7 +72,7 @@ export default function RekapNilaiAkhirSheet({ matrix, subjects, classAverages }
           <tfoot>
             <tr className="bg-slate-100 dark:bg-gray-800/50 border-t-2 border-indigo-300 dark:border-indigo-700">
               <td className="px-3 py-3" />
-              <td className="p-3">
+              <td className="p-3 whitespace-nowrap">
                 <span className="text-sm font-bold text-gray-700 dark:text-gray-300">
                   Rata-rata Kelas
                 </span>

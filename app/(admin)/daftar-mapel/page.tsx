@@ -142,7 +142,7 @@ export default function MasterStrukturPage() {
 
   return (
     <div className="flex flex-col gap-6 p-4 md:p-6">
-      <PageHero icon={BookOpen} title="Daftar Mapel" description="Atur bab dan materi pelajaran" />
+      <PageHero icon={BookOpen} title="Daftar Mata Pelajaran" description="Atur bab dan materi pelajaran" />
 
       {error ? (
         <div className="bg-white/70 dark:bg-gray-800/40 border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
@@ -158,7 +158,7 @@ export default function MasterStrukturPage() {
         <>
           {/* Selector */}
       <div className="bg-white/70 dark:bg-gray-800/40 border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
           <div>
             <label className="block text-xs font-semibold text-gray-500 dark:text-gray-400 tracking-wider mb-2">Mata Pelajaran</label>
             <Select value={selectedGS} onValueChange={(v) => v && setSelectedGS(v)}>
@@ -208,7 +208,7 @@ export default function MasterStrukturPage() {
                     className="text-xs text-indigo-500 hover:text-indigo-700 dark:text-indigo-400 dark:hover:text-indigo-300 font-medium flex items-center gap-1"
                   >
                     <Settings size={12} />
-                    Kelola Mapel
+                    Kelola Mata Pelajaran
                   </Link>
                 ) : (
                   <span className="text-xs invisible">placeholder</span>
@@ -219,6 +219,7 @@ export default function MasterStrukturPage() {
                 disabled={!selectedGS}
                 className="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white rounded-xl text-sm font-semibold transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer h-[42px]"
               >
+                <Plus size={16} />
                 Tambah Bab
               </button>
             </div>

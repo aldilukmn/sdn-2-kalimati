@@ -97,11 +97,11 @@ export default function ScoreTable({
           <table className="w-full">
             <thead>
               <tr className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-xs md:text-sm">
-                <th className="px-3 py-3 text-center font-semibold w-12">No</th>
-                <th className="px-3 py-3 text-left font-semibold">Nama Siswa</th>
-                <th className="px-3 py-3 text-center font-semibold w-24">Nilai</th>
-                <th className="px-3 py-3 text-center font-semibold w-20">Maks</th>
-                <th className="px-3 py-3 text-center font-semibold w-28">Status</th>
+                <th className="px-3 py-3 text-center font-semibold w-12 whitespace-nowrap">No</th>
+                <th className="px-3 py-3 text-left font-semibold whitespace-nowrap">Nama Siswa</th>
+                <th className="px-3 py-3 text-center font-semibold w-24 whitespace-nowrap">Nilai</th>
+                <th className="px-3 py-3 text-center font-semibold w-20 whitespace-nowrap">Maks</th>
+                <th className="px-3 py-3 text-center font-semibold w-28 whitespace-nowrap">Status</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-300 dark:divide-gray-700">

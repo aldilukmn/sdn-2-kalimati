@@ -294,12 +294,12 @@ export default function NilaiAkhirPage() {
               <table className="w-full text-sm">
                 <thead>
                   <tr className="border-b border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800/50">
-                    <th className="text-left px-4 py-3 font-semibold text-slate-600 dark:text-slate-300 w-10" />
-                    <th className="text-left px-4 py-3 font-semibold text-slate-600 dark:text-slate-300 w-12">No</th>
-                    <th className="text-left px-4 py-3 font-semibold text-slate-600 dark:text-slate-300">Siswa</th>
-                    <th className="text-left px-4 py-3 font-semibold text-slate-600 dark:text-slate-300">Mapel</th>
-                    <th className="text-left px-4 py-3 font-semibold text-slate-600 dark:text-slate-300">Komponen</th>
-                    <th className="text-center px-4 py-3 font-semibold text-slate-600 dark:text-slate-300 w-24">Nilai Akhir</th>
+                    <th className="text-left px-4 py-3 font-semibold text-slate-600 dark:text-slate-300 w-10 whitespace-nowrap" />
+                    <th className="text-left px-4 py-3 font-semibold text-slate-600 dark:text-slate-300 w-12 whitespace-nowrap">No</th>
+                    <th className="text-left px-4 py-3 font-semibold text-slate-600 dark:text-slate-300 whitespace-nowrap">Siswa</th>
+                    <th className="text-left px-4 py-3 font-semibold text-slate-600 dark:text-slate-300 whitespace-nowrap">Mapel</th>
+                    <th className="text-left px-4 py-3 font-semibold text-slate-600 dark:text-slate-300 whitespace-nowrap">Komponen</th>
+                    <th className="text-center px-4 py-3 font-semibold text-slate-600 dark:text-slate-300 w-24 whitespace-nowrap">Nilai Akhir</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -320,9 +320,9 @@ export default function NilaiAkhirPage() {
                             {isExpanded ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
                           </td>
                           <td className="px-4 py-3 text-slate-500 dark:text-slate-400">{idx + 1}</td>
-                          <td className="px-4 py-3 font-medium text-slate-700 dark:text-slate-300">{entry.studentName}</td>
-                          <td className="px-4 py-3 text-slate-600 dark:text-slate-400">{entry.subjectName}</td>
-                          <td className="px-4 py-3 text-xs text-slate-500 dark:text-slate-400 truncate max-w-[200px]">
+                          <td className="px-4 py-3 font-medium text-slate-700 dark:text-slate-300 whitespace-nowrap">{entry.studentName}</td>
+                          <td className="px-4 py-3 text-slate-600 dark:text-slate-400 whitespace-nowrap">{entry.subjectName}</td>
+                          <td className="px-4 py-3 text-xs text-slate-500 dark:text-slate-400 truncate max-w-[200px] whitespace-nowrap">
                             {compSummary || "-"}
                           </td>
                           <td className="px-4 py-3 text-center">
@@ -345,10 +345,10 @@ export default function NilaiAkhirPage() {
                                 <table className="w-full text-xs max-w-md">
                                   <thead>
                                     <tr className="text-slate-400 dark:text-slate-500 border-b border-slate-200 dark:border-slate-700">
-                                      <th className="text-left pb-1 pr-4">Komponen</th>
-                                      <th className="text-right pb-1 pr-4">Nilai</th>
-                                      <th className="text-right pb-1 pr-4">Bobot</th>
-                                      <th className="text-right pb-1">Nilai × Bobot</th>
+                                      <th className="text-left pb-1 pr-4 whitespace-nowrap">Komponen</th>
+                                      <th className="text-right pb-1 pr-4 whitespace-nowrap">Nilai</th>
+                                      <th className="text-right pb-1 pr-4 whitespace-nowrap">Bobot</th>
+                                      <th className="text-right pb-1 whitespace-nowrap">Nilai × Bobot</th>
                                     </tr>
                                   </thead>
                                   <tbody>

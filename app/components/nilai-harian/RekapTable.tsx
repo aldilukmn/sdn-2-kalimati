@@ -95,7 +95,7 @@ export default function RekapTable({ chapters, entries, classAverages, loading }
                         <span className="w-3.5 inline-block" />
                       )}
                     </td>
-                    <td className="p-3">
+                    <td className="p-3 whitespace-nowrap">
                       <span className="text-sm text-gray-800 dark:text-gray-200 font-medium">
                         {entry.studentName}
                       </span>
@@ -151,7 +151,7 @@ export default function RekapTable({ chapters, entries, classAverages, loading }
           <tfoot>
             <tr className="bg-slate-100 dark:bg-gray-800/50 border-t-2 border-indigo-300 dark:border-indigo-700">
               <td className="px-2 py-3" />
-              <td className="p-3">
+              <td className="p-3 whitespace-nowrap">
                 <span className="text-sm font-bold text-gray-700 dark:text-gray-300">Rata-rata Kelas</span>
               </td>
               {chapters.map((ch) => {

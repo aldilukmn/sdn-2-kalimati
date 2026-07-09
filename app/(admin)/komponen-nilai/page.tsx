@@ -260,16 +260,16 @@ export default function NilaiKomponenPage() {
                   <table className="w-full text-sm">
                     <thead>
                       <tr className="border-b border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800/50">
-                        <th className="text-left px-4 py-3 font-semibold text-slate-600 dark:text-slate-300 w-12">No</th>
-                        <th className="text-left px-4 py-3 font-semibold text-slate-600 dark:text-slate-300">Nama Siswa</th>
-                        <th className="text-center px-4 py-3 font-semibold text-slate-600 dark:text-slate-300 w-32">Rata-rata Nilai Harian</th>
+                        <th className="text-left px-4 py-3 font-semibold text-slate-600 dark:text-slate-300 w-12 whitespace-nowrap">No</th>
+                        <th className="text-left px-4 py-3 font-semibold text-slate-600 dark:text-slate-300 whitespace-nowrap">Nama Siswa</th>
+                        <th className="text-center px-4 py-3 font-semibold text-slate-600 dark:text-slate-300 w-32 whitespace-nowrap">Rata-rata Nilai Harian</th>
                       </tr>
                     </thead>
                     <tbody>
                       {students.map((s, idx) => (
                         <tr key={s.studentId} className="border-b border-slate-100 dark:border-slate-700/50">
                           <td className="px-4 py-2.5 text-slate-500 dark:text-slate-400">{idx + 1}</td>
-                          <td className="px-4 py-2.5 font-medium text-slate-700 dark:text-slate-300">{s.name}</td>
+                          <td className="px-4 py-2.5 font-medium text-slate-700 dark:text-slate-300 whitespace-nowrap">{s.name}</td>
                           <td className="px-4 py-2.5 text-center">
                             <span className="text-sm font-semibold text-slate-700 dark:text-slate-300">
                               {harianScores[s.studentId] !== undefined ? harianScores[s.studentId].toFixed(2) : "-"}
@@ -298,12 +298,12 @@ export default function NilaiKomponenPage() {
                     <table className="w-full text-sm">
                       <thead>
                         <tr className="border-b border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800/50">
-                          <th className="text-left px-4 py-3 font-semibold text-slate-600 dark:text-slate-300 w-12">No</th>
-                          <th className="text-left px-4 py-3 font-semibold text-slate-600 dark:text-slate-300">Nama Siswa</th>
-                          <th className="text-center px-4 py-3 font-semibold text-slate-600 dark:text-slate-300 w-40">
+                          <th className="text-left px-4 py-3 font-semibold text-slate-600 dark:text-slate-300 w-12 whitespace-nowrap">No</th>
+                          <th className="text-left px-4 py-3 font-semibold text-slate-600 dark:text-slate-300 whitespace-nowrap">Nama Siswa</th>
+                          <th className="text-center px-4 py-3 font-semibold text-slate-600 dark:text-slate-300 w-40 whitespace-nowrap">
                             {components.find((c) => c.key === selectedComponentKey)?.name || selectedComponentKey}
                           </th>
-                          <th className="text-center px-4 py-3 font-semibold text-slate-600 dark:text-slate-300 w-28">Status</th>
+                          <th className="text-center px-4 py-3 font-semibold text-slate-600 dark:text-slate-300 w-28 whitespace-nowrap">Status</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -314,7 +314,7 @@ export default function NilaiKomponenPage() {
                           return (
                             <tr key={s.studentId} className="border-b border-slate-100 dark:border-slate-700/50">
                               <td className="px-4 py-2.5 text-slate-500 dark:text-slate-400">{idx + 1}</td>
-                              <td className="px-4 py-2.5 font-medium text-slate-700 dark:text-slate-300">{s.name}</td>
+                              <td className="px-4 py-2.5 font-medium text-slate-700 dark:text-slate-300 whitespace-nowrap">{s.name}</td>
                               <td className="px-4 py-2.5 text-center">
                                 <input
                                   type="number"

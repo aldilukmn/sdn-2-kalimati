@@ -229,16 +229,16 @@ export default function MasterMapelPage() {
               <Table>
                 <TableHeader>
                   <TableRow className="bg-indigo-700 hover:bg-indigo-700">
-                    <TableHead className="text-white">No</TableHead>
-                    <TableHead className="text-white">Nama Mapel</TableHead>
-                    <TableHead className="text-white text-right">Aksi</TableHead>
+                    <TableHead className="text-white whitespace-nowrap">No</TableHead>
+                    <TableHead className="text-white whitespace-nowrap">Nama Mapel</TableHead>
+                    <TableHead className="text-white text-right whitespace-nowrap">Aksi</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {filteredSubjects.map((subject, index) => (
                     <TableRow key={subject._id} className="hover:bg-slate-50 dark:hover:bg-gray-800/50">
-                      <TableCell className="font-medium text-slate-600 dark:text-slate-300">{index + 1}</TableCell>
-                      <TableCell className="text-slate-800 dark:text-slate-200 font-medium">{subject.name}</TableCell>
+                      <TableCell className="font-medium text-slate-600 dark:text-slate-300 whitespace-nowrap">{index + 1}</TableCell>
+                      <TableCell className="text-slate-800 dark:text-slate-200 font-medium whitespace-nowrap">{subject.name}</TableCell>
                       <TableCell className="text-right">
                         <div className="flex items-center justify-end gap-1">
                           <button
@@ -318,22 +318,22 @@ export default function MasterMapelPage() {
               <Table>
                 <TableHeader>
                   <TableRow className="bg-indigo-700 hover:bg-indigo-700">
-                    <TableHead className="text-white">No</TableHead>
-                    <TableHead className="text-white">Mapel</TableHead>
-                    <TableHead className="text-white">Kelas</TableHead>
-                    <TableHead className="text-white">Semester</TableHead>
-                    <TableHead className="text-white">Tahun Ajaran</TableHead>
-                    <TableHead className="text-white text-right">Aksi</TableHead>
+                    <TableHead className="text-white whitespace-nowrap">No</TableHead>
+                    <TableHead className="text-white whitespace-nowrap">Mapel</TableHead>
+                    <TableHead className="text-white whitespace-nowrap">Kelas</TableHead>
+                    <TableHead className="text-white whitespace-nowrap">Semester</TableHead>
+                    <TableHead className="text-white whitespace-nowrap">Tahun Ajaran</TableHead>
+                    <TableHead className="text-white text-right whitespace-nowrap">Aksi</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {gradeSubjects.map((gs, index) => (
                     <TableRow key={gs._id} className="hover:bg-slate-50 dark:hover:bg-gray-800/50">
-                      <TableCell className="font-medium text-slate-600 dark:text-slate-300">{index + 1}</TableCell>
-                      <TableCell className="text-slate-800 dark:text-slate-200 font-medium">{gs.subjectName || "-"}</TableCell>
-                      <TableCell className="text-slate-600 dark:text-slate-300">Kelas {gs.grade}</TableCell>
-                      <TableCell className="text-slate-600 dark:text-slate-300">Semester {gs.semester}</TableCell>
-                      <TableCell className="text-slate-600 dark:text-slate-300">{gs.academicYear}</TableCell>
+                      <TableCell className="font-medium text-slate-600 dark:text-slate-300 whitespace-nowrap">{index + 1}</TableCell>
+                      <TableCell className="text-slate-800 dark:text-slate-200 font-medium whitespace-nowrap">{gs.subjectName || "-"}</TableCell>
+                      <TableCell className="text-slate-600 dark:text-slate-300 whitespace-nowrap">Kelas {gs.grade}</TableCell>
+                      <TableCell className="text-slate-600 dark:text-slate-300 whitespace-nowrap">Semester {gs.semester}</TableCell>
+                      <TableCell className="text-slate-600 dark:text-slate-300 whitespace-nowrap">{gs.academicYear}</TableCell>
                       <TableCell className="text-right">
                         <button
                           onClick={() => setConfirmDelete({ type: "gradeSubject", id: gs._id, name: gs.subjectName || gs._id })}

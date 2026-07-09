@@ -56,11 +56,14 @@ export default function MasterKonfigurasiNilaiPage() {
 
       {/* Filter */}
       <div className="bg-white/70 dark:bg-gray-800/40 border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 gap-2 sm:gap-4">
           <div>
             <label className="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">Kelas</label>
             <Select value={grade || "all"} onValueChange={(v) => setGrade(v === "all" ? "" : (v ?? ""))}>
-              <SelectTrigger><SelectValue /></SelectTrigger>
+              <SelectTrigger className="w-full h-auto rounded-xl border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm focus:border-blue-500 dark:focus:border-blue-400 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100">
+                <span>{grade || "Semua Kelas"}</span>
+                <SelectValue className="sr-only" />
+              </SelectTrigger>
               <SelectContent>
                 <SelectGroup>
                   <SelectLabel>Kelas</SelectLabel>
@@ -72,10 +75,10 @@ export default function MasterKonfigurasiNilaiPage() {
               </SelectContent>
             </Select>
           </div>
-          <div className="flex items-end justify-end">
+          <div className="flex items-end">
             <button
               onClick={openCreateModal}
-              className="flex items-center gap-2 px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-sm font-medium transition-colors cursor-pointer"
+              className="flex items-center justify-center gap-2 px-4 py-2.5 w-full bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-sm font-medium transition-colors cursor-pointer"
             >
               <Plus size={16} />
               Buat Konfigurasi
@@ -142,12 +145,12 @@ export default function MasterKonfigurasiNilaiPage() {
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800/50">
-                  <th className="text-left px-4 py-3 font-semibold text-slate-600 dark:text-slate-300">Kelas</th>
-                  <th className="text-left px-4 py-3 font-semibold text-slate-600 dark:text-slate-300">Semester</th>
-                  <th className="text-left px-4 py-3 font-semibold text-slate-600 dark:text-slate-300">Tahun Ajaran</th>
-                  <th className="text-left px-4 py-3 font-semibold text-slate-600 dark:text-slate-300">Komponen</th>
-                  <th className="text-left px-4 py-3 font-semibold text-slate-600 dark:text-slate-300">Status</th>
-                  <th className="text-right px-4 py-3 font-semibold text-slate-600 dark:text-slate-300">Aksi</th>
+                  <th className="text-left px-4 py-3 font-semibold text-slate-600 dark:text-slate-300 whitespace-nowrap">Kelas</th>
+                  <th className="text-left px-4 py-3 font-semibold text-slate-600 dark:text-slate-300 whitespace-nowrap">Semester</th>
+                  <th className="text-left px-4 py-3 font-semibold text-slate-600 dark:text-slate-300 whitespace-nowrap">Tahun Ajaran</th>
+                  <th className="text-left px-4 py-3 font-semibold text-slate-600 dark:text-slate-300 whitespace-nowrap">Komponen</th>
+                  <th className="text-left px-4 py-3 font-semibold text-slate-600 dark:text-slate-300 whitespace-nowrap">Status</th>
+                  <th className="text-right px-4 py-3 font-semibold text-slate-600 dark:text-slate-300 whitespace-nowrap">Aksi</th>
                 </tr>
               </thead>
               <tbody>
@@ -155,19 +158,19 @@ export default function MasterKonfigurasiNilaiPage() {
                   const total = cfg.components.reduce((s, c) => s + c.weight, 0);
                   return (
                     <tr key={cfg._id} className="border-b border-slate-100 dark:border-slate-700/50 hover:bg-slate-50/50 dark:hover:bg-slate-800/30">
-                      <td className="px-4 py-3 font-medium text-slate-700 dark:text-slate-300">Kelas {cfg.grade}</td>
-                      <td className="px-4 py-3 text-slate-600 dark:text-slate-400">Semester {cfg.semester}</td>
-                      <td className="px-4 py-3 text-slate-600 dark:text-slate-400">{cfg.academicYear}</td>
-                      <td className="px-4 py-3">
-                        <div className="flex flex-wrap gap-1">
+                      <td className="px-4 py-3 font-medium text-slate-700 dark:text-slate-300 whitespace-nowrap">Kelas {cfg.grade}</td>
+                      <td className="px-4 py-3 text-slate-600 dark:text-slate-400 whitespace-nowrap">Semester {cfg.semester}</td>
+                      <td className="px-4 py-3 text-slate-600 dark:text-slate-400 whitespace-nowrap">{cfg.academicYear}</td>
+                      <td className="px-4 py-3 whitespace-nowrap">
+                        <div className="flex flex-nowrap gap-1">
                           {cfg.components.map((comp) => (
-                            <span key={comp.key} className="text-[11px] px-2 py-0.5 rounded-full bg-indigo-100 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-300">
+                            <span key={comp.key} className="text-[11px] px-2 py-0.5 rounded-full bg-indigo-100 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-300 whitespace-nowrap">
                               {comp.name} ({comp.weight}%)
                             </span>
                           ))}
                         </div>
                       </td>
-                      <td className="px-4 py-3">
+                      <td className="px-4 py-3 whitespace-nowrap">
                         <span className={`text-[11px] font-semibold px-2 py-0.5 rounded-full ${
                           total === 100
                             ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300"
@@ -176,7 +179,7 @@ export default function MasterKonfigurasiNilaiPage() {
                           {total === 100 ? "Valid" : "Invalid"}
                         </span>
                       </td>
-                      <td className="px-4 py-3 text-right">
+                      <td className="px-4 py-3 text-right whitespace-nowrap">
                         <div className="flex items-center justify-end gap-2">
                           <button
                             onClick={() => openEditModal(cfg)}
