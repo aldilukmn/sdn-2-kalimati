@@ -21,6 +21,7 @@ import {
   ChevronDown,
   ChevronRight,
   ListChecks,
+  ChartNoAxesColumn,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
@@ -44,6 +45,7 @@ const menuItems: SidebarItem[] = [
   { label: "Penilaian Karakter", icon: ListChecks, href: "/karakter" },
   { label: "Kebiasaan Karakter", icon: Folder, href: "/karakter-habits" },
   { label: "Rekap Karakter", icon: ClipboardList, href: "/rekap-karakter" },
+  { label: "Dashboard Karakter", icon: ChartNoAxesColumn, href: "/dashboard-karakter" },
   {
     label: "Penilaian", icon: Folder, children: [
       { label: "Nilai Harian", icon: ClipboardEdit, href: "/nilai-harian" },
@@ -79,7 +81,7 @@ export default function DashboardSidebar({
   const [penilaianOpen, setPenilaianOpen] = useState(true);
 
   const guruAllowedHrefs = new Set([
-    "/dashboard", "/karakter", "/rekap-karakter", "/nilai-harian", "/komponen-nilai", "/rekap-nilai-harian",
+    "/dashboard", "/dashboard-karakter", "/karakter", "/rekap-karakter", "/nilai-harian", "/komponen-nilai", "/rekap-nilai-harian",
     "/rekap-nilai-akhir", "/nilai-akhir", "/daftar-mapel",
     "/presensi-murid", "/tabungan-murid",
   ]);

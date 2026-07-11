@@ -24,6 +24,7 @@ const ROLE_ROUTES: Record<string, string[]> = {
   "/rekap-nilai-harian": ["admin", "kepala", "guru"],
   "/rekap-nilai-akhir": ["admin", "kepala", "guru"],
   "/rekap-karakter": ["admin", "kepala", "guru"],
+  "/dashboard-karakter": ["admin", "kepala", "guru"],
 };
 
 const BASE64_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
@@ -144,5 +145,6 @@ export const config = {
     "/rekap-nilai-harian",
     "/rekap-nilai-akhir",
     "/rekap-karakter",
+    "/dashboard-karakter",
   ],
 };
