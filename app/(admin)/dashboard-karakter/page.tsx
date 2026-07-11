@@ -42,7 +42,6 @@ export default function DashboardKarakterPage() {
     lowestScore,
     distribution,
     recentAssessments,
-    totalHabits,
     loading, initialLoading, error, retry,
     hasData,
     SEMESTERS, ACADEMIC_YEARS,
