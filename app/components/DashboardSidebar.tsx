@@ -43,6 +43,7 @@ const menuItems: SidebarItem[] = [
   { label: "Daftar Mapel", icon: BookOpen, href: "/daftar-mapel" },
   { label: "Penilaian Karakter", icon: ListChecks, href: "/karakter" },
   { label: "Kebiasaan Karakter", icon: Folder, href: "/karakter-habits" },
+  { label: "Rekap Karakter", icon: ClipboardList, href: "/rekap-karakter" },
   {
     label: "Penilaian", icon: Folder, children: [
       { label: "Nilai Harian", icon: ClipboardEdit, href: "/nilai-harian" },
@@ -78,7 +79,7 @@ export default function DashboardSidebar({
   const [penilaianOpen, setPenilaianOpen] = useState(true);
 
   const guruAllowedHrefs = new Set([
-    "/dashboard", "/karakter", "/nilai-harian", "/komponen-nilai", "/rekap-nilai-harian",
+    "/dashboard", "/karakter", "/rekap-karakter", "/nilai-harian", "/komponen-nilai", "/rekap-nilai-harian",
     "/rekap-nilai-akhir", "/nilai-akhir", "/daftar-mapel",
     "/presensi-murid", "/tabungan-murid",
   ]);
