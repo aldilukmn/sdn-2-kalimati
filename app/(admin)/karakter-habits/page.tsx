@@ -5,14 +5,23 @@ import { ListChecks, Plus, Pencil, Trash2, AlertCircle } from "lucide-react";
 import toast from "react-hot-toast";
 import CharacterHabitService from "@/services/character-habit.service";
 import type { CharacterHabit } from "@/types/character-habit";
-import { useAuth } from "@/app/contexts/AuthContext";
+import { decodeJWT } from "@/lib/jwt";
 import PageHero from "@/app/components/PageHero";
 import Modal from "@/app/components/Modal";
 import TableSkeleton from "@/app/components/TableSkeleton";
 import InputField from "@/app/components/form/InputField";
 
 export default function KarakterHabitsPage() {
-  const { userRole } = useAuth();
+  const [userRole, setUserRole] = useState<string | null>(null);
+
+  useEffect(() => {
+    const token = sessionStorage.getItem("user_session");
+    if (token) {
+      const payload = decodeJWT(token);
+      setUserRole(payload?.role || null);
+    }
+  }, []);
+
   const isWriteAllowed = userRole === "admin" || userRole === "kepala";
 
   const [habits, setHabits] = useState<CharacterHabit[]>([]);
