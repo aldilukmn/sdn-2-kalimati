@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { BarChart3, AlertCircle, Users, FileText, Hash, ArrowUp, ArrowDown, Star, ThumbsUp, Minus, XCircle, ListChecks, ScrollText, History, Eye, ArrowRight } from "lucide-react";
+import { BarChart3, AlertCircle, Users, FileText, Hash, ArrowUp, ArrowDown, Star, ThumbsUp, Minus, XCircle, ListChecks, ScrollText, Eye, ArrowRight } from "lucide-react";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useDashboardKarakter } from "@/hooks/useDashboardKarakter";
 import { decodeJWT } from "@/lib/jwt";
 import { GRADES } from "@/lib/constants";
@@ -119,7 +120,7 @@ export default function DashboardKarakterPage() {
       {error ? (
         <div className="bg-white/70 dark:bg-gray-800/40 border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
           <div className="text-center py-12">
-            <AlertCircle size={40} className="mx-auto text-red-300 dark:text-red-600 mb-3" />
+            <AlertCircle size={40} className="mx-auto text-red-300 dark:text-red-600 mb-3" aria-hidden="true" />
             <p className="text-red-500 dark:text-red-400 font-medium">{error}</p>
             <button onClick={retry} className="mt-3 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-sm font-medium transition-colors cursor-pointer">
               Coba Lagi
@@ -149,10 +150,10 @@ export default function DashboardKarakterPage() {
       ) : !hasData ? (
         <div className="bg-white/70 dark:bg-gray-800/40 border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
           <div className="text-center py-12">
-            <BarChart3 size={40} className="mx-auto text-slate-300 dark:text-slate-600 mb-3" />
-            <p className="text-slate-500 dark:text-slate-400 font-medium">Belum ada data penilaian.</p>
+            <BarChart3 size={40} className="mx-auto text-slate-300 dark:text-slate-600 mb-3" aria-hidden="true" />
+            <p className="text-slate-500 dark:text-slate-400 font-medium">Belum ada data penilaian karakter.</p>
             <p className="text-slate-400 dark:text-slate-500 text-sm mt-1">
-              Belum ada penilaian karakter untuk kelas ini.
+              Pilih kelas dan semester, kemudian lakukan input penilaian untuk memulai.
             </p>
             <Link
               href={`/karakter?grade=${grade}`}
@@ -199,13 +200,6 @@ export default function DashboardKarakterPage() {
                 <ScrollText size={16} />
                 Rekap
               </Link>
-              <Link
-                href={`/karakter?grade=${grade}`}
-                className="flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white text-sm font-medium transition-all"
-              >
-                <History size={16} />
-                Riwayat
-              </Link>
             </div>
           </div>
 
@@ -238,37 +232,37 @@ export default function DashboardKarakterPage() {
             <h3 className="text-sm font-semibold text-slate-600 dark:text-slate-400 mb-3">Penilaian Terbaru</h3>
             <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5 overflow-hidden">
               <div className="overflow-x-auto animate-fadeIn rounded-xl border border-gray-200 dark:border-gray-700 bg-white/80 dark:bg-gray-800/30 backdrop-blur-sm">
-                <table className="w-full">
-                  <thead>
-                    <tr className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-xs md:text-sm">
-                      <th className="px-3 py-3 text-center w-10">No</th>
-                      <th className="px-3 py-3 text-left font-semibold whitespace-nowrap">Nama</th>
-                      <th className="px-3 py-3 text-center font-semibold whitespace-nowrap">Bulan</th>
-                      <th className="px-3 py-3 text-center font-semibold whitespace-nowrap">Skor</th>
-                      <th className="px-3 py-3 text-center font-semibold whitespace-nowrap w-20">Aksi</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-gray-300 dark:divide-gray-700">
+                <Table>
+                  <TableHeader>
+                    <TableRow className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white">
+                      <TableHead className="w-12 text-center text-xs font-semibold text-white">No</TableHead>
+                      <TableHead className="text-xs font-semibold text-white">Nama</TableHead>
+                      <TableHead className="text-center text-xs font-semibold text-white">Bulan</TableHead>
+                      <TableHead className="text-center text-xs font-semibold text-white">Skor</TableHead>
+                      <TableHead className="text-center text-xs font-semibold text-white w-20">Aksi</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
                     {recentAssessments.length === 0 ? (
-                      <tr>
-                        <td colSpan={5} className="p-6 text-center text-sm text-slate-400 dark:text-slate-500">
+                      <TableRow>
+                        <TableCell colSpan={5} className="text-center py-6 text-sm text-slate-400 dark:text-slate-500">
                           Belum ada penilaian.
-                        </td>
-                      </tr>
+                        </TableCell>
+                      </TableRow>
                     ) : (
                       recentAssessments.map((item, i) => (
-                        <tr key={item._id} className="hover:bg-indigo-50/50 dark:hover:bg-indigo-900/20 transition-colors">
-                          <td className="p-3 text-center text-sm text-slate-500 dark:text-slate-400">{i + 1}</td>
-                          <td className="p-3 whitespace-nowrap">
+                        <TableRow key={item._id} className="hover:bg-indigo-50/50 dark:hover:bg-indigo-900/20 transition-colors">
+                          <TableCell className="text-center text-xs text-slate-500">{i + 1}</TableCell>
+                          <TableCell className="whitespace-nowrap">
                             <span className="text-sm text-gray-800 dark:text-gray-200 font-medium">{item.name}</span>
-                          </td>
-                          <td className="p-3 text-center text-sm text-slate-600 dark:text-slate-400">{item.month}</td>
-                          <td className="p-3 text-center">
+                          </TableCell>
+                          <TableCell className="text-center text-xs text-slate-600 dark:text-slate-400">{item.month}</TableCell>
+                          <TableCell className="text-center">
                             <span className={`text-sm font-bold ${item.characterScore >= 85 ? "text-emerald-600 dark:text-emerald-400" : item.characterScore >= 70 ? "text-blue-600 dark:text-blue-400" : item.characterScore >= 55 ? "text-amber-600 dark:text-amber-400" : "text-red-500 dark:text-red-400"}`}>
                               {item.characterScore.toFixed(2)}
                             </span>
-                          </td>
-                          <td className="p-3 text-center">
+                          </TableCell>
+                          <TableCell className="text-center">
                             <Link
                               href={`/karakter/detail?id=${item._id}`}
                               className="inline-flex items-center gap-1 text-xs font-medium text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 transition-colors"
@@ -276,12 +270,12 @@ export default function DashboardKarakterPage() {
                               <Eye size={14} />
                               Detail
                             </Link>
-                          </td>
-                        </tr>
+                          </TableCell>
+                        </TableRow>
                       ))
                     )}
-                  </tbody>
-                </table>
+                  </TableBody>
+                </Table>
               </div>
             </div>
           </div>

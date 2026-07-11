@@ -95,8 +95,9 @@ export default function StudentAssessmentTable({
                               onClick={() => onViewDetail(assessmentId)}
                               className="p-1.5 rounded-lg text-slate-600 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-700/50 transition-colors"
                               title="Detail"
+                              aria-label={`Lihat detail penilaian ${student.name}`}
                             >
-                              <Eye size={14} />
+                              <Eye size={14} aria-hidden="true" />
                             </button>
                           )}
                           <button
@@ -105,8 +106,9 @@ export default function StudentAssessmentTable({
                             disabled={saving}
                             className="p-1.5 rounded-lg text-blue-600 hover:bg-blue-50 dark:text-blue-400 dark:hover:bg-blue-900/30 transition-colors disabled:opacity-50"
                             title="Edit"
+                            aria-label={`Edit penilaian ${student.name}`}
                           >
-                            <Pencil size={14} />
+                            <Pencil size={14} aria-hidden="true" />
                           </button>
                           <button
                             type="button"
@@ -114,8 +116,9 @@ export default function StudentAssessmentTable({
                             disabled={saving}
                             className="p-1.5 rounded-lg text-red-600 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-900/30 transition-colors disabled:opacity-50"
                             title="Hapus"
+                            aria-label={`Hapus penilaian ${student.name}`}
                           >
-                            <Trash2 size={14} />
+                            <Trash2 size={14} aria-hidden="true" />
                           </button>
                         </>
                       ) : (

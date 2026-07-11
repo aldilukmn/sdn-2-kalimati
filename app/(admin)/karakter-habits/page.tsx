@@ -172,7 +172,7 @@ export default function KarakterHabitsPage() {
       {error && (
         <div className="bg-white/70 dark:bg-gray-800/40 border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
           <div className="text-center py-12">
-            <AlertCircle size={40} className="mx-auto text-red-300 dark:text-red-600 mb-3" />
+            <AlertCircle size={40} className="mx-auto text-red-300 dark:text-red-600 mb-3" aria-hidden="true" />
             <p className="text-red-500 dark:text-red-400 font-medium">{error}</p>
             <button
               onClick={fetchHabits}
@@ -195,7 +195,7 @@ export default function KarakterHabitsPage() {
       {!loading && !error && habits.length === 0 && (
         <div className="bg-white/70 dark:bg-gray-800/40 border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
           <div className="text-center py-12">
-            <ListChecks size={40} className="mx-auto text-slate-300 dark:text-slate-600 mb-3" />
+            <ListChecks size={40} className="mx-auto text-slate-300 dark:text-slate-600 mb-3" aria-hidden="true" />
             <p className="text-slate-500 dark:text-slate-400 font-medium">Belum ada kebiasaan.</p>
             <p className="text-slate-400 dark:text-slate-500 text-sm mt-1">
               {isWriteAllowed ? "Klik tombol Tambah Kebiasaan untuk menambahkan." : "Hubungi Admin untuk menambahkan kebiasaan."}
@@ -232,15 +232,17 @@ export default function KarakterHabitsPage() {
                               onClick={() => openEdit(habit)}
                               className="p-1.5 rounded-lg text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/30 transition-colors cursor-pointer"
                               title="Edit"
+                              aria-label={`Edit ${habit.name}`}
                             >
-                              <Pencil size={15} />
+                              <Pencil size={15} aria-hidden="true" />
                             </button>
                             <button
                               onClick={() => openDelete(habit)}
                               className="p-1.5 rounded-lg text-red-500 hover:bg-red-50 dark:hover:bg-red-900/30 transition-colors cursor-pointer"
                               title="Hapus"
+                              aria-label={`Hapus ${habit.name}`}
                             >
-                              <Trash2 size={15} />
+                              <Trash2 size={15} aria-hidden="true" />
                             </button>
                           </div>
                         </td>

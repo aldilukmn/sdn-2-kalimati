@@ -177,14 +177,13 @@ export function useCharacterAssessment() {
     const monthOrder = MONTHS_ID.indexOf(month) + 1;
 
     try {
-      for (const s of studentsToSave) {
-        const existingId = assessments[s.studentId];
-        if (existingId) {
-          await CharacterAssessmentService.update(existingId, {
+      const results = await Promise.allSettled(
+        studentsToSave.map((s) => {
+          const existingId = assessments[s.studentId];
+          const payload = {
             habits: s.habits,
-          });
-        } else {
-          await CharacterAssessmentService.create({
+          };
+          const base = {
             studentId: s.studentId,
             name: s.name,
             grade,
@@ -193,19 +192,42 @@ export function useCharacterAssessment() {
             month,
             monthOrder,
             habits: s.habits,
-          });
+          };
+          return existingId
+            ? CharacterAssessmentService.update(existingId, payload)
+            : CharacterAssessmentService.create(base);
+        })
+      );
+
+      const succeeded = results.filter((r) => r.status === "fulfilled").length;
+      const failed = results.filter((r) => r.status === "rejected").length;
+
+      const failedMessages: string[] = [];
+      for (const r of results) {
+        if (r.status === "rejected") {
+          const msg = r.reason instanceof Error ? r.reason.message : "Gagal menyimpan";
+          if (!failedMessages.includes(msg)) failedMessages.push(msg);
         }
       }
-      toast.success("Penilaian karakter berhasil disimpan");
+
+      if (failed === 0) {
+        toast.success(`${succeeded} penilaian berhasil disimpan`);
+      } else if (succeeded > 0) {
+        toast.error(`${succeeded} berhasil, ${failed} gagal`);
+        for (const msg of failedMessages) {
+          toast.error(msg, { id: msg });
+        }
+      } else {
+        toast.error(failedMessages[0] || "Gagal menyimpan penilaian");
+      }
+    } catch {}
+
+    try {
       await fetchAll();
-    } catch (e: unknown) {
-      const message = e instanceof Error ? e.message : "Gagal menyimpan penilaian";
-      toast.error(message);
-      await fetchAll();
-    } finally {
-      savingRef.current = false;
-      setSaving(false);
-    }
+    } catch {}
+
+    savingRef.current = false;
+    setSaving(false);
   };
 
   const handleEdit = async (assessmentId: string) => {

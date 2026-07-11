@@ -1,5 +1,7 @@
 "use client";
 
+import { useRef, useCallback } from "react";
+
 interface HabitRadioGroupProps {
   value: string;
   onChange: (value: "A" | "B" | "C" | "D") => void;
@@ -14,16 +16,52 @@ const OPTIONS = [
 ];
 
 export default function HabitRadioGroup({ value, onChange, disabled }: HabitRadioGroupProps) {
+  const buttonRefs = useRef<HTMLButtonElement[]>([]);
+
+  const setRef = useCallback((el: HTMLButtonElement | null, idx: number) => {
+    if (el) buttonRefs.current[idx] = el;
+  }, []);
+
+  const focusNext = (currentIdx: number, direction: 1 | -1) => {
+    const nextIdx = (currentIdx + direction + OPTIONS.length) % OPTIONS.length;
+    buttonRefs.current[nextIdx]?.focus();
+    onChange(OPTIONS[nextIdx].value);
+  };
+
+  const handleKeyDown = (idx: number) => (e: React.KeyboardEvent) => {
+    if (disabled) return;
+    switch (e.key) {
+      case "ArrowLeft":
+      case "ArrowUp":
+        e.preventDefault();
+        focusNext(idx, -1);
+        break;
+      case "ArrowRight":
+      case "ArrowDown":
+        e.preventDefault();
+        focusNext(idx, 1);
+        break;
+    }
+  };
+
+  const selectedIdx = OPTIONS.findIndex((o) => o.value === value);
+
   return (
-    <div className="flex gap-1 items-center justify-center">
-      {OPTIONS.map((opt) => {
+    <div className="flex gap-1 items-center justify-center" role="radiogroup" aria-label="Nilai kebiasaan">
+      {OPTIONS.map((opt, idx) => {
         const selected = value === opt.value;
         return (
           <button
             key={opt.value}
+            ref={(el) => setRef(el, idx)}
             type="button"
+            role="radio"
+            aria-checked={selected}
             disabled={disabled}
+            tabIndex={selected || (selectedIdx === -1 && idx === 0) ? 0 : -1}
             onClick={() => onChange(opt.value)}
+            onKeyDown={handleKeyDown(idx)}
+            aria-label={`Nilai ${opt.value}`}
             className={`w-7 h-7 rounded-full text-xs font-bold text-white transition-all duration-200 shrink-0 ${
               selected
                 ? opt.className + " ring-2 ring-offset-1 ring-offset-slate-50 dark:ring-offset-slate-800 scale-110"

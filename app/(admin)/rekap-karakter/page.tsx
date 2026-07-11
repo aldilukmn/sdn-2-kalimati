@@ -147,7 +147,7 @@ export default function RekapKarakterPage() {
       {error ? (
         <div className="bg-white/70 dark:bg-gray-800/40 border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
           <div className="text-center py-12">
-            <AlertCircle size={40} className="mx-auto text-red-300 dark:text-red-600 mb-3" />
+            <AlertCircle size={40} className="mx-auto text-red-300 dark:text-red-600 mb-3" aria-hidden="true" />
             <p className="text-red-500 dark:text-red-400 font-medium">{error}</p>
             <button onClick={retry} className="mt-3 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-sm font-medium transition-colors cursor-pointer">
               Coba Lagi
@@ -164,7 +164,7 @@ export default function RekapKarakterPage() {
       ) : !hasData ? (
         <div className="bg-white/70 dark:bg-gray-800/40 border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
           <div className="text-center py-12">
-            <ClipboardList size={40} className="mx-auto text-slate-300 dark:text-slate-600 mb-3" />
+            <ClipboardList size={40} className="mx-auto text-slate-300 dark:text-slate-600 mb-3" aria-hidden="true" />
             <p className="text-slate-500 dark:text-slate-400 font-medium">Belum ada data.</p>
             <p className="text-slate-400 dark:text-slate-500 text-sm mt-1">
               Belum ada penilaian karakter untuk filter yang dipilih.
@@ -206,8 +206,8 @@ export default function RekapKarakterPage() {
           </div>
 
           {/* Table with Export */}
-          <div className="relative">
-            <div className="absolute top-4 right-4 z-10">
+          <div className="flex flex-col gap-3">
+            <div className="flex justify-end">
               <button
                 onClick={handleExportCSV}
                 className="inline-flex items-center gap-1.5 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-sm font-medium transition-colors cursor-pointer"

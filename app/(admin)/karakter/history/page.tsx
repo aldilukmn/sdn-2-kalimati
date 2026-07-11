@@ -101,7 +101,7 @@ export default function KarakterHistoryPage() {
       {error ? (
         <div className="bg-white/70 dark:bg-gray-800/40 border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
           <div className="text-center py-12">
-            <AlertCircle size={40} className="mx-auto text-red-300 dark:text-red-600 mb-3" />
+            <AlertCircle size={40} className="mx-auto text-red-300 dark:text-red-600 mb-3" aria-hidden="true" />
             <p className="text-red-500 dark:text-red-400 font-medium">{error}</p>
             <button onClick={retry} className="mt-3 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-sm font-medium transition-colors cursor-pointer">
               Coba Lagi
@@ -126,7 +126,7 @@ export default function KarakterHistoryPage() {
           ) : historyData.length === 0 ? (
             <div className="bg-white/70 dark:bg-gray-800/40 border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
               <div className="text-center py-12">
-                <History size={40} className="mx-auto text-slate-300 dark:text-slate-600 mb-3" />
+                <History size={40} className="mx-auto text-slate-300 dark:text-slate-600 mb-3" aria-hidden="true" />
                 <p className="text-slate-500 dark:text-slate-400 font-medium">Siswa belum memiliki penilaian karakter</p>
                 <button
                   onClick={() => router.push("/karakter")}
@@ -169,18 +169,25 @@ export default function KarakterHistoryPage() {
 
           {/* Trend summary */}
           {historyData.length > 1 && (
-            <div className="bg-white/70 dark:bg-gray-800/40 border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
-              <p className="text-xs text-slate-500 dark:text-slate-400">
-                Rata-rata: <span className="font-semibold text-slate-700 dark:text-slate-300">
+            <div className="grid grid-cols-3 gap-3">
+              <div className="bg-white/70 dark:bg-gray-800/40 border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 text-center">
+                <p className="text-[10px] uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-1">Rata-rata</p>
+                <p className="text-lg font-bold text-slate-700 dark:text-slate-200">
                   {(historyData.reduce((sum, h) => sum + h.characterScore, 0) / historyData.length).toFixed(2)}
-                </span>
-                {' | '}Tertinggi: <span className="font-semibold text-emerald-600 dark:text-emerald-400">
+                </p>
+              </div>
+              <div className="bg-white/70 dark:bg-gray-800/40 border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 text-center">
+                <p className="text-[10px] uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-1">Tertinggi</p>
+                <p className="text-lg font-bold text-emerald-600 dark:text-emerald-400">
                   {Math.max(...historyData.map((h) => h.characterScore)).toFixed(2)}
-                </span>
-                {' | '}Terendah: <span className="font-semibold text-red-600 dark:text-red-400">
+                </p>
+              </div>
+              <div className="bg-white/70 dark:bg-gray-800/40 border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 text-center">
+                <p className="text-[10px] uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-1">Terendah</p>
+                <p className="text-lg font-bold text-red-600 dark:text-red-400">
                   {Math.min(...historyData.map((h) => h.characterScore)).toFixed(2)}
-                </span>
-              </p>
+                </p>
+              </div>
             </div>
           )}
         </>

@@ -37,10 +37,12 @@ export default function PageHero({
                 ? "w-14 h-14 md:w-16 md:h-16 backdrop-blur-sm"
                 : "w-12 h-12 md:w-14 md:h-14"
             } bg-white/15 rounded-xl flex items-center justify-center animate-iconBounce`}
+            aria-hidden="true"
           >
             <Icon
               size={large ? 28 : 26}
               className={`${large ? "md:size-[32px]" : "md:size-[30px]"} text-white`}
+              aria-hidden="true"
             />
           </div>
           <div className={large ? "min-w-0" : ""}>
