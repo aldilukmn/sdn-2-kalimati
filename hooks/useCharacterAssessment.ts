@@ -175,7 +175,6 @@ export function useCharacterAssessment() {
     }
 
     const monthOrder = MONTHS_ID.indexOf(month) + 1;
-    const academicYearFrom = academicYear.split("/")[0];
 
     try {
       for (const s of studentsToSave) {

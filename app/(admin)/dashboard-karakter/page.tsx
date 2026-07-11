@@ -170,7 +170,7 @@ export default function DashboardKarakterPage() {
           <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
             <StatCard label="Total Siswa" value={totalStudents} icon={Users} color="indigo" loading={loading} />
             <StatCard label="Total Penilaian" value={totalAssessments} icon={FileText} color="teal" loading={loading} />
-            <StatCard label="Rata-rata Skor" value={avgScore !== null ? avgScore.toFixed(2) : "-"} icon={Hash} color="blue" loading={loading} />
+            <StatCard label="Rata-rata Skor" value={avgScore !== null ? avgScore.toFixed(2) : "-"} icon={Hash} color="teal" loading={loading} />
             <StatCard label="Skor Tertinggi" value={highestScore !== null ? highestScore.toFixed(2) : "-"} icon={ArrowUp} color="emerald" loading={loading} />
             <StatCard label="Skor Terendah" value={lowestScore !== null ? lowestScore.toFixed(2) : "-"} icon={ArrowDown} color="yellow" loading={loading} />
           </div>

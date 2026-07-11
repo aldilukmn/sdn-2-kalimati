@@ -49,16 +49,16 @@ export default function StudentAssessmentTable({
     <div className="overflow-x-auto rounded-xl border border-slate-200 dark:border-slate-700">
       <Table>
         <TableHeader>
-          <TableRow className="bg-slate-100 dark:bg-slate-800/50">
-            <TableHead className="w-12 text-center text-xs font-semibold text-slate-600 dark:text-slate-300">No</TableHead>
-            <TableHead className="text-xs font-semibold text-slate-600 dark:text-slate-300">NIS</TableHead>
-            <TableHead className="text-xs font-semibold text-slate-600 dark:text-slate-300">Nama</TableHead>
+          <TableRow className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white">
+            <TableHead className="w-12 text-center text-xs font-semibold text-white">No</TableHead>
+            <TableHead className="text-xs font-semibold text-white">NIS</TableHead>
+            <TableHead className="text-xs font-semibold text-white">Nama</TableHead>
             {habits.map((h) => (
-              <TableHead key={h._id} className="text-center text-xs font-semibold text-slate-600 dark:text-slate-300 min-w-[100px]">
+              <TableHead key={h._id} className="text-center text-xs font-semibold text-white min-w-[100px]">
                 {h.name}
               </TableHead>
             ))}
-            <TableHead className="w-20 text-center text-xs font-semibold text-slate-600 dark:text-slate-300">Aksi</TableHead>
+            <TableHead className="w-20 text-center text-xs font-semibold text-white">Aksi</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>

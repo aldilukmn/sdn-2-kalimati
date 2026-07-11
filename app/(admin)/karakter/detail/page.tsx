@@ -8,6 +8,7 @@ import CharacterHabitService from "@/services/character-habit.service";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import type { CharacterAssessment } from "@/types/character-assessment";
 import type { CharacterHabit } from "@/types/character-habit";
+import { decodeJWT } from "@/lib/jwt";
 import toast from "react-hot-toast";
 import PageHero from "@/app/components/PageHero";
 import BackButton from "@/app/components/BackButton";
@@ -51,6 +52,15 @@ export default function KarakterDetailPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [retryCount, setRetryCount] = useState(0);
+  const [userRole, setUserRole] = useState<string | null>(null);
+
+  useEffect(() => {
+    const token = sessionStorage.getItem("user_session");
+    if (token) {
+      const payload = decodeJWT(token);
+      setUserRole(payload?.role || null);
+    }
+  }, []);
 
   const retry = useCallback(() => {
     setError(null);
@@ -181,11 +191,11 @@ export default function KarakterDetailPage() {
               <div className="overflow-x-auto">
                 <Table>
                   <TableHeader>
-                    <TableRow className="bg-slate-100 dark:bg-slate-800/50">
-                      <TableHead className="w-12 text-center text-xs font-semibold text-slate-600 dark:text-slate-300">No</TableHead>
-                      <TableHead className="text-xs font-semibold text-slate-600 dark:text-slate-300">Kebiasaan</TableHead>
-                      <TableHead className="text-center text-xs font-semibold text-slate-600 dark:text-slate-300">Nilai</TableHead>
-                      <TableHead className="text-center text-xs font-semibold text-slate-600 dark:text-slate-300">Bobot</TableHead>
+                    <TableRow className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white">
+                      <TableHead className="w-12 text-center text-xs font-semibold text-white">No</TableHead>
+                      <TableHead className="text-xs font-semibold text-white">Kebiasaan</TableHead>
+                      <TableHead className="text-center text-xs font-semibold text-white">Nilai</TableHead>
+                      <TableHead className="text-center text-xs font-semibold text-white">Bobot</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>

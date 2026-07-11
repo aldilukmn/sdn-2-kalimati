@@ -2,7 +2,6 @@
 
 import { useEffect, useState, useCallback } from "react";
 import CharacterAssessmentService from "@/services/character-assessment.service";
-import CharacterHabitService from "@/services/character-habit.service";
 import type { AssessmentListItem } from "@/types/character-assessment";
 
 const SEMESTERS = ["1", "2"];
@@ -24,7 +23,6 @@ export function useDashboardKarakter(userRole: string | null, userGrade: string 
   const [grade, setGrade] = useState(userGrade ?? "");
 
   const [assessments, setAssessments] = useState<AssessmentListItem[]>([]);
-  const [totalHabits, setTotalHabits] = useState(0);
   const [loading, setLoading] = useState(false);
   const [initialLoading, setInitialLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -40,17 +38,6 @@ export function useDashboardKarakter(userRole: string | null, userGrade: string 
       setGrade(userGrade);
     }
   }, [userRole, userGrade]);
-
-  useEffect(() => {
-    (async () => {
-      try {
-        const res = await CharacterHabitService.getAll();
-        setTotalHabits(res?.result?.length || 0);
-      } catch {
-        // non-critical
-      }
-    })();
-  }, []);
 
   useEffect(() => {
     if (!grade) return;
@@ -112,7 +99,6 @@ export function useDashboardKarakter(userRole: string | null, userGrade: string 
     lowestScore,
     distribution,
     recentAssessments,
-    totalHabits,
     loading, initialLoading, error, retry,
     hasData,
     SEMESTERS, ACADEMIC_YEARS,
