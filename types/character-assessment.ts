@@ -56,3 +56,9 @@ export interface AssessmentUpdateRequest {
   monthOrder?: number;
   habits?: { habitId: string; value: "A" | "B" | "C" | "D" }[];
 }
+
+export interface HistoryItem {
+  month: string;
+  monthOrder: number;
+  characterScore: number;
+}

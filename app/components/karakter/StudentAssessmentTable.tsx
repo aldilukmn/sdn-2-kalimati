@@ -3,7 +3,7 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import HabitRadioGroup from "./HabitRadioGroup";
 import type { CharacterHabit } from "@/types/character-habit";
-import { Trash2, Pencil } from "lucide-react";
+import { Trash2, Pencil, Eye } from "lucide-react";
 
 interface StudentRow {
   studentId: string;
@@ -22,6 +22,7 @@ interface Props {
   onScoreChange: (studentId: string, habitId: string, value: "A" | "B" | "C" | "D") => void;
   onEdit: (assessmentId: string) => void;
   onDelete: (assessmentId: string, studentName: string) => void;
+  onViewDetail?: (assessmentId: string) => void;
   saving: boolean;
 }
 
@@ -33,6 +34,7 @@ export default function StudentAssessmentTable({
   onScoreChange,
   onEdit,
   onDelete,
+  onViewDetail,
   saving,
 }: Props) {
   if (habits.length === 0) {
@@ -87,6 +89,16 @@ export default function StudentAssessmentTable({
                     <div className="flex items-center justify-center gap-1">
                       {assessmentId ? (
                         <>
+                          {onViewDetail && (
+                            <button
+                              type="button"
+                              onClick={() => onViewDetail(assessmentId)}
+                              className="p-1.5 rounded-lg text-slate-600 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-700/50 transition-colors"
+                              title="Detail"
+                            >
+                              <Eye size={14} />
+                            </button>
+                          )}
                           <button
                             type="button"
                             onClick={() => onEdit(assessmentId)}

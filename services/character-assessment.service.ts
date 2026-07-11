@@ -1,5 +1,5 @@
 import { api } from "@/lib/api";
-import type { CharacterAssessment, AssessmentListItem, AssessmentCreateRequest, AssessmentUpdateRequest } from "@/types/character-assessment";
+import type { CharacterAssessment, AssessmentListItem, AssessmentCreateRequest, AssessmentUpdateRequest, HistoryItem } from "@/types/character-assessment";
 
 export default class CharacterAssessmentService {
   static async getAll(params: { grade: string; academicYear: string; semester: string; month?: string }) {
@@ -13,6 +13,10 @@ export default class CharacterAssessmentService {
 
   static async getById(id: string) {
     return await api<CharacterAssessment>(`/character-assessment/${id}`);
+  }
+
+  static async getHistory(studentId: string) {
+    return await api<HistoryItem[]>(`/character-assessment/history/${studentId}`);
   }
 
   static async create(data: AssessmentCreateRequest) {

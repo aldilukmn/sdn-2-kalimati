@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { ClipboardList, Save, AlertCircle, Loader2, Trash2 } from "lucide-react";
 import { useCharacterAssessment } from "@/hooks/useCharacterAssessment";
 import toast from "react-hot-toast";
@@ -19,6 +20,7 @@ import {
 } from "@/components/ui/select";
 
 export default function KarakterPage() {
+  const router = useRouter();
   const {
     semester, setSemester,
     academicYear, setAcademicYear,
@@ -55,6 +57,10 @@ export default function KarakterPage() {
     if (!deleteTarget) return;
     await handleDelete(deleteTarget.id, deleteTarget.name);
     setDeleteTarget(null);
+  };
+
+  const handleViewDetail = (assessmentId: string) => {
+    router.push(`/karakter/detail?id=${assessmentId}`);
   };
 
   return (
@@ -179,6 +185,7 @@ export default function KarakterPage() {
             onScoreChange={handleScoreChange}
             onEdit={handleEdit}
             onDelete={(id, name) => setDeleteTarget({ id, name })}
+            onViewDetail={handleViewDetail}
             saving={saving}
           />
 
