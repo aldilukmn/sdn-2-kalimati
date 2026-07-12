@@ -5,11 +5,9 @@ import FinalScoreService from "@/services/final-score.service";
 import GradeSubjectService from "@/services/grade-subject.service";
 import StudentAttendanceService from "@/services/student-attendance.service";
 import type { GradeSubject } from "@/types/nilai-harian";
-import type { FinalScoreEntry } from "@/services/final-score.service";
+import type { FinalScoreEntry } from "@/types/final-score";
 import type { MasterStudentType } from "@/types/attendance";
-
-const SEMESTERS = ["1", "2"];
-const ACADEMIC_YEARS = ["2026/2027"];
+import { SEMESTERS, ACADEMIC_YEARS } from "@/lib/constants";
 
 export interface SubjectColumn {
   subjectId: string;

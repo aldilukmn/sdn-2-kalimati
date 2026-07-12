@@ -2,10 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { useAuth } from "@/app/contexts/AuthContext";
-import { decodeJWT } from "@/lib/jwt";
-import { GRADES } from "@/lib/constants";
-import Modal from "@/app/components/Modal";
+import { useAuth } from "@/hooks/useAuth";
 import PageHero from "@/app/components/PageHero";
 import type { TeacherType } from "@/types/user";
 import {
@@ -14,233 +11,21 @@ import {
   Trash2,
   Loader2,
   Users,
-  AlertTriangle,
   X,
   Check,
 } from "lucide-react";
 import toast from "react-hot-toast";
 import UserService from "@/services/user.service";
 import StudentAttendanceService from "@/services/student-attendance.service";
-
-interface FormData {
-  username: string;
-  password: string;
-  fullName: string;
-  nip: string;
-  grade: string;
-  title: string;
-  role: string;
-}
-
-const emptyForm: FormData = {
-  username: "",
-  password: "",
-  fullName: "",
-  nip: "",
-  grade: "",
-  title: "",
-  role: "guru",
-};
-
-const ROLE_OPTIONS = [
-  { value: "guru", label: "Guru" },
-  { value: "kepala", label: "Kepala" },
-  { value: "penjaga", label: "Penjaga" },
-];
-
-function AddEditModal({
-  title,
-  formData,
-  setFormData,
-  onSubmit,
-  onClose,
-  submitting,
-  isEdit,
-}: {
-  title: string;
-  formData: FormData;
-  setFormData: (data: FormData) => void;
-  onSubmit: () => void;
-  onClose: () => void;
-  submitting: boolean;
-  isEdit: boolean;
-}) {
-  const isGuru = formData.role === "guru";
-
-  return (
-    <Modal open onClose={onClose} title={title} className="max-w-md">
-        <div className="space-y-3">
-          {!isEdit && (
-            <div>
-              <label className="text-xs text-gray-500 dark:text-gray-400 mb-1 block">Role</label>
-              <select
-                value={formData.role}
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    role: e.target.value,
-                    grade: e.target.value !== "guru" ? "" : formData.grade,
-                  })
-                }
-                className="w-full rounded-xl border border-slate-300 dark:border-gray-700 bg-slate-50 dark:bg-gray-950 px-4 py-2.5 text-sm outline-none focus:border-blue-500 dark:text-slate-100"
-              >
-                {ROLE_OPTIONS.map((r) => (
-                  <option key={r.value} value={r.value}>
-                    {r.label}
-                  </option>
-                ))}
-              </select>
-            </div>
-          )}
-          <div>
-            <label className="text-xs text-gray-500 dark:text-gray-400 mb-1 block">Username</label>
-            <input
-              placeholder="Masukkan username"
-              value={formData.username}
-              onChange={(e) =>
-                setFormData({ ...formData, username: e.target.value })
-              }
-              className="w-full rounded-xl border border-slate-300 dark:border-gray-700 bg-slate-50 dark:bg-gray-950 px-4 py-2.5 text-sm outline-none focus:border-blue-500 dark:text-slate-100"
-            />
-          </div>
-          {!isEdit && (
-            <div>
-              <label className="text-xs text-gray-500 dark:text-gray-400 mb-1 block">Password</label>
-              <input
-                type="password"
-                placeholder="Masukkan password"
-                value={formData.password}
-                onChange={(e) =>
-                  setFormData({ ...formData, password: e.target.value })
-                }
-                className="w-full rounded-xl border border-slate-300 dark:border-gray-700 bg-slate-50 dark:bg-gray-950 px-4 py-2.5 text-sm outline-none focus:border-blue-500 dark:text-slate-100"
-              />
-            </div>
-          )}
-          <div>
-            <label className="text-xs text-gray-500 dark:text-gray-400 mb-1 block">Nama Lengkap</label>
-            <input
-              placeholder="Masukkan nama lengkap"
-              value={formData.fullName}
-              onChange={(e) =>
-                setFormData({ ...formData, fullName: e.target.value })
-              }
-              className="w-full rounded-xl border border-slate-300 dark:border-gray-700 bg-slate-50 dark:bg-gray-950 px-4 py-2.5 text-sm outline-none focus:border-blue-500 dark:text-slate-100"
-            />
-          </div>
-          <div>
-            <label className="text-xs text-gray-500 dark:text-gray-400 mb-1 block">NIP</label>
-            <input
-              placeholder="Masukkan NIP"
-              value={formData.nip}
-              onChange={(e) => setFormData({ ...formData, nip: e.target.value })}
-              className="w-full rounded-xl border border-slate-300 dark:border-gray-700 bg-slate-50 dark:bg-gray-950 px-4 py-2.5 text-sm outline-none focus:border-blue-500 dark:text-slate-100"
-            />
-          </div>
-          {isGuru && (
-            <div>
-              <label className="text-xs text-gray-500 dark:text-gray-400 mb-1 block">Kelas</label>
-              <select
-                value={formData.grade}
-                onChange={(e) =>
-                  setFormData({ ...formData, grade: e.target.value })
-                }
-                className="w-full rounded-xl border border-slate-300 dark:border-gray-700 bg-slate-50 dark:bg-gray-950 px-4 py-2.5 text-sm outline-none focus:border-blue-500 dark:text-slate-100"
-              >
-                <option value="">Pilih Kelas</option>
-                {GRADES.map((g) => (
-                  <option key={g} value={g}>
-                    Kelas {g}
-                  </option>
-                ))}
-              </select>
-            </div>
-          )}
-          <div>
-            <label className="text-xs text-gray-500 dark:text-gray-400 mb-1 block">Gelar</label>
-            <input
-              placeholder="Contoh: S.Pd"
-              value={formData.title}
-              onChange={(e) =>
-                setFormData({ ...formData, title: e.target.value })
-              }
-              className="w-full rounded-xl border border-slate-300 dark:border-gray-700 bg-slate-50 dark:bg-gray-950 px-4 py-2.5 text-sm outline-none focus:border-blue-500 dark:text-slate-100"
-            />
-          </div>
-        </div>
-        <div className="flex gap-3 mt-5">
-          <button
-            onClick={onClose}
-            className="flex-1 px-4 py-2.5 rounded-xl border border-slate-300 text-sm text-gray-600 hover:bg-slate-100 transition-colors dark:border-gray-700 dark:text-slate-300 dark:hover:bg-gray-800 cursor-pointer"
-          >
-            Batal
-          </button>
-          <button
-            onClick={onSubmit}
-            disabled={
-              submitting ||
-              (!isEdit &&
-                (!formData.username ||
-                  !formData.password ||
-                  (isGuru && !formData.grade)))
-            }
-            className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white text-sm font-semibold transition-all disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
-          >
-            {submitting && <Loader2 size={16} className="animate-spin" />}
-            {isEdit ? "Simpan" : "Tambah"}
-          </button>
-        </div>
-    </Modal>
-  );
-}
-
-function ConfirmDialog({
-  id,
-  onConfirm,
-  onClose,
-  submitting,
-}: {
-  id: string | null;
-  onConfirm: (id: string) => void;
-  onClose: () => void;
-  submitting: boolean;
-}) {
-  if (!id) return null;
-  return (
-    <Modal open onClose={onClose} className="max-w-sm text-center">
-        <div className="mx-auto w-12 h-12 flex items-center justify-center rounded-full bg-red-100 dark:bg-red-900/30 mb-4">
-          <AlertTriangle size={28} className="text-red-600 dark:text-red-400" />
-        </div>
-        <h3 className="font-semibold text-gray-800 dark:text-slate-100 mb-2">
-          Konfirmasi Hapus
-        </h3>
-        <p className="text-sm text-gray-600 dark:text-gray-400 mb-6">
-          Yakin ingin menghapus data ini? Tindakan ini tidak bisa dibatalkan.
-        </p>
-        <div className="flex gap-3 justify-center">
-          <button
-            onClick={onClose}
-            className="flex-1 px-4 py-2.5 rounded-xl border border-slate-300 text-sm text-gray-600 hover:bg-slate-100 transition-colors dark:border-gray-700 dark:text-slate-300 dark:hover:bg-gray-800 cursor-pointer"
-          >
-            Batal
-          </button>
-          <button
-            onClick={() => onConfirm(id)}
-            disabled={submitting}
-            className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-red-600 hover:bg-red-700 text-white text-sm font-semibold transition-all disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
-          >
-            {submitting && <Loader2 size={16} className="animate-spin" />}
-            Ya, Hapus
-          </button>
-        </div>
-    </Modal>
-  );
-}
+import AddEditModal, { FormData, emptyForm, ROLE_OPTIONS } from "./components/AddEditModal";
+import ConfirmDialog from "./components/ConfirmDialog";
+import TableSkeleton from "@/app/components/TableSkeleton";
+import EmptyState from "@/app/components/shared/EmptyState";
 
 export default function DataGTK() {
   const router = useRouter();
-  const { userRole: authRole, isLoading: authLoading } = useAuth();
-  const [userRole, setUserRole] = useState<string | null>(null);
+  const { role: authRole, isLoading: authLoading } = useAuth();
+  const userRole = authRole;
   const [teachers, setTeachers] = useState<TeacherType[]>([]);
   const [staff, setStaff] = useState<TeacherType[]>([]);
   const [loading, setLoading] = useState(true);
@@ -254,21 +39,6 @@ export default function DataGTK() {
   const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
   const [studentCounts, setStudentCounts] = useState<Record<string, number>>({});
   const [savingsHolderLoading, setSavingsHolderLoading] = useState<string | null>(null);
-
-  useEffect(() => {
-    const token = sessionStorage.getItem("user_session");
-    if (token) {
-      const payload = decodeJWT(token);
-      if (payload) setUserRole(payload.role);
-    }
-  }, []);
-
-  // Route guard: hanya admin/kepala yang boleh akses
-  useEffect(() => {
-    if (!authLoading && authRole !== "admin" && authRole !== "kepala") {
-      router.replace("/dashboard");
-    }
-  }, [authRole, authLoading]);
 
   const fetchTeachers = async () => {
     try {
@@ -300,13 +70,9 @@ export default function DataGTK() {
 
   const fetchStaff = async () => {
     try {
-      const [resKepala, resPenjaga] = await Promise.all([
-        UserService.getStaffByRoles("kepala"),
-        UserService.getStaffByRoles("penjaga"),
-      ]);
-      const kepala = resKepala.result || resKepala.data || [];
-      const penjaga = resPenjaga.result || resPenjaga.data || [];
-      setStaff([...kepala, ...penjaga]);
+      const resKepalaPenjaga = await UserService.getStaffByRoles("kepala,penjaga");
+      const allStaff = resKepalaPenjaga.result || resKepalaPenjaga.data || [];
+      setStaff(allStaff);
     } catch (err) {
       const error = err as Error & { status?: number };
       if (error.status === 401) {
@@ -319,7 +85,7 @@ export default function DataGTK() {
   };
 
   useEffect(() => {
-    if (authLoading || (authRole !== "admin" && authRole !== "kepala")) return;
+    if (authLoading) return;
     fetchTeachers();
     fetchStaff();
   }, [authRole, authLoading]);
@@ -441,8 +207,7 @@ export default function DataGTK() {
     setShowEditModal(true);
   };
 
-  if (authLoading || (authRole !== "admin" && authRole !== "kepala"))
-    return null;
+  if (authLoading) return null;
 
   return (
     <div className="p-4 md:p-6 space-y-6">
@@ -467,53 +232,16 @@ export default function DataGTK() {
 
       <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5 overflow-hidden">
         {loading ? (
-          <div
-            key="skeleton"
-            className="overflow-x-auto animate-fadeIn rounded-xl border border-gray-200 dark:border-gray-700 bg-white/80 md:bg-white/60 dark:bg-gray-800/30"
-          >
-            <table className="w-full">
-              <thead>
-                <tr className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-xs md:text-sm">
-                  {[
-                    "Username",
-                    "Nama Lengkap",
-                    "NIP",
-                    "Kelas",
-                    "Jumlah Murid",
-                    "Pengelola Tabungan",
-                    "Gelar",
-                    ...(userRole !== "kepala" ? ["Aksi"] : []),
-                  ].map((h) => (
-                    <th
-                      key={h}
-                      className="px-3 py-3 text-left font-semibold whitespace-nowrap"
-                    >
-                      {h}
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
-                {Array.from({ length: 5 }).map((_, i) => (
-                  <tr key={i} className="animate-pulse">
-                    {Array.from({ length: userRole !== "kepala" ? 8 : 7 }).map(
-                      (_, j) => (
-                        <td key={j} className="px-3 py-3 md:px-6 md:py-4">
-                          <div className="h-4 w-24 bg-slate-200 dark:bg-slate-700 rounded" />
-                        </td>
-                      ),
-                    )}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+          <TableSkeleton
+            headers={[
+              "Username", "Nama Lengkap", "NIP", "Kelas", "Jumlah Murid",
+              "Pengelola Tabungan", "Gelar",
+              ...(userRole !== "kepala" ? ["Aksi"] : []),
+            ]}
+            rows={5}
+          />
         ) : teachers.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-12 text-center bg-white/80 md:bg-white/60 dark:bg-gray-800/30 rounded-xl border border-gray-200 dark:border-gray-700">
-            <p className="text-gray-400 dark:text-gray-500 text-sm">
-              Belum ada data guru
-            </p>
-          </div>
+          <EmptyState icon={Users} title="Belum ada data guru" />
         ) : (
           <div
             key="data"
@@ -633,56 +361,15 @@ export default function DataGTK() {
 
       <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5 overflow-hidden">
         {staffLoading ? (
-          <div
-            key="skeleton"
-            className="overflow-x-auto animate-fadeIn rounded-xl border border-gray-200 dark:border-gray-700 bg-white/80 md:bg-white/60 dark:bg-gray-800/30"
-          >
-            <table className="w-full">
-              <thead>
-                <tr className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-xs md:text-sm">
-                  <th className="px-3 py-3 text-left font-semibold whitespace-nowrap">
-                    Username
-                  </th>
-                  <th className="px-3 py-3 text-left font-semibold whitespace-nowrap">
-                    Nama Lengkap
-                  </th>
-                  <th className="px-3 py-3 text-left font-semibold whitespace-nowrap">
-                    NIP
-                  </th>
-                  <th className="px-3 py-3 text-left font-semibold whitespace-nowrap">
-                    Gelar
-                  </th>
-                  <th className="px-3 py-3 text-center font-semibold whitespace-nowrap">
-                    Jabatan
-                  </th>
-                  {userRole !== "kepala" && (
-                    <th className="px-3 py-3 text-center font-semibold whitespace-nowrap">
-                      Aksi
-                    </th>
-                  )}
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
-                {Array.from({ length: 3 }).map((_, i) => (
-                  <tr key={i} className="animate-pulse">
-                    {Array.from({ length: userRole !== "kepala" ? 6 : 5 }).map(
-                      (_, j) => (
-                        <td key={j} className="px-3 py-3 md:px-6 md:py-4">
-                          <div className="h-4 w-24 bg-slate-200 dark:bg-slate-700 rounded" />
-                        </td>
-                      ),
-                    )}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+          <TableSkeleton
+            headers={[
+              "Username", "Nama Lengkap", "NIP", "Gelar", "Jabatan",
+              ...(userRole !== "kepala" ? ["Aksi"] : []),
+            ]}
+            rows={3}
+          />
         ) : staff.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-12 text-center bg-white/80 md:bg-white/60 dark:bg-gray-800/30 rounded-xl border border-gray-200 dark:border-gray-700">
-            <p className="text-gray-400 dark:text-gray-500 text-sm">
-              Belum ada data tenaga kependidikan
-            </p>
-          </div>
+          <EmptyState icon={Users} title="Belum ada data tenaga kependidikan" />
         ) : (
           <div
             key="data"

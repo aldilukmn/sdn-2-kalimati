@@ -9,9 +9,11 @@ import {
   ArrowLeftRight,
 } from "lucide-react";
 import { useStudentList } from "@/hooks/useStudentList";
-import { GRADES } from "@/lib/constants";
+import { GRADES, MONTHLY_PER_PAGE } from "@/lib/constants";
 import { useTransactionModal } from "@/hooks/useTransactionModal";
 import { useHistoryModal } from "@/hooks/useHistoryModal";
+import { useEditTransaction } from "@/hooks/useEditTransaction";
+import { useDeleteTransaction } from "@/hooks/useDeleteTransaction";
 import { useStudentMonthlyBreakdown } from "@/hooks/useStudentMonthlyBreakdown";
 import { useGradeRecap } from "@/hooks/useGradeRecap";
 import DateDayPicker from "@/app/components/DateDayPicker";
@@ -89,8 +91,10 @@ export default function TabunganMuridPage() {
     historyTotal,
     historyTotalPages,
     fetchHistoryPage,
+  } = useHistoryModal({ refreshList, setMessage });
+
+  const {
     editingTx,
-    deletingId,
     editModal,
     editAmount,
     setEditAmount,
@@ -102,16 +106,19 @@ export default function TabunganMuridPage() {
     openEditModal,
     closeEditModal,
     submitEditTransaction,
+  } = useEditTransaction({ refreshList, setMessage, fetchHistoryPage, historyPage });
+
+  const {
     confirmDelete,
+    deletingId,
+    handleDeleteTransaction,
     closeConfirmDelete,
     submitDeleteTransaction,
-    handleDeleteTransaction,
-  } = useHistoryModal({ refreshList, setMessage });
+  } = useDeleteTransaction({ refreshList, setMessage, fetchHistoryPage, historyPage });
 
   const [activeTab, setActiveTab] = useState<"harian" | "bulanan">("harian");
   const [year, setYear] = useState(new Date().getFullYear());
   const [monthlyPage, setMonthlyPage] = useState(1);
-  const MONTHLY_PER_PAGE = 5;
   const { holidayList, holidays: blockedDates, isHoliday: checkHoliday, getHoliday } = useHolidays();
   const isHoliday = checkHoliday(date);
   const currentHoliday = getHoliday(date);

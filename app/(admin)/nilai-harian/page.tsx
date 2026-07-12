@@ -1,21 +1,15 @@
 "use client";
 
 import { useEffect } from "react";
-import { ClipboardEdit, Save, AlertCircle, BookOpen } from "lucide-react";
+import { ClipboardEdit, Save, ClipboardList } from "lucide-react";
+import ErrorState from "@/app/components/shared/ErrorState";
+import EmptyState from "@/app/components/shared/EmptyState";
+import LoadingSkeleton from "@/app/components/shared/LoadingSkeleton";
 import { useNilaiHarian } from "@/hooks/useNilaiHarian";
-import { GRADES } from "@/lib/constants";
 import toast from "react-hot-toast";
 import PageHero from "@/app/components/PageHero";
 import ScoreTable from "@/app/components/nilai-harian/ScoreTable";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import FilterBar from "@/app/components/shared/FilterBar";
 
 export default function NilaiHarianPage() {
   const {
@@ -34,7 +28,6 @@ export default function NilaiHarianPage() {
     handleScoreChange,
     handleMaxScoreChange,
     handleSave,
-    SEMESTERS, ACADEMIC_YEARS,
   } = useNilaiHarian();
 
   useEffect(() => {
@@ -58,123 +51,23 @@ export default function NilaiHarianPage() {
     <div className="flex flex-col gap-6 p-4 md:p-6">
       <PageHero icon={ClipboardEdit} title="Nilai Harian" description="Input nilai siswa per bab atau per materi" />
 
-      {/* Filter */}
-      <div className="bg-white/70 dark:bg-gray-800/40 border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-          <div>
-            <label className="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">Tahun Ajaran</label>
-            <Select value={academicYear} onValueChange={(v) => v && setAcademicYear(v)}>
-              <SelectTrigger className="w-full h-auto rounded-xl border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100"><SelectValue /></SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  <SelectLabel>Tahun Ajaran</SelectLabel>
-                  {ACADEMIC_YEARS.map((y) => (
-                    <SelectItem key={y} value={y}>{y}</SelectItem>
-                  ))}
-                </SelectGroup>
-              </SelectContent>
-            </Select>
-          </div>
-          <div>
-            <label className="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">Semester</label>
-            <Select value={semester} onValueChange={(v) => v && setSemester(v)}>
-              <SelectTrigger className="w-full h-auto rounded-xl border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100"><SelectValue /></SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  <SelectLabel>Semester</SelectLabel>
-                  {SEMESTERS.map((s) => (
-                    <SelectItem key={s} value={s}>Semester {s}</SelectItem>
-                  ))}
-                </SelectGroup>
-              </SelectContent>
-            </Select>
-          </div>
-          <div>
-            <label className="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">Kelas</label>
-            <Select value={grade} onValueChange={(v) => v && setGrade(v)} disabled={userRole === "guru"}>
-              <SelectTrigger className="w-full h-auto rounded-xl border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100"><SelectValue /></SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  <SelectLabel>Kelas</SelectLabel>
-                  {GRADES.map((g) => (
-                    <SelectItem key={g} value={g}>Kelas {g}</SelectItem>
-                  ))}
-                </SelectGroup>
-              </SelectContent>
-            </Select>
-          </div>
-          <div>
-            <label className="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">Mata Pelajaran</label>
-            <Select value={selectedGS} onValueChange={(v) => v && setSelectedGS(v)} disabled={gradeSubjects.length === 0}>
-              <SelectTrigger className="w-full h-auto rounded-xl border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100"><SelectValue placeholder={gradeSubjects.length === 0 ? "Tidak Ada Mapel" : "Pilih Mapel"}>
-                {selectedGS ? gradeSubjects.find(gs => gs._id === selectedGS)?.subjectName || "-" : null}
-              </SelectValue></SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  <SelectLabel>Mata Pelajaran</SelectLabel>
-                  {gradeSubjects.map((gs) => (
-                    <SelectItem key={gs._id} value={gs._id}>{gs.subjectName || "-"}</SelectItem>
-                  ))}
-                </SelectGroup>
-              </SelectContent>
-            </Select>
-          </div>
-        </div>
-      </div>
+      <FilterBar config={{ showAcademicYear: true, showSemester: true, showGrade: true, showSubject: true }} academicYear={academicYear} onAcademicYearChange={setAcademicYear} semester={semester} onSemesterChange={setSemester} grade={grade} onGradeChange={setGrade} gradeDisabled={userRole === "guru"} selectedGS={selectedGS} onSelectedGSChange={setSelectedGS} gradeSubjects={gradeSubjects} />
 
       {/* Chapter cards */}
       {error ? (
-        <div className="bg-white/70 dark:bg-gray-800/40 border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
-          <div className="text-center py-12">
-            <AlertCircle size={40} className="mx-auto text-red-300 dark:text-red-600 mb-3" />
-            <p className="text-red-500 dark:text-red-400 font-medium">{error}</p>
-            <button onClick={retry} className="mt-3 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-sm font-medium transition-colors cursor-pointer">
-              Coba Lagi
-            </button>
-          </div>
-        </div>
+        <ErrorState error={error} onRetry={retry} />
       ) : initialLoading ? (
-        <div className="animate-pulse space-y-2">
-          {[1, 2, 3].map((i) => (
-            <div key={i} className="h-14 bg-slate-200 dark:bg-slate-700 rounded-xl" />
-          ))}
-        </div>
+        <LoadingSkeleton rows={3} />
       ) : !selectedGS || gradeSubjects.length === 0 ? (
-        <div className="bg-white/70 dark:bg-gray-800/40 border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
-          <div className="text-center py-12">
-            <ClipboardEdit size={40} className="mx-auto text-slate-300 dark:text-slate-600 mb-3" />
-            <p className="text-slate-500 dark:text-slate-400 font-medium">Belum ada Mapel untuk kelas ini.</p>
-            <p className="text-slate-400 dark:text-slate-500 text-sm mt-1">
-              Hubungi Admin untuk menetapkan Mata Pelajaran terlebih dahulu.
-            </p>
-          </div>
-        </div>
+        <EmptyState icon={ClipboardEdit} title="Belum ada Mapel untuk kelas ini." description="Hubungi Admin untuk menetapkan Mata Pelajaran terlebih dahulu." />
       ) : (
         <>
           {/* Chapter cards */}
           <div className="space-y-2">
             {chaptersLoading ? (
-              <div className="animate-pulse space-y-2">
-                {[1, 2, 3].map((i) => (
-                  <div key={i} className="h-14 bg-slate-200 dark:bg-slate-700 rounded-xl" />
-                ))}
-              </div>
+              <LoadingSkeleton rows={3} />
             ) : sortedChapters.length === 0 ? (
-              <div className="bg-white/70 dark:bg-gray-800/40 border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
-                <div className="text-center py-8">
-                  <p className="text-slate-500 dark:text-slate-400 font-medium">Belum ada Bab untuk mapel ini.</p>
-                  <p className="text-slate-400 dark:text-slate-500 text-sm mt-1">
-                    Buat Bab dan Materi terlebih dahulu di Struktur Akademik.
-                  </p>
-                  <a
-                    href="/daftar-mapel"
-                    className="inline-flex items-center gap-2 mt-4 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-sm font-medium transition-colors"
-                  >
-                    <BookOpen size={16} />
-                    Kelola Struktur Akademik
-                  </a>
-                </div>
-              </div>
+              <EmptyState icon={ClipboardList} title="Belum ada Bab untuk mapel ini." description="Buat Bab dan Materi terlebih dahulu di Struktur Akademik." action={{ label: "Atur Mapel", href: "/daftar-mapel" }} />
             ) : (
               sortedChapters.map((ch) => {
                 const isActive = selectedChapter?._id === ch._id;

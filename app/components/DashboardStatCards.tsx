@@ -8,6 +8,7 @@ import {
   School,
   Layers,
 } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 import type { DashboardSummary } from "@/hooks/useDashboard";
 import StatCard from "@/app/components/StatCard";
 
@@ -19,7 +20,7 @@ type StatCardKey =
   | "validated"
   | "unvalidated";
 
-const CARDS: { label: string; key: StatCardKey; icon: import("lucide-react").LucideIcon; fallback: number | string; color: string }[] = [
+const CARDS: { label: string; key: StatCardKey; icon: LucideIcon; fallback: number | string; color: string }[] = [
   { label: "Peserta Didik", key: "totalStudents", icon: GraduationCap, fallback: "-", color: "indigo" },
   { label: "GTK", key: "totalTeachers", icon: School, fallback: "-", color: "teal" },
   { label: "Jumlah Kelas", key: "gradeCount", icon: Layers, fallback: "-", color: "indigo" },

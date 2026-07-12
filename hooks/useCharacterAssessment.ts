@@ -5,13 +5,10 @@ import CharacterAssessmentService from "@/services/character-assessment.service"
 import StudentAttendanceService from "@/services/student-attendance.service";
 import CharacterHabitService from "@/services/character-habit.service";
 import { decodeJWT } from "@/lib/jwt";
-import { GRADES } from "@/lib/constants";
+import { GRADES, SEMESTERS, ACADEMIC_YEARS } from "@/lib/constants";
 import { MONTHS_ID } from "@/lib/format";
 import type { CharacterHabit } from "@/types/character-habit";
 import toast from "react-hot-toast";
-
-const SEMESTERS = ["1", "2"];
-const ACADEMIC_YEARS = ["2026/2027"];
 
 interface StudentRow {
   studentId: string;
@@ -38,7 +35,9 @@ export function useCharacterAssessment() {
       try {
         const payload = decodeJWT(token);
         if (payload) { role = payload.role; gradeFromToken = payload.grade; }
-      } catch {}
+      } catch (e) {
+        console.error("JWT decode error:", e);
+      }
     }
     if (!role) {
       const match = document.cookie.match(/(?:^|; )user_role=([^;]*)/);
@@ -220,11 +219,15 @@ export function useCharacterAssessment() {
       } else {
         toast.error(failedMessages[0] || "Gagal menyimpan penilaian");
       }
-    } catch {}
+      } catch (e) {
+        console.error("Gagal menyimpan penilaian:", e);
+      }
 
     try {
       await fetchAll();
-    } catch {}
+    } catch (e) {
+      console.error("Gagal fetch ulang setelah simpan:", e);
+    }
 
     savingRef.current = false;
     setSaving(false);

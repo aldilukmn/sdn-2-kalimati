@@ -14,13 +14,20 @@ export function useHolidays() {
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
+    const controller = new AbortController();
+
     HolidayService.getAll().then((res) => {
+      if (controller.signal.aborted) return;
       setHolidayList(res.result || []);
     }).catch(() => {
+      if (controller.signal.aborted) return;
       setHolidayList([]);
     }).finally(() => {
+      if (controller.signal.aborted) return;
       setLoaded(true);
     });
+
+    return () => controller.abort();
   }, []);
 
   const refresh = useCallback(async () => {

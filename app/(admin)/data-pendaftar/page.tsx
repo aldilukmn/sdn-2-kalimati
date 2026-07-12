@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { useAuth } from "@/app/contexts/AuthContext";
-import { decodeJWT } from "@/lib/jwt";
+import { useAuth } from "@/hooks/useAuth";
+import { ITEMS_PER_PAGE } from "@/lib/constants";
 import {
   Printer,
   CheckCircle2,
@@ -23,7 +23,9 @@ import PageHero from "@/app/components/PageHero";
 import { exportRegistrantsToCSV } from "@/lib/export-csv";
 import { printRegistrantForm } from "@/lib/print-form";
 import { formatDateID } from "@/lib/format";
-import type { Registrant } from "@/types/registration";
+import type { Registrant, PaginatedRegistrants } from "@/types/registration";
+import TableSkeleton from "@/app/components/TableSkeleton";
+import EmptyState from "@/app/components/shared/EmptyState";
 
 const formatDateTime = (isoStr?: string): string => {
   if (!isoStr) return "-";
@@ -36,8 +38,8 @@ const formatDateTime = (isoStr?: string): string => {
 
 export default function DataPendaftar() {
   const router = useRouter();
-  const { userRole: authRole, isLoading: authLoading } = useAuth();
-  const [userRole, setUserRole] = useState<string | null>(null);
+  const { role: authRole, isLoading: authLoading } = useAuth();
+  const userRole = authRole;
   const [registrants, setRegistrants] = useState<Registrant[]>([]);
   const [totalItems, setTotalItems] = useState(0);
   const [totalPagesState, setTotalPagesState] = useState(1);
@@ -48,14 +50,13 @@ export default function DataPendaftar() {
   const [validating, setValidating] = useState<Set<string>>(new Set());
   const [currentPage, setCurrentPage] = useState(1);
   const [refreshing, setRefreshing] = useState(false);
-  const itemsPerPage = 5;
 
   const fetchRegistrants = async (page?: number, isRefresh?: boolean) => {
     const targetPage = page || currentPage;
     if (!loading) setPageLoading(true);
     try {
-      const response = await RegistrationService.getAll(targetPage, itemsPerPage);
-      const result = response.result || response.data || {} as import("@/types/registration").PaginatedRegistrants;
+      const response = await RegistrationService.getAll(targetPage, ITEMS_PER_PAGE);
+      const result = response.result || response.data || {} as PaginatedRegistrants;
       setRegistrants(result.data || []);
       setTotalItems(result.total || 0);
       setTotalPagesState(result.totalPages || 1);
@@ -76,30 +77,17 @@ export default function DataPendaftar() {
   };
 
   useEffect(() => {
-    if (authLoading || (authRole !== "admin" && authRole !== "kepala")) return;
+    if (authLoading) return;
     fetchRegistrants(currentPage);
   }, [authRole, authLoading, currentPage]);
 
   useEffect(() => {
-    if (authLoading || (authRole !== "admin" && authRole !== "kepala")) return;
+    if (authLoading) return;
     const interval = setInterval(() => fetchRegistrants(currentPage), 30000);
     return () => clearInterval(interval);
   }, [authRole, authLoading, currentPage]);
 
-  useEffect(() => {
-    const token = sessionStorage.getItem("user_session");
-    if (token) {
-      const payload = decodeJWT(token);
-      if (payload) setUserRole(payload.role);
-    }
-  }, []);
-
-  // Route guard: hanya admin yang boleh akses
-  useEffect(() => {
-    if (!authLoading && authRole !== "admin" && authRole !== "kepala") {
-      router.replace("/dashboard");
-    }
-  }, [authRole, authLoading]);
+  // Route guard: proxy.ts sudah enforce role-based access
 
   const handleExport = async () => {
     try {
@@ -160,8 +148,7 @@ export default function DataPendaftar() {
     printRegistrantForm(registrant);
   };
 
-  if (authLoading || (authRole !== "admin" && authRole !== "kepala"))
-    return null;
+  if (authLoading) return null;
 
   return (
     <div className="p-4 md:p-6 space-y-6">
@@ -200,77 +187,16 @@ export default function DataPendaftar() {
       {/* Table */}
       <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5 overflow-hidden">
         {loading || pageLoading ? (
-          <div
-            key="skeleton"
-            className="overflow-x-auto animate-fadeIn rounded-xl border border-gray-200 dark:border-gray-700 bg-white/80 md:bg-white/60 dark:bg-gray-800/30"
-          >
-            <table className="w-full">
-              <thead>
-                <tr className="bg-indigo-700 text-indigo-50 tracking-wider text-xs md:text-sm">
-                  <th className="px-3 py-3 md:px-6 md:py-4 text-left font-semibold">
-                    No. Pendaftaran
-                  </th>
-                  <th className="px-3 py-3 md:px-6 md:py-4 text-left font-semibold">
-                    Tanggal Daftar
-                  </th>
-                  <th className="px-3 py-3 md:px-6 md:py-4 text-left font-semibold">
-                    Tanggal Update
-                  </th>
-                  <th className="px-3 py-3 md:px-6 md:py-4 text-left font-semibold">
-                    Nama Lengkap
-                  </th>
-                  <th className="px-3 py-3 md:px-6 md:py-4 text-left font-semibold">
-                    No. HP
-                  </th>
-                  <th className="px-3 py-3 md:px-6 md:py-4 text-left font-semibold">
-                    Alamat
-                  </th>
-                  <th className="px-3 py-3 md:px-6 md:py-4 text-center font-semibold">
-                    Aksi
-                  </th>
-                  <th className="px-3 py-3 md:px-6 md:py-4 text-center font-semibold">
-                    Validasi
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
-                {Array.from({ length: 5 }).map((_, i) => (
-                  <tr key={i} className="animate-pulse">
-                    <td className="px-3 py-3 md:px-6 md:py-4">
-                      <div className="h-4 w-28 bg-slate-200 dark:bg-slate-700 rounded" />
-                    </td>
-                    <td className="px-3 py-3 md:px-6 md:py-4">
-                      <div className="h-4 w-32 bg-slate-200 dark:bg-slate-700 rounded" />
-                    </td>
-                    <td className="px-3 py-3 md:px-6 md:py-4">
-                      <div className="h-4 w-32 bg-slate-200 dark:bg-slate-700 rounded" />
-                    </td>
-                    <td className="px-3 py-3 md:px-6 md:py-4">
-                      <div className="h-4 w-40 bg-slate-200 dark:bg-slate-700 rounded" />
-                    </td>
-                    <td className="px-3 py-3 md:px-6 md:py-4">
-                      <div className="h-4 w-24 bg-slate-200 dark:bg-slate-700 rounded" />
-                    </td>
-                    <td className="px-3 py-3 md:px-6 md:py-4">
-                      <div className="h-4 w-36 bg-slate-200 dark:bg-slate-700 rounded" />
-                    </td>
-                    <td className="px-3 py-3 md:px-6 md:py-4">
-                      <div className="h-4 w-16 bg-slate-200 dark:bg-slate-700 rounded mx-auto" />
-                    </td>
-                    <td className="px-3 py-3 md:px-6 md:py-4">
-                      <div className="h-4 w-16 bg-slate-200 dark:bg-slate-700 rounded mx-auto" />
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+          <TableSkeleton
+            headers={[
+              "No. Pendaftaran", "Tanggal Daftar", "Tanggal Update",
+              "Nama Lengkap", "No. HP", "Alamat", "Aksi",
+              ...(userRole !== "kepala" ? ["Validasi"] : []),
+            ]}
+            rows={5}
+          />
         ) : totalItems === 0 ? (
-          <div className="flex flex-col items-center justify-center py-12 text-center bg-white/80 md:bg-white/60 dark:bg-gray-800/30 rounded-xl border border-gray-200 dark:border-gray-700">
-            <p className="text-gray-400 dark:text-gray-500 text-sm animate-fadeInUp">
-              Belum ada data pendaftar
-            </p>
-          </div>
+          <EmptyState icon={Users} title="Belum ada data pendaftar" />
         ) : (
           <div
             key="data"
@@ -411,7 +337,7 @@ export default function DataPendaftar() {
             currentPage={currentPage}
             totalPages={totalPagesState}
             onPageChange={(page) => setCurrentPage(page)}
-            itemsPerPage={itemsPerPage}
+            itemsPerPage={ITEMS_PER_PAGE}
             totalItems={totalItems}
           />
         )}

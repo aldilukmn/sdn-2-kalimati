@@ -4,8 +4,7 @@ import { useState } from "react";
 import StudentSavingsService from "@/services/student-savings.service";
 import { StudentWithBalance } from "@/hooks/useStudentList";
 import type { Transaction } from "@/types/student-savings";
-
-const HISTORY_LIMIT = 10;
+import { HISTORY_LIMIT } from "@/lib/constants";
 
 export function useHistoryModal({
   refreshList,
@@ -27,22 +26,6 @@ export function useHistoryModal({
   const [historyMonth, setHistoryMonth] = useState(new Date().getMonth() + 1);
   const [historyYear, setHistoryYear] = useState(new Date().getFullYear());
   const [historyAllTime, setHistoryAllTime] = useState(false);
-  const [deletingId, setDeletingId] = useState<string | null>(null);
-  const [editingTx, setEditingTx] = useState<Transaction | null>(null);
-
-  const [confirmDelete, setConfirmDelete] = useState<{
-    open: boolean;
-    txId: string | null;
-  }>({ open: false, txId: null });
-
-  const [editModal, setEditModal] = useState<{
-    open: boolean;
-    transaction: Transaction | null;
-  }>({ open: false, transaction: null });
-  const [editAmount, setEditAmount] = useState("");
-  const [editDate, setEditDate] = useState("");
-  const [editDescription, setEditDescription] = useState("");
-  const [editSaving, setEditSaving] = useState(false);
 
   const openHistoryModal = async (student: StudentWithBalance, type?: string, allTime?: boolean) => {
     const curMonth = new Date().getMonth() + 1;
@@ -78,7 +61,6 @@ export function useHistoryModal({
   const closeHistoryModal = () => {
     setHistoryModal({ open: false, student: null });
     setTransactions([]);
-    setEditingTx(null);
     setHistoryAllTime(false);
   };
 
@@ -110,100 +92,6 @@ export function useHistoryModal({
     }
   };
 
-  const openEditModal = (tx: Transaction) => {
-    setEditModal({ open: true, transaction: tx });
-    setEditAmount(String(tx.amount));
-    setEditDate(tx.date);
-    setEditDescription(tx.description || "");
-  };
-
-  const closeEditModal = () => {
-    setEditModal({ open: false, transaction: null });
-    setEditAmount("");
-    setEditDate("");
-    setEditDescription("");
-  };
-
-  const submitEditTransaction = async () => {
-    const tx = editModal.transaction;
-    if (!tx) return;
-    const amountNum = parseInt(editAmount.replace(/\./g, ""));
-    if (!amountNum || amountNum <= 0) {
-      setMessage({ type: "error", text: "Jumlah harus lebih dari 0!" });
-      return;
-    }
-    if (!editDate) {
-      setMessage({ type: "error", text: "Tanggal harus diisi!" });
-      return;
-    }
-    if (tx.type === "tarik" && !editDescription.trim()) {
-      setMessage({ type: "error", text: "Catatan penarikan harus diisi!" });
-      return;
-    }
-    setEditSaving(true);
-    try {
-      const res = await StudentSavingsService.updateTransaction(tx._id, {
-        type: tx.type,
-        amount: amountNum,
-        date: editDate,
-        description: editDescription.trim(),
-      });
-      if (res?.status?.response === "success") {
-        setMessage({ type: "success", text: "Transaksi berhasil diperbarui!" });
-        closeEditModal();
-        await fetchHistoryPage(historyPage);
-        await refreshList();
-      } else {
-        setMessage({
-          type: "error",
-          text: res?.status?.message || "Gagal memperbarui transaksi",
-        });
-      }
-    } catch (e: unknown) {
-      setMessage({
-        type: "error",
-        text: e instanceof Error ? e.message : "Gagal memperbarui transaksi",
-      });
-    } finally {
-      setEditSaving(false);
-    }
-  };
-
-  const handleDeleteTransaction = async (txId: string) => {
-    setConfirmDelete({ open: true, txId });
-  };
-
-  const closeConfirmDelete = () => {
-    setConfirmDelete({ open: false, txId: null });
-  };
-
-  const submitDeleteTransaction = async () => {
-    const txId = confirmDelete.txId;
-    if (!txId) return;
-    setDeletingId(txId);
-    try {
-      const res = await StudentSavingsService.deleteTransaction(txId);
-      if (res?.status?.response === "success") {
-        setMessage({ type: "success", text: "Transaksi berhasil dihapus!" });
-        closeConfirmDelete();
-        await fetchHistoryPage(historyPage);
-        await refreshList();
-      } else {
-        setMessage({
-          type: "error",
-          text: res?.status?.message || "Gagal menghapus transaksi",
-        });
-      }
-    } catch (e: unknown) {
-      setMessage({
-        type: "error",
-        text: e instanceof Error ? e.message : "Gagal menghapus transaksi",
-      });
-    } finally {
-      setDeletingId(null);
-    }
-  };
-
   return {
     historyModal,
     openHistoryModal,
@@ -222,22 +110,5 @@ export function useHistoryModal({
     historyTotal,
     historyTotalPages,
     fetchHistoryPage,
-    editingTx,
-    deletingId,
-    editModal,
-    editAmount,
-    setEditAmount,
-    editDate,
-    setEditDate,
-    editDescription,
-    setEditDescription,
-    editSaving,
-    openEditModal,
-    closeEditModal,
-    submitEditTransaction,
-    confirmDelete,
-    closeConfirmDelete,
-    submitDeleteTransaction,
-    handleDeleteTransaction,
   };
 }

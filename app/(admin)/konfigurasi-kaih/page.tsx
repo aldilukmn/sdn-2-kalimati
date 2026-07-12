@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { ListChecks, Plus, Pencil, Trash2, AlertCircle } from "lucide-react";
+import { ListChecks, Plus, Pencil, Trash2 } from "lucide-react";
 import toast from "react-hot-toast";
 import CharacterHabitService from "@/services/character-habit.service";
 import type { CharacterHabit } from "@/types/character-habit";
@@ -9,6 +9,8 @@ import { decodeJWT } from "@/lib/jwt";
 import PageHero from "@/app/components/PageHero";
 import Modal from "@/app/components/Modal";
 import TableSkeleton from "@/app/components/TableSkeleton";
+import ErrorState from "@/app/components/shared/ErrorState";
+import EmptyState from "@/app/components/shared/EmptyState";
 import InputField from "@/app/components/form/InputField";
 
 export default function KonfigurasiKaihPage() {
@@ -173,26 +175,7 @@ export default function KonfigurasiKaihPage() {
       )}
 
       {/* Error state */}
-      {error && (
-        <div className="bg-white/70 dark:bg-gray-800/40 border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
-          <div className="text-center py-12">
-            <AlertCircle
-              size={40}
-              className="mx-auto text-red-300 dark:text-red-600 mb-3"
-              aria-hidden="true"
-            />
-            <p className="text-red-500 dark:text-red-400 font-medium">
-              {error}
-            </p>
-            <button
-              onClick={fetchHabits}
-              className="mt-3 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-sm font-medium transition-colors cursor-pointer"
-            >
-              Coba Lagi
-            </button>
-          </div>
-        </div>
-      )}
+      <ErrorState error={error} onRetry={() => fetchHabits()} />
 
       {/* Loading */}
       {loading && !error && (
@@ -211,23 +194,11 @@ export default function KonfigurasiKaihPage() {
 
       {/* Empty state */}
       {!loading && !error && habits.length === 0 && (
-        <div className="bg-white/70 dark:bg-gray-800/40 border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
-          <div className="text-center py-12">
-            <ListChecks
-              size={40}
-              className="mx-auto text-slate-300 dark:text-slate-600 mb-3"
-              aria-hidden="true"
-            />
-            <p className="text-slate-500 dark:text-slate-400 font-medium">
-              Belum ada kebiasaan.
-            </p>
-            <p className="text-slate-400 dark:text-slate-500 text-sm mt-1">
-              {isWriteAllowed
-                ? "Klik tombol Tambah Kebiasaan untuk menambahkan."
-                : "Hubungi Admin untuk menambahkan kebiasaan."}
-            </p>
-          </div>
-        </div>
+        <EmptyState
+          icon={ListChecks}
+          title="Belum ada kebiasaan."
+          description={isWriteAllowed ? "Klik tombol Tambah Kebiasaan untuk menambahkan." : "Hubungi Admin untuk menambahkan kebiasaan."}
+        />
       )}
 
       {/* Table */}

@@ -366,15 +366,16 @@ Response: [
 
 ## Rekap Sesi
 
-### Sesi ini (2026-07-12)
+### Sesi ini (2026-07-12) — setelah commit `8ffe34f`
 | # | Item | File | Status |
 |---|------|------|--------|
-| 1 | **Collapse/expand badge A-D di Penilaian Karakter** | `app/components/karakter/HabitRadioGroup.tsx` — conditional render + `animate-fadeIn`; `StudentAssessmentTable.tsx` min-w 100→60px | ✅ |
-| 2 | **Normalisasi month ke String di useRekapKarakter** | `hooks/useRekapKarakter.ts` — `String(a.month)` di Map key, uniqueMonths, filter class averages. Data muncul saat filter bulan | ✅ |
-
-### Sesi sebelumnya
-| # | Item | File | Status |
-|---|------|------|--------|
-| 1 | **Tab Karakter semua siswa muncul** | `hooks/useAssessmentScore.ts` — merge logic `students.map()` lookup `scoreMap` | ✅ |
-| 2 | **Formula preview + tab warna-warni sinkron** | `app/(admin)/komponen-nilai/page.tsx` — `formulaComponents` pake `reduce`, tab aktif `getTabColor(i)` | ✅ |
-| 3 | **Sidebar grouping karakter** | `app/components/DashboardSidebar.tsx` — 2 grup "Nilai Akademik" + "Karakter", toggle sendiri | ✅ |
+| 1 | **Collapse/expand badge A-D di Penilaian Karakter** | `app/components/karakter/HabitRadioGroup.tsx` — conditional render + `animate-fadeIn` | ✅ |
+| 2 | **Pagination 5 per halaman** | `app/components/karakter/StudentAssessmentTable.tsx` — `ITEMS_PER_PAGE`, `paginatedStudents`, `Pagination` | ✅ |
+| 3 | **Tombol Edit → Reset + animasi spin** | `StudentAssessmentTable.tsx` — `RotateCcw`, `resettingId`, `animate-spin` reverse; `useCharacterAssessment.ts` — toast | ✅ |
+| 4 | **Save button jadi prop full-width** | `StudentAssessmentTable.tsx` + `penilaian-karakter/page.tsx` — pola `saveButton` | ✅ |
+| 5 | **Portal GTK** | `app/data/data.navigate.ts` — tombol login `/login` di halaman utama | ✅ |
+| 6 | **Style input login** | `app/login/page.tsx` — `rounded-xl`, `py-2.5`, tanpa `focus:ring` | ✅ |
+| 7 | **Warna teks badge light mode** | `HabitRadioGroup.tsx` — `text-slate-100` di collapsed badge | ✅ |
+| 8 | **Tabel konsisten ScoreTable** | `StudentAssessmentTable.tsx` — native table, glassmorphism, `divide-y`, indigo hover, `p-3` `text-sm`, `animate-fadeIn`, `border-r` kolom | ✅ |
+| 9 | **Weight badges dalam glass card** | `headerSlot` prop — weight badges pindah dari page ke dalam card | ✅ |
+| 10 | **Mobile cards dihapus, tabel seragam** | `StudentAssessmentTable.tsx` — hapus responsive break, `overflow-x-auto` | ✅ |

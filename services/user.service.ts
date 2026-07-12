@@ -1,20 +1,21 @@
 import { api } from "@/lib/api";
+import type { TeacherType } from "@/types/user";
 
 export default class UserService {
   static async getTeachers() {
-    return await api<import("@/types/user").TeacherType[]>("/user?role=guru");
+    return await api<TeacherType[]>("/user?role=guru");
   }
 
   static async getStaffByRoles(roles: string) {
-    return await api<import("@/types/user").TeacherType[]>(`/user?role=${roles}`);
+    return await api<TeacherType[]>(`/user?role=${roles}`);
   }
 
   static async getTeacherByGrade(grade: string) {
-    return await api(`/teacher-by-grade/${grade}`);
+    return await api<TeacherType>(`/teacher-by-grade/${grade}`);
   }
 
   static async getAll() {
-    return await api("/user");
+    return await api<TeacherType[]>("/user");
   }
 
   static async create(data: {
@@ -26,7 +27,7 @@ export default class UserService {
     fullName?: string;
     title?: string;
   }) {
-    return await api("/user", {
+    return await api<TeacherType>("/user", {
       method: "POST",
       body: JSON.stringify(data),
     });
@@ -42,22 +43,29 @@ export default class UserService {
       title?: string;
     },
   ) {
-    return await api(`/user/${id}`, {
+    return await api<TeacherType>(`/user/${id}`, {
       method: "PATCH",
       body: JSON.stringify(data),
     });
   }
 
   static async delete(id: string) {
-    return await api(`/user/${id}`, {
+    return await api<void>(`/user/${id}`, {
       method: "DELETE",
     });
   }
 
   static async setSavingsHolder(id: string, savingsHolder: boolean) {
-    return await api(`/user/${id}/savings-holder`, {
+    return await api<void>(`/user/${id}/savings-holder`, {
       method: "PATCH",
       body: JSON.stringify({ savingsHolder }),
+    });
+  }
+
+  static async setTreasurer(id: string, treasurer: boolean) {
+    return await api<void>(`/user/${id}/treasurer`, {
+      method: "PATCH",
+      body: JSON.stringify({ treasurer }),
     });
   }
 }

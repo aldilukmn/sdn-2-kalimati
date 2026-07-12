@@ -8,6 +8,7 @@ import { ArrowLeft, Loader2, Save } from "lucide-react";
 import RegistrationService from "@/services/registration.service";
 import StudentDataStep from "@/app/components/pmb/StudentDataStep";
 import ParentDataStep from "@/app/components/pmb/ParentDataStep";
+import type { Registrant } from "@/types/registration";
 import GuardianDataStep from "@/app/components/pmb/GuardianDataStep";
 import LoadingModal from "@/app/components/LoadingModal";
 import type { RegistrationForm } from "@/types/registration";
@@ -44,7 +45,7 @@ export default function EditRegistration() {
     const fetchData = async () => {
       try {
         const res = await RegistrationService.getById(params.id as string);
-        const data = (res.result || res.data) as import("@/types/registration").Registrant;
+        const data = (res.result || res.data) as Registrant;
 
         setRegistrationInfo({
           number: data.registrationNumber || "-",

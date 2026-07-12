@@ -3,9 +3,7 @@
 import { useEffect, useState, useCallback } from "react";
 import CharacterAssessmentService from "@/services/character-assessment.service";
 import type { AssessmentListItem } from "@/types/character-assessment";
-
-const SEMESTERS = ["1", "2"];
-const ACADEMIC_YEARS = ["2026/2027"];
+import { SEMESTERS, ACADEMIC_YEARS } from "@/lib/constants";
 
 export interface RecapRow {
   studentId: string;

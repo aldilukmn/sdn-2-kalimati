@@ -3,42 +3,21 @@
 import { useEffect, useState, useCallback } from "react";
 import GradeSubjectService from "@/services/grade-subject.service";
 import FinalScoreService from "@/services/final-score.service";
-import { decodeJWT } from "@/lib/jwt";
-import { GRADES } from "@/lib/constants";
-import type { FinalScoreEntry, CalculateResponse } from "@/services/final-score.service";
+import { GRADES, SEMESTERS, ACADEMIC_YEARS } from "@/lib/constants";
+import { useAuth } from "@/hooks/useAuth";
+import type { FinalScoreEntry, CalculateResponse } from "@/types/final-score";
 import type { GradeSubject } from "@/types/nilai-harian";
-
-const SEMESTERS = ["1", "2"];
-const ACADEMIC_YEARS = ["2026/2027"];
 
 export function useFinalScore() {
   const [semester, setSemester] = useState("1");
   const [academicYear, setAcademicYear] = useState("2026/2027");
   const [grade, setGrade] = useState("");
-  const [userRole, setUserRole] = useState<string | null>(null);
-  const [isJwtReady, setIsJwtReady] = useState(false);
+  const { role, grade: authGrade } = useAuth();
 
   useEffect(() => {
-    const token = sessionStorage.getItem("user_session");
-    let role: string | null = null;
-    let gradeFromToken: string | null = null;
-    if (token) {
-      try {
-        const payload = decodeJWT(token);
-        if (payload) { role = payload.role; gradeFromToken = payload.grade; }
-      } catch {}
-    }
-    if (!role) {
-      const match = document.cookie.match(/(?:^|; )user_role=([^;]*)/);
-      role = match ? decodeURIComponent(match[1]) : null;
-      const gradeMatch = document.cookie.match(/(?:^|; )user_grade=([^;]*)/);
-      gradeFromToken = gradeMatch ? decodeURIComponent(gradeMatch[1]) : null;
-    }
-    if (role) setUserRole(role);
-    if (role === "guru" && gradeFromToken) setGrade(gradeFromToken);
+    if (role === "guru" && authGrade) setGrade(authGrade);
     else if (role && role !== "guru") setGrade("1");
-    setIsJwtReady(true);
-  }, []);
+  }, [role, authGrade]);
   const [gradeSubjects, setGradeSubjects] = useState<GradeSubject[]>([]);
   const [selectedGS, setSelectedGS] = useState("");
 
@@ -59,7 +38,7 @@ export function useFinalScore() {
 
   // Fetch grade-subjects
   useEffect(() => {
-    if (!isJwtReady || !grade) return;
+    if (!role || !grade) return;
     const ctrl = new AbortController();
     (async () => {
       setInitialLoading(true);
@@ -162,7 +141,7 @@ export function useFinalScore() {
     semester, setSemester,
     academicYear, setAcademicYear,
     grade, setGrade,
-    userRole,
+    userRole: role,
     gradeSubjects, selectedGS, setSelectedGS,
     entries, loading, initialLoading, error, retry,
     isStale, lastCalculatedAt,

@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import Link from "next/link";
 import {
   BarChart3,
@@ -14,8 +13,6 @@ import {
   ThumbsUp,
   Minus,
   XCircle,
-  ListChecks,
-  ScrollText,
   Eye,
   ArrowRight,
 } from "lucide-react";
@@ -28,7 +25,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { useDashboardKarakter } from "@/hooks/useDashboardKarakter";
-import { decodeJWT } from "@/lib/jwt";
+import { useAuth } from "@/hooks/useAuth";
 import { GRADES } from "@/lib/constants";
 import PageHero from "@/app/components/PageHero";
 import StatCard from "@/app/components/StatCard";
@@ -43,17 +40,7 @@ import {
 } from "@/components/ui/select";
 
 export default function DashboardKarakterPage() {
-  const [userRole, setUserRole] = useState<string | null>(null);
-  const [userGrade, setUserGrade] = useState<string | null>(null);
-
-  useEffect(() => {
-    const token = sessionStorage.getItem("user_session");
-    if (token) {
-      const payload = decodeJWT(token);
-      setUserRole(payload?.role || null);
-      setUserGrade(payload?.grade || null);
-    }
-  }, []);
+  const { role: userRole, grade: userGrade } = useAuth();
 
   const {
     semester,

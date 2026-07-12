@@ -2,32 +2,15 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { BookOpen, Plus, Pencil, Trash2, Search, X, AlertCircle, ArrowLeft } from "lucide-react";
+import { BookOpen, ArrowLeft } from "lucide-react";
 import { useSubjects } from "@/hooks/useSubjects";
-import { GRADES } from "@/lib/constants";
 import toast from "react-hot-toast";
-import Modal from "@/app/components/Modal";
 import PageHero from "@/app/components/PageHero";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-
-const SEMESTERS = ["1", "2"];
-const ACADEMIC_YEARS = ["2026/2027"];
+import SubjectModal from "./components/SubjectModal";
+import AssignModal from "./components/AssignModal";
+import ConfirmDeleteModal from "./components/ConfirmDeleteModal";
+import SubjectsTab from "./components/SubjectsTab";
+import AssignTab from "./components/AssignTab";
 
 export default function MasterMapelPage() {
   const {
@@ -159,353 +142,61 @@ export default function MasterMapelPage() {
       </div>
 
       {activeTab === "subjects" && (
-        <div className="bg-white/70 dark:bg-gray-800/40 border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
-          {/* Search + Add */}
-          <div className="flex flex-col sm:flex-row gap-3 mb-4">
-            <div className="relative flex-1">
-              <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
-              <input
-                type="text"
-                placeholder="Cari mata pelajaran..."
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                className="w-full h-auto pl-9 pr-4 py-2.5 rounded-xl border border-slate-300 bg-slate-50 text-sm focus:outline-none focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:focus:border-blue-400"
-              />
-              {search && (
-                <button onClick={() => setSearch("")} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 cursor-pointer">
-                  <X size={14} />
-                </button>
-              )}
-            </div>
-            <button
-              onClick={openCreateSubject}
-              className="flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-sm font-medium transition-colors cursor-pointer"
-            >
-              <Plus size={16} />
-              Tambah Mapel
-            </button>
-          </div>
-
-          {/* Table */}
-          {error ? (
-            <div className="text-center py-12">
-              <AlertCircle size={40} className="mx-auto text-red-300 dark:text-red-600 mb-3" />
-              <p className="text-red-500 dark:text-red-400 font-medium">{error}</p>
-              <button onClick={retry} className="mt-3 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-sm font-medium transition-colors cursor-pointer">
-                Coba Lagi
-              </button>
-            </div>
-          ) : loading ? (
-            <div className="animate-pulse rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
-              <div className="bg-indigo-700 px-4 py-3 flex gap-4">
-                {[1, 2, 3].map((j) => (
-                  <div key={j} className="h-4 bg-white/20 rounded w-16" />
-                ))}
-                <div className="h-4 bg-white/20 rounded w-16 ml-auto" />
-              </div>
-              {[1, 2, 3].map((i) => (
-                <div key={i} className="flex gap-4 px-4 py-3 border-b border-gray-100 dark:border-gray-700">
-                  {[1, 2, 3].map((j) => (
-                    <div key={j} className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-16" />
-                  ))}
-                  <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-16 ml-auto" />
-                </div>
-              ))}
-            </div>
-          ) : filteredSubjects.length === 0 ? (
-            <div className="text-center py-12">
-              <BookOpen size={40} className="mx-auto text-slate-300 dark:text-slate-600 mb-3" />
-              <p className="text-slate-500 dark:text-slate-400 font-medium">
-                {search ? "Tidak ada mata pelajaran yang cocok" : "Belum ada Mata Pelajaran."}
-              </p>
-              {!search && (
-                <p className="text-slate-400 dark:text-slate-500 text-sm mt-1">
-                  Silakan tambahkan Mata Pelajaran terlebih dahulu.
-                </p>
-              )}
-            </div>
-          ) : (
-            <div className="overflow-x-auto rounded-xl border border-gray-200 dark:border-gray-700">
-              <Table>
-                <TableHeader>
-                  <TableRow className="bg-indigo-700 hover:bg-indigo-700">
-                    <TableHead className="text-white text-center whitespace-nowrap">No</TableHead>
-                    <TableHead className="text-white whitespace-nowrap">Nama Mapel</TableHead>
-                    <TableHead className="text-white text-right whitespace-nowrap">Aksi</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {filteredSubjects.map((subject, index) => (
-                    <TableRow key={subject._id} className="hover:bg-slate-50 dark:hover:bg-gray-800/50">
-                      <TableCell className="font-medium text-slate-600 dark:text-slate-300 text-center whitespace-nowrap">{index + 1}</TableCell>
-                      <TableCell className="text-slate-800 dark:text-slate-200 font-medium whitespace-nowrap">{subject.name}</TableCell>
-                      <TableCell className="text-right">
-                        <div className="flex items-center justify-end gap-1">
-                          <button
-                            onClick={() => openEditSubject(subject)}
-                            className="p-1.5 rounded-lg text-slate-500 hover:text-indigo-600 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 transition-colors cursor-pointer"
-                            title="Ubah"
-                          >
-                            <Pencil size={16} />
-                          </button>
-                          <button
-                            onClick={() => setConfirmDelete({ type: "subject", id: subject._id, name: subject.name })}
-                            className="p-1.5 rounded-lg text-slate-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/30 transition-colors cursor-pointer"
-                            title="Hapus"
-                          >
-                            <Trash2 size={16} />
-                          </button>
-                        </div>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </div>
-          )}
-        </div>
+        <SubjectsTab
+          search={search}
+          setSearch={setSearch}
+          openCreateSubject={openCreateSubject}
+          error={error}
+          retry={retry}
+          loading={loading}
+          filteredSubjects={filteredSubjects}
+          openEditSubject={openEditSubject}
+          setConfirmDelete={setConfirmDelete}
+        />
       )}
 
       {activeTab === "assign" && (
-        <div className="bg-white/70 dark:bg-gray-800/40 border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
-          <div className="flex justify-end mb-4">
-            <button
-              onClick={openAssignModal}
-              className="flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-sm font-medium transition-colors cursor-pointer"
-            >
-              <Plus size={16} />
-              Tetapkan Mapel
-            </button>
-          </div>
-
-          {error ? (
-            <div className="text-center py-12">
-              <AlertCircle size={40} className="mx-auto text-red-300 dark:text-red-600 mb-3" />
-              <p className="text-red-500 dark:text-red-400 font-medium">{error}</p>
-              <button onClick={retry} className="mt-3 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-sm font-medium transition-colors cursor-pointer">
-                Coba Lagi
-              </button>
-            </div>
-          ) : loading ? (
-            <div className="animate-pulse rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
-              <div className="bg-indigo-700 px-4 py-3 flex gap-4">
-                {[1, 2, 3, 4, 5].map((j) => (
-                  <div key={j} className="h-4 bg-white/20 rounded w-16" />
-                ))}
-                <div className="h-4 bg-white/20 rounded w-16 ml-auto" />
-              </div>
-              {[1, 2, 3].map((i) => (
-                <div key={i} className="flex gap-4 px-4 py-3 border-b border-gray-100 dark:border-gray-700">
-                  {[1, 2, 3, 4, 5].map((j) => (
-                    <div key={j} className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-16" />
-                  ))}
-                  <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-16 ml-auto" />
-                </div>
-              ))}
-            </div>
-          ) : gradeSubjects.length === 0 ? (
-            <div className="text-center py-12">
-              <BookOpen size={40} className="mx-auto text-slate-300 dark:text-slate-600 mb-3" />
-              <p className="text-slate-500 dark:text-slate-400 font-medium">
-                Belum ada Mata Pelajaran yang ditetapkan ke kelas ini.
-              </p>
-              <p className="text-slate-400 dark:text-slate-500 text-sm mt-1">
-                Tetapkan mata pelajaran terlebih dahulu.
-              </p>
-            </div>
-          ) : (
-            <div className="overflow-x-auto rounded-xl border border-gray-200 dark:border-gray-700">
-              <Table>
-                <TableHeader>
-                  <TableRow className="bg-indigo-700 hover:bg-indigo-700">
-                    <TableHead className="text-white text-center whitespace-nowrap">No</TableHead>
-                    <TableHead className="text-white whitespace-nowrap">Mapel</TableHead>
-                    <TableHead className="text-white whitespace-nowrap">Kelas</TableHead>
-                    <TableHead className="text-white whitespace-nowrap">Semester</TableHead>
-                    <TableHead className="text-white whitespace-nowrap">Tahun Ajaran</TableHead>
-                    <TableHead className="text-white text-right whitespace-nowrap">Aksi</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {gradeSubjects.map((gs, index) => (
-                    <TableRow key={gs._id} className="hover:bg-slate-50 dark:hover:bg-gray-800/50">
-                      <TableCell className="font-medium text-slate-600 dark:text-slate-300 text-center whitespace-nowrap">{index + 1}</TableCell>
-                      <TableCell className="text-slate-800 dark:text-slate-200 font-medium whitespace-nowrap">{gs.subjectName || "-"}</TableCell>
-                      <TableCell className="text-slate-600 dark:text-slate-300 whitespace-nowrap">Kelas {gs.grade}</TableCell>
-                      <TableCell className="text-slate-600 dark:text-slate-300 whitespace-nowrap">Semester {gs.semester}</TableCell>
-                      <TableCell className="text-slate-600 dark:text-slate-300 whitespace-nowrap">{gs.academicYear}</TableCell>
-                      <TableCell className="text-right">
-                        <button
-                          onClick={() => setConfirmDelete({ type: "gradeSubject", id: gs._id, name: gs.subjectName || gs._id })}
-                          className="p-1.5 rounded-lg text-slate-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/30 transition-colors cursor-pointer"
-                          title="Hapus"
-                        >
-                          <Trash2 size={16} />
-                        </button>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </div>
-          )}
-        </div>
+        <AssignTab
+          error={error}
+          retry={retry}
+          loading={loading}
+          gradeSubjects={gradeSubjects}
+          openAssignModal={openAssignModal}
+          setConfirmDelete={setConfirmDelete}
+        />
       )}
 
-      {/* Modal Subject */}
-      <Modal open={subjectModal.open} onClose={closeSubjectModal} title={subjectModal.edit ? "Ubah Mata Pelajaran" : "Tambah Mata Pelajaran"} className="max-w-sm">
-        <div className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Nama Mata Pelajaran</label>
-            <input
-              type="text"
-              value={subjectName}
-              onChange={(e) => setSubjectName(e.target.value)}
-              placeholder="Masukkan nama mata pelajaran"
-              className="w-full h-auto rounded-xl border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm focus:outline-none focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:focus:border-blue-400"
-              autoFocus
-              onKeyDown={(e) => { if (e.key === "Enter") handleSaveSubject(); }}
-            />
-          </div>
-          <div className="flex justify-end gap-2">
-            <button
-              onClick={closeSubjectModal}
-              className="px-4 py-2 text-sm font-medium text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-gray-800 hover:bg-slate-200 dark:hover:bg-gray-700 rounded-lg transition-colors cursor-pointer"
-            >
-              Batal
-            </button>
-            <button
-              onClick={handleSaveSubject}
-              disabled={subjectSaving || !subjectName.trim()}
-              className="px-4 py-2 text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed rounded-lg transition-colors cursor-pointer flex items-center gap-2"
-            >
-              {subjectSaving && <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />}
-              {subjectModal.edit ? "Simpan" : "Tambah"}
-            </button>
-          </div>
-        </div>
-      </Modal>
+      <SubjectModal
+        open={subjectModal.open}
+        onClose={closeSubjectModal}
+        subjectModal={subjectModal}
+        subjectName={subjectName}
+        setSubjectName={setSubjectName}
+        subjectSaving={subjectSaving}
+        handleSaveSubject={handleSaveSubject}
+      />
 
-      {/* Modal Assign */}
-      <Modal open={assignModal} onClose={closeAssignModal} title="Tetapkan Mata Pelajaran ke Kelas" className="max-w-sm">
-        <div className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Mata Pelajaran</label>
-            <Select value={assignSubjectId} onValueChange={(v) => v && setAssignSubjectId(v)}>
-              <SelectTrigger className="w-full h-auto rounded-xl border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100">
-                <SelectValue placeholder="Pilih Mapel">
-                  {assignSubjectId ? subjects.find(s => s._id === assignSubjectId)?.name : "Pilih Mapel"}
-                </SelectValue>
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  <SelectLabel>Mata Pelajaran</SelectLabel>
-                  {subjects.map((s) => (
-                    <SelectItem key={s._id} value={s._id}>{s.name}</SelectItem>
-                  ))}
-                </SelectGroup>
-              </SelectContent>
-            </Select>
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Kelas</label>
-            <div className="grid grid-cols-3 gap-2">
-              {GRADES.map((g) => (
-                <label
-                  key={g}
-                  className={`flex items-center gap-2 px-3 py-2 rounded-lg border text-sm cursor-pointer transition-colors ${
-                    assignGrades.includes(g)
-                      ? "bg-indigo-50 border-indigo-400 text-indigo-700 dark:bg-indigo-900/30 dark:border-indigo-600 dark:text-indigo-300"
-                      : "bg-white border-slate-200 text-slate-700 hover:border-slate-300 dark:bg-gray-800 dark:border-gray-700 dark:text-slate-300"
-                  }`}
-                >
-                  <input
-                    type="checkbox"
-                    checked={assignGrades.includes(g)}
-                    onChange={() => toggleGrade(g)}
-                    className="w-4 h-4 text-indigo-600 border-slate-300 rounded focus:ring-indigo-500"
-                  />
-                  Kelas {g}
-                </label>
-              ))}
-            </div>
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Semester</label>
-            <Select value={assignSemester} onValueChange={(v) => v && setAssignSemester(v)}>
-              <SelectTrigger className="w-full h-auto rounded-xl border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100">
-                <SelectValue placeholder="Pilih semester" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  <SelectLabel>Semester</SelectLabel>
-                  {SEMESTERS.map((s) => (
-                    <SelectItem key={s} value={s}>Semester {s}</SelectItem>
-                  ))}
-                </SelectGroup>
-              </SelectContent>
-            </Select>
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Tahun Ajaran</label>
-            <Select value={assignAcademicYear} onValueChange={(v) => v && setAssignAcademicYear(v)}>
-              <SelectTrigger className="w-full h-auto rounded-xl border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100">
-                <SelectValue placeholder="Pilih tahun ajaran" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  <SelectLabel>Tahun Ajaran</SelectLabel>
-                  {ACADEMIC_YEARS.map((y) => (
-                    <SelectItem key={y} value={y}>{y}</SelectItem>
-                  ))}
-                </SelectGroup>
-              </SelectContent>
-            </Select>
-          </div>
-          <div className="flex justify-end gap-2 pt-2">
-            <button
-              onClick={closeAssignModal}
-              className="px-4 py-2 text-sm font-medium text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-gray-800 hover:bg-slate-200 dark:hover:bg-gray-700 rounded-lg transition-colors cursor-pointer"
-            >
-              Batal
-            </button>
-            <button
-              onClick={handleSaveAssign}
-              disabled={assignSaving || !assignSubjectId || assignGrades.length === 0}
-              className="px-4 py-2 text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed rounded-lg transition-colors cursor-pointer flex items-center gap-2"
-            >
-              {assignSaving && <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />}
-              Tetapkan{assignGrades.length > 0 ? ` ke ${assignGrades.length} Kelas` : ""}
-            </button>
-          </div>
-        </div>
-      </Modal>
+      <AssignModal
+        open={assignModal}
+        onClose={closeAssignModal}
+        assignSubjectId={assignSubjectId}
+        setAssignSubjectId={setAssignSubjectId}
+        subjects={subjects}
+        assignGrades={assignGrades}
+        toggleGrade={toggleGrade}
+        assignSemester={assignSemester}
+        setAssignSemester={setAssignSemester}
+        assignAcademicYear={assignAcademicYear}
+        setAssignAcademicYear={setAssignAcademicYear}
+        assignSaving={assignSaving}
+        handleSaveAssign={handleSaveAssign}
+      />
 
-      {/* Confirm Delete Modal */}
-      <Modal open={confirmDelete !== null} onClose={() => setConfirmDelete(null)} title="Konfirmasi Hapus" className="max-w-sm">
-        <p className="text-slate-600 dark:text-slate-400 text-sm mb-4">
-          Yakin ingin menghapus{confirmDelete?.type === "subject" ? " mata pelajaran" : " penetapan"} <strong>{confirmDelete?.name}</strong>?
-          {confirmDelete?.type === "subject" && (
-            <span className="block mt-1 text-xs text-slate-400">
-              Tidak bisa dihapus jika masih terdaftar di kelas.
-            </span>
-          )}
-        </p>
-        <div className="flex justify-end gap-2">
-          <button
-            onClick={() => setConfirmDelete(null)}
-            className="px-4 py-2 text-sm font-medium text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-gray-800 hover:bg-slate-200 dark:hover:bg-gray-700 rounded-lg transition-colors cursor-pointer"
-          >
-            Batal
-          </button>
-          <button
-            onClick={confirmDelete?.type === "subject" ? handleDeleteSubject : handleDeleteGradeSubject}
-            className="px-4 py-2 text-sm font-medium text-white bg-red-600 hover:bg-red-700 rounded-lg transition-colors cursor-pointer"
-          >
-            Hapus
-          </button>
-        </div>
-      </Modal>
+      <ConfirmDeleteModal
+        confirmDelete={confirmDelete}
+        onClose={() => setConfirmDelete(null)}
+        onConfirm={confirmDelete?.type === "subject" ? handleDeleteSubject : handleDeleteGradeSubject}
+      />
     </div>
   );
 }

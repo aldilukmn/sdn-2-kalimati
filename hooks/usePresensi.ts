@@ -5,8 +5,8 @@ import { useRouter } from "next/navigation";
 import StudentAttendanceService from "@/services/student-attendance.service";
 import UserService from "@/services/user.service";
 import { getTodayLocal } from "@/lib/format";
-import { decodeJWT } from "@/lib/jwt";
 import { GRADES, ITEMS_PER_PAGE } from "@/lib/constants";
+import { useAuth } from "@/hooks/useAuth";
 import { useHolidays } from "@/hooks/useHolidays";
 import type { StudentAttendanceRequestType, MasterStudentType, StudentAttendanceType } from "@/types/attendance";
 
@@ -39,9 +39,7 @@ export function usePresensi() {
   const router = useRouter();
 
   const [grade, setGrade] = useState("1");
-  const [userRole, setUserRole] = useState<string | null>(null);
-  const [userGrade, setUserGrade] = useState<string | null>(null);
-  const [isJwtReady, setIsJwtReady] = useState(false);
+  const { role, grade: authGrade, isLoading: authLoading } = useAuth();
 
   const [date, setDate] = useState(getTodayLocal());
   const [entries, setEntries] = useState<Entry[]>([]);
@@ -59,54 +57,30 @@ export function usePresensi() {
   const { holidayList, holidays, loaded: holidaysLoaded, refresh: refreshHolidays, isHoliday: checkHoliday } = useHolidays();
 
   useEffect(() => {
-    const token = sessionStorage.getItem("user_session");
-    let role: string | null = null;
-    let gradeFromToken: string | null = null;
-
-    if (token) {
-      try {
-        const payload = decodeJWT(token);
-        if (payload) {
-          role = payload.role;
-          gradeFromToken = payload.grade;
-        }
-      } catch {}
-    }
-
-    if (!role) {
-      const match = document.cookie.match(/(?:^|; )user_role=([^;]*)/);
-      role = match ? decodeURIComponent(match[1]) : null;
-      const gradeMatch = document.cookie.match(/(?:^|; )user_grade=([^;]*)/);
-      gradeFromToken = gradeMatch ? decodeURIComponent(gradeMatch[1]) : null;
-    }
-
-    if (role) setUserRole(role);
-    if (gradeFromToken) setUserGrade(gradeFromToken);
-    if (role === "guru" && gradeFromToken) setGrade(gradeFromToken);
-    setIsJwtReady(true);
-  }, []);
+    if (role === "guru" && authGrade) setGrade(authGrade);
+  }, [role, authGrade]);
 
   useEffect(() => {
-    if (userRole && userRole !== "guru" && userRole !== "admin" && userRole !== "kepala") {
+    if (role && role !== "guru" && role !== "admin" && role !== "kepala") {
       router.replace("/login");
     }
-  }, [userRole, router]);
+  }, [role, router]);
 
   useEffect(() => {
     setCurrentPage(1);
   }, [grade, date]);
 
   useEffect(() => {
-    if (!isJwtReady || !grade) return;
+    if (authLoading || !grade) return;
     setTeacherLoading(true);
     UserService.getTeacherByGrade(grade)
       .then((res) => setTeacherName(res?.result?.fullName || null))
       .catch(() => setTeacherName(null))
       .finally(() => setTeacherLoading(false));
-  }, [grade, isJwtReady]);
+  }, [grade, authLoading]);
 
   useEffect(() => {
-    if (!isJwtReady || !grade || !date) return;
+    if (authLoading || !grade || !date) return;
     if (!holidaysLoaded) return;
 
     let cancelled = false;
@@ -186,7 +160,7 @@ export function usePresensi() {
 
     loadData();
     return () => { cancelled = true; };
-  }, [grade, date, isJwtReady, holidays, holidaysLoaded]);
+  }, [grade, date, authLoading, holidays, holidaysLoaded]);
 
   const handleStatusChange = useCallback(
     (studentId: string, status: Entry["status"]) => {
@@ -248,7 +222,7 @@ export function usePresensi() {
   return {
     grade,
     setGrade,
-    userRole,
+    userRole: role,
     date,
     setDate,
     entries,

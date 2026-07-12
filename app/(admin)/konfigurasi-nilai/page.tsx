@@ -1,7 +1,10 @@
 "use client";
 
-import { AlertCircle, Plus, Save, Trash2, Scale } from "lucide-react";
+import { Plus, Save, Trash2, Scale } from "lucide-react";
 import { useAssessmentConfig } from "@/hooks/useAssessmentConfig";
+import ErrorState from "@/app/components/shared/ErrorState";
+import EmptyState from "@/app/components/shared/EmptyState";
+import TableSkeleton from "@/app/components/TableSkeleton";
 import { GRADES } from "@/lib/constants";
 import toast from "react-hot-toast";
 import { X } from "lucide-react";
@@ -124,77 +127,11 @@ export default function MasterKonfigurasiNilaiPage() {
 
       {/* Content */}
       {error ? (
-        <div className="bg-white/70 dark:bg-gray-800/40 border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
-          <div className="text-center py-12">
-            <AlertCircle
-              size={40}
-              className="mx-auto text-red-300 dark:text-red-600 mb-3"
-            />
-            <p className="text-red-500 dark:text-red-400 font-medium">
-              {error}
-            </p>
-            <button
-              onClick={retry}
-              className="mt-3 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-sm font-medium transition-colors cursor-pointer"
-            >
-              Coba Lagi
-            </button>
-          </div>
-        </div>
+        <ErrorState error={error} onRetry={retry} />
       ) : loading ? (
-        <div className="animate-pulse space-y-3">
-          <div className="bg-white/70 dark:bg-gray-800/40 border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl overflow-hidden">
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead>
-                  <tr className="border-b border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800/50">
-                    {[1, 2, 3, 4, 5].map((j) => (
-                      <th key={j} className="px-4 py-3">
-                        <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-full" />
-                      </th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody>
-                  {[1, 2, 3].map((i) => (
-                    <tr
-                      key={i}
-                      className="border-b border-slate-100 dark:border-slate-700/50"
-                    >
-                      {[1, 2, 3, 4, 5].map((j) => (
-                        <td key={j} className="px-4 py-3">
-                          <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-full" />
-                        </td>
-                      ))}
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
+        <TableSkeleton headers={["No", "Nama", "Kelas", "Status", "Aksi"]} rows={3} />
       ) : configs.length === 0 ? (
-        <div className="bg-white/70 dark:bg-gray-800/40 border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
-          <div className="text-center py-12">
-            <Scale
-              size={40}
-              className="mx-auto text-slate-300 dark:text-slate-600 mb-3"
-            />
-            <p className="text-slate-500 dark:text-slate-400 font-medium">
-              Belum ada Konfigurasi Nilai.
-            </p>
-            <p className="text-slate-400 dark:text-slate-500 text-sm mt-1">
-              Buat konfigurasi penilaian agar guru dapat menghitung Nilai Akhir
-              Semester.
-            </p>
-            <button
-              onClick={openCreateModal}
-              className="mt-4 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-sm font-medium transition-colors cursor-pointer"
-            >
-              Buat Konfigurasi
-            </button>
-          </div>
-        </div>
+        <EmptyState icon={Scale} title="Belum ada Konfigurasi Nilai." description="Buat konfigurasi penilaian agar guru dapat menghitung Nilai Akhir Semester." action={{ label: "Buat Konfigurasi", onClick: openCreateModal }} />
       ) : (
         <div className="bg-white/70 dark:bg-gray-800/40 border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl overflow-hidden">
           <div className="overflow-x-auto">

@@ -13,11 +13,25 @@ export async function apiServer<T = any>(
     cache: "no-store",
   });
 
-  if (!response.ok) {
-    const err = new Error(`API Error: ${response.status}`) as Error & { status?: number };
-    err.status = response.status;
-    throw err;
+  let result: ApiResponse<T>;
+
+  try {
+    result = await response.json();
+  } catch {
+    const error = new Error(
+      `API Error: ${response.status} ${response.statusText}`
+    ) as Error & { status?: number };
+    error.status = response.status;
+    throw error;
   }
 
-  return response.json() as Promise<ApiResponse<T>>;
+  if (!response.ok) {
+    const error = new Error(
+      result?.status?.message || `HTTP ${response.status}`
+    ) as Error & { status?: number };
+    error.status = response.status;
+    throw error;
+  }
+
+  return result;
 }

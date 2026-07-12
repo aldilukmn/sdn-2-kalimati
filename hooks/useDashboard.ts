@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import DashboardService from "@/services/dashboard.service";
 import StudentAttendanceService from "@/services/student-attendance.service";
 import { GRADES } from "@/lib/constants";
+import type { DashboardSummary as DashboardSummaryType, TeacherDashboardSummary } from "@/types/dashboard";
 
 export interface DashboardSummary {
   totalRegistrants: number;
@@ -53,8 +54,8 @@ export function useDashboard(initialSummary?: DashboardSummary | null, initialMo
           ? DashboardService.getSummary(12, y - 1)
           : DashboardService.getSummary(m - 1, y),
       ]);
-      const data = (dashboardRes.result || {}) as import("@/types/dashboard").DashboardSummary;
-      const prevData = (prevRes.result || {}) as import("@/types/dashboard").DashboardSummary | null;
+      const data = (dashboardRes.result || {}) as DashboardSummaryType;
+      const prevData = (prevRes.result || {}) as DashboardSummaryType | null;
       const counts: Record<string, number> = countRes?.result || {};
       setSummary({
         totalRegistrants: data.totalRegistrants ?? 0,
@@ -100,7 +101,7 @@ export function useDashboard(initialSummary?: DashboardSummary | null, initialMo
           const counts: Record<string, number> = res?.result || {};
           setSummary((prev) => prev ? { ...prev, gradeCount: Object.keys(counts).length } : prev);
         })
-        .catch(() => {});
+        .catch((e) => console.error("Gagal fetch student count:", e));
       setChartLoading(false);
       return;
     }
@@ -151,29 +152,34 @@ export function useDashboard(initialSummary?: DashboardSummary | null, initialMo
 }
 
 export function useTeacherDashboard(initialSummary?: TeacherSummary | null) {
-  const router = useRouter();
   const [loading, setLoading] = useState(!initialSummary);
   const [summary, setSummary] = useState<TeacherSummary | null>(initialSummary ?? null);
 
   useEffect(() => {
     if (initialSummary) return;
+    const controller = new AbortController();
+
     const fetchData = async () => {
       try {
         const res = await DashboardService.getTeacherSummary();
-        const data = (res.result || {}) as import("@/types/dashboard").TeacherDashboardSummary;
+        if (controller.signal.aborted) return;
+        const data = (res.result || {}) as TeacherDashboardSummary;
         setSummary({
           totalStudents: data.totalStudents ?? 0,
           maleCount: data.maleCount ?? 0,
           femaleCount: data.femaleCount ?? 0,
         });
       } catch {
-        // ignore
+        if (controller.signal.aborted) return;
       } finally {
+        if (controller.signal.aborted) return;
         setLoading(false);
       }
     };
     fetchData();
-  }, []);
+
+    return () => controller.abort();
+  }, [initialSummary]);
 
   return { loading, summary };
 }

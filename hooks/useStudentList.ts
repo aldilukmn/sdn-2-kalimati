@@ -3,8 +3,8 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import StudentSavingsService from "@/services/student-savings.service";
-import { decodeJWT } from "@/lib/jwt";
 import { GRADES, ITEMS_PER_PAGE } from "@/lib/constants";
+import { useAuth } from "@/hooks/useAuth";
 
 export interface StudentWithBalance {
   studentId: string;
@@ -15,15 +15,19 @@ export interface StudentWithBalance {
   todayWithdrawal?: number;
 }
 
-export type StudentSavingsSummary = import("@/types/student-savings").SavingsSummary;
+import type { SavingsSummary } from "@/types/student-savings";
+
+export type StudentSavingsSummary = SavingsSummary;
 
 export function useStudentList() {
   const router = useRouter();
 
-  const [userRole, setUserRole] = useState<string | null>(null);
-  const [userGrade, setUserGrade] = useState<string | null>(null);
-  const [isSavingsHolder, setIsSavingsHolder] = useState(false);
-  const [userFullName, setUserFullName] = useState("");
+  const { role, grade: authGrade, payload } = useAuth();
+  const userGrade = authGrade;
+  const userRole = role;
+  const isSavingsHolder = (payload?.savingsHolder === true) || false;
+  const userFullName = typeof payload?.fullName === "string" ? payload.fullName : "";
+
   const [grade, setGrade] = useState("1");
   const [date, setDate] = useState(() => {
     const d = new Date();
@@ -40,38 +44,8 @@ export function useStudentList() {
   } | null>(null);
 
   useEffect(() => {
-    const token = sessionStorage.getItem("user_session");
-    let role: string | null = null;
-    let gradeFromToken: string | null = null;
-
-    let savingsHolder = false;
-    let fullName = "";
-
-    if (token) {
-      try {
-        const payload = decodeJWT(token);
-        if (payload) {
-          role = payload.role;
-          gradeFromToken = payload.grade;
-          savingsHolder = payload.savingsHolder === true;
-          fullName = payload.fullName || "";
-        }
-      } catch {}
-    }
-
-    if (!role) {
-      const match = document.cookie.match(/(?:^|; )user_role=([^;]*)/);
-      role = match ? decodeURIComponent(match[1]) : null;
-      const gradeMatch = document.cookie.match(/(?:^|; )user_grade=([^;]*)/);
-      gradeFromToken = gradeMatch ? decodeURIComponent(gradeMatch[1]) : null;
-    }
-
-    if (role) setUserRole(role);
-    if (gradeFromToken) setUserGrade(gradeFromToken);
-    setIsSavingsHolder(savingsHolder);
-    setUserFullName(fullName);
-    if (role === "guru" && gradeFromToken) setGrade(gradeFromToken);
-  }, []);
+    if (role === "guru" && authGrade) setGrade(authGrade);
+  }, [role, authGrade]);
 
   useEffect(() => {
     if (
