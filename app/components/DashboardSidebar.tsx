@@ -15,13 +15,10 @@ import {
   Scale,
   Calculator,
   BarChart3,
-  X,
   GraduationCap,
-  Folder,
   ChevronDown,
   ChevronRight,
   ListChecks,
-  ChartNoAxesColumn,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
@@ -41,22 +38,42 @@ type SidebarItem = MenuItem | MenuGroup;
 
 const menuItems: SidebarItem[] = [
   { label: "Dashboard", icon: LayoutDashboard, href: "/dashboard" },
-  { label: "Daftar Mapel", icon: BookOpen, href: "/daftar-mapel" },
-  { label: "Penilaian Karakter", icon: ListChecks, href: "/karakter" },
-  { label: "Kebiasaan Karakter", icon: Folder, href: "/karakter-habits" },
-  { label: "Rekap Karakter", icon: ClipboardList, href: "/rekap-karakter" },
-  { label: "Dashboard Karakter", icon: ChartNoAxesColumn, href: "/dashboard-karakter" },
   {
-    label: "Penilaian", icon: Folder, children: [
+    label: "Nilai Akademik",
+    icon: GraduationCap,
+    children: [
       { label: "Nilai Harian", icon: ClipboardEdit, href: "/nilai-harian" },
-      { label: "Rekap Nilai Harian", icon: ScrollText, href: "/rekap-nilai-harian" },
+      {
+        label: "Rekap Nilai Harian",
+        icon: ScrollText,
+        href: "/rekap-nilai-harian",
+      },
       { label: "Komponen Nilai", icon: ClipboardList, href: "/komponen-nilai" },
       { label: "Nilai Akhir", icon: Calculator, href: "/nilai-akhir" },
-      { label: "Rekap Nilai Akhir", icon: BarChart3, href: "/rekap-nilai-akhir" },
+      {
+        label: "Rekap Nilai Akhir",
+        icon: BarChart3,
+        href: "/rekap-nilai-akhir",
+      },
       { label: "Konfigurasi Nilai", icon: Scale, href: "/konfigurasi-nilai" },
     ],
   },
+  {
+    label: "Nilai Karakter",
+    icon: ListChecks,
+    children: [
+      {
+        label: "Dashboard",
+        icon: LayoutDashboard,
+        href: "/dashboard-karakter",
+      },
+      { label: "Nilai Karakter", icon: ClipboardEdit, href: "/nilai-karakter" },
+      { label: "R. Nilai Karakter", icon: ClipboardList, href: "/rekap-nilai-karakter" },
+      { label: "Konfigurasi KAIH", icon: Scale, href: "/konfigurasi-kaih" },
+    ],
+  },
   { label: "Data GTK", icon: Users, href: "/data-gtk" },
+  { label: "Daftar Mapel", icon: BookOpen, href: "/daftar-mapel" },
   { label: "Data Pendaftar", icon: ClipboardList, href: "/data-pendaftar" },
   { label: "Presensi Murid", icon: CalendarCheck, href: "/presensi-murid" },
   { label: "Tabungan Murid", icon: Wallet, href: "/tabungan-murid" },
@@ -78,12 +95,24 @@ export default function DashboardSidebar({
   userRole,
 }: SidebarProps) {
   const pathname = usePathname();
-  const [penilaianOpen, setPenilaianOpen] = useState(true);
+  const [openGroups, setOpenGroups] = useState<Record<string, boolean>>({
+    "Nilai Akademik": true,
+    Karakter: true,
+  });
 
   const guruAllowedHrefs = new Set([
-    "/dashboard", "/dashboard-karakter", "/karakter", "/rekap-karakter", "/nilai-harian", "/komponen-nilai", "/rekap-nilai-harian",
-    "/rekap-nilai-akhir", "/nilai-akhir", "/daftar-mapel",
-    "/presensi-murid", "/tabungan-murid",
+    "/dashboard",
+    "/dashboard-karakter",
+    "/nilai-karakter",
+    "/rekap-nilai-karakter",
+    "/nilai-harian",
+    "/komponen-nilai",
+    "/rekap-nilai-harian",
+    "/rekap-nilai-akhir",
+    "/nilai-akhir",
+    "/daftar-mapel",
+    "/presensi-murid",
+    "/tabungan-murid",
   ]);
 
   const isItemAllowed = (item: SidebarItem): boolean => {
@@ -109,14 +138,8 @@ export default function DashboardSidebar({
     return pathname === href || pathname.startsWith(href + "/");
   };
 
-  const penilaianActive = menuItems
-    .filter((item): item is MenuGroup => "children" in item)
-    .flatMap((g) => g.children)
-    .some((c) => isActive(c.href));
-
-  const penilaianHrefs = new Set(
-    (menuItems.find((item): item is MenuGroup => "children" in item && item.label === "Penilaian")?.children ?? []).map((c) => c.href)
-  );
+  const isGroupActive = (group: MenuGroup) =>
+    group.children.some((c) => isActive(c.href));
 
   return (
     <>
@@ -160,30 +183,46 @@ export default function DashboardSidebar({
         <nav className="flex-1 px-3 py-5 space-y-0.5 overflow-y-auto">
           {filteredMenuItems.map((item) => {
             if ("children" in item) {
-              const Icon = item.icon;
+              const group = item as MenuGroup;
+              const groupIsOpen = openGroups[group.label] ?? true;
+              const active = isGroupActive(group);
+              const Icon = group.icon;
               return (
-                <div key={item.label}>
+                <div key={group.label}>
                   <button
-                    onClick={() => setPenilaianOpen(!penilaianOpen)}
+                    onClick={() =>
+                      setOpenGroups((prev) => ({
+                        ...prev,
+                        [group.label]: !prev[group.label],
+                      }))
+                    }
                     className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 ${
-                      penilaianActive
+                      active
                         ? "bg-indigo-500/50 dark:bg-indigo-900/70 text-indigo-600 dark:text-indigo-300 border-r-2 border-indigo-500 dark:border-indigo-400"
                         : "text-slate-600 dark:text-slate-400 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 hover:text-slate-800 dark:hover:text-slate-200"
                     }`}
                   >
                     <Icon size={19} className="shrink-0" />
-                    <span className="flex-1 text-left">{item.label}</span>
-                    {penilaianOpen ? <ChevronDown size={16} /> : <ChevronRight size={16} />}
+                    <span className="flex-1 text-left">{group.label}</span>
+                    {groupIsOpen ? (
+                      <ChevronDown size={16} />
+                    ) : (
+                      <ChevronRight size={16} />
+                    )}
                   </button>
                   <div
                     className={`ml-5 mt-0.5 space-y-0.5 border-l-2 border-slate-200 dark:border-slate-700 overflow-hidden transition-all duration-500 ${
-                      penilaianOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
+                      groupIsOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
                     }`}
                   >
-                    {item.children
-                      .filter((child) => userRole !== "guru" || guruAllowedHrefs.has(child.href))
+                    {group.children
+                      .filter(
+                        (child) =>
+                          userRole !== "guru" ||
+                          guruAllowedHrefs.has(child.href),
+                      )
                       .map((child) => {
-                        const active = isActive(child.href);
+                        const childActive = isActive(child.href);
                         const ChildIcon = child.icon;
                         return (
                           <Link
@@ -191,7 +230,7 @@ export default function DashboardSidebar({
                             href={child.href}
                             onClick={onClose}
                             className={`flex items-center gap-3 px-3.5 py-2 rounded-lg text-sm font-medium transition-all duration-200 ml-2 ${
-                              active
+                              childActive
                                 ? "bg-indigo-500/50 dark:bg-indigo-900/70 text-indigo-600 dark:text-indigo-300 border-r-2 border-indigo-500 dark:border-indigo-400"
                                 : "text-slate-600 dark:text-slate-400 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 hover:text-slate-800 dark:hover:text-slate-200"
                             }`}
@@ -201,7 +240,7 @@ export default function DashboardSidebar({
                           </Link>
                         );
                       })}
-                    </div>
+                  </div>
                 </div>
               );
             }

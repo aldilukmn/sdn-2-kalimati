@@ -20,7 +20,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-export default function RekapKarakterPage() {
+export default function NilaiRekapKarakterPage() {
   const [userRole, setUserRole] = useState<string | null>(null);
   const [userGrade, setUserGrade] = useState<string | null>(null);
 
@@ -113,7 +113,7 @@ export default function RekapKarakterPage() {
           </div>
           <div>
             <label className="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">Bulan</label>
-            <Select value={month || "__all__"} onValueChange={(v) => setMonth(v != null ? (v === "__all__" ? "" : v) : "")}>
+            <Select value={month || ""} onValueChange={(v) => setMonth(v != null ? (v === "__all__" ? "" : v) : "")}>
               <SelectTrigger className="w-full h-auto rounded-xl border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100"><SelectValue placeholder="Semua Bulan" /></SelectTrigger>
               <SelectContent>
                 <SelectGroup>

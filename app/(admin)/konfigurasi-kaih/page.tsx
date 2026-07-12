@@ -11,7 +11,7 @@ import Modal from "@/app/components/Modal";
 import TableSkeleton from "@/app/components/TableSkeleton";
 import InputField from "@/app/components/form/InputField";
 
-export default function KarakterHabitsPage() {
+export default function KonfigurasiKaihPage() {
   const [userRole, setUserRole] = useState<string | null>(null);
 
   useEffect(() => {
@@ -153,7 +153,11 @@ export default function KarakterHabitsPage() {
 
   return (
     <div className="flex flex-col gap-6 p-4 md:p-6">
-      <PageHero icon={ListChecks} title="Kebiasaan Anak Indonesia Hebat" description="Kelola daftar kebiasaan yang digunakan dalam penilaian karakter" />
+      <PageHero
+        icon={ListChecks}
+        title="Kebiasaan Anak Indonesia Hebat"
+        description="Kelola daftar kebiasaan yang digunakan dalam penilaian karakter"
+      />
 
       {/* Header actions */}
       {isWriteAllowed && (
@@ -172,8 +176,14 @@ export default function KarakterHabitsPage() {
       {error && (
         <div className="bg-white/70 dark:bg-gray-800/40 border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
           <div className="text-center py-12">
-            <AlertCircle size={40} className="mx-auto text-red-300 dark:text-red-600 mb-3" aria-hidden="true" />
-            <p className="text-red-500 dark:text-red-400 font-medium">{error}</p>
+            <AlertCircle
+              size={40}
+              className="mx-auto text-red-300 dark:text-red-600 mb-3"
+              aria-hidden="true"
+            />
+            <p className="text-red-500 dark:text-red-400 font-medium">
+              {error}
+            </p>
             <button
               onClick={fetchHabits}
               className="mt-3 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-sm font-medium transition-colors cursor-pointer"
@@ -187,7 +197,15 @@ export default function KarakterHabitsPage() {
       {/* Loading */}
       {loading && !error && (
         <div className="bg-white/70 dark:bg-gray-800/40 border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl overflow-hidden">
-          <TableSkeleton headers={["No", "Nama Kebiasaan", "Urutan", ...(isWriteAllowed ? ["Aksi"] : [])]} rows={5} />
+          <TableSkeleton
+            headers={[
+              "No",
+              "Nama Kebiasaan",
+              "Urutan",
+              ...(isWriteAllowed ? ["Aksi"] : []),
+            ]}
+            rows={5}
+          />
         </div>
       )}
 
@@ -195,10 +213,18 @@ export default function KarakterHabitsPage() {
       {!loading && !error && habits.length === 0 && (
         <div className="bg-white/70 dark:bg-gray-800/40 border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
           <div className="text-center py-12">
-            <ListChecks size={40} className="mx-auto text-slate-300 dark:text-slate-600 mb-3" aria-hidden="true" />
-            <p className="text-slate-500 dark:text-slate-400 font-medium">Belum ada kebiasaan.</p>
+            <ListChecks
+              size={40}
+              className="mx-auto text-slate-300 dark:text-slate-600 mb-3"
+              aria-hidden="true"
+            />
+            <p className="text-slate-500 dark:text-slate-400 font-medium">
+              Belum ada kebiasaan.
+            </p>
             <p className="text-slate-400 dark:text-slate-500 text-sm mt-1">
-              {isWriteAllowed ? "Klik tombol Tambah Kebiasaan untuk menambahkan." : "Hubungi Admin untuk menambahkan kebiasaan."}
+              {isWriteAllowed
+                ? "Klik tombol Tambah Kebiasaan untuk menambahkan."
+                : "Hubungi Admin untuk menambahkan kebiasaan."}
             </p>
           </div>
         </div>
@@ -211,20 +237,39 @@ export default function KarakterHabitsPage() {
             <table className="w-full text-sm">
               <thead>
                 <tr className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white">
-                  <th className="text-center px-4 py-3 font-semibold w-12 whitespace-nowrap">No</th>
-                  <th className="text-left px-4 py-3 font-semibold whitespace-nowrap">Nama Kebiasaan</th>
-                  <th className="text-center px-4 py-3 font-semibold w-20 whitespace-nowrap">Urutan</th>
-                  {isWriteAllowed && <th className="text-center px-4 py-3 font-semibold w-28 whitespace-nowrap">Aksi</th>}
+                  <th className="text-center px-4 py-3 font-semibold w-12 whitespace-nowrap">
+                    No
+                  </th>
+                  <th className="text-left px-4 py-3 font-semibold whitespace-nowrap">
+                    Nama Kebiasaan
+                  </th>
+                  <th className="text-center px-4 py-3 font-semibold w-20 whitespace-nowrap">
+                    Urutan
+                  </th>
+                  {isWriteAllowed && (
+                    <th className="text-center px-4 py-3 font-semibold w-28 whitespace-nowrap">
+                      Aksi
+                    </th>
+                  )}
                 </tr>
               </thead>
               <tbody>
                 {habits
                   .sort((a, b) => a.order - b.order)
                   .map((habit, i) => (
-                    <tr key={habit._id} className="border-b border-slate-100 dark:border-slate-700/50 hover:bg-indigo-50/50 dark:hover:bg-indigo-900/20 transition-colors">
-                      <td className="px-4 py-2.5 text-center text-slate-500 dark:text-slate-400">{i + 1}</td>
-                      <td className="px-4 py-2.5 font-medium text-slate-700 dark:text-slate-300">{habit.name}</td>
-                      <td className="px-4 py-2.5 text-center text-slate-600 dark:text-slate-400">{habit.order}</td>
+                    <tr
+                      key={habit._id}
+                      className="border-b border-slate-100 dark:border-slate-700/50 hover:bg-indigo-50/50 dark:hover:bg-indigo-900/20 transition-colors"
+                    >
+                      <td className="px-4 py-2.5 text-center text-slate-500 dark:text-slate-400">
+                        {i + 1}
+                      </td>
+                      <td className="px-4 py-2.5 font-medium text-slate-700 dark:text-slate-300 capitalize">
+                        {habit.name}
+                      </td>
+                      <td className="px-4 py-2.5 text-center text-slate-600 dark:text-slate-400">
+                        {habit.order}
+                      </td>
                       {isWriteAllowed && (
                         <td className="px-4 py-2.5">
                           <div className="flex items-center justify-center gap-1">
@@ -256,10 +301,28 @@ export default function KarakterHabitsPage() {
       )}
 
       {/* Create Modal */}
-      <Modal open={createOpen} onClose={() => setCreateOpen(false)} title="Tambah Kebiasaan" className="max-w-md">
+      <Modal
+        open={createOpen}
+        onClose={() => setCreateOpen(false)}
+        title="Tambah Kebiasaan"
+        className="max-w-md"
+      >
         <div className="flex flex-col gap-4">
-          <InputField label="Nama Kebiasaan" name="createName" value={createName} onChange={(e) => setCreateName(e.target.value)} placeholder="Contoh: Bangun Pagi" />
-          <InputField label="Urutan" name="createOrder" value={createOrder} onChange={(e) => setCreateOrder(e.target.value)} placeholder="Contoh: 1" numericOnly />
+          <InputField
+            label="Nama Kebiasaan"
+            name="createName"
+            value={createName}
+            onChange={(e) => setCreateName(e.target.value)}
+            placeholder="Contoh: Bangun Pagi"
+          />
+          <InputField
+            label="Urutan"
+            name="createOrder"
+            value={createOrder}
+            onChange={(e) => setCreateOrder(e.target.value)}
+            placeholder="Contoh: 1"
+            numericOnly
+          />
           <div className="flex gap-2 mt-2">
             <button
               onClick={() => setCreateOpen(false)}
@@ -277,17 +340,37 @@ export default function KarakterHabitsPage() {
                   <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                   Menyimpan...
                 </span>
-              ) : "Simpan"}
+              ) : (
+                "Simpan"
+              )}
             </button>
           </div>
         </div>
       </Modal>
 
       {/* Edit Modal */}
-      <Modal open={editOpen} onClose={() => setEditOpen(false)} title="Edit Kebiasaan" className="max-w-md">
+      <Modal
+        open={editOpen}
+        onClose={() => setEditOpen(false)}
+        title="Edit Kebiasaan"
+        className="max-w-md"
+      >
         <div className="flex flex-col gap-4">
-          <InputField label="Nama Kebiasaan" name="editName" value={editName} onChange={(e) => setEditName(e.target.value)} placeholder="Contoh: Bangun Pagi" />
-          <InputField label="Urutan" name="editOrder" value={editOrder} onChange={(e) => setEditOrder(e.target.value)} placeholder="Contoh: 1" numericOnly />
+          <InputField
+            label="Nama Kebiasaan"
+            name="editName"
+            value={editName}
+            onChange={(e) => setEditName(e.target.value)}
+            placeholder="Contoh: Bangun Pagi"
+          />
+          <InputField
+            label="Urutan"
+            name="editOrder"
+            value={editOrder}
+            onChange={(e) => setEditOrder(e.target.value)}
+            placeholder="Contoh: 1"
+            numericOnly
+          />
           <div className="flex gap-2 mt-2">
             <button
               onClick={() => setEditOpen(false)}
@@ -305,14 +388,21 @@ export default function KarakterHabitsPage() {
                   <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                   Menyimpan...
                 </span>
-              ) : "Simpan"}
+              ) : (
+                "Simpan"
+              )}
             </button>
           </div>
         </div>
       </Modal>
 
       {/* Delete Confirmation Modal */}
-      <Modal open={deleteOpen} onClose={() => setDeleteOpen(false)} title="Hapus Kebiasaan" className="max-w-sm">
+      <Modal
+        open={deleteOpen}
+        onClose={() => setDeleteOpen(false)}
+        title="Hapus Kebiasaan"
+        className="max-w-sm"
+      >
         <p className="text-sm text-slate-600 dark:text-slate-400 mb-5">
           Yakin ingin menghapus kebiasaan <strong>{deleteName}</strong>?
         </p>
@@ -333,7 +423,9 @@ export default function KarakterHabitsPage() {
                 <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                 Menghapus...
               </span>
-            ) : "Hapus"}
+            ) : (
+              "Hapus"
+            )}
           </button>
         </div>
       </Modal>

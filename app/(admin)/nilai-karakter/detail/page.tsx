@@ -224,7 +224,7 @@ export default function KarakterDetailPage() {
           {/* Navigation */}
           <div className="flex flex-wrap gap-3">
             <button
-              onClick={() => router.push(`/karakter/history?studentId=${data.studentId}&name=${encodeURIComponent(data.name)}&grade=${data.grade}`)}
+              onClick={() => router.push(`/nilai-karakter/history?studentId=${data.studentId}&name=${encodeURIComponent(data.name)}&grade=${data.grade}`)}
               className="flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-sm font-medium transition-colors cursor-pointer"
             >
               <History size={16} />

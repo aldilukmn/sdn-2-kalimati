@@ -63,7 +63,7 @@ export function useRekapKarakter(userRole: string | null, userGrade: string | nu
   }, [grade, semester, academicYear, month, retryCount]);
 
   const uniqueMonths = Array.from(
-    new Map(assessments.map((a) => [a.month, a.monthOrder])).entries()
+    new Map(assessments.map((a) => [String(a.month), a.monthOrder])).entries()
   )
     .sort((a, b) => a[1] - b[1])
     .map(([monthName]) => monthName);
@@ -76,7 +76,7 @@ export function useRekapKarakter(userRole: string | null, userGrade: string | nu
       studentMap.set(a.studentId, { name: a.name, scores: new Map() });
       studentIdsOrder.push(a.studentId);
     }
-    studentMap.get(a.studentId)!.scores.set(a.month, a.characterScore);
+    studentMap.get(a.studentId)!.scores.set(String(a.month), a.characterScore);
   }
 
   const monthsToShow = month ? [month] : uniqueMonths;
@@ -105,7 +105,7 @@ export function useRekapKarakter(userRole: string | null, userGrade: string | nu
   const classAverages: Record<string, number | null> = {};
   for (const m of monthsToShow) {
     const scores = assessments
-      .filter((a) => a.month === m)
+      .filter((a) => String(a.month) === m)
       .map((a) => a.characterScore);
     classAverages[m] = scores.length > 0
       ? Math.round((scores.reduce((a, b) => a + b, 0) / scores.length) * 100) / 100

@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { ClipboardList, Save, AlertCircle } from "lucide-react";
 import { useAssessmentScore } from "@/hooks/useAssessmentScore";
 import { GRADES, ITEMS_PER_PAGE } from "@/lib/constants";
+import type { AssessmentComponent } from "@/types/nilai-harian";
 import toast from "react-hot-toast";
 import PageHero from "@/app/components/PageHero";
 import Pagination from "@/app/components/Pagination";
@@ -61,10 +62,23 @@ export default function NilaiKomponenPage() {
     }
   };
 
-  const formulaPreview = config?.components
-    ?.filter((c) => c.weight > 0)
-    .map((c) => `${c.name} × ${c.weight}%`)
-    .join(" + ");
+  const colorPalette = [
+    "text-indigo-600 dark:text-indigo-300",
+    "text-emerald-600 dark:text-emerald-300",
+    "text-amber-600 dark:text-amber-300",
+    "text-rose-600 dark:text-rose-300",
+    "text-cyan-600 dark:text-cyan-300",
+    "text-purple-600 dark:text-purple-300",
+    "text-orange-600 dark:text-orange-300",
+    "text-teal-600 dark:text-teal-300",
+  ];
+  const formulaComponents = (config?.components
+    ?.reduce((acc, c, i) => {
+      if (c.weight > 0) acc.push({ ...c, color: colorPalette[i % colorPalette.length] });
+      return acc;
+    }, [] as (AssessmentComponent & { color: string })[]) || []);
+
+  const getTabColor = (index: number) => colorPalette[index % colorPalette.length];
 
   const isHarianTab = selectedComponentKey === "harian";
   const isKarakterTab = selectedComponentKey === "karakter";
@@ -238,11 +252,17 @@ export default function NilaiKomponenPage() {
       ) : (
         <>
           {/* Active config info */}
-          {formulaPreview && (
+          {formulaComponents.length > 0 && (
             <div className="bg-indigo-50/50 dark:bg-indigo-900/20 border border-indigo-200 dark:border-indigo-800/50 rounded-2xl px-5 py-3">
               <p className="text-xs text-indigo-500 dark:text-indigo-400 font-medium mb-0.5">Konfigurasi Aktif:</p>
-              <p className="text-sm text-indigo-700 dark:text-indigo-300 font-semibold">
-                Nilai Akhir = {formulaPreview}
+              <p className="text-sm font-semibold">
+                <span className="text-indigo-700 dark:text-indigo-300">Nilai Akhir = </span>
+                {formulaComponents.map((c, i) => (
+                  <span key={c.key}>
+                    {i > 0 && <span className="text-slate-400 dark:text-slate-500"> + </span>}
+                    <span className={c.color}>{c.name} × {c.weight}%</span>
+                  </span>
+                ))}
               </p>
             </div>
           )}
@@ -250,13 +270,13 @@ export default function NilaiKomponenPage() {
           {/* Component tabs */}
           {components.length > 0 && (
             <div className="flex gap-1 bg-slate-100 dark:bg-gray-900 rounded-xl p-1 w-full md:w-fit flex-wrap">
-              {components.map((comp) => (
+              {components.map((comp, i) => (
                 <button
                   key={comp.key}
                   onClick={() => setSelectedComponentKey(comp.key)}
                   className={`px-4 py-2 rounded-lg text-sm font-medium transition-all cursor-pointer ${
                     selectedComponentKey === comp.key
-                      ? "bg-white dark:bg-gray-800 text-indigo-600 dark:text-indigo-300 shadow-sm"
+                      ? `bg-white dark:bg-gray-800 ${getTabColor(i)} shadow-sm`
                       : "text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300"
                   }`}
                 >
@@ -444,7 +464,7 @@ export default function NilaiKomponenPage() {
                                   max={100}
                                   value={score}
                                   onChange={(e) => handleScoreChange(s.studentId, e.target.value)}
-                                  className="w-24 px-3 py-1.5 text-center rounded-lg border border-slate-300 bg-slate-50 dark:border-gray-700 dark:bg-gray-950 focus:outline-none focus:border-blue-500 dark:focus:border-blue-400 [&::-webkit-inner-spin-button]:appearance-none [&::-moz-appearance]:textfield"
+                                  className="w-fit px-0 py-1.5 text-center rounded-lg border border-slate-300 bg-slate-50 dark:border-gray-700 dark:bg-gray-950 focus:outline-none focus:border-blue-500 dark:focus:border-blue-400 [&::-webkit-inner-spin-button]:appearance-none [&::-moz-appearance]:textfield"
                                 />
                               </td>
                               <td className="px-4 py-2.5 text-center">

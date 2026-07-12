@@ -18,7 +18,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-export default function KarakterPage() {
+export default function NilaiKarakterPage() {
   const router = useRouter();
   const {
     semester, setSemester,

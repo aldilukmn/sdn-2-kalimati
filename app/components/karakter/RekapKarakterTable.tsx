@@ -90,7 +90,7 @@ export default function RekapKarakterTable({ recapRows, monthsToShow, classAvera
                 )}
                 <td className="p-3 text-center">
                   <Link
-                    href={`/karakter/history?studentId=${row.studentId}&name=${encodeURIComponent(row.name)}&grade=${grade}`}
+                    href={`/nilai-karakter/history?studentId=${row.studentId}&name=${encodeURIComponent(row.name)}&grade=${grade}`}
                     className="inline-flex items-center gap-1 text-xs font-medium text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 transition-colors"
                   >
                     <Eye size={14} />

@@ -173,11 +173,11 @@ export function useAssessmentScore() {
     }
   }, [selectedComponentKey, selectedGS, config, students.length, retryCount]);
 
-  // ─── Karakter: fetch from character_assessment (grade-level, NOT subject-level) ───
-  // Does NOT depend on selectedGS or students — uses response data directly
+  // ─── Karakter: fetch from character_assessment, merge with students list ───
   useEffect(() => {
     if (selectedComponentKey !== "karakter") return;
     if (!isJwtReady || !grade || !semester || !academicYear) return;
+    if (students.length === 0) return;
 
     let cancelled = false;
     setKarakterLoading(true);
@@ -192,26 +192,21 @@ export function useAssessmentScore() {
           characterScore: number;
         }[];
 
-        // Group scores per student
-        const scoreMap = new Map<string, { name: string; scores: number[] }>();
+        const scoreMap = new Map<string, number[]>();
         for (const a of assessments) {
-          if (!scoreMap.has(a.studentId)) {
-            scoreMap.set(a.studentId, { name: a.name, scores: [] });
-          }
-          scoreMap.get(a.studentId)!.scores.push(a.characterScore);
+          if (!scoreMap.has(a.studentId)) scoreMap.set(a.studentId, []);
+          scoreMap.get(a.studentId)!.push(a.characterScore);
         }
 
-        // Build sorted list with computed averages
-        const result: KarakterStudent[] = [];
-        for (const [studentId, data] of scoreMap.entries()) {
-          const avg =
-            data.scores.length > 0
-              ? Math.round((data.scores.reduce((s, v) => s + v, 0) / data.scores.length) * 100) / 100
-              : null;
-          result.push({ studentId, name: data.name, avg });
-        }
-        result.sort((a, b) => a.name.localeCompare(b.name, "id"));
-        setKarakterStudents(result);
+        const merged: KarakterStudent[] = students.map((s) => {
+          const scores = scoreMap.get(s.studentId);
+          const avg = scores && scores.length > 0
+            ? Math.round((scores.reduce((a, b) => a + b, 0) / scores.length) * 100) / 100
+            : null;
+          return { studentId: s.studentId, name: s.name, avg };
+        });
+        merged.sort((a, b) => a.name.localeCompare(b.name, "id"));
+        setKarakterStudents(merged);
       })
       .catch(() => {
         if (!cancelled) setKarakterStudents([]);
@@ -221,7 +216,7 @@ export function useAssessmentScore() {
       });
 
     return () => { cancelled = true; };
-  }, [selectedComponentKey, isJwtReady, grade, semester, academicYear, retryCount]);
+  }, [selectedComponentKey, isJwtReady, grade, semester, academicYear, retryCount, students]);
 
   const fetchHarianData = async () => {
     if (!selectedGS) return;
