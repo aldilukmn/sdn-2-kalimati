@@ -158,7 +158,7 @@ export default function ScoreTable({
                     disabled={saving}
                     min={0}
                     max={Number(entry.maxScore)}
-                    className="w-20 px-2 py-1.5 text-sm text-center rounded-lg border border-slate-300 bg-slate-50 focus:outline-none focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:focus:border-blue-400 disabled:opacity-50 [&::-webkit-inner-spin-button]:appearance-none [&::-moz-appearance]:textfield"
+                    className="w-fit px-1 py-1.5 text-sm text-center rounded-lg border border-slate-300 bg-slate-50 focus:outline-none focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:focus:border-blue-400 disabled:opacity-50 [&::-webkit-inner-spin-button]:appearance-none [&::-moz-appearance]:textfield"
                   />
                 </td>
                 <td className="p-3">

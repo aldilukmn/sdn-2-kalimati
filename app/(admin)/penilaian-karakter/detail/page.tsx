@@ -143,9 +143,18 @@ export default function KarakterDetailPage() {
       {error ? (
         <div className="bg-white/70 dark:bg-gray-800/40 border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
           <div className="text-center py-12">
-            <AlertCircle size={40} className="mx-auto text-red-300 dark:text-red-600 mb-3" aria-hidden="true" />
-            <p className="text-red-500 dark:text-red-400 font-medium">{error}</p>
-            <button onClick={retry} className="mt-3 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-sm font-medium transition-colors cursor-pointer">
+            <AlertCircle
+              size={40}
+              className="mx-auto text-red-300 dark:text-red-600 mb-3"
+              aria-hidden="true"
+            />
+            <p className="text-red-500 dark:text-red-400 font-medium">
+              {error}
+            </p>
+            <button
+              onClick={retry}
+              className="mt-3 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-sm font-medium transition-colors cursor-pointer"
+            >
               Coba Lagi
             </button>
           </div>
@@ -154,7 +163,10 @@ export default function KarakterDetailPage() {
         <div className="animate-pulse space-y-4">
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
             {[1, 2, 3, 4, 5].map((i) => (
-              <div key={i} className="h-24 bg-slate-200 dark:bg-slate-700 rounded-2xl" />
+              <div
+                key={i}
+                className="h-24 bg-slate-200 dark:bg-slate-700 rounded-2xl"
+              />
             ))}
           </div>
           <div className="h-48 bg-slate-200 dark:bg-slate-700 rounded-xl" />
@@ -175,40 +187,68 @@ export default function KarakterDetailPage() {
               label="Character Score"
               value={`${data.characterScore.toFixed(2)}`}
               grade={
-                data.characterScore >= 85 ? "Sangat Baik" :
-                data.characterScore >= 70 ? "Baik" :
-                data.characterScore >= 55 ? "Memadai" : "Kurang"
+                data.characterScore >= 85
+                  ? "Sangat Baik"
+                  : data.characterScore >= 70
+                    ? "Baik"
+                    : data.characterScore >= 55
+                      ? "Memadai"
+                      : "Kurang"
               }
             />
-            <DataField label="Total Bobot" value={`${data.totalWeight} / ${data.maxWeight}`} />
+            <DataField
+              label="Total Bobot"
+              value={`${data.totalWeight} / ${data.maxWeight}`}
+            />
             <DataField label="Dicatat oleh" value={data.recordedBy || "-"} />
           </div>
 
           {/* Habits table */}
           {habitDisplays.length > 0 ? (
             <div className="bg-white/70 dark:bg-gray-800/40 border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
-              <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-4">Rincian Kebiasaan</h3>
+              <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-4">
+                Rincian Kebiasaan
+              </h3>
               <div className="overflow-x-auto">
                 <Table>
                   <TableHeader>
                     <TableRow className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white">
-                      <TableHead className="w-12 text-center text-xs font-semibold text-white">No</TableHead>
-                      <TableHead className="text-xs font-semibold text-white">Kebiasaan</TableHead>
-                      <TableHead className="text-center text-xs font-semibold text-white">Nilai</TableHead>
-                      <TableHead className="text-center text-xs font-semibold text-white">Bobot</TableHead>
+                      <TableHead className="w-12 text-center text-xs font-semibold text-white">
+                        No
+                      </TableHead>
+                      <TableHead className="text-xs font-semibold text-white">
+                        Kebiasaan
+                      </TableHead>
+                      <TableHead className="text-center text-xs font-semibold text-white">
+                        Nilai
+                      </TableHead>
+                      <TableHead className="text-center text-xs font-semibold text-white">
+                        Bobot
+                      </TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
                     {habitDisplays.map((h, idx) => (
-                      <TableRow key={idx} className="hover:bg-slate-50 dark:hover:bg-slate-800/30">
-                        <TableCell className="text-center text-xs text-slate-500">{idx + 1}</TableCell>
-                        <TableCell className="text-xs font-medium text-slate-700 dark:text-slate-200">{h.name}</TableCell>
+                      <TableRow
+                        key={idx}
+                        className="hover:bg-slate-50 dark:hover:bg-slate-800/30"
+                      >
+                        <TableCell className="text-center text-xs text-slate-500">
+                          {idx + 1}
+                        </TableCell>
+                        <TableCell className="text-xs font-medium text-slate-700 dark:text-slate-200">
+                          {h.name}
+                        </TableCell>
                         <TableCell className="text-center">
-                          <span className={`inline-block px-2.5 py-0.5 rounded-full text-xs font-bold ${VALUE_COLORS[h.value] || ""}`}>
+                          <span
+                            className={`inline-block px-2.5 py-0.5 rounded-full text-xs font-bold ${VALUE_COLORS[h.value] || ""}`}
+                          >
                             {h.value}
                           </span>
                         </TableCell>
-                        <TableCell className="text-center text-xs text-slate-600 dark:text-slate-300">{h.weight}</TableCell>
+                        <TableCell className="text-center text-xs text-slate-600 dark:text-slate-300">
+                          {h.weight}
+                        </TableCell>
                       </TableRow>
                     ))}
                   </TableBody>
@@ -224,7 +264,11 @@ export default function KarakterDetailPage() {
           {/* Navigation */}
           <div className="flex flex-wrap gap-3">
             <button
-              onClick={() => router.push(`/nilai-karakter/history?studentId=${data.studentId}&name=${encodeURIComponent(data.name)}&grade=${data.grade}`)}
+              onClick={() =>
+                router.push(
+                  `/penilaian-karakter/history?studentId=${data.studentId}&name=${encodeURIComponent(data.name)}&grade=${data.grade}`,
+                )
+              }
               className="flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-sm font-medium transition-colors cursor-pointer"
             >
               <History size={16} />

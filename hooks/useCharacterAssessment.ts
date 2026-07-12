@@ -243,7 +243,7 @@ export function useCharacterAssessment() {
           ...prev,
           [data.studentId]: habitScores,
         }));
-        toast.success("Data dimuat kembali, silakan edit");
+        toast.success("Data dikembalikan ke nilai asli");
       }
     } catch {
       toast.error("Gagal memuat data penilaian");

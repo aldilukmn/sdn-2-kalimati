@@ -264,7 +264,7 @@ export default function KonfigurasiKaihPage() {
                       <td className="px-4 py-2.5 text-center text-slate-500 dark:text-slate-400">
                         {i + 1}
                       </td>
-                      <td className="px-4 py-2.5 font-medium text-slate-700 dark:text-slate-300 capitalize">
+                      <td className="px-4 py-2.5 font-medium text-slate-700 dark:text-slate-300">
                         {habit.name}
                       </td>
                       <td className="px-4 py-2.5 text-center text-slate-600 dark:text-slate-400">

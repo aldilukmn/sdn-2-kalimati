@@ -363,3 +363,18 @@ Response: [
 - `ApiResponse<T>` default `= any` → **zero breaking change** sepanjang path
 - Build `npm run build` — **zero errors** ✅
 - **Semua `any` di FE sudah dibersihkan** — tidak ada sisa `any` yang tersisa di codebase FE ✅
+
+## Rekap Sesi
+
+### Sesi ini (2026-07-12)
+| # | Item | File | Status |
+|---|------|------|--------|
+| 1 | **Collapse/expand badge A-D di Penilaian Karakter** | `app/components/karakter/HabitRadioGroup.tsx` — conditional render + `animate-fadeIn`; `StudentAssessmentTable.tsx` min-w 100→60px | ✅ |
+| 2 | **Normalisasi month ke String di useRekapKarakter** | `hooks/useRekapKarakter.ts` — `String(a.month)` di Map key, uniqueMonths, filter class averages. Data muncul saat filter bulan | ✅ |
+
+### Sesi sebelumnya
+| # | Item | File | Status |
+|---|------|------|--------|
+| 1 | **Tab Karakter semua siswa muncul** | `hooks/useAssessmentScore.ts` — merge logic `students.map()` lookup `scoreMap` | ✅ |
+| 2 | **Formula preview + tab warna-warni sinkron** | `app/(admin)/komponen-nilai/page.tsx` — `formulaComponents` pake `reduce`, tab aktif `getTabColor(i)` | ✅ |
+| 3 | **Sidebar grouping karakter** | `app/components/DashboardSidebar.tsx` — 2 grup "Nilai Akademik" + "Karakter", toggle sendiri | ✅ |

@@ -18,7 +18,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-export default function NilaiKarakterPage() {
+export default function PenilaianKarakterPage() {
   const router = useRouter();
   const {
     semester, setSemester,
@@ -59,7 +59,7 @@ export default function NilaiKarakterPage() {
   };
 
   const handleViewDetail = (assessmentId: string) => {
-    router.push(`/karakter/detail?id=${assessmentId}`);
+    router.push(`/penilaian-karakter/detail?id=${assessmentId}`);
   };
 
   return (
@@ -168,10 +168,10 @@ export default function NilaiKarakterPage() {
           {habits.length > 0 && (
             <div className="flex flex-wrap items-center gap-2 text-xs text-slate-500 dark:text-slate-400" role="status" aria-label="Bobot nilai karakter">
               <span className="font-medium">Bobot nilai:</span>
-              <span className="px-2 py-0.5 bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300 rounded-full">A = 4</span>
-              <span className="px-2 py-0.5 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded-full">B = 3</span>
-              <span className="px-2 py-0.5 bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300 rounded-full">C = 2</span>
-              <span className="px-2 py-0.5 bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300 rounded-full">D = 1</span>
+              <span className="px-2 py-0.5 bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300 rounded-full">A = 4 (Sangat Baik)</span>
+              <span className="px-2 py-0.5 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded-full">B = 3 (Baik)</span>
+              <span className="px-2 py-0.5 bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300 rounded-full">C = 2 (Memadai)</span>
+              <span className="px-2 py-0.5 bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300 rounded-full">D = 1 (Kurang)</span>
 
             </div>
           )}
@@ -187,28 +187,26 @@ export default function NilaiKarakterPage() {
             onDelete={(id, name) => setDeleteTarget({ id, name })}
             onViewDetail={handleViewDetail}
             saving={saving}
+            saveButton={
+              <button
+                onClick={onSave}
+                disabled={saving || !hasChanges}
+                className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-xl text-sm font-medium transition-colors cursor-pointer"
+              >
+                {saving ? (
+                  <>
+                    <Loader2 size={16} className="animate-spin" />
+                    Menyimpan...
+                  </>
+                ) : (
+                  <>
+                    <Save size={16} />
+                    Simpan Penilaian
+                  </>
+                )}
+              </button>
+            }
           />
-
-          {/* Save button */}
-          <div className="flex justify-end">
-            <button
-              onClick={onSave}
-              disabled={saving || !hasChanges}
-              className="flex items-center justify-center gap-2 px-6 py-3 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-xl text-sm font-medium transition-colors cursor-pointer"
-            >
-              {saving ? (
-                <>
-                  <Loader2 size={16} className="animate-spin" />
-                  Menyimpan...
-                </>
-              ) : (
-                <>
-                  <Save size={16} />
-                  Simpan Penilaian
-                </>
-              )}
-            </button>
-          </div>
         </>
       )}
 

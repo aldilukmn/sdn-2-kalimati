@@ -20,7 +20,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-export default function NilaiRekapKarakterPage() {
+export default function RekapKarapkterPage() {
   const [userRole, setUserRole] = useState<string | null>(null);
   const [userGrade, setUserGrade] = useState<string | null>(null);
 
