@@ -57,7 +57,7 @@ export default function NilaiHarianPage() {
       {error ? (
         <ErrorState error={error} onRetry={retry} />
       ) : initialLoading ? (
-        <LoadingSkeleton rows={3} />
+        <LoadingSkeleton rows={1} />
       ) : !selectedGS || gradeSubjects.length === 0 ? (
         <EmptyState icon={ClipboardEdit} title="Belum ada Mapel untuk kelas ini." description="Hubungi Admin untuk menetapkan Mata Pelajaran terlebih dahulu." />
       ) : (
@@ -65,7 +65,7 @@ export default function NilaiHarianPage() {
           {/* Chapter cards */}
           <div className="space-y-2">
             {chaptersLoading ? (
-              <LoadingSkeleton rows={3} />
+              <LoadingSkeleton rows={1} />
             ) : sortedChapters.length === 0 ? (
               <EmptyState icon={ClipboardList} title="Belum ada Bab untuk mapel ini." description="Buat Bab dan Materi terlebih dahulu di Struktur Akademik." action={{ label: "Atur Mapel", href: "/daftar-mapel" }} />
             ) : (

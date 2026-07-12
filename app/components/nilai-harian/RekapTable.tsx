@@ -5,6 +5,7 @@ import { ChevronDown, ChevronRight } from "lucide-react";
 import type { Chapter, RekapEntry, ClassAverageItem } from "@/types/nilai-harian";
 import { ITEMS_PER_PAGE } from "@/lib/constants";
 import Pagination from "@/app/components/Pagination";
+import LoadingSkeleton from '../shared/LoadingSkeleton';
 
 interface Props {
   chapters: Chapter[];
@@ -34,21 +35,9 @@ export default function RekapTable({ chapters, entries, classAverages, loading }
 
   if (loading) {
     return (
-      <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5 overflow-hidden">
-        <div className="animate-pulse rounded-xl border border-gray-200 dark:border-gray-700 bg-white/80 dark:bg-gray-800/30">
-          <div className="h-10 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-t-xl" />
-          {Array.from({ length: 5 }).map((_, i) => (
-            <div key={i} className="flex gap-2 p-3 border-b border-gray-200 dark:border-gray-700">
-              <div className="h-4 w-4 bg-gray-200 dark:bg-gray-700 rounded" />
-              <div className="h-4 w-32 bg-gray-200 dark:bg-gray-700 rounded" />
-              {chapters.map((_, j) => (
-                <div key={j} className="h-4 w-16 bg-gray-200 dark:bg-gray-700 rounded ml-auto" />
-              ))}
-              <div className="h-4 w-16 bg-gray-200 dark:bg-gray-700 rounded ml-auto" />
-            </div>
-          ))}
-        </div>
-      </div>
+      <>
+        <LoadingSkeleton rows={1} />
+      </>
     );
   }
 

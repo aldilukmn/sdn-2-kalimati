@@ -19,6 +19,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import LoadingSkeleton from '@/app/components/shared/LoadingSkeleton';
 
 export default function RekapKarapkterPage() {
   const [userRole, setUserRole] = useState<string | null>(null);
@@ -155,12 +156,7 @@ export default function RekapKarapkterPage() {
           </div>
         </div>
       ) : initialLoading ? (
-        <div className="animate-pulse space-y-2">
-          <div className="h-14 bg-slate-200 dark:bg-slate-700 rounded-xl" />
-          {[1, 2, 3, 4, 5].map((i) => (
-            <div key={i} className="h-10 bg-slate-200 dark:bg-slate-700 rounded-xl" />
-          ))}
-        </div>
+        <LoadingSkeleton rows={1} />
       ) : !hasData ? (
         <div className="bg-white/70 dark:bg-gray-800/40 border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
           <div className="text-center py-12">

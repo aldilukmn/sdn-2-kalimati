@@ -10,7 +10,7 @@ interface LoadingSkeletonProps {
 export default function LoadingSkeleton({
   type = "bars",
   rows = 3,
-  rowHeight = "h-14",
+  rowHeight = "h-56",
   className = "",
 }: LoadingSkeletonProps) {
   if (type === "pulse-table") {

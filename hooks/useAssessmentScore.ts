@@ -8,12 +8,9 @@ import StudentAttendanceService from "@/services/student-attendance.service";
 import AssessmentConfigService from "@/services/assessment-config.service";
 import AssessmentScoreService from "@/services/assessment-score.service";
 import CharacterAssessmentService from "@/services/character-assessment.service";
-import { decodeJWT } from "@/lib/jwt";
-import { GRADES } from "@/lib/constants";
+import { useAuth } from "@/hooks/useAuth";
+import { GRADES, SEMESTERS, ACADEMIC_YEARS } from "@/lib/constants";
 import type { GradeSubject, Chapter, Score, AssessmentConfig, AssessmentComponent } from "@/types/nilai-harian";
-
-const SEMESTERS = ["1", "2"];
-const ACADEMIC_YEARS = ["2026/2027"];
 
 export interface KarakterStudent {
   studentId: string;
@@ -25,30 +22,12 @@ export function useAssessmentScore() {
   const [semester, setSemester] = useState("1");
   const [academicYear, setAcademicYear] = useState("2026/2027");
   const [grade, setGrade] = useState("");
-  const [userRole, setUserRole] = useState<string | null>(null);
-  const [isJwtReady, setIsJwtReady] = useState(false);
+  const { role, grade: authGrade } = useAuth();
 
   useEffect(() => {
-    const token = sessionStorage.getItem("user_session");
-    let role: string | null = null;
-    let gradeFromToken: string | null = null;
-    if (token) {
-      try {
-        const payload = decodeJWT(token);
-        if (payload) { role = payload.role; gradeFromToken = payload.grade; }
-      } catch {}
-    }
-    if (!role) {
-      const match = document.cookie.match(/(?:^|; )user_role=([^;]*)/);
-      role = match ? decodeURIComponent(match[1]) : null;
-      const gradeMatch = document.cookie.match(/(?:^|; )user_grade=([^;]*)/);
-      gradeFromToken = gradeMatch ? decodeURIComponent(gradeMatch[1]) : null;
-    }
-    if (role) setUserRole(role);
-    if (role === "guru" && gradeFromToken) setGrade(gradeFromToken);
+    if (role === "guru" && authGrade) setGrade(authGrade);
     else if (role && role !== "guru") setGrade("1");
-    setIsJwtReady(true);
-  }, []);
+  }, [role, authGrade]);
 
   const [gradeSubjects, setGradeSubjects] = useState<GradeSubject[]>([]);
   const [selectedGS, setSelectedGS] = useState("");
@@ -83,7 +62,7 @@ export function useAssessmentScore() {
 
   // Fetch grade-subjects when filters change
   useEffect(() => {
-    if (!isJwtReady || !grade) return;
+    if (!role || !grade) return;
     const ctrl = new AbortController();
     (async () => {
       setInitialLoading(true);
@@ -95,13 +74,8 @@ export function useAssessmentScore() {
         if (result.length === 0) {
           setSelectedGS("");
         } else if (selectedGS) {
-          const currentSubjectId = gradeSubjects.find((gs) => gs._id === selectedGS)?.subjectId;
-          if (currentSubjectId) {
-            const newGS = result.find((gs: { subjectId: string }) => gs.subjectId === currentSubjectId);
-            setSelectedGS(newGS ? newGS._id : "");
-          } else {
-            setSelectedGS("");
-          }
+          const newSameSubject = result.find((gs: { subjectId: string }) => gs.subjectId === gradeSubjects.find((g) => g._id === selectedGS)?.subjectId);
+          setSelectedGS(newSameSubject ? newSameSubject._id : "");
         }
       } catch {
         setGradeSubjects([]);
@@ -112,11 +86,11 @@ export function useAssessmentScore() {
       }
     })();
     return () => ctrl.abort();
-  }, [grade, semester, academicYear, retryCount]);
+  }, [role, grade, semester, academicYear, retryCount]);
 
   // Fetch active config
   useEffect(() => {
-    if (!isJwtReady || !grade) { setConfig(null); return; }
+    if (!role || !grade) { setConfig(null); return; }
     const ctrl = new AbortController();
     (async () => {
       setConfigLoading(true);
@@ -143,11 +117,11 @@ export function useAssessmentScore() {
       }
     })();
     return () => ctrl.abort();
-  }, [grade, semester, academicYear, retryCount]);
+  }, [role, grade, semester, academicYear, retryCount]);
 
   // Fetch students
   useEffect(() => {
-    if (!isJwtReady || !grade) { setStudents([]); return; }
+    if (!role || !grade) { setStudents([]); return; }
     const ctrl = new AbortController();
     (async () => {
       try {
@@ -176,7 +150,7 @@ export function useAssessmentScore() {
   // ─── Karakter: fetch from character_assessment, merge with students list ───
   useEffect(() => {
     if (selectedComponentKey !== "karakter") return;
-    if (!isJwtReady || !grade || !semester || !academicYear) return;
+    if (!role || !grade || !semester || !academicYear) return;
     if (students.length === 0) return;
 
     let cancelled = false;
@@ -216,7 +190,7 @@ export function useAssessmentScore() {
       });
 
     return () => { cancelled = true; };
-  }, [selectedComponentKey, isJwtReady, grade, semester, academicYear, retryCount, students]);
+  }, [selectedComponentKey, role, grade, semester, academicYear, retryCount, students]);
 
   const fetchHarianData = async () => {
     if (!selectedGS) return;
@@ -356,7 +330,7 @@ export function useAssessmentScore() {
     semester, setSemester,
     academicYear, setAcademicYear,
     grade, setGrade,
-    userRole,
+    role,
     gradeSubjects, selectedGS, setSelectedGS,
     config, configLoading, configError,
     components, nonHarianComponents,

@@ -37,7 +37,11 @@ export default function AdminDashboardView({
 
   return (
     <div className="p-4 md:p-6 space-y-6">
-      <PageHero icon={LayoutDashboard} title="Dashboard Admin" description="Ringkasan data pendaftar, guru, dan kehadiran siswa" />
+      <PageHero
+        icon={LayoutDashboard}
+        title="Dashboard Admin"
+        description="Ringkasan data pendaftar, guru, dan kehadiran siswa"
+      />
 
       {error && (
         <div className="p-4 bg-red-100 border border-red-400 text-red-700 rounded-lg dark:bg-red-900/30 dark:border-red-700 dark:text-red-200">
@@ -48,22 +52,33 @@ export default function AdminDashboardView({
 
       <TabunganSection userRole={userRole} />
 
-      <MonthYearFilter month={month} onMonthChange={setMonth} year={year} onYearChange={setYear} variant="dashboard" />
-
-      <InsightCards attendanceByGrade={summary?.attendanceByGrade || null} loading={chartLoading} />
+      <InsightCards
+        attendanceByGrade={summary?.attendanceByGrade || null}
+        loading={chartLoading}
+      />
 
       {/* Rekapitulasi Kehadiran — satu card */}
       <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
         <div className="flex items-center gap-2.5 mb-4">
-          <div className="w-8 h-8 bg-indigo-100 dark:bg-indigo-900/40 rounded-lg flex items-center justify-center shrink-0">
-            <CalendarCheck
-              size={16}
-              className="text-indigo-600 dark:text-indigo-300"
-            />
+          <div className="flex flex-1 items-center gap-2.5">
+            <div className="w-8 h-8 bg-indigo-100 dark:bg-indigo-900/40 rounded-lg flex items-center justify-center shrink-0">
+              <CalendarCheck
+                size={16}
+                className="text-indigo-600 dark:text-indigo-300"
+              />
+            </div>
+            <h3 className="font-semibold text-gray-700 dark:text-gray-300">
+              Rekapitulasi Kehadiran
+            </h3>
           </div>
-          <h3 className="font-semibold text-gray-700 dark:text-gray-300">
-            Rekapitulasi Kehadiran
-          </h3>
+          <MonthYearFilter
+            month={month}
+            onMonthChange={setMonth}
+            year={year}
+            onYearChange={setYear}
+            variant="dashboard"
+            className="flex-1"
+          />
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <div className="bg-slate-50/80 dark:bg-gray-900/50 rounded-xl p-4 border border-slate-200/50 dark:border-gray-700/30">
@@ -79,7 +94,8 @@ export default function AdminDashboardView({
                       : "bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-300"
                   }`}
                 >
-                  {attendanceDelta >= 0 ? "▲" : "▼"} {Math.abs(attendanceDelta)}%
+                  {attendanceDelta >= 0 ? "▲" : "▼"} {Math.abs(attendanceDelta)}
+                  %
                 </span>
               )}
             </div>

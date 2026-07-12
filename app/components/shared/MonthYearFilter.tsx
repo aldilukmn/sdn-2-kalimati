@@ -32,11 +32,11 @@ export default function MonthYearFilter({
   const isDashboard = variant === "dashboard";
 
   const triggerClass = isDashboard
-    ? "h-auto rounded-xl border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100 flex-1"
+    ? "h-auto rounded-lg border border-slate-300 bg-slate-50 px-4 py-1.5 text-xs focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100 flex-1"
     : "h-auto rounded-lg border border-slate-300 bg-slate-50 px-2.5 py-1.5 text-xs focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100 flex-1";
 
   const content = (
-    <div className={`flex items-center gap-2 ${className}`}>
+    <div className={`flex items-center gap-1.5 md:gap-2.5 ${className}`}>
       <Select value={String(month)} onValueChange={(v) => { if (v !== null) onMonthChange(Number(v)); }}>
         <SelectTrigger className={triggerClass}>
           <SelectValue placeholder="Bulan" className="sr-only" />
@@ -70,7 +70,7 @@ export default function MonthYearFilter({
 
   if (isDashboard) {
     return (
-      <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
+      <div>
         <div className="flex items-center gap-2 w-full md:w-auto md:ml-auto">
           {content}
         </div>

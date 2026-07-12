@@ -32,7 +32,7 @@ export default function MasterStrukturPage() {
     materialModal, materialName, setMaterialName, materialSaving,
     openCreateMaterial, openEditMaterial, closeMaterialModal, saveMaterial, deleteMaterial,
     reorderMaterials,
-    grade, setGrade, userRole,
+    grade, setGrade, role: userRole,
   } = useChapters();
 
   const [deleting, setDeleting] = useState(false);

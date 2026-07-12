@@ -78,7 +78,7 @@ export default function StudentAssessmentTable({
           <thead>
             <tr className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-xs md:text-sm">
               <th className="px-3 py-3 text-center font-semibold w-12 whitespace-nowrap">No</th>
-              <th className="px-3 py-3 text-left font-semibold whitespace-nowrap">Nama Siswa</th>
+              <th className="px-3 py-3 text-left font-semibold whitespace-nowrap">Nama</th>
               {habits.map((h) => (
                 <th key={h._id} className="px-3 py-3 text-center font-semibold whitespace-nowrap min-w-[60px] border-r border-gray-200/50 dark:border-gray-700/50 last:border-r-0">
                   {h.name}

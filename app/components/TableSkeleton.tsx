@@ -19,34 +19,27 @@ export default function TableSkeleton({
     >
       <table className="w-full">
         <thead>
-          <tr className="bg-slate-100 dark:bg-gray-800">
+          <tr className="bg-slate-100 dark:bg-gray-800 texce">
             {headers.map((header, i) => (
               <th
                 key={i}
-                className="px-4 py-3 text-left text-xs font-semibold text-gray-600 dark:text-gray-300"
+                className="px-4 py-3 text-xs font-semibold text-gray-600 dark:text-gray-300"
               >
                 {header}
               </th>
             ))}
           </tr>
         </thead>
-        <tbody>
+        <tbody className="w-full mx-auto">
           {Array.from({ length: rows }).map((_, rowIdx) => (
             <tr key={rowIdx} className="animate-pulse">
-              {children ? (
-                children(rowIdx)
-              ) : (
-                headers.map((_, colIdx) => (
-                  <td key={colIdx} className="px-4 py-3">
-                    <div
-                      className="h-4 bg-gray-200 dark:bg-gray-700 rounded"
-                      style={{
-                        width: colIdx === 0 ? "1.5rem" : "8rem",
-                      }}
-                    />
-                  </td>
-                ))
-              )}
+              {children
+                ? children(rowIdx)
+                : headers.map((_, colIdx) => (
+                    <td key={colIdx} className="px-4 py-3">
+                      <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded" />
+                    </td>
+                  ))}
             </tr>
           ))}
         </tbody>

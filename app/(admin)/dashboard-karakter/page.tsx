@@ -38,6 +38,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import LoadingSkeleton from "@/app/components/shared/LoadingSkeleton";
 
 export default function DashboardKarakterPage() {
   const { role: userRole, grade: userGrade } = useAuth();
@@ -207,34 +208,7 @@ export default function DashboardKarakterPage() {
           </div>
         </div>
       ) : initialLoading ? (
-        <div className="animate-pulse space-y-6">
-          {/* Skeleton summary cards */}
-          <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
-            {[1, 2, 3, 4, 5].map((i) => (
-              <div
-                key={i}
-                className="h-28 bg-slate-200 dark:bg-slate-700 rounded-2xl"
-              />
-            ))}
-          </div>
-          {/* Skeleton distribution */}
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-            {[1, 2, 3, 4].map((i) => (
-              <div
-                key={i}
-                className="h-24 bg-slate-200 dark:bg-slate-700 rounded-xl"
-              />
-            ))}
-          </div>
-          {/* Skeleton table */}
-          <div className="h-14 bg-slate-200 dark:bg-slate-700 rounded-xl" />
-          {[1, 2, 3, 4, 5].map((i) => (
-            <div
-              key={i}
-              className="h-10 bg-slate-200 dark:bg-slate-700 rounded-xl"
-            />
-          ))}
-        </div>
+        <LoadingSkeleton rows={1} />
       ) : !hasData ? (
         <div className="bg-white/70 dark:bg-gray-800/40 border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
           <div className="text-center py-12">

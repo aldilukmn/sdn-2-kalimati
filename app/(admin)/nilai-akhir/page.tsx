@@ -11,6 +11,7 @@ import Pagination from "@/app/components/Pagination";
 import toast from "react-hot-toast";
 import PageHero from "@/app/components/PageHero";
 import FilterBar from "@/app/components/shared/FilterBar";
+import LoadingSkeleton from '@/app/components/shared/LoadingSkeleton';
 
 export default function NilaiAkhirPage() {
   const {
@@ -69,11 +70,11 @@ export default function NilaiAkhirPage() {
       {error ? (
         <ErrorState error={error} onRetry={retry} />
       ) : initialLoading ? (
-        <TableSkeleton headers={["", "No", "Siswa", "Komponen", "Nilai Akhir"]} rows={5} />
+        <LoadingSkeleton rows={1} />
       ) : !selectedGS || gradeSubjects.length === 0 ? (
         <EmptyState icon={Calculator} title="Belum ada Mapel untuk kelas ini." description="Hubungi Admin untuk menetapkan Mata Pelajaran terlebih dahulu." />
       ) : loading ? (
-        <TableSkeleton headers={["", "No", "Siswa", "Komponen", "Nilai Akhir"]} rows={5} />
+        <LoadingSkeleton rows={1} />
       ) : entries.length === 0 ? (
         <EmptyState icon={Calculator} title="Belum ada Nilai Akhir yang dapat ditampilkan." description="Pastikan Nilai Harian dan Komponen Nilai sudah lengkap, kemudian lakukan Hitung Nilai Akhir." action={{ label: "Hitung Sekarang", onClick: onCalculate }} />
       ) : (

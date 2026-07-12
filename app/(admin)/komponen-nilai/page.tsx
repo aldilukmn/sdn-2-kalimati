@@ -20,7 +20,7 @@ export default function NilaiKomponenPage() {
     semester, setSemester,
     academicYear, setAcademicYear,
     grade, setGrade,
-    userRole,
+    role: userRole,
     gradeSubjects, selectedGS, setSelectedGS,
     config, configLoading, configError,
     components, nonHarianComponents,
@@ -89,7 +89,7 @@ export default function NilaiKomponenPage() {
       {error ? (
         <ErrorState error={error} onRetry={retry} />
       ) : initialLoading ? (
-        <LoadingSkeleton type="pulse-table" rows={5} />
+        <LoadingSkeleton rows={1} />
       ) : (!selectedGS || gradeSubjects.length === 0) && !isKarakterTab ? (
         // Tampilkan "Belum ada Mapel" HANYA jika tab yang aktif bukan karakter
         // (karakter tidak terikat mata pelajaran)

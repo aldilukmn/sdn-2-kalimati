@@ -48,7 +48,7 @@ export default function TabunganSection({
             Rekapitulasi Tabungan
           </h3>
         </div>
-        <div className="grid grid-cols-3 gap-1.5 w-full md:flex md:w-auto md:items-center md:gap-2.5 md:ml-auto">
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-1.5 w-full md:flex md:w-auto md:items-center md:gap-2.5 md:ml-auto">
           {userRole === "guru" && !isSavingsHolder ? (
             <div className="h-auto w-full md:w-32 rounded-lg border border-slate-300 bg-slate-50 px-2.5 py-1.5 text-xs text-center dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100">
               {filterGrade ? `Kelas ${filterGrade}` : "Semua Kelas"}
@@ -77,7 +77,7 @@ export default function TabunganSection({
               </SelectContent>
             </Select>
           )}
-          <MonthYearFilter month={month} onMonthChange={setMonth} year={year} onYearChange={setYear} variant="dashboard" />
+          <MonthYearFilter month={month} onMonthChange={setMonth} year={year} onYearChange={setYear} variant="dashboard" className='w-full' />
         </div>
       </div>
 

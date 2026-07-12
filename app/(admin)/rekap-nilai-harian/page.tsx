@@ -30,7 +30,7 @@ export default function RekapNilaiPage() {
       {error ? (
         <ErrorState error={error} onRetry={retry} />
       ) : initialLoading ? (
-        <LoadingSkeleton type="pulse-table" rows={5} />
+        <LoadingSkeleton rows={1} />
       ) : !selectedGS || gradeSubjects.length === 0 ? (
         <EmptyState icon={ScrollText} title="Belum ada data rekap." description="Pilih filter di atas atau hubungi Admin untuk setup Mapel & Struktur Akademik." />
       ) : (

@@ -5,25 +5,34 @@ import { useRouter } from "next/navigation";
 import { ClipboardList, Save, Loader2, Trash2 } from "lucide-react";
 import ErrorState from "@/app/components/shared/ErrorState";
 import EmptyState from "@/app/components/shared/EmptyState";
-import LoadingSkeleton from "@/app/components/shared/LoadingSkeleton";
 import { useCharacterAssessment } from "@/hooks/useCharacterAssessment";
 import toast from "react-hot-toast";
 import PageHero from "@/app/components/PageHero";
 import StudentAssessmentTable from "@/app/components/karakter/StudentAssessmentTable";
 import Modal from "@/app/components/Modal";
 import FilterBar from "@/app/components/shared/FilterBar";
+import TableSkeleton from '@/app/components/TableSkeleton';
 
 export default function PenilaianKarakterPage() {
   const router = useRouter();
   const {
-    semester, setSemester,
-    academicYear, setAcademicYear,
-    month, setMonth,
-    grade, setGrade,
-    userRole,
-    students, habits,
-    scores, assessments,
-    saving, loading, error, retry,
+    semester,
+    setSemester,
+    academicYear,
+    setAcademicYear,
+    month,
+    setMonth,
+    grade,
+    setGrade,
+    role: userRole,
+    students,
+    habits,
+    scores,
+    assessments,
+    saving,
+    loading,
+    error,
+    retry,
     hasChanges,
     handleScoreChange,
     handleSave,
@@ -32,7 +41,10 @@ export default function PenilaianKarakterPage() {
     MONTHS_ID,
   } = useCharacterAssessment();
 
-  const [deleteTarget, setDeleteTarget] = useState<{ id: string; name: string } | null>(null);
+  const [deleteTarget, setDeleteTarget] = useState<{
+    id: string;
+    name: string;
+  } | null>(null);
 
   const onSave = async () => {
     if (!month) {
@@ -58,17 +70,43 @@ export default function PenilaianKarakterPage() {
 
   return (
     <div className="flex flex-col gap-6 p-4 md:p-6">
-      <PageHero icon={ClipboardList} title="Penilaian Karakter" description="Input penilaian karakter siswa per bulan" />
+      <PageHero
+        icon={ClipboardList}
+        title="Penilaian Karakter"
+        description="Input penilaian karakter siswa per bulan"
+      />
 
-      <FilterBar config={{ showAcademicYear: true, showSemester: true, showGrade: true, showMonth: true }} academicYear={academicYear} onAcademicYearChange={setAcademicYear} semester={semester} onSemesterChange={setSemester} grade={grade} onGradeChange={setGrade} gradeDisabled={userRole === "guru"} month={month} onMonthChange={setMonth} months={MONTHS_ID} />
+      <FilterBar
+        config={{
+          showAcademicYear: true,
+          showSemester: true,
+          showGrade: true,
+          showMonth: true,
+        }}
+        academicYear={academicYear}
+        onAcademicYearChange={setAcademicYear}
+        semester={semester}
+        onSemesterChange={setSemester}
+        grade={grade}
+        onGradeChange={setGrade}
+        gradeDisabled={userRole === "guru"}
+        month={month}
+        onMonthChange={setMonth}
+        months={MONTHS_ID}
+      />
 
       {/* Content */}
       {error ? (
         <ErrorState error={error} onRetry={retry} />
       ) : !month || !grade ? (
-        <EmptyState icon={ClipboardList} title="Pilih Bulan dan Kelas untuk memulai penilaian" />
+        <EmptyState
+          icon={ClipboardList}
+          title="Pilih Bulan dan Kelas untuk memulai penilaian"
+        />
       ) : loading ? (
-        <LoadingSkeleton type="pulse-table" rows={5} />
+        <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5 overflow-hidden">
+          <TableSkeleton headers={["No", "Nama", "Kebiasaan", "Aksi"]} rows={5} />
+        </div>
       ) : students.length === 0 ? (
         <EmptyState icon={ClipboardList} title="Tidak ada siswa di kelas ini" />
       ) : (
@@ -86,12 +124,24 @@ export default function PenilaianKarakterPage() {
             saving={saving}
             headerSlot={
               habits.length > 0 && (
-                <div className="flex flex-wrap items-center gap-2 text-xs text-slate-500 dark:text-slate-400" role="status" aria-label="Bobot nilai karakter">
+                <div
+                  className="flex flex-wrap items-center gap-2 text-xs text-slate-500 dark:text-slate-400"
+                  role="status"
+                  aria-label="Bobot nilai karakter"
+                >
                   <span className="font-medium">Bobot nilai:</span>
-                  <span className="px-2 py-0.5 bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300 rounded-full">A = 4 (Sangat Baik)</span>
-                  <span className="px-2 py-0.5 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded-full">B = 3 (Baik)</span>
-                  <span className="px-2 py-0.5 bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300 rounded-full">C = 2 (Memadai)</span>
-                  <span className="px-2 py-0.5 bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300 rounded-full">D = 1 (Kurang)</span>
+                  <span className="px-2 py-0.5 bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300 rounded-full">
+                    A = 4 (Sangat Baik)
+                  </span>
+                  <span className="px-2 py-0.5 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded-full">
+                    B = 3 (Baik)
+                  </span>
+                  <span className="px-2 py-0.5 bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300 rounded-full">
+                    C = 2 (Memadai)
+                  </span>
+                  <span className="px-2 py-0.5 bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300 rounded-full">
+                    D = 1 (Kurang)
+                  </span>
                 </div>
               )
             }
@@ -119,11 +169,16 @@ export default function PenilaianKarakterPage() {
       )}
 
       {/* Delete confirmation modal */}
-      <Modal open={!!deleteTarget} onClose={() => setDeleteTarget(null)} title="Hapus Penilaian">
+      <Modal
+        open={!!deleteTarget}
+        onClose={() => setDeleteTarget(null)}
+        title="Hapus Penilaian"
+      >
         <div className="flex flex-col gap-4">
           <p className="text-sm text-slate-600 dark:text-slate-300">
-            Yakin ingin menghapus penilaian karakter <strong>{deleteTarget?.name}</strong>?
-            Tindakan ini tidak dapat dibatalkan.
+            Yakin ingin menghapus penilaian karakter{" "}
+            <strong>{deleteTarget?.name}</strong>? Tindakan ini tidak dapat
+            dibatalkan.
           </p>
           <div className="flex justify-end gap-3">
             <button

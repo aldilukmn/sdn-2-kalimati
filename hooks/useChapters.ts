@@ -4,7 +4,7 @@ import { useEffect, useState, useCallback, useRef } from "react";
 import ChapterService from "@/services/chapter.service";
 import MaterialService from "@/services/material.service";
 import GradeSubjectService from "@/services/grade-subject.service";
-import { decodeJWT } from "@/lib/jwt";
+import { useAuth } from "@/hooks/useAuth";
 import { GRADES } from "@/lib/constants";
 import type { Chapter, Material, GradeSubject, ReorderItem } from "@/types/nilai-harian";
 
@@ -18,31 +18,13 @@ export function useChapters() {
   const [chaptersLoading, setChaptersLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [grade, setGrade] = useState("");
-  const [userRole, setUserRole] = useState<string | null>(null);
-  const [isJwtReady, setIsJwtReady] = useState(false);
+  const { role, grade: authGrade } = useAuth();
   const [retryCount, setRetryCount] = useState(0);
 
   useEffect(() => {
-    const token = sessionStorage.getItem("user_session");
-    let role: string | null = null;
-    let gradeFromToken: string | null = null;
-    if (token) {
-      try {
-        const payload = decodeJWT(token);
-        if (payload) { role = payload.role; gradeFromToken = payload.grade; }
-      } catch {}
-    }
-    if (!role) {
-      const match = document.cookie.match(/(?:^|; )user_role=([^;]*)/);
-      role = match ? decodeURIComponent(match[1]) : null;
-      const gradeMatch = document.cookie.match(/(?:^|; )user_grade=([^;]*)/);
-      gradeFromToken = gradeMatch ? decodeURIComponent(gradeMatch[1]) : null;
-    }
-    if (role) setUserRole(role);
-    if (role === "guru" && gradeFromToken) setGrade(gradeFromToken);
+    if (role === "guru" && authGrade) setGrade(authGrade);
     else if (role && role !== "guru") setGrade("1");
-    setIsJwtReady(true);
-  }, []);
+  }, [role, authGrade]);
 
   // Chapter modal
   const [chapterModal, setChapterModal] = useState<{ open: boolean; edit?: Chapter }>({ open: false });
@@ -60,7 +42,7 @@ export function useChapters() {
 
   const fetchGradeSubjects = useCallback(async () => {
     try {
-      const params = userRole === "guru" && grade ? { grade } : undefined;
+      const params = role === "guru" && grade ? { grade } : undefined;
       const res = await GradeSubjectService.getAll(params);
       const result = res?.result || [];
       setGradeSubjects(result);
@@ -78,7 +60,7 @@ export function useChapters() {
     } catch {
       setGradeSubjects([]);
     }
-  }, [userRole, grade]);
+  }, [role, grade]);
 
   const fetchChapters = useCallback(async (gsId: string) => {
     if (!gsId) return;
@@ -108,7 +90,7 @@ export function useChapters() {
   }, []);
 
   useEffect(() => {
-    if (!isJwtReady || !grade) return;
+    if (!role || !grade) return;
     const ctrl = new AbortController();
     (async () => {
       setLoading(true);
@@ -122,7 +104,7 @@ export function useChapters() {
       }
     })();
     return () => ctrl.abort();
-  }, [fetchGradeSubjects, isJwtReady, grade, retryCount]);
+  }, [fetchGradeSubjects, role, grade, retryCount]);
 
   useEffect(() => {
     fetchChapters(selectedGS);
@@ -256,7 +238,7 @@ export function useChapters() {
     gradeSubjects,
     grade,
     setGrade,
-    userRole,
+    role,
     selectedGS,
     setSelectedGS,
     chapters,
