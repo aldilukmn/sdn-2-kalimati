@@ -1,18 +1,25 @@
 "use client";
 
-import { useEffect, useState, useCallback, useRef } from "react";
+import { useEffect, useState, useCallback } from "react";
 import GradeSubjectService from "@/services/grade-subject.service";
 import ChapterService from "@/services/chapter.service";
 import ScoreService from "@/services/score.service";
 import StudentAttendanceService from "@/services/student-attendance.service";
 import AssessmentConfigService from "@/services/assessment-config.service";
 import AssessmentScoreService from "@/services/assessment-score.service";
+import CharacterAssessmentService from "@/services/character-assessment.service";
 import { decodeJWT } from "@/lib/jwt";
 import { GRADES } from "@/lib/constants";
 import type { GradeSubject, Chapter, Score, AssessmentConfig, AssessmentComponent } from "@/types/nilai-harian";
 
 const SEMESTERS = ["1", "2"];
 const ACADEMIC_YEARS = ["2026/2027"];
+
+export interface KarakterStudent {
+  studentId: string;
+  name: string;
+  avg: number | null;
+}
 
 export function useAssessmentScore() {
   const [semester, setSemester] = useState("1");
@@ -42,6 +49,7 @@ export function useAssessmentScore() {
     else if (role && role !== "guru") setGrade("1");
     setIsJwtReady(true);
   }, []);
+
   const [gradeSubjects, setGradeSubjects] = useState<GradeSubject[]>([]);
   const [selectedGS, setSelectedGS] = useState("");
 
@@ -55,6 +63,10 @@ export function useAssessmentScore() {
 
   const [harianScores, setHarianScores] = useState<Record<string, number>>({});
   const [harianLoading, setHarianLoading] = useState(false);
+
+  // Karakter: computed from character_assessment (NOT from assessment_scores)
+  const [karakterStudents, setKarakterStudents] = useState<KarakterStudent[]>([]);
+  const [karakterLoading, setKarakterLoading] = useState(false);
 
   const [nonHarianScores, setNonHarianScores] = useState<Record<string, { score: string; existingId?: string; status: "saved" | "unsaved" }>>({});
   const [nonHarianLoading, setNonHarianLoading] = useState(false);
@@ -148,9 +160,11 @@ export function useAssessmentScore() {
     return () => ctrl.abort();
   }, [grade, retryCount]);
 
-  // Fetch scores when component tab changes
+  // Fetch harian / non-harian scores when tab or subject changes
+  // NOTE: karakter is handled by its own separate useEffect below
   useEffect(() => {
     if (!selectedComponentKey || !selectedGS || !config || students.length === 0) return;
+    if (selectedComponentKey === "karakter") return; // handled separately
 
     if (selectedComponentKey === "harian") {
       fetchHarianData();
@@ -158,6 +172,56 @@ export function useAssessmentScore() {
       fetchNonHarianData();
     }
   }, [selectedComponentKey, selectedGS, config, students.length, retryCount]);
+
+  // ─── Karakter: fetch from character_assessment (grade-level, NOT subject-level) ───
+  // Does NOT depend on selectedGS or students — uses response data directly
+  useEffect(() => {
+    if (selectedComponentKey !== "karakter") return;
+    if (!isJwtReady || !grade || !semester || !academicYear) return;
+
+    let cancelled = false;
+    setKarakterLoading(true);
+    setKarakterStudents([]);
+
+    CharacterAssessmentService.getAll({ grade, academicYear, semester })
+      .then((res) => {
+        if (cancelled) return;
+        const assessments = (res?.result || []) as {
+          studentId: string;
+          name: string;
+          characterScore: number;
+        }[];
+
+        // Group scores per student
+        const scoreMap = new Map<string, { name: string; scores: number[] }>();
+        for (const a of assessments) {
+          if (!scoreMap.has(a.studentId)) {
+            scoreMap.set(a.studentId, { name: a.name, scores: [] });
+          }
+          scoreMap.get(a.studentId)!.scores.push(a.characterScore);
+        }
+
+        // Build sorted list with computed averages
+        const result: KarakterStudent[] = [];
+        for (const [studentId, data] of scoreMap.entries()) {
+          const avg =
+            data.scores.length > 0
+              ? Math.round((data.scores.reduce((s, v) => s + v, 0) / data.scores.length) * 100) / 100
+              : null;
+          result.push({ studentId, name: data.name, avg });
+        }
+        result.sort((a, b) => a.name.localeCompare(b.name, "id"));
+        setKarakterStudents(result);
+      })
+      .catch(() => {
+        if (!cancelled) setKarakterStudents([]);
+      })
+      .finally(() => {
+        if (!cancelled) setKarakterLoading(false);
+      });
+
+    return () => { cancelled = true; };
+  }, [selectedComponentKey, isJwtReady, grade, semester, academicYear, retryCount]);
 
   const fetchHarianData = async () => {
     if (!selectedGS) return;
@@ -237,7 +301,7 @@ export function useAssessmentScore() {
   };
 
   const handleSave = async () => {
-    if (!selectedGS || !selectedComponentKey || selectedComponentKey === "harian") return;
+    if (!selectedGS || !selectedComponentKey || selectedComponentKey === "harian" || selectedComponentKey === "karakter") return;
     const gs = gradeSubjects.find((gs) => gs._id === selectedGS);
     if (!gs) return;
 
@@ -304,6 +368,7 @@ export function useAssessmentScore() {
     selectedComponentKey, setSelectedComponentKey,
     students,
     harianScores, harianLoading,
+    karakterStudents, karakterLoading,
     nonHarianScores, nonHarianLoading,
     saving, error, retry, initialLoading,
     handleScoreChange, handleSave,

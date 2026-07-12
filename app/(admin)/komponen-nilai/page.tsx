@@ -29,6 +29,7 @@ export default function NilaiKomponenPage() {
     selectedComponentKey, setSelectedComponentKey,
     students,
     harianScores, harianLoading,
+    karakterStudents, karakterLoading,
     nonHarianScores, nonHarianLoading,
     saving, error, retry, initialLoading,
     handleScoreChange, handleSave,
@@ -41,9 +42,15 @@ export default function NilaiKomponenPage() {
     setCurrentPage(1);
   }, [selectedComponentKey, selectedGS]);
 
+  // Harian & non-harian pagination (uses students array)
   const totalPages = Math.ceil(students.length / ITEMS_PER_PAGE);
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const paginatedStudents = students.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+
+  // Karakter pagination (uses karakterStudents — from character_assessment directly)
+  const karakterTotalPages = Math.ceil(karakterStudents.length / ITEMS_PER_PAGE);
+  const karakterStartIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const paginatedKarakterStudents = karakterStudents.slice(karakterStartIndex, karakterStartIndex + ITEMS_PER_PAGE);
 
   const onSave = async () => {
     const ok = await handleSave();
@@ -60,6 +67,7 @@ export default function NilaiKomponenPage() {
     .join(" + ");
 
   const isHarianTab = selectedComponentKey === "harian";
+  const isKarakterTab = selectedComponentKey === "karakter";
 
   return (
     <div className="flex flex-col gap-6 p-4 md:p-6">
@@ -113,9 +121,10 @@ export default function NilaiKomponenPage() {
           <div>
             <label className="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">Mata Pelajaran</label>
             <Select value={selectedGS} onValueChange={(v) => v && setSelectedGS(v)} disabled={gradeSubjects.length === 0}>
-              <SelectTrigger className="w-full h-auto rounded-xl border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100"><SelectValue placeholder={gradeSubjects.length === 0 ? "Tidak Ada Mapel" : "Pilih Mapel"}>
-                {selectedGS ? gradeSubjects.find(gs => gs._id === selectedGS)?.subjectName || "-" : null}
-              </SelectValue></SelectTrigger>
+              <SelectTrigger className="w-full h-auto rounded-xl border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100">
+                <SelectValue placeholder={gradeSubjects.length === 0 ? "Tidak Ada Mapel" : "Pilih Mapel"}>
+                  {selectedGS ? gradeSubjects.find(gs => gs._id === selectedGS)?.subjectName || "-" : null}
+                </SelectValue></SelectTrigger>
               <SelectContent>
                 <SelectGroup>
                   <SelectLabel>Mata Pelajaran</SelectLabel>
@@ -174,7 +183,9 @@ export default function NilaiKomponenPage() {
             </div>
           </div>
         </div>
-      ) : !selectedGS || gradeSubjects.length === 0 ? (
+      ) : (!selectedGS || gradeSubjects.length === 0) && !isKarakterTab ? (
+        // Tampilkan "Belum ada Mapel" HANYA jika tab yang aktif bukan karakter
+        // (karakter tidak terikat mata pelajaran)
         <div className="bg-white/70 dark:bg-gray-800/40 border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
           <div className="text-center py-12">
             <ClipboardList size={40} className="mx-auto text-slate-300 dark:text-slate-600 mb-3" />
@@ -250,7 +261,7 @@ export default function NilaiKomponenPage() {
                   }`}
                 >
                   {comp.name}
-                  {comp.key === "harian" && " (Readonly)"}
+                  {(comp.key === "harian" || comp.key === "karakter") && " (Readonly)"}
                 </button>
               ))}
             </div>
@@ -258,6 +269,7 @@ export default function NilaiKomponenPage() {
 
           {/* Score table */}
           {isHarianTab ? (
+            // ── TAB HARIAN: readonly, dari score per chapter ──
             <div className="bg-white/70 dark:bg-gray-800/40 border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl overflow-hidden">
               {harianLoading ? (
                 <div className="animate-pulse p-5 space-y-3">
@@ -303,7 +315,57 @@ export default function NilaiKomponenPage() {
                 />
               )}
             </div>
+          ) : isKarakterTab ? (
+            // ── TAB KARAKTER: readonly, dari character_assessment ──
+            <div className="bg-white/70 dark:bg-gray-800/40 border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl overflow-hidden">
+              {karakterLoading ? (
+                <div className="animate-pulse p-5 space-y-3">
+                  {[1, 2, 3, 4, 5].map((i) => (
+                    <div key={i} className="h-10 bg-slate-200 dark:bg-slate-700 rounded-lg" />
+                  ))}
+                </div>
+              ) : karakterStudents.length === 0 ? (
+                <div className="text-center py-8 text-slate-400 dark:text-slate-500 text-sm">
+                  Belum ada data penilaian karakter untuk kelas ini.
+                </div>
+              ) : (
+                <div className="overflow-x-auto">
+                  <table className="w-full text-sm">
+                    <thead>
+                      <tr className="border-b border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800/50">
+                        <th className="text-center px-4 py-3 font-semibold text-slate-600 dark:text-slate-300 w-12 whitespace-nowrap">No</th>
+                        <th className="text-left px-4 py-3 font-semibold text-slate-600 dark:text-slate-300 whitespace-nowrap">Nama Siswa</th>
+                        <th className="text-center px-4 py-3 font-semibold text-slate-600 dark:text-slate-300 w-40 whitespace-nowrap">Rata-rata Nilai Karakter</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {paginatedKarakterStudents.map((s, i) => (
+                        <tr key={s.studentId} className="border-b border-slate-100 dark:border-slate-700/50">
+                          <td className="px-4 py-2.5 text-center text-slate-500 dark:text-slate-400">{karakterStartIndex + i + 1}</td>
+                          <td className="px-4 py-2.5 font-medium text-slate-700 dark:text-slate-300 whitespace-nowrap">{s.name}</td>
+                          <td className="px-4 py-2.5 text-center">
+                            <span className="text-sm font-semibold text-slate-700 dark:text-slate-300">
+                              {s.avg !== null ? s.avg.toFixed(2) : "-"}
+                            </span>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+              {karakterTotalPages > 1 && karakterStudents.length > 0 && (
+                <Pagination
+                  currentPage={currentPage}
+                  totalPages={karakterTotalPages}
+                  onPageChange={setCurrentPage}
+                  itemsPerPage={ITEMS_PER_PAGE}
+                  totalItems={karakterStudents.length}
+                />
+              )}
+            </div>
           ) : (
+            // ── TAB NON-HARIAN: editable input (ASTS, ASAS, Proyek, dll) ──
             <>
               <div className="bg-white/70 dark:bg-gray-800/40 border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl overflow-hidden">
                 {nonHarianLoading ? (
