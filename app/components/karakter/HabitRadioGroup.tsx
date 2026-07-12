@@ -113,7 +113,7 @@ export default function HabitRadioGroup({ value, onChange, disabled }: HabitRadi
           aria-label="Pilih nilai kebiasaan"
           className={`w-7 h-7 rounded-full text-xs font-bold transition-all duration-200 shrink-0 ${
             selectedOpt
-              ? selectedOpt.className + " ring-2 ring-offset-1 ring-offset-slate-50 dark:ring-offset-slate-800"
+              ? selectedOpt.className + " text-slate-200 ring-2 ring-offset-1 ring-offset-slate-50 dark:ring-offset-slate-800"
               : "bg-slate-200 dark:bg-slate-600 text-slate-400 dark:text-slate-500 border border-dashed border-slate-300 dark:border-slate-500"
           } ${disabled ? "opacity-60 cursor-not-allowed" : "cursor-pointer hover:scale-110"}`}
         >

@@ -2,8 +2,31 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { BarChart3, AlertCircle, Users, FileText, Hash, ArrowUp, ArrowDown, Star, ThumbsUp, Minus, XCircle, ListChecks, ScrollText, Eye, ArrowRight } from "lucide-react";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import {
+  BarChart3,
+  AlertCircle,
+  Users,
+  FileText,
+  Hash,
+  ArrowUp,
+  ArrowDown,
+  Star,
+  ThumbsUp,
+  Minus,
+  XCircle,
+  ListChecks,
+  ScrollText,
+  Eye,
+  ArrowRight,
+} from "lucide-react";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import { useDashboardKarakter } from "@/hooks/useDashboardKarakter";
 import { decodeJWT } from "@/lib/jwt";
 import { GRADES } from "@/lib/constants";
@@ -33,9 +56,12 @@ export default function DashboardKarakterPage() {
   }, []);
 
   const {
-    semester, setSemester,
-    academicYear, setAcademicYear,
-    grade, setGrade,
+    semester,
+    setSemester,
+    academicYear,
+    setAcademicYear,
+    grade,
+    setGrade,
     totalStudents,
     totalAssessments,
     avgScore,
@@ -43,25 +69,53 @@ export default function DashboardKarakterPage() {
     lowestScore,
     distribution,
     recentAssessments,
-    loading, initialLoading, error, retry,
+    loading,
+    initialLoading,
+    error,
+    retry,
     hasData,
-    SEMESTERS, ACADEMIC_YEARS,
+    SEMESTERS,
+    ACADEMIC_YEARS,
   } = useDashboardKarakter(userRole, userGrade);
 
   const DistribusiIcon = (label: string) => {
     switch (label) {
-      case "Istimewa": return Star;
-      case "Baik": return ThumbsUp;
-      case "Cukup": return Minus;
-      default: return XCircle;
+      case "Istimewa":
+        return Star;
+      case "Baik":
+        return ThumbsUp;
+      case "Cukup":
+        return Minus;
+      default:
+        return XCircle;
     }
   };
 
   const distribusiItems = [
-    { label: "Istimewa", key: "excellent" as const, color: "emerald" as const, desc: "≥ 85" },
-    { label: "Baik", key: "good" as const, color: "sky" as const, desc: "70 – 84" },
-    { label: "Cukup", key: "fair" as const, color: "amber" as const, desc: "55 – 69" },
-    { label: "Kurang", key: "poor" as const, color: "rose" as const, desc: "< 55" },
+    {
+      label: "Istimewa",
+      key: "excellent" as const,
+      color: "emerald" as const,
+      desc: "≥ 85",
+    },
+    {
+      label: "Baik",
+      key: "good" as const,
+      color: "sky" as const,
+      desc: "70 – 84",
+    },
+    {
+      label: "Cukup",
+      key: "fair" as const,
+      color: "amber" as const,
+      desc: "55 – 69",
+    },
+    {
+      label: "Kurang",
+      key: "poor" as const,
+      color: "rose" as const,
+      desc: "< 55",
+    },
   ];
 
   return (
@@ -260,7 +314,7 @@ export default function DashboardKarakterPage() {
           </div>
 
           {/* Distribusi Nilai */}
-          <div>
+          <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5 overflow-hidden">
             <h3 className="text-sm font-semibold text-slate-600 dark:text-slate-400 mb-3">
               Distribusi Nilai
             </h3>
@@ -289,10 +343,10 @@ export default function DashboardKarakterPage() {
 
           {/* Penilaian Terbaru */}
           <div>
-            <h3 className="text-sm font-semibold text-slate-600 dark:text-slate-400 mb-3">
-              Penilaian Terbaru
-            </h3>
             <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5 overflow-hidden">
+              <h3 className="text-sm font-semibold text-slate-600 dark:text-slate-400 mb-3">
+                Penilaian Terbaru
+              </h3>
               <div className="overflow-x-auto animate-fadeIn rounded-xl border border-gray-200 dark:border-gray-700 bg-white/80 dark:bg-gray-800/30 backdrop-blur-sm">
                 <Table>
                   <TableHeader>

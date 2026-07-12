@@ -164,18 +164,6 @@ export default function PenilaianKarakterPage() {
         </div>
       ) : (
         <>
-          {/* Habits info */}
-          {habits.length > 0 && (
-            <div className="flex flex-wrap items-center gap-2 text-xs text-slate-500 dark:text-slate-400" role="status" aria-label="Bobot nilai karakter">
-              <span className="font-medium">Bobot nilai:</span>
-              <span className="px-2 py-0.5 bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300 rounded-full">A = 4 (Sangat Baik)</span>
-              <span className="px-2 py-0.5 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded-full">B = 3 (Baik)</span>
-              <span className="px-2 py-0.5 bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300 rounded-full">C = 2 (Memadai)</span>
-              <span className="px-2 py-0.5 bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300 rounded-full">D = 1 (Kurang)</span>
-
-            </div>
-          )}
-
           {/* Student table */}
           <StudentAssessmentTable
             students={students}
@@ -187,6 +175,17 @@ export default function PenilaianKarakterPage() {
             onDelete={(id, name) => setDeleteTarget({ id, name })}
             onViewDetail={handleViewDetail}
             saving={saving}
+            headerSlot={
+              habits.length > 0 && (
+                <div className="flex flex-wrap items-center gap-2 text-xs text-slate-500 dark:text-slate-400" role="status" aria-label="Bobot nilai karakter">
+                  <span className="font-medium">Bobot nilai:</span>
+                  <span className="px-2 py-0.5 bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300 rounded-full">A = 4 (Sangat Baik)</span>
+                  <span className="px-2 py-0.5 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded-full">B = 3 (Baik)</span>
+                  <span className="px-2 py-0.5 bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300 rounded-full">C = 2 (Memadai)</span>
+                  <span className="px-2 py-0.5 bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300 rounded-full">D = 1 (Kurang)</span>
+                </div>
+              )
+            }
             saveButton={
               <button
                 onClick={onSave}
