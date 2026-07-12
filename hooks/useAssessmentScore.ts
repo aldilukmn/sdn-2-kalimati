@@ -252,7 +252,7 @@ export function useAssessmentScore() {
             chapterCount++;
           }
         });
-        computed[s.studentId] = chapterCount > 0 ? Math.round((totalPct / chapterCount) * 100 * 100) / 100 : 0;
+        if (chapterCount > 0) computed[s.studentId] = Math.round((totalPct / chapterCount) * 100 * 100) / 100;
       });
       setHarianScores(computed);
     } catch {
