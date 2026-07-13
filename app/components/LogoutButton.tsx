@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { LogOut, Loader2 } from "lucide-react";
 import AuthService from "@/services/auth.service";
 import toast from "react-hot-toast";
@@ -20,11 +21,12 @@ export default function LogoutButton() {
   const router = useRouter();
   const [loaded, setLoaded] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [user, setUser] = useState<{ fullName: string; role: string; initial: string; roleStyle: { bg: string; label: string } }>({
+  const [user, setUser] = useState<{ fullName: string; role: string; initial: string; roleStyle: { bg: string; label: string }; image_url?: string }>({
     fullName: "User",
     role: "admin",
     initial: "U",
     roleStyle: DEFAULT_ROLE_STYLE,
+    image_url: undefined,
   });
 
   useEffect(() => {
@@ -44,6 +46,7 @@ export default function LogoutButton() {
           role,
           initial: fullName.charAt(0).toUpperCase(),
           roleStyle: ROLE_STYLES[role] || DEFAULT_ROLE_STYLE,
+          image_url: payload.image_url,
         });
       }
     } else {
@@ -105,16 +108,20 @@ export default function LogoutButton() {
   }
 
   return (
-    <div className="flex items-center gap-2 md:gap-3">
-      <div className="flex items-center gap-2.5">
-        <div className={`w-8 h-8 md:w-9 md:h-9 rounded-full flex items-center justify-center text-white text-xs md:text-sm font-bold shrink-0 ${user.roleStyle.bg}`}>
-          {user.initial}
-        </div>
-        <div className="hidden md:block leading-tight">
-          <p className="text-sm font-semibold text-slate-800 dark:text-white leading-none mb-1">{user.fullName}</p>
-          <p className="text-xs text-slate-500 dark:text-slate-400 leading-none">{user.roleStyle.label}</p>
-        </div>
-      </div>
+      <div className="flex items-center gap-2 md:gap-3">
+        <Link href="/profil" className="flex items-center gap-2.5 group cursor-pointer">
+          <div className={`w-8 h-8 md:w-9 md:h-9 rounded-full flex items-center justify-center text-white text-xs md:text-sm font-bold shrink-0 overflow-hidden ${user.roleStyle.bg} group-hover:ring-2 ring-indigo-400 transition-all`}>
+            {user.image_url ? (
+              <img src={user.image_url} alt={user.fullName} className="w-full h-full object-cover" />
+            ) : (
+              user.initial
+            )}
+          </div>
+          <div className="hidden md:block leading-tight">
+            <p className="text-sm font-semibold text-slate-800 dark:text-white leading-none mb-1 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">{user.fullName}</p>
+            <p className="text-xs text-slate-500 dark:text-slate-400 leading-none">{user.roleStyle.label}</p>
+          </div>
+        </Link>
       <button
         onClick={handleLogout}
         disabled={isLoading}

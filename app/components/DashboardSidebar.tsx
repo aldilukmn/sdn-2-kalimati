@@ -19,6 +19,7 @@ import {
   ChevronDown,
   ChevronRight,
   ListChecks,
+  UserCog,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
@@ -77,6 +78,7 @@ const menuItems: SidebarItem[] = [
   { label: "Data Pendaftar", icon: ClipboardList, href: "/data-pendaftar" },
   { label: "Presensi Murid", icon: CalendarCheck, href: "/presensi-murid" },
   { label: "Tabungan Murid", icon: Wallet, href: "/tabungan-murid" },
+  { label: "Profil Saya", icon: UserCog, href: "/profil" },
 ];
 
 const penjagaMenuItems = [
@@ -113,6 +115,7 @@ export default function DashboardSidebar({
     "/daftar-mapel",
     "/presensi-murid",
     "/tabungan-murid",
+    "/profil",
   ]);
 
   const isItemAllowed = (item: SidebarItem): boolean => {

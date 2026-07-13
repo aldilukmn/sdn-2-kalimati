@@ -16,4 +16,6 @@ export interface TeacherType {
   title: string;
   role: string;
   savingsHolder?: boolean;
+  image_url?: string;
+  image_id?: string;
 }

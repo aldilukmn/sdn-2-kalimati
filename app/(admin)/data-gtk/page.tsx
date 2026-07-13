@@ -13,6 +13,7 @@ import {
   Users,
   X,
   Check,
+  Eye,
 } from "lucide-react";
 import toast from "react-hot-toast";
 import UserService from "@/services/user.service";
@@ -329,6 +330,13 @@ export default function DataGTK() {
                       <td className="px-3 py-3 md:px-6 md:py-4 text-center">
                         <div className="flex items-center justify-center gap-1">
                           <button
+                            onClick={() => router.push(`/profil/${guru._id}`)}
+                            className="p-2 text-blue-600 hover:bg-blue-100 rounded-lg transition-colors dark:text-blue-400 dark:hover:bg-blue-900/30 cursor-pointer"
+                            title="Lihat Profil"
+                          >
+                            <Eye size={18} />
+                          </button>
+                          <button
                             onClick={() => openEditModal(guru)}
                             disabled={deletingId === guru._id}
                             className="p-2 text-indigo-600 hover:bg-indigo-100 rounded-lg transition-colors dark:text-indigo-400 dark:hover:bg-indigo-900/30 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
@@ -436,6 +444,13 @@ export default function DataGTK() {
                       {userRole !== "kepala" && (
                         <td className="px-3 py-3 md:px-6 md:py-4 text-center">
                           <div className="flex items-center justify-center gap-1">
+                            <button
+                              onClick={() => router.push(`/profil/${user._id}`)}
+                              className="p-2 text-blue-600 hover:bg-blue-100 rounded-lg transition-colors dark:text-blue-400 dark:hover:bg-blue-900/30 cursor-pointer"
+                              title="Lihat Profil"
+                            >
+                              <Eye size={18} />
+                            </button>
                             <button
                               onClick={() => openEditModal(user)}
                               disabled={deletingId === user._id}

@@ -19,6 +19,8 @@ export const api = async <T = any>(
         ) || getCookie("user_session"))
       : null;
 
+  const isFormData = options.body instanceof FormData;
+
   const response = await fetch(
     `${API_URL}${endpoint}`,
     {
@@ -27,8 +29,8 @@ export const api = async <T = any>(
         Authorization: token
           ? `Bearer ${token}`
           : "",
-        "Content-Type": "application/json",
-        ...options.headers
+        ...(isFormData ? {} : { "Content-Type": "application/json" }),
+        ...options.headers as Record<string, string> | undefined,
       }
     }
   );

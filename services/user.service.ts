@@ -18,6 +18,10 @@ export default class UserService {
     return await api<TeacherType[]>("/user");
   }
 
+  static async getMe() {
+    return await api<TeacherType>("/user/me");
+  }
+
   static async create(data: {
     username: string;
     password: string;
@@ -46,6 +50,13 @@ export default class UserService {
     return await api<TeacherType>(`/user/${id}`, {
       method: "PATCH",
       body: JSON.stringify(data),
+    });
+  }
+
+  static async updateProfile(id: string, formData: FormData) {
+    return await api<{ user: TeacherType; token: string }>(`/user/${id}/profile`, {
+      method: "PATCH",
+      body: formData,
     });
   }
 
