@@ -247,7 +247,7 @@ export default function MasterStrukturPage() {
                     className="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-linear-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white rounded-xl text-sm font-semibold transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
                   >
                     <Plus size={16} />
-                    Tambah Baba
+                    Tambah Bab
                   </button>
                 </div>
               </div>

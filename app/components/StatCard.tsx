@@ -52,49 +52,56 @@ const GlassColors: Record<
 
 const SimpleColors: Record<
   string,
-  { bg: string; border: string; icon: string; val: string }
+  { bg: string; border: string; icon: string; val: string; skel: string }
 > = {
   indigo: {
     bg: "bg-indigo-50/80 dark:bg-indigo-950/20",
     border: "border-indigo-200/50 dark:border-indigo-800/30",
     icon: "text-indigo-500 dark:text-indigo-400",
     val: "text-indigo-700 dark:text-indigo-300",
+    skel: "bg-indigo-200 dark:bg-indigo-700",
   },
   emerald: {
     bg: "bg-emerald-50/80 dark:bg-emerald-950/20",
     border: "border-emerald-200/50 dark:border-emerald-800/30",
     icon: "text-emerald-500 dark:text-emerald-400",
     val: "text-emerald-700 dark:text-emerald-300",
+    skel: "bg-emerald-200 dark:bg-emerald-700",
   },
   rose: {
     bg: "bg-rose-50/80 dark:bg-rose-950/20",
     border: "border-rose-200/50 dark:border-rose-800/30",
     icon: "text-rose-500 dark:text-rose-400",
     val: "text-rose-700 dark:text-rose-300",
+    skel: "bg-rose-200 dark:bg-rose-700",
   },
   amber: {
     bg: "bg-amber-50/80 dark:bg-amber-950/20",
     border: "border-amber-200/50 dark:border-amber-800/30",
     icon: "text-amber-500 dark:text-amber-400",
     val: "text-amber-700 dark:text-amber-300",
+    skel: "bg-amber-200 dark:bg-amber-700",
   },
   sky: {
     bg: "bg-sky-50/80 dark:bg-sky-950/20",
     border: "border-sky-200/50 dark:border-sky-800/30",
     icon: "text-sky-500 dark:text-sky-400",
     val: "text-sky-700 dark:text-sky-300",
+    skel: "bg-sky-200 dark:bg-sky-700",
   },
   orange: {
     bg: "bg-orange-50/80 dark:bg-orange-950/20",
     border: "border-orange-200/50 dark:border-orange-800/30",
     icon: "text-orange-500 dark:text-orange-400",
     val: "text-orange-700 dark:text-orange-300",
+    skel: "bg-orange-200 dark:bg-orange-700",
   },
   violet: {
     bg: "bg-violet-50/80 dark:bg-violet-950/20",
     border: "border-violet-200/50 dark:border-violet-800/30",
     icon: "text-violet-500 dark:text-violet-400",
     val: "text-violet-700 dark:text-violet-300",
+    skel: "bg-violet-200 dark:bg-violet-700",
   },
 };
 
@@ -122,7 +129,7 @@ export default function StatCard({
           <p className="text-xs text-gray-500 dark:text-gray-400">{label}</p>
         </div>
         {loading ? (
-          <div className="h-5 w-20 rounded bg-slate-200 dark:bg-slate-700 animate-pulse" />
+          <div className={`h-5 w-20 rounded ${c.skel} animate-pulse`} />
         ) : (
           <p
             className={`text-lg md:text-2xl font-bold ${valueClassName || c.val}`}

@@ -184,35 +184,24 @@ export default function TabunganMuridPage() {
       <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5 relative z-20">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label className="mb-2 block text-xs font-semibold text-gray-500 dark:text-gray-400 tracking-wider">
-              Kelas
-            </label>
-            {userRole !== "admin" && userRole !== "kepala" ? (
-              <div className="w-full rounded-xl border border-slate-300 bg-slate-100 px-4 py-2.5 text-sm text-slate-800 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100">
-                {userGrade || grade}
-              </div>
-            ) : (
-              <Select
-                value={grade}
-                onValueChange={(v) => {
-                  if (v !== null) setGrade(v);
-                }}
-              >
-                <SelectTrigger className="w-full h-auto rounded-xl border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100">
-                  <SelectValue placeholder="Pilih kelas" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    <SelectLabel>Kelas</SelectLabel>
-                    {GRADES.map((g) => (
-                      <SelectItem key={g} value={g}>
-                        {g}
-                      </SelectItem>
-                    ))}
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-            )}
+            <label className="mb-2 block text-xs font-semibold text-gray-500 dark:text-gray-400 tracking-wider">Kelas</label>
+            <Select
+              value={grade}
+              onValueChange={(v) => { if (v !== null) setGrade(v); }}
+              disabled={userRole !== "admin" && userRole !== "kepala"}
+            >
+              <SelectTrigger className="w-full h-auto rounded-xl border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100">
+                <SelectValue placeholder="Pilih kelas" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectLabel>Kelas</SelectLabel>
+                  {GRADES.map((g) => (
+                    <SelectItem key={g} value={g}>{g}</SelectItem>
+                  ))}
+                </SelectGroup>
+              </SelectContent>
+            </Select>
           </div>
           <div>
             <label className="mb-2 block text-xs font-semibold text-gray-500 dark:text-gray-400 tracking-wider">

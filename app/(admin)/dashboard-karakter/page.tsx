@@ -225,7 +225,7 @@ export default function DashboardKarakterPage() {
               memulai.
             </p>
             <Link
-              href={`/karakter?grade=${grade}`}
+              href={`/penilaian-karakter?grade=${grade}`}
               className="inline-flex items-center gap-1.5 mt-4 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-sm font-medium transition-colors"
             >
               Input Penilaian Baru

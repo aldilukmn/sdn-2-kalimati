@@ -50,15 +50,10 @@ export default function TabunganSection({
         </div>
         <div className="grid grid-cols-2 md:grid-cols-3 gap-1.5 w-full md:flex md:w-auto md:items-center md:gap-2.5 md:ml-auto">
           {userRole === "guru" && !isSavingsHolder ? (
-            <div className="h-auto w-full md:w-32 rounded-lg border border-slate-300 bg-slate-50 px-2.5 py-1.5 text-xs text-center dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100">
-              {filterGrade ? `Kelas ${filterGrade}` : "Semua Kelas"}
-            </div>
-          ) : (
             <Select
               value={filterGrade}
-              onValueChange={(v) => {
-                if (v !== null) setFilterGrade(v);
-              }}
+              onValueChange={(v) => { if (v !== null) setFilterGrade(v); }}
+              disabled
             >
               <SelectTrigger className="h-auto w-full md:w-32 rounded-lg border border-slate-300 bg-slate-50 px-2.5 py-1.5 text-xs focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100">
                 <SelectValue placeholder="Semua Kelas" className="sr-only" />
@@ -69,9 +64,26 @@ export default function TabunganSection({
                   <SelectLabel>Kelas</SelectLabel>
                   <SelectItem value="">Semua Kelas</SelectItem>
                   {GRADES.map((g) => (
-                    <SelectItem key={g} value={g}>
-                      Kelas {g}
-                    </SelectItem>
+                    <SelectItem key={g} value={g}>Kelas {g}</SelectItem>
+                  ))}
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+          ) : (
+            <Select
+              value={filterGrade}
+              onValueChange={(v) => { if (v !== null) setFilterGrade(v); }}
+            >
+              <SelectTrigger className="h-auto w-full md:w-32 rounded-lg border border-slate-300 bg-slate-50 px-2.5 py-1.5 text-xs focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100">
+                <SelectValue placeholder="Semua Kelas" className="sr-only" />
+                {filterGrade ? `Kelas ${filterGrade}` : "Semua Kelas"}
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectLabel>Kelas</SelectLabel>
+                  <SelectItem value="">Semua Kelas</SelectItem>
+                  {GRADES.map((g) => (
+                    <SelectItem key={g} value={g}>Kelas {g}</SelectItem>
                   ))}
                 </SelectGroup>
               </SelectContent>
