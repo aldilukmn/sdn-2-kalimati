@@ -75,7 +75,16 @@ export default function LogoutButton() {
       sessionStorage.removeItem("user_identifier");
       sessionStorage.removeItem("user_role");
       sessionStorage.removeItem("user_grade");
+      sessionStorage.removeItem("user_fullName");
       document.cookie = "user_session=; path=/; max-age=0";
+      document.cookie = "user_role=; path=/; max-age=0";
+      document.cookie = "user_grade=; path=/; max-age=0";
+      document.cookie = "user_fullName=; path=/; max-age=0";
+      document.cookie = "user_identifier=; path=/; max-age=0";
+
+      // Notify AuthContext to clear its cached state
+      window.dispatchEvent(new Event("auth-update"));
+
       router.replace("/login");
     }
   };

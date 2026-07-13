@@ -41,8 +41,12 @@ export default function LoginPage() {
       document.cookie = `user_role=${enc(role)}; path=/; max-age=86400`;
       document.cookie = `user_grade=${enc(grade)}; path=/; max-age=86400`;
 
+      // Notify AuthContext to re-read the new credentials immediately
+      window.dispatchEvent(new Event("auth-update"));
+
       toast.success(`Selamat datang, ${fullName}!`);
       await new Promise((r) => setTimeout(r, 1500));
+
 
       if (role === "guru") {
         router.push("/dashboard");
