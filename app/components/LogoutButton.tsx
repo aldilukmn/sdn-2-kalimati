@@ -1,9 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
-import { LogOut, Loader2 } from "lucide-react";
+import { LogOut, Loader2, User } from "lucide-react";
 import AuthService from "@/services/auth.service";
 import toast from "react-hot-toast";
 import { decodeJWT } from "@/lib/jwt";
@@ -21,6 +20,8 @@ export default function LogoutButton() {
   const router = useRouter();
   const [loaded, setLoaded] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
   const [user, setUser] = useState<{ fullName: string; role: string; initial: string; roleStyle: { bg: string; label: string }; image_url?: string }>({
     fullName: "User",
     role: "admin",
@@ -65,6 +66,17 @@ export default function LogoutButton() {
     setLoaded(true);
   }, []);
 
+  useEffect(() => {
+    if (!dropdownOpen) return;
+    const handleClick = (e: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        setDropdownOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClick);
+    return () => document.removeEventListener("mousedown", handleClick);
+  }, [dropdownOpen]);
+
   const handleLogout = async () => {
     setIsLoading(true);
     try {
@@ -102,38 +114,49 @@ export default function LogoutButton() {
             <div className="h-2.5 w-16 bg-slate-200 dark:bg-slate-700 rounded animate-pulse" />
           </div>
         </div>
-        <div className="w-9 h-9 rounded-lg bg-slate-200 dark:bg-slate-700 animate-pulse" />
       </div>
     );
   }
 
   return (
-      <div className="flex items-center gap-2 md:gap-3">
-        <Link href="/profil" className="flex items-center gap-2.5 group cursor-pointer">
-          <div className={`w-8 h-8 md:w-9 md:h-9 rounded-full flex items-center justify-center text-white text-xs md:text-sm font-bold shrink-0 overflow-hidden ${user.roleStyle.bg} group-hover:ring-2 ring-indigo-400 transition-all`}>
-            {user.image_url ? (
-              <img src={user.image_url} alt={user.fullName} className="w-full h-full object-cover" />
-            ) : (
-              user.initial
-            )}
-          </div>
-          <div className="hidden md:block leading-tight">
-            <p className="text-sm font-semibold text-slate-800 dark:text-white leading-none mb-1 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">{user.fullName}</p>
-            <p className="text-xs text-slate-500 dark:text-slate-400 leading-none">{user.roleStyle.label}</p>
-          </div>
-        </Link>
+    <div className="relative" ref={dropdownRef}>
       <button
-        onClick={handleLogout}
-        disabled={isLoading}
-        className="p-2 rounded-lg text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 dark:hover:text-red-400 transition-colors cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
-        title="Logout"
+        onClick={() => setDropdownOpen(!dropdownOpen)}
+        className="flex items-center gap-2 md:gap-3 group cursor-pointer"
       >
-        {isLoading ? (
-          <Loader2 size={20} className="animate-spin" />
-        ) : (
-          <LogOut size={20} />
-        )}
+        <div className={`w-8 h-8 md:w-9 md:h-9 rounded-full flex items-center justify-center text-white text-xs md:text-sm font-bold shrink-0 overflow-hidden ${user.roleStyle.bg} ring-2 ring-transparent group-hover:ring-indigo-400 transition-all`}>
+          {user.image_url ? (
+            <img src={user.image_url} alt={user.fullName} className="w-full h-full object-cover" />
+          ) : (
+            user.initial
+          )}
+        </div>
+        <div className="hidden md:block leading-tight text-left">
+          <p className="text-sm font-semibold text-slate-800 dark:text-white leading-none mb-1">{user.fullName}</p>
+          <p className="text-xs text-slate-500 dark:text-slate-400 leading-none">{user.roleStyle.label}</p>
+        </div>
       </button>
+
+      {dropdownOpen && (
+        <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-slate-800 rounded-xl shadow-xl border border-slate-200 dark:border-slate-700 py-1 z-50 transition-all duration-100 opacity-100 translate-y-0">
+          <button
+            onClick={() => { setDropdownOpen(false); router.push("/profil"); }}
+            className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors cursor-pointer"
+          >
+            <User size={16} />
+            Profil
+          </button>
+          <div className="border-t border-slate-200 dark:border-slate-700" />
+          <button
+            onClick={handleLogout}
+            disabled={isLoading}
+            className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {isLoading ? <Loader2 size={16} className="animate-spin" /> : <LogOut size={16} />}
+            Logout
+          </button>
+        </div>
+      )}
     </div>
   );
 }

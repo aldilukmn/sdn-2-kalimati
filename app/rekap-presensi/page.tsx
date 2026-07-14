@@ -20,7 +20,10 @@ import BackButton from "../components/BackButton";
 import Pagination from "@/app/components/Pagination";
 import MonthYearPicker from "../components/MonthYearPicker";
 import { GRADES } from "@/lib/constants";
-import type { MasterStudentType, AttendanceReportItem } from "@/types/attendance";
+import type {
+  MasterStudentType,
+  AttendanceReportItem,
+} from "@/types/attendance";
 
 export default function RekapPresensi() {
   const [grade, setGrade] = useState("1");
@@ -148,7 +151,12 @@ export default function RekapPresensi() {
             <label className="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-300">
               Kelas
             </label>
-            <Select value={grade} onValueChange={(v) => { if (v !== null) setGrade(v); }}>
+            <Select
+              value={grade}
+              onValueChange={(v) => {
+                if (v !== null) setGrade(v);
+              }}
+            >
               <SelectTrigger className="w-full md:w-32">
                 <SelectValue placeholder="Kelas" />
               </SelectTrigger>
@@ -156,7 +164,9 @@ export default function RekapPresensi() {
                 <SelectGroup>
                   <SelectLabel>Kelas</SelectLabel>
                   {GRADES.map((g) => (
-                    <SelectItem key={g} value={g}>Kelas {g}</SelectItem>
+                    <SelectItem key={g} value={g}>
+                      Kelas {g}
+                    </SelectItem>
                   ))}
                 </SelectGroup>
               </SelectContent>
@@ -188,7 +198,8 @@ export default function RekapPresensi() {
         <div className="flex justify-center mb-4">
           {teacherLoading ? (
             <span className="inline-flex items-center gap-1.5 text-sm px-3 py-1.5 rounded-full bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300">
-              👤 Guru: <span className="inline-block h-3.5 w-28 bg-purple-300 dark:bg-purple-600 rounded animate-pulse align-middle" />
+              👤 Guru:{" "}
+              <span className="inline-block h-3.5 w-28 bg-purple-300 dark:bg-purple-600 rounded animate-pulse align-middle" />
             </span>
           ) : teacherName ? (
             <span className="inline-flex items-center gap-1.5 text-sm px-3 py-1.5 rounded-full bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300">
@@ -204,9 +215,17 @@ export default function RekapPresensi() {
         )}
 
         {loading ? (
-          <div className="bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl overflow-hidden">
+          <div className="bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-md border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl overflow-hidden">
             <TableSkeleton
-              headers={["No", "Nama", "Hadir", "Sakit", "Izin", "Absen", "Kehadiran"]}
+              headers={[
+                "No",
+                "Nama",
+                "Hadir",
+                "Sakit",
+                "Izin",
+                "Absen",
+                "Kehadiran",
+              ]}
               rows={5}
             >
               {() => (
@@ -241,8 +260,6 @@ export default function RekapPresensi() {
           </div>
         ) : (
           <>
-
-
             <div className="overflow-x-auto rounded-xl border border-slate-200 dark:border-gray-700">
               {siswaList.length === 0 ? (
                 <div className="px-5 py-6 text-center text-gray-500 dark:text-gray-400">

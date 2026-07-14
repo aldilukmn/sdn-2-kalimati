@@ -26,6 +26,10 @@ export function useProfile(userId?: string) {
   const [isSelf, setIsSelf] = useState(false);
 
   const fetchProfile = useCallback(async () => {
+    if (!token) {
+      setLoading(false);
+      return;
+    }
     setLoading(true);
     try {
       if (userId) {

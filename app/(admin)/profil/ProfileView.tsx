@@ -47,7 +47,7 @@ export default function ProfileView({ userId }: Props) {
     return (
       <div className="flex flex-col gap-6 p-4 md:p-6 animate-fadeIn">
         <PageHero icon={UserCircle} title="Profil" description="Memuat..." />
-        <div className="bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
+        <div className="bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-md border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
           <div className="h-64 bg-slate-200 dark:bg-slate-700 rounded-2xl animate-pulse" />
         </div>
       </div>
@@ -137,7 +137,11 @@ export default function ProfileView({ userId }: Props) {
 
   return (
     <div className="flex flex-col gap-6 p-4 md:p-6 animate-fadeIn">
-      <PageHero icon={UserCircle} title="Profil" description={userId ? `Detail pengguna` : "Profil Saya"}>
+      <PageHero
+        icon={UserCircle}
+        title="Profil"
+        description={userId ? `Detail pengguna` : "Kelola profil saya"}
+      >
         {userId && (
           <Link
             href={isSelf ? "/profil" : "/data-gtk"}
@@ -152,11 +156,17 @@ export default function ProfileView({ userId }: Props) {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {/* Left column */}
         <div className="md:col-span-1">
-          <div className="bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5 text-center">
+          <div className="bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-md border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-6 text-center">
             <div className="relative inline-block">
-              <div className={`w-28 h-28 mx-auto rounded-full flex items-center justify-center text-white text-4xl font-bold overflow-hidden ${roleColor}`}>
+              <div
+                className={`w-28 h-28 mx-auto rounded-full flex items-center justify-center text-white text-4xl font-bold overflow-hidden ${roleColor}`}
+              >
                 {avatarUrl ? (
-                  <img src={avatarUrl} alt={profile.fullName} className="w-full h-full object-cover" />
+                  <img
+                    src={avatarUrl}
+                    alt={profile.fullName}
+                    className="w-full h-full object-cover"
+                  />
                 ) : (
                   initials
                 )}
@@ -182,8 +192,11 @@ export default function ProfileView({ userId }: Props) {
             </div>
             <h2 className="text-lg font-bold text-slate-800 dark:text-white mt-4">
               {profile.fullName}
+              {profile.title == "-" ? "" : ", " + profile.title}
             </h2>
-            <span className={`inline-block px-3 py-1 rounded-full text-xs font-semibold text-white ${roleColor} mt-2`}>
+            <span
+              className={`inline-block px-3 py-1 rounded-full text-xs font-semibold text-white ${roleColor} mt-2`}
+            >
               {ROLE_LABELS[profile.role] || profile.role}
             </span>
             {profile.grade && (
@@ -197,7 +210,7 @@ export default function ProfileView({ userId }: Props) {
         {/* Right column */}
         <div className="md:col-span-2 space-y-6">
           {/* Data Diri */}
-          <div className="bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
+          <div className="bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-md border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-6">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-xs font-semibold text-gray-500 dark:text-gray-400 tracking-wider">
                 DATA DIRI
@@ -219,7 +232,9 @@ export default function ProfileView({ userId }: Props) {
                 { label: "NIP", key: "nip", editable: true },
                 { label: "Username", key: "username", editable: true },
                 { label: "Role", key: "role", editable: false },
-                ...(profile.grade ? [{ label: "Kelas", key: "grade", editable: false }] : []),
+                ...(profile.grade
+                  ? [{ label: "Kelas", key: "grade", editable: false }]
+                  : []),
               ].map(({ label, key, editable }) => (
                 <div key={key} className="flex items-center gap-3">
                   <span className="text-sm text-slate-500 dark:text-slate-400 w-32 shrink-0">
@@ -227,13 +242,20 @@ export default function ProfileView({ userId }: Props) {
                   </span>
                   {editMode && editable ? (
                     <input
-                      value={(form as unknown as Record<string, string>)[key] || ""}
-                      onChange={(e) => setForm({ ...form, [key]: e.target.value })}
-                      className="flex-1 px-3 py-2 rounded-xl border border-slate-300 dark:border-gray-600 bg-slate-50 dark:bg-gray-950 text-sm text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                      value={
+                        (form as unknown as Record<string, string>)[key] || ""
+                      }
+                      onChange={(e) =>
+                        setForm({ ...form, [key]: e.target.value })
+                      }
+                      className="flex-1 px-3 py-2.5 rounded-xl border border-slate-300 bg-slate-50 text-sm text-gray-900 outline-none transition duration-200 focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100 dark:focus:border-blue-400"
                     />
                   ) : (
                     <span className="text-sm font-medium text-slate-800 dark:text-white">
-                      {String((profile as unknown as Record<string, unknown>)[key] ?? "-")}
+                      {String(
+                        (profile as unknown as Record<string, unknown>)[key] ??
+                          "-",
+                      )}
                     </span>
                   )}
                 </div>
@@ -241,15 +263,7 @@ export default function ProfileView({ userId }: Props) {
             </div>
 
             {editMode && (
-              <div className="flex items-center gap-3 mt-6 pt-4 border-t border-white/20 dark:border-gray-700/50">
-                <button
-                  onClick={handleSave}
-                  disabled={saving}
-                  className="flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
-                >
-                  {saving ? <Loader2 size={16} className="animate-spin" /> : <Save size={16} />}
-                  Simpan
-                </button>
+              <div className="flex items-center justify-end gap-3 mt-6 pt-4 border-t border-white/20 dark:border-gray-700/50 w-full">
                 <button
                   onClick={handleCancelEdit}
                   disabled={saving}
@@ -258,21 +272,51 @@ export default function ProfileView({ userId }: Props) {
                   <X size={16} />
                   Batal
                 </button>
+                <button
+                  onClick={handleSave}
+                  disabled={saving}
+                  className="flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+                >
+                  {saving ? (
+                    <Loader2 size={16} className="animate-spin" />
+                  ) : (
+                    <Save size={16} />
+                  )}
+                  Simpan
+                </button>
               </div>
             )}
           </div>
 
           {/* Ganti Password */}
           {canEdit && (
-            <div className="bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
+            <div className="bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-md border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
               <h3 className="text-xs font-semibold text-gray-500 dark:text-gray-400 tracking-wider mb-4">
                 GANTI PASSWORD
               </h3>
               <div className="space-y-4">
                 {[
-                  { label: "Password Lama", value: oldPassword, setter: setOldPassword, show: showOld, toggle: () => setShowOld(!showOld) },
-                  { label: "Password Baru", value: newPassword, setter: setNewPassword, show: showNew, toggle: () => setShowNew(!showNew) },
-                  { label: "Konfirmasi Password", value: confirmPassword, setter: setConfirmPassword, show: showConfirm, toggle: () => setShowConfirm(!showConfirm) },
+                  {
+                    label: "Password Lama",
+                    value: oldPassword,
+                    setter: setOldPassword,
+                    show: showOld,
+                    toggle: () => setShowOld(!showOld),
+                  },
+                  {
+                    label: "Password Baru",
+                    value: newPassword,
+                    setter: setNewPassword,
+                    show: showNew,
+                    toggle: () => setShowNew(!showNew),
+                  },
+                  {
+                    label: "Konfirmasi Password",
+                    value: confirmPassword,
+                    setter: setConfirmPassword,
+                    show: showConfirm,
+                    toggle: () => setShowConfirm(!showConfirm),
+                  },
                 ].map(({ label, value, setter, show, toggle }) => (
                   <div key={label} className="flex items-center gap-3">
                     <span className="text-sm text-slate-500 dark:text-slate-400 w-36 shrink-0">
@@ -284,7 +328,7 @@ export default function ProfileView({ userId }: Props) {
                         value={value}
                         onChange={(e) => setter(e.target.value)}
                         placeholder={label}
-                        className="w-full px-3 py-2 pr-10 rounded-xl border border-slate-300 dark:border-gray-600 bg-slate-50 dark:bg-gray-950 text-sm text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                        className="w-full px-3 py-2.5 pr-10 rounded-xl border border-slate-300 bg-slate-50 text-sm text-gray-900 outline-none transition duration-200 focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100 dark:focus:border-blue-400"
                       />
                       <button
                         onClick={toggle}
@@ -299,10 +343,17 @@ export default function ProfileView({ userId }: Props) {
                 <div className="pt-2">
                   <button
                     onClick={handleSave}
-                    disabled={saving || (!newPassword && !oldPassword && !confirmPassword)}
-                    className="flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+                    disabled={
+                      saving ||
+                      (!newPassword && !oldPassword && !confirmPassword)
+                    }
+                    className="flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer ml-auto"
                   >
-                    {saving ? <Loader2 size={16} className="animate-spin" /> : <Save size={16} />}
+                    {saving ? (
+                      <Loader2 size={16} className="animate-spin" />
+                    ) : (
+                      <Save size={16} />
+                    )}
                     Update Password
                   </button>
                 </div>

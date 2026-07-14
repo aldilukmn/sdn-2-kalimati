@@ -60,7 +60,7 @@ export default function StudentAssessmentTable({
 
   if (habits.length === 0) {
     return (
-      <div className="bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl">
+      <div className="bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-md border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl">
         <div className="text-center py-12 text-gray-400 dark:text-gray-500 text-sm">
           Belum ada kebiasaan karakter. Tambahkan kebiasaan terlebih dahulu.
         </div>
@@ -69,7 +69,7 @@ export default function StudentAssessmentTable({
   }
 
   return (
-    <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5 overflow-hidden">
+    <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-md border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5 overflow-hidden">
       {headerSlot && <div className="mb-3">{headerSlot}</div>}
 
       {/* Table */}

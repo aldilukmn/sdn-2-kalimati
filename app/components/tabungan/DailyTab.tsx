@@ -37,7 +37,7 @@ export default function DailyTab({
   openHistoryModal,
 }: DailyTabProps) {
   return (
-    <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-xl border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
+    <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-md border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-sm md:text-base font-semibold text-gray-500 dark:text-gray-400 tracking-wider">
             Daftar Tabungan Murid
