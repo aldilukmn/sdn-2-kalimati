@@ -63,7 +63,7 @@ export default function ProfileView({ userId }: Props) {
   }
 
   const avatarUrl = previewUrl || profile.image_url;
-  const initials = profile.fullName.charAt(0).toUpperCase();
+  const initials = (profile.fullName || profile.username || "?").charAt(0).toUpperCase();
   const roleColor = ROLE_COLORS[profile.role] || "bg-slate-400";
   const canEdit = isSelf && userRole === profile.role;
 
@@ -101,9 +101,11 @@ export default function ProfileView({ userId }: Props) {
 
   const handleSave = async () => {
     const fd = new FormData();
-    fd.append("fullName", form.fullName);
-    fd.append("title", form.title);
-    fd.append("nip", form.nip);
+    if (profile.role !== "admin") {
+      fd.append("fullName", form.fullName);
+      fd.append("title", form.title);
+      fd.append("nip", form.nip);
+    }
     if (form.username !== profile.username) {
       fd.append("username", form.username);
     }
@@ -191,8 +193,10 @@ export default function ProfileView({ userId }: Props) {
               )}
             </div>
             <h2 className="text-lg font-bold text-slate-800 dark:text-white mt-4">
-              {profile.fullName}
-              {profile.title == "-" ? "" : ", " + profile.title}
+              {profile.role === "admin"
+                ? `${profile.username}`
+                : `${profile.fullName}${profile.title == "-" ? "" : ", " + profile.title}`
+              }
             </h2>
             <span
               className={`inline-block px-3 py-1 rounded-full text-xs font-semibold text-white ${roleColor} mt-2`}
@@ -226,16 +230,24 @@ export default function ProfileView({ userId }: Props) {
             </div>
 
             <div className="space-y-4">
-              {[
-                { label: "Nama Lengkap", key: "fullName", editable: true },
-                { label: "Gelar", key: "title", editable: true },
-                { label: "NIP", key: "nip", editable: true },
-                { label: "Username", key: "username", editable: true },
-                { label: "Role", key: "role", editable: false },
-                ...(profile.grade
-                  ? [{ label: "Kelas", key: "grade", editable: false }]
-                  : []),
-              ].map(({ label, key, editable }) => (
+              {(
+                [
+                  { label: "Nama Lengkap", key: "fullName", editable: true },
+                  { label: "Gelar", key: "title", editable: true },
+                  { label: "NIP", key: "nip", editable: true },
+                  { label: "Username", key: "username", editable: true },
+                  { label: "Role", key: "role", editable: false },
+                  ...(profile.grade
+                    ? [{ label: "Kelas", key: "grade", editable: false }]
+                    : []),
+                ] as { label: string; key: string; editable: boolean }[]
+              )
+                .filter(
+                  (field) =>
+                    profile.role !== "admin" ||
+                    !["fullName", "title", "nip"].includes(field.key),
+                )
+                .map(({ label, key, editable }) => (
                 <div key={key} className="flex items-center gap-3">
                   <span className="text-sm text-slate-500 dark:text-slate-400 w-32 shrink-0">
                     {label}
