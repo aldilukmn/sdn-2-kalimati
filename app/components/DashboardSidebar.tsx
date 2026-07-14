@@ -20,6 +20,7 @@ import {
   ChevronRight,
   ListChecks,
   UserCog,
+  PieChart,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
@@ -39,7 +40,14 @@ type SidebarItem = MenuItem | MenuGroup;
 
 const menuItems: SidebarItem[] = [
   { label: "Dashboard", icon: LayoutDashboard, href: "/dashboard" },
-  { label: "Presensi Murid", icon: CalendarCheck, href: "/presensi-murid" },
+  {
+    label: "Presensi",
+    icon: CalendarCheck,
+    children: [
+      { label: "Dashboard", icon: LayoutDashboard, href: "/dashboard-presensi" },
+      { label: "Input Presensi", icon: CalendarCheck, href: "/presensi-murid" },
+    ],
+  },
   { label: "Tabungan Murid", icon: Wallet, href: "/tabungan-murid" },
   { label: "Daftar Mapel", icon: BookOpen, href: "/daftar-mapel" },
   {
@@ -105,6 +113,7 @@ export default function DashboardSidebar({
   const guruAllowedHrefs = new Set([
     "/dashboard",
     "/dashboard-karakter",
+    "/dashboard-presensi",
     "/penilaian-karakter",
     "/rekap-karakter",
     "/nilai-harian",

@@ -45,8 +45,14 @@ const GlassColors: Record<
   yellow: {
     bg: "bg-yellow-500/5 dark:bg-yellow-500/10",
     border: "border-yellow-500/40 dark:border-yellow-500/30",
-    text: "text-amber-600 dark:text-amber-400",
+    text: "text-yellow-600 dark:text-yellow-400",
     skel: "bg-yellow-200 dark:bg-yellow-700",
+  },
+  red: {
+    bg: "bg-red-500/5 dark:bg-red-500/10",
+    border: "border-red-500/40 dark:border-red-500/30",
+    text: "text-red-600 dark:text-red-400",
+    skel: "bg-red-200 dark:bg-red-700",
   },
 };
 

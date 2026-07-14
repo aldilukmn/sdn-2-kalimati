@@ -21,8 +21,10 @@ export interface StudentAttendanceRequestType {
 }
 
 export interface AttendanceReportItem {
-  studentId: string;
+  /** Returned as _id from MongoDB aggregate grouping */
   _id?: string;
+  studentId: string;
+  name?: string;
   status?: "hadir" | "sakit" | "izin" | "absen";
   hadir?: number;
   sakit?: number;
