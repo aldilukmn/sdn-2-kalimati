@@ -263,7 +263,7 @@ export default function ProfileView({ userId }: Props) {
                       onChange={(e) =>
                         setForm({ ...form, [key]: e.target.value })
                       }
-                      className="flex-1 px-3 py-2.5 rounded-xl border border-slate-300 bg-slate-50 text-sm text-gray-900 outline-none transition duration-200 focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100 dark:focus:border-blue-400"
+                      className="flex-1 min-w-0 px-3 py-2.5 rounded-xl border border-slate-300 bg-slate-50 text-sm text-gray-900 outline-none transition duration-200 focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100 dark:focus:border-blue-400"
                     />
                   ) : (
                     <span className="text-sm font-medium text-slate-800 dark:text-white">

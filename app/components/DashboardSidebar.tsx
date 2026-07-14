@@ -39,6 +39,9 @@ type SidebarItem = MenuItem | MenuGroup;
 
 const menuItems: SidebarItem[] = [
   { label: "Dashboard", icon: LayoutDashboard, href: "/dashboard" },
+  { label: "Presensi Murid", icon: CalendarCheck, href: "/presensi-murid" },
+  { label: "Tabungan Murid", icon: Wallet, href: "/tabungan-murid" },
+  { label: "Daftar Mapel", icon: BookOpen, href: "/daftar-mapel" },
   {
     label: "Nilai Akademik",
     icon: GraduationCap,
@@ -74,10 +77,7 @@ const menuItems: SidebarItem[] = [
     ],
   },
   { label: "Data GTK", icon: Users, href: "/data-gtk" },
-  { label: "Daftar Mapel", icon: BookOpen, href: "/daftar-mapel" },
   { label: "Data Pendaftar", icon: ClipboardList, href: "/data-pendaftar" },
-  { label: "Presensi Murid", icon: CalendarCheck, href: "/presensi-murid" },
-  { label: "Tabungan Murid", icon: Wallet, href: "/tabungan-murid" },
   { label: "Profil Saya", icon: UserCog, href: "/profil" },
 ];
 
