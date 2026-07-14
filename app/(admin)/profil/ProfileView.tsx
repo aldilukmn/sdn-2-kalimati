@@ -99,7 +99,7 @@ export default function ProfileView({ userId }: Props) {
     setPreviewUrl(URL.createObjectURL(file));
   };
 
-  const handleSave = async () => {
+  const handleProfileSave = async () => {
     const fd = new FormData();
     if (profile.role !== "admin") {
       fd.append("fullName", form.fullName);
@@ -112,29 +112,32 @@ export default function ProfileView({ userId }: Props) {
     if (selectedFile) {
       fd.append("photo", selectedFile);
     }
-    if (newPassword) {
-      if (newPassword !== confirmPassword) {
-        toast.error("Konfirmasi password tidak cocok");
-        return;
-      }
-      if (newPassword.length < 8) {
-        toast.error("Password baru minimal 8 karakter");
-        return;
-      }
-      if (!oldPassword) {
-        toast.error("Password lama wajib diisi");
-        return;
-      }
-      fd.append("oldPassword", oldPassword);
-      fd.append("newPassword", newPassword);
-    }
     await updateProfile(fd);
     setEditMode(false);
+    setPreviewUrl(null);
+    setSelectedFile(null);
+  };
+
+  const handlePasswordUpdate = async () => {
+    if (newPassword !== confirmPassword) {
+      toast.error("Konfirmasi password tidak cocok");
+      return;
+    }
+    if (newPassword.length < 8) {
+      toast.error("Password baru minimal 8 karakter");
+      return;
+    }
+    if (!oldPassword) {
+      toast.error("Password lama wajib diisi");
+      return;
+    }
+    const fd = new FormData();
+    fd.append("oldPassword", oldPassword);
+    fd.append("newPassword", newPassword);
+    await updateProfile(fd);
     setNewPassword("");
     setConfirmPassword("");
     setOldPassword("");
-    setPreviewUrl(null);
-    setSelectedFile(null);
   };
 
   return (
@@ -285,7 +288,7 @@ export default function ProfileView({ userId }: Props) {
                   Batal
                 </button>
                 <button
-                  onClick={handleSave}
+                  onClick={handleProfileSave}
                   disabled={saving}
                   className="flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
                 >
@@ -354,7 +357,7 @@ export default function ProfileView({ userId }: Props) {
                 ))}
                 <div className="pt-2">
                   <button
-                    onClick={handleSave}
+                    onClick={handlePasswordUpdate}
                     disabled={
                       saving ||
                       (!newPassword && !oldPassword && !confirmPassword)
