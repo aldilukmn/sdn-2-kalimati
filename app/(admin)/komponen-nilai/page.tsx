@@ -12,6 +12,7 @@ import toast from "react-hot-toast";
 import PageHero from "@/app/components/PageHero";
 import TabNilaiHarian from "./components/TabNilaiHarian";
 import TabKarakter from "./components/TabKarakter";
+import TabPresensi from "./components/TabPresensi";
 import TabNonHarian from "./components/TabNonHarian";
 import FilterBar from "@/app/components/shared/FilterBar";
 
@@ -28,6 +29,7 @@ export default function NilaiKomponenPage() {
     students,
     harianScores, harianLoading,
     karakterStudents, karakterLoading,
+    presensiStudents, presensiLoading,
     nonHarianScores, nonHarianLoading,
     saving, error, retry, initialLoading,
     handleScoreChange, handleSave,
@@ -78,6 +80,11 @@ export default function NilaiKomponenPage() {
 
   const isHarianTab = selectedComponentKey === "harian";
   const isKarakterTab = selectedComponentKey === "karakter";
+  const isPresensiTab = selectedComponentKey === "presensi";
+
+  const presensiStartIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const paginatedPresensiStudents = presensiStudents.slice(presensiStartIndex, presensiStartIndex + ITEMS_PER_PAGE);
+  const presensiTotalPages = Math.ceil(presensiStudents.length / ITEMS_PER_PAGE);
 
   return (
     <div className="flex flex-col gap-6 p-4 md:p-6">
@@ -130,7 +137,7 @@ export default function NilaiKomponenPage() {
                   }`}
                 >
                   {comp.name}
-                  {(comp.key === "harian" || comp.key === "karakter") && " (Readonly)"}
+                  {(comp.key === "harian" || comp.key === "karakter" || comp.key === "presensi") && " (Readonly)"}
                 </button>
               ))}
             </div>
@@ -157,6 +164,16 @@ export default function NilaiKomponenPage() {
               karakterTotalPages={karakterTotalPages}
               setCurrentPage={setCurrentPage}
               totalKarakterStudents={karakterStudents.length}
+            />
+          ) : isPresensiTab ? (
+            <TabPresensi
+              paginatedPresensiStudents={paginatedPresensiStudents}
+              presensiLoading={presensiLoading}
+              ITEMS_PER_PAGE={ITEMS_PER_PAGE}
+              currentPage={currentPage}
+              presensiTotalPages={presensiTotalPages}
+              setCurrentPage={setCurrentPage}
+              totalPresensiStudents={presensiStudents.length}
             />
           ) : (
             <TabNonHarian
