@@ -398,7 +398,7 @@ export default function MasterKonfigurasiNilaiPage() {
                         onChange={(e) =>
                           updateComponent(index, "name", e.target.value)
                         }
-                        className="flex-1 px-3 py-2 rounded-lg border border-slate-300 bg-slate-50 dark:border-gray-700 dark:bg-gray-950 focus:outline-none focus:border-blue-500 dark:focus:border-blue-400"
+                        className="flex-1 min-w-0 px-3 py-2 rounded-lg border border-slate-300 bg-slate-50 dark:border-gray-700 dark:bg-gray-950 focus:outline-none focus:border-blue-500 dark:focus:border-blue-400"
                       />
                       <input
                         type="number"
