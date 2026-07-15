@@ -5,7 +5,7 @@ import { useAssessmentConfig } from "@/hooks/useAssessmentConfig";
 import ErrorState from "@/app/components/shared/ErrorState";
 import EmptyState from "@/app/components/shared/EmptyState";
 import TableSkeleton from "@/app/components/TableSkeleton";
-import { GRADES, CONFIG_PRESETS } from "@/lib/constants";
+import { GRADES, CONFIG_PRESETS, KUSTOM_KEY } from "@/lib/constants";
 import toast from "react-hot-toast";
 import { X } from "lucide-react";
 import PageHero from "@/app/components/PageHero";
@@ -170,10 +170,10 @@ export default function MasterKonfigurasiNilaiPage() {
                       className="border-b border-slate-100 dark:border-slate-700/50 hover:bg-slate-50/50 dark:hover:bg-slate-800/30 text-center"
                     >
                       <td className="px-4 py-3 font-medium text-slate-700 dark:text-slate-300 whitespace-nowrap">
-                        Kelas {cfg.grade}
+                        {cfg.grade}
                       </td>
                       <td className="px-4 py-3 text-slate-600 dark:text-slate-400 whitespace-nowrap">
-                        Semester {cfg.semester}
+                        {cfg.semester}
                       </td>
                       <td className="px-4 py-3 text-slate-600 dark:text-slate-400 whitespace-nowrap">
                         {cfg.academicYear}
@@ -183,7 +183,7 @@ export default function MasterKonfigurasiNilaiPage() {
                           {cfg.components.map((comp) => (
                             <span
                               key={comp.key}
-                              className="text-[11px] px-2 py-0.5 rounded-full bg-indigo-100 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-300 whitespace-nowrap"
+                              className="text-[11px] mx-0.5 px-2 py-0.5 rounded-full bg-indigo-100 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-300 whitespace-nowrap"
                             >
                               {comp.name} ({comp.weight}%)
                             </span>
@@ -348,30 +348,49 @@ export default function MasterKonfigurasiNilaiPage() {
                     const availablePresets = CONFIG_PRESETS.filter(
                       (p) => !otherUsedKeys.includes(p.key) || p.key === comp.key
                     );
+                    const isPreset = CONFIG_PRESETS.some((p) => p.key === comp.key);
                     return (
                     <div key={index} className="flex items-center gap-2">
-                      <Select
-                        value={comp.key}
-                        onValueChange={(val) => {
-                          const preset = CONFIG_PRESETS.find((p) => p.key === val);
-                          if (preset) {
-                            updateComponent(index, "key", preset.key);
-                            updateComponent(index, "name", preset.name);
+                      {isPreset || !comp.key ? (
+                        <Select
+                          value={comp.key}
+                          onValueChange={(val) => {
+                            if (val === KUSTOM_KEY) {
+                              updateComponent(index, "key", " ");
+                              updateComponent(index, "name", "");
+                            } else {
+                              const preset = CONFIG_PRESETS.find((p) => p.key === val);
+                              if (preset) {
+                                updateComponent(index, "key", preset.key);
+                                updateComponent(index, "name", preset.name);
+                              }
+                            }
+                          }}
+                        >
+                          <SelectTrigger className="w-28 rounded-lg border border-slate-300 bg-slate-50 px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100">
+                            <SelectValue placeholder="Kode" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectGroup>
+                              <SelectLabel>Komponen</SelectLabel>
+                              {availablePresets.map((p) => (
+                                <SelectItem key={p.key} value={p.key}>{p.name}</SelectItem>
+                              ))}
+                              <SelectItem value={KUSTOM_KEY}>Kustom...</SelectItem>
+                            </SelectGroup>
+                          </SelectContent>
+                        </Select>
+                      ) : (
+                        <input
+                          type="text"
+                          placeholder="Kode"
+                          value={comp.key}
+                          onChange={(e) =>
+                            updateComponent(index, "key", e.target.value)
                           }
-                        }}
-                      >
-                        <SelectTrigger className="w-28 rounded-lg border border-slate-300 bg-slate-50 px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100">
-                          <SelectValue placeholder="Kode" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectGroup>
-                            <SelectLabel>Komponen</SelectLabel>
-                            {availablePresets.map((p) => (
-                              <SelectItem key={p.key} value={p.key}>{p.name}</SelectItem>
-                            ))}
-                          </SelectGroup>
-                        </SelectContent>
-                      </Select>
+                          className="w-28 px-3 py-2 rounded-lg border border-slate-300 bg-slate-50 dark:border-gray-700 dark:bg-gray-950 focus:outline-none focus:border-blue-500 dark:focus:border-blue-400"
+                        />
+                      )}
                       <input
                         type="text"
                         placeholder="Nama Komponen"

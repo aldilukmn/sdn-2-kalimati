@@ -9,6 +9,8 @@ export const HISTORY_LIMIT = 10;
 export const MONTHLY_PER_PAGE = 5;
 export const AVAILABLE_YEARS = [2026, 2027];
 
+export const KUSTOM_KEY = "__kustom__";
+
 export interface ConfigPreset {
   key: string;
   name: string;
