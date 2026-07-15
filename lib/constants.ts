@@ -22,5 +22,3 @@ export const CONFIG_PRESETS: ConfigPreset[] = [
   { key: "asts", name: "ASTS", type: "manual" },
   { key: "asas", name: "ASAS", type: "manual" },
 ];
-
-export const KUSTOM_KEY = "__kustom__";

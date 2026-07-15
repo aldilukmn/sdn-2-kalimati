@@ -5,7 +5,7 @@ import { useAssessmentConfig } from "@/hooks/useAssessmentConfig";
 import ErrorState from "@/app/components/shared/ErrorState";
 import EmptyState from "@/app/components/shared/EmptyState";
 import TableSkeleton from "@/app/components/TableSkeleton";
-import { GRADES, CONFIG_PRESETS, KUSTOM_KEY } from "@/lib/constants";
+import { GRADES, CONFIG_PRESETS } from "@/lib/constants";
 import toast from "react-hot-toast";
 import { X } from "lucide-react";
 import PageHero from "@/app/components/PageHero";
@@ -345,28 +345,18 @@ export default function MasterKonfigurasiNilaiPage() {
                       .filter((_, i) => i !== index)
                       .map((c) => c.key.trim())
                       .filter(Boolean);
-                    const isCurrentPreset = CONFIG_PRESETS.some((p) => p.key === comp.key);
-                    const selectValue = isCurrentPreset ? comp.key : (comp.key ? KUSTOM_KEY : "");
-                    const availableSystem = CONFIG_PRESETS.filter(
-                      (p) => p.type === "system" && (!otherUsedKeys.includes(p.key) || p.key === comp.key)
-                    );
-                    const availableManual = CONFIG_PRESETS.filter(
-                      (p) => p.type === "manual" && (!otherUsedKeys.includes(p.key) || p.key === comp.key)
+                    const availablePresets = CONFIG_PRESETS.filter(
+                      (p) => !otherUsedKeys.includes(p.key) || p.key === comp.key
                     );
                     return (
                     <div key={index} className="flex items-center gap-2">
                       <Select
-                        value={selectValue}
+                        value={comp.key}
                         onValueChange={(val) => {
-                          if (val === KUSTOM_KEY) {
-                            updateComponent(index, "key", "");
-                            updateComponent(index, "name", "");
-                          } else {
-                            const preset = CONFIG_PRESETS.find((p) => p.key === val);
-                            if (preset) {
-                              updateComponent(index, "key", preset.key);
-                              updateComponent(index, "name", preset.name);
-                            }
+                          const preset = CONFIG_PRESETS.find((p) => p.key === val);
+                          if (preset) {
+                            updateComponent(index, "key", preset.key);
+                            updateComponent(index, "name", preset.name);
                           }
                         }}
                       >
@@ -374,39 +364,14 @@ export default function MasterKonfigurasiNilaiPage() {
                           <SelectValue placeholder="Kode" />
                         </SelectTrigger>
                         <SelectContent>
-                          {availableSystem.length > 0 && (
-                            <SelectGroup>
-                              <SelectLabel>Sistem (Otomatis)</SelectLabel>
-                              {availableSystem.map((p) => (
-                                <SelectItem key={p.key} value={p.key}>{p.name}</SelectItem>
-                              ))}
-                            </SelectGroup>
-                          )}
-                          {availableManual.length > 0 && (
-                            <SelectGroup>
-                              <SelectLabel>Manual</SelectLabel>
-                              {availableManual.map((p) => (
-                                <SelectItem key={p.key} value={p.key}>{p.name}</SelectItem>
-                              ))}
-                            </SelectGroup>
-                          )}
                           <SelectGroup>
-                            <SelectLabel>Lainnya</SelectLabel>
-                            <SelectItem value={KUSTOM_KEY}>Kustom...</SelectItem>
+                            <SelectLabel>Komponen</SelectLabel>
+                            {availablePresets.map((p) => (
+                              <SelectItem key={p.key} value={p.key}>{p.name}</SelectItem>
+                            ))}
                           </SelectGroup>
                         </SelectContent>
                       </Select>
-                      {!isCurrentPreset && (
-                        <input
-                          type="text"
-                          placeholder="Kode"
-                          value={comp.key}
-                          onChange={(e) =>
-                            updateComponent(index, "key", e.target.value)
-                          }
-                          className="w-24 px-3 py-2 rounded-lg border border-slate-300 bg-slate-50 dark:border-gray-700 dark:bg-gray-950 focus:outline-none focus:border-blue-500 dark:focus:border-blue-400"
-                        />
-                      )}
                       <input
                         type="text"
                         placeholder="Nama Komponen"
