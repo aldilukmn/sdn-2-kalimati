@@ -236,7 +236,7 @@ export default function MasterKonfigurasiNilaiPage() {
           >
             {/* Header */}
             <div className="flex items-center justify-between p-5 border-b border-slate-200 dark:border-slate-700">
-              <h2 className="text-lg font-bold text-slate-800 dark:text-slate-100">
+              <h2 className="md:text-lg font-bold text-slate-800 dark:text-slate-100">
                 {editingConfig
                   ? "Ubah Konfigurasi Nilai"
                   : "Buat Konfigurasi Nilai"}
@@ -326,9 +326,9 @@ export default function MasterKonfigurasiNilaiPage() {
               )}
 
               {editingConfig && (
-                <div className="text-sm text-slate-500 dark:text-slate-400 bg-slate-50 dark:bg-slate-900/50 rounded-xl px-4 py-3">
-                  Kelas {editingConfig.grade} — Semester{" "}
-                  {editingConfig.semester} — {editingConfig.academicYear}
+                <div className="text-xs md:text-sm text-slate-500 dark:text-slate-400 bg-slate-50 dark:bg-slate-900/50 rounded-xl px-4 py-3">
+                  Semester {editingConfig.semester} — Kelas{" "}
+                  {editingConfig.grade} — {editingConfig.academicYear}
                 </div>
               )}
 
@@ -395,7 +395,7 @@ export default function MasterKonfigurasiNilaiPage() {
                             onChange={(e) =>
                               updateComponent(index, "key", e.target.value)
                             }
-                            className="w-1/4 px-3 py-2 rounded-lg border border-slate-300 bg-slate-50 dark:border-gray-700 dark:bg-gray-950 focus:outline-none focus:border-blue-500 dark:focus:border-blue-400"
+                            className="w-1/4 px-3 py-2 rounded-lg border border-slate-300 bg-slate-50 text-xs md:text-sm dark:border-gray-700 dark:bg-gray-950 focus:outline-none focus:border-blue-500 dark:focus:border-blue-400"
                           />
                         )}
                         <input
@@ -407,7 +407,7 @@ export default function MasterKonfigurasiNilaiPage() {
                           }
                           className="flex-1 min-w-0 px-3 py-2 rounded-lg border border-slate-300 bg-slate-50 dark:border-gray-700 dark:bg-gray-950 focus:outline-none focus:border-blue-500 dark:focus:border-blue-400 text-xs md:text-sm"
                         />
-                        <div className='flex items-center gap-2 text-xs md:text-sm'>
+                        <div className="flex items-center gap-2 text-xs md:text-sm">
                           <input
                             type="number"
                             placeholder="Bobot"
@@ -423,7 +423,9 @@ export default function MasterKonfigurasiNilaiPage() {
                             }
                             className="w-12 px-3 py-2 rounded-lg border border-slate-300 bg-slate-50 dark:border-gray-700 dark:bg-gray-950 focus:outline-none focus:border-blue-500 dark:focus:border-blue-400 [&::-webkit-inner-spin-button]:appearance-none [&::-moz-appearance]:textfield text-center"
                           />
-                          <span className="text-sm md:text-base text-slate-400 w-4">%</span>
+                          <span className="text-sm md:text-base text-slate-400 w-4">
+                            %
+                          </span>
                         </div>
                         <button
                           onClick={() => removeComponent(index)}
@@ -475,8 +477,9 @@ export default function MasterKonfigurasiNilaiPage() {
                   <label className="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-2">
                     Pratinjau Rumus
                   </label>
-                  <pre className="text-sm text-slate-700 dark:text-slate-300 font-mono whitespace-pre-wrap">
-                    Nilai Akhir ={formulaPreview ? `\n  ${formulaPreview}` : ""}
+                  <pre className="text-xs md:text-sm text-slate-700 dark:text-slate-300 font-mono whitespace-pre-wrap">
+                    <span className='font-semibold'>Nilai Akhir</span> =
+                    {formulaPreview ? `\n  ${formulaPreview}` : ""}
                   </pre>
                   <p className="text-[11px] text-slate-400 dark:text-slate-500 mt-2">
                     *Komponen dengan nilai 0 akan diabaikan.
