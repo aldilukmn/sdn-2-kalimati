@@ -21,6 +21,7 @@ export const CONFIG_PRESETS: ConfigPreset[] = [
   { key: "harian", name: "Harian", type: "system" },
   { key: "karakter", name: "Karakter", type: "system" },
   { key: "presensi", name: "Presensi", type: "system" },
+  { key: "tugas", name: "Tugas", type: "system" },
   { key: "asts", name: "ASTS", type: "manual" },
   { key: "asas", name: "ASAS", type: "manual" },
 ];

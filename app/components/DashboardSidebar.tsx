@@ -21,6 +21,7 @@ import {
   ListChecks,
   UserCog,
   PieChart,
+  FileEdit,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
@@ -60,6 +61,7 @@ const menuItems: SidebarItem[] = [
         icon: ScrollText,
         href: "/rekap-nilai-harian",
       },
+      { label: "Nilai Tugas", icon: FileEdit, href: "/nilai-tugas" },
       { label: "Komponen Nilai", icon: ClipboardList, href: "/komponen-nilai" },
       { label: "Nilai Akhir", icon: Calculator, href: "/nilai-akhir" },
       {
@@ -117,6 +119,7 @@ export default function DashboardSidebar({
     "/penilaian-karakter",
     "/rekap-karakter",
     "/nilai-harian",
+    "/nilai-tugas",
     "/komponen-nilai",
     "/rekap-nilai-harian",
     "/rekap-nilai-akhir",
