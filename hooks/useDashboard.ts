@@ -13,6 +13,8 @@ export interface DashboardSummary {
   unvalidated: number;
   totalStudents: number;
   totalTeachers: number;
+  maleCount: number;
+  femaleCount: number;
   gradeCount: number;
   attendanceByStatus: {
     hadir: number;
@@ -63,6 +65,8 @@ export function useDashboard(initialSummary?: DashboardSummary | null, initialMo
         unvalidated: data.unvalidated ?? 0,
         totalStudents: data.totalStudents ?? 0,
         totalTeachers: data.totalTeachers ?? 0,
+        maleCount: data.maleCount ?? 0,
+        femaleCount: data.femaleCount ?? 0,
         gradeCount: Object.keys(counts).length,
         attendanceByStatus: data.attendanceByStatus || null,
         attendanceByGrade: data.attendanceByGrade || null,

@@ -45,6 +45,11 @@ export default function DashboardStatCards({ summary, loading }: Props) {
           icon={card.icon}
           color={card.color}
           loading={loading}
+          subtitle={
+            card.key === "totalStudents" && summary
+              ? `♂ ${summary.maleCount}  ♀ ${summary.femaleCount}`
+              : undefined
+          }
         />
       ))}
     </div>

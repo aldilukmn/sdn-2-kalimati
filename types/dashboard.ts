@@ -4,6 +4,8 @@ export interface DashboardSummary {
   unvalidated: number;
   totalStudents: number;
   totalTeachers: number;
+  maleCount: number;
+  femaleCount: number;
   attendanceByStatus: {
     hadir: number;
     sakit: number;
