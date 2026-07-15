@@ -367,7 +367,7 @@ export default function MasterKonfigurasiNilaiPage() {
                             }
                           }}
                         >
-                          <SelectTrigger className="w-28 rounded-lg border border-slate-300 bg-slate-50 px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100">
+                          <SelectTrigger className="w-1/4 rounded-lg border border-slate-300 bg-slate-50 px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100">
                             <SelectValue placeholder="Kode" />
                           </SelectTrigger>
                           <SelectContent>
@@ -388,7 +388,7 @@ export default function MasterKonfigurasiNilaiPage() {
                           onChange={(e) =>
                             updateComponent(index, "key", e.target.value)
                           }
-                          className="w-28 px-3 py-2 rounded-lg border border-slate-300 bg-slate-50 dark:border-gray-700 dark:bg-gray-950 focus:outline-none focus:border-blue-500 dark:focus:border-blue-400"
+                          className="w-2/4 px-3 py-2 rounded-lg border border-slate-300 bg-slate-50 dark:border-gray-700 dark:bg-gray-950 focus:outline-none focus:border-blue-500 dark:focus:border-blue-400"
                         />
                       )}
                       <input
@@ -411,7 +411,7 @@ export default function MasterKonfigurasiNilaiPage() {
                             e.target.value === "" ? 0 : Number(e.target.value),
                           )
                         }
-                        className="w-20 px-3 py-2 rounded-lg border border-slate-300 bg-slate-50 dark:border-gray-700 dark:bg-gray-950 focus:outline-none focus:border-blue-500 dark:focus:border-blue-400 [&::-webkit-inner-spin-button]:appearance-none [&::-moz-appearance]:textfield"
+                        className="w-12 px-3 py-2 rounded-lg border border-slate-300 bg-slate-50 dark:border-gray-700 dark:bg-gray-950 focus:outline-none focus:border-blue-500 dark:focus:border-blue-400 [&::-webkit-inner-spin-button]:appearance-none [&::-moz-appearance]:textfield"
                       />
                       <span className="text-xs text-slate-400 w-4">%</span>
                       <button
