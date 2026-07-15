@@ -1,11 +1,11 @@
 "use client";
 
-import { Plus, Save, Trash2, Scale } from "lucide-react";
+import { Plus, Save, Trash2, Scale, Pencil } from "lucide-react";
 import { useAssessmentConfig } from "@/hooks/useAssessmentConfig";
 import ErrorState from "@/app/components/shared/ErrorState";
 import EmptyState from "@/app/components/shared/EmptyState";
 import TableSkeleton from "@/app/components/TableSkeleton";
-import { GRADES, CONFIG_PRESETS, KUSTOM_KEY } from "@/lib/constants";
+import { GRADES, CONFIG_PRESETS, CUSTOM_KEY } from "@/lib/constants";
 import toast from "react-hot-toast";
 import { X } from "lucide-react";
 import PageHero from "@/app/components/PageHero";
@@ -96,7 +96,7 @@ export default function MasterKonfigurasiNilaiPage() {
               value={grade || "all"}
               onValueChange={(v) => setGrade(v === "all" ? "" : (v ?? ""))}
             >
-              <SelectTrigger className="w-full h-auto rounded-xl border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm focus:border-blue-500 dark:focus:border-blue-400 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100">
+              <SelectTrigger className="w-full h-auto rounded-xl border border-slate-300 bg-slate-50 px-4 py-2.5 text-xs md:text-sm focus:border-blue-500 dark:focus:border-blue-400 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100">
                 <span>{grade || "Semua Kelas"}</span>
                 <SelectValue className="sr-only" />
               </SelectTrigger>
@@ -116,7 +116,7 @@ export default function MasterKonfigurasiNilaiPage() {
           <div className="flex items-end">
             <button
               onClick={openCreateModal}
-              className="flex items-center justify-center gap-2 px-4 py-2.5 w-full bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-sm font-medium transition-colors cursor-pointer"
+              className="flex items-center justify-center gap-2 px-4 py-2.5 w-full bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs md:text-sm font-medium transition-colors cursor-pointer h-auto"
             >
               <Plus size={16} />
               Buat Konfigurasi
@@ -129,33 +129,31 @@ export default function MasterKonfigurasiNilaiPage() {
       {error ? (
         <ErrorState error={error} onRetry={retry} />
       ) : loading ? (
-        <TableSkeleton headers={["No", "Nama", "Kelas", "Status", "Aksi"]} rows={3} />
+        <TableSkeleton
+          headers={["No", "Nama", "Kelas", "Status", "Aksi"]}
+          rows={3}
+        />
       ) : configs.length === 0 ? (
-        <EmptyState icon={Scale} title="Belum ada Konfigurasi Nilai." description="Buat konfigurasi penilaian agar guru dapat menghitung Nilai Akhir Semester." action={{ label: "Buat Konfigurasi", onClick: openCreateModal }} />
+        <EmptyState
+          icon={Scale}
+          title="Belum ada Konfigurasi Nilai."
+          description="Buat konfigurasi penilaian agar guru dapat menghitung Nilai Akhir Semester."
+          action={{ label: "Buat Konfigurasi", onClick: openCreateModal }}
+        />
       ) : (
         <div className="bg-white/70 dark:bg-gray-800/40 border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl overflow-hidden">
           <div className="overflow-x-auto">
-            <table className="w-full text-sm">
+            <table className="w-full text-sm ">
               <thead>
-                <tr className="border-b border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800/50">
-                  <th className="px-4 py-3 font-semibold text-slate-600 dark:text-slate-300 whitespace-nowrap">
-                    Kelas
-                  </th>
-                  <th className="px-4 py-3 font-semibold text-slate-600 dark:text-slate-300 whitespace-nowrap">
-                    Semester
-                  </th>
-                  <th className="px-4 py-3 font-semibold text-slate-600 dark:text-slate-300 whitespace-nowrap">
+                <tr className="border-b bg-linear-to-r from-indigo-600 to-purple-600 text-white text-xs md:text-sm">
+                  <th className="px-3 py-3 font-semibold">Kelas</th>
+                  <th className="px-3 py-3 font-semibold">Semester</th>
+                  <th className="px-3 py-3 font-semibold whitespace-nowrap">
                     Tahun Ajaran
                   </th>
-                  <th className="px-4 py-3 font-semibold text-slate-600 dark:text-slate-300 whitespace-nowrap">
-                    Komponen
-                  </th>
-                  <th className="px-4 py-3 font-semibold text-slate-600 dark:text-slate-300 whitespace-nowrap">
-                    Status
-                  </th>
-                  <th className="px-4 py-3 font-semibold text-slate-600 dark:text-slate-300 whitespace-nowrap">
-                    Aksi
-                  </th>
+                  <th className="px-3 py-3 font-semibold">Komponen</th>
+                  <th className="px-3 py-3 font-semibold">Status</th>
+                  <th className="px-3 py-3 font-semibold">Aksi</th>
                 </tr>
               </thead>
               <tbody>
@@ -205,9 +203,9 @@ export default function MasterKonfigurasiNilaiPage() {
                         <div className="flex justify-center gap-2">
                           <button
                             onClick={() => openEditModal(cfg)}
-                            className="px-3 py-1.5 text-xs font-medium bg-indigo-100 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-300 hover:bg-indigo-200 dark:hover:bg-indigo-900/60 rounded-lg transition-colors cursor-pointer"
+                            className="p-1.5 text-indigo-500 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 rounded-lg transition-colors cursor-pointer"
                           >
-                            Ubah
+                            <Pencil size={14} />
                           </button>
                           <button
                             onClick={() => onDelete(cfg._id)}
@@ -346,82 +344,96 @@ export default function MasterKonfigurasiNilaiPage() {
                       .map((c) => c.key.trim())
                       .filter(Boolean);
                     const availablePresets = CONFIG_PRESETS.filter(
-                      (p) => !otherUsedKeys.includes(p.key) || p.key === comp.key
+                      (p) =>
+                        !otherUsedKeys.includes(p.key) || p.key === comp.key,
                     );
-                    const isPreset = CONFIG_PRESETS.some((p) => p.key === comp.key);
+                    const isPreset = CONFIG_PRESETS.some(
+                      (p) => p.key === comp.key,
+                    );
                     return (
-                    <div key={index} className="flex items-center gap-2">
-                      {isPreset || !comp.key ? (
-                        <Select
-                          value={comp.key}
-                          onValueChange={(val) => {
-                            if (val === KUSTOM_KEY) {
-                              updateComponent(index, "key", " ");
-                              updateComponent(index, "name", "");
-                            } else {
-                              const preset = CONFIG_PRESETS.find((p) => p.key === val);
-                              if (preset) {
-                                updateComponent(index, "key", preset.key);
-                                updateComponent(index, "name", preset.name);
+                      <div key={index} className="flex items-center gap-1">
+                        {isPreset || !comp.key ? (
+                          <Select
+                            value={comp.key}
+                            onValueChange={(val) => {
+                              if (val === CUSTOM_KEY) {
+                                updateComponent(index, "key", " ");
+                                updateComponent(index, "name", "");
+                              } else {
+                                const preset = CONFIG_PRESETS.find(
+                                  (p) => p.key === val,
+                                );
+                                if (preset) {
+                                  updateComponent(index, "key", preset.key);
+                                  updateComponent(index, "name", preset.name);
+                                }
                               }
+                            }}
+                          >
+                            <SelectTrigger className="w-1/4 rounded-lg border border-slate-300 bg-slate-50 px-3 py-2 text-xs md:text-sm dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100">
+                              <SelectValue placeholder="Kode" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectGroup>
+                                <SelectLabel>Komponen</SelectLabel>
+                                {availablePresets.map((p) => (
+                                  <SelectItem key={p.key} value={p.key}>
+                                    {p.name}
+                                  </SelectItem>
+                                ))}
+                                <SelectItem value={CUSTOM_KEY}>
+                                  Kustom...
+                                </SelectItem>
+                              </SelectGroup>
+                            </SelectContent>
+                          </Select>
+                        ) : (
+                          <input
+                            type="text"
+                            placeholder="Kode"
+                            value={comp.key}
+                            onChange={(e) =>
+                              updateComponent(index, "key", e.target.value)
                             }
-                          }}
-                        >
-                          <SelectTrigger className="w-1/4 rounded-lg border border-slate-300 bg-slate-50 px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100">
-                            <SelectValue placeholder="Kode" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectGroup>
-                              <SelectLabel>Komponen</SelectLabel>
-                              {availablePresets.map((p) => (
-                                <SelectItem key={p.key} value={p.key}>{p.name}</SelectItem>
-                              ))}
-                              <SelectItem value={KUSTOM_KEY}>Kustom...</SelectItem>
-                            </SelectGroup>
-                          </SelectContent>
-                        </Select>
-                      ) : (
+                            className="w-1/4 px-3 py-2 rounded-lg border border-slate-300 bg-slate-50 dark:border-gray-700 dark:bg-gray-950 focus:outline-none focus:border-blue-500 dark:focus:border-blue-400"
+                          />
+                        )}
                         <input
                           type="text"
-                          placeholder="Kode"
-                          value={comp.key}
+                          placeholder="Nama Komponen"
+                          value={comp.name}
                           onChange={(e) =>
-                            updateComponent(index, "key", e.target.value)
+                            updateComponent(index, "name", e.target.value)
                           }
-                          className="w-2/4 px-3 py-2 rounded-lg border border-slate-300 bg-slate-50 dark:border-gray-700 dark:bg-gray-950 focus:outline-none focus:border-blue-500 dark:focus:border-blue-400"
+                          className="flex-1 min-w-0 px-3 py-2 rounded-lg border border-slate-300 bg-slate-50 dark:border-gray-700 dark:bg-gray-950 focus:outline-none focus:border-blue-500 dark:focus:border-blue-400 text-xs md:text-sm"
                         />
-                      )}
-                      <input
-                        type="text"
-                        placeholder="Nama Komponen"
-                        value={comp.name}
-                        onChange={(e) =>
-                          updateComponent(index, "name", e.target.value)
-                        }
-                        className="flex-1 min-w-0 px-3 py-2 rounded-lg border border-slate-300 bg-slate-50 dark:border-gray-700 dark:bg-gray-950 focus:outline-none focus:border-blue-500 dark:focus:border-blue-400"
-                      />
-                      <input
-                        type="number"
-                        placeholder="Bobot"
-                        value={comp.weight === 0 ? "" : comp.weight}
-                        onChange={(e) =>
-                          updateComponent(
-                            index,
-                            "weight",
-                            e.target.value === "" ? 0 : Number(e.target.value),
-                          )
-                        }
-                        className="w-12 px-3 py-2 rounded-lg border border-slate-300 bg-slate-50 dark:border-gray-700 dark:bg-gray-950 focus:outline-none focus:border-blue-500 dark:focus:border-blue-400 [&::-webkit-inner-spin-button]:appearance-none [&::-moz-appearance]:textfield"
-                      />
-                      <span className="text-xs text-slate-400 w-4">%</span>
-                      <button
-                        onClick={() => removeComponent(index)}
-                        className="p-2 text-red-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/30 rounded-lg transition-colors cursor-pointer"
-                      >
-                        <Trash2 size={16} />
-                      </button>
-                    </div>
-                  );})}
+                        <div className='flex items-center gap-2 text-xs md:text-sm'>
+                          <input
+                            type="number"
+                            placeholder="Bobot"
+                            value={comp.weight === 0 ? "" : comp.weight}
+                            onChange={(e) =>
+                              updateComponent(
+                                index,
+                                "weight",
+                                e.target.value === ""
+                                  ? 0
+                                  : Number(e.target.value),
+                              )
+                            }
+                            className="w-12 px-3 py-2 rounded-lg border border-slate-300 bg-slate-50 dark:border-gray-700 dark:bg-gray-950 focus:outline-none focus:border-blue-500 dark:focus:border-blue-400 [&::-webkit-inner-spin-button]:appearance-none [&::-moz-appearance]:textfield text-center"
+                          />
+                          <span className="text-sm md:text-base text-slate-400 w-4">%</span>
+                        </div>
+                        <button
+                          onClick={() => removeComponent(index)}
+                          className="p-2 text-red-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/30 rounded-lg transition-colors cursor-pointer"
+                        >
+                          <Trash2 size={14} />
+                        </button>
+                      </div>
+                    );
+                  })}
                 </div>
                 <button
                   onClick={addComponent}
