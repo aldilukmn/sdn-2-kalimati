@@ -41,12 +41,19 @@ export function useAssessmentConfig(role: string | null, authGrade: string | nul
         const res = await GradeSubjectService.getAll({ grade, semester, academicYear });
         const result = res?.result || [];
         setGradeSubjects(result);
-        if (result.length === 0) {
-          setSelectedGS("");
-        } else if (selectedGS) {
-          const newSameSubject = result.find((gs: { subjectId: string }) => gs.subjectId === gradeSubjects.find((g) => g._id === selectedGS)?.subjectId);
-          setSelectedGS(newSameSubject ? newSameSubject._id : "");
-        }
+        
+        setSelectedGS((prevSelectedGS) => {
+          if (result.length === 0) return "";
+          if (prevSelectedGS) {
+            // Kita tidak bisa langsung akses state gradeSubjects terbaru di sini dengan closure lama,
+            // jadi lebih baik kita cari berdasarkan kecocokan ID yang ada, 
+            // atau cukup set kosong jika tidak mau ribet. Karena struktur hook tidak memungkinkan,
+            // mari kita temukan jika prevSelectedGS masih ada di result.
+            const stillExists = result.find((gs: { _id: string }) => gs._id === prevSelectedGS);
+            if (stillExists) return prevSelectedGS;
+          }
+          return "";
+        });
       } catch {
         setGradeSubjects([]);
         setSelectedGS("");
@@ -56,7 +63,7 @@ export function useAssessmentConfig(role: string | null, authGrade: string | nul
       }
     })();
     return () => ctrl.abort();
-  }, [role, grade, semester, academicYear, retryCount, selectedGS, gradeSubjects]);
+  }, [role, grade, semester, academicYear, retryCount]);
 
   // Fetch active config
   useEffect(() => {
@@ -88,7 +95,7 @@ export function useAssessmentConfig(role: string | null, authGrade: string | nul
     return () => ctrl.abort();
   }, [role, grade, semester, academicYear, retryCount]);
 
-  const safeKey = (key: string) => key?.trim().toLowerCase() || "";
+  const safeKey = useCallback((key: string) => key?.trim().toLowerCase() || "", []);
   const components = config?.components || [];
   const nonHarianComponents = components.filter((c) => {
     const k = safeKey(c.key);

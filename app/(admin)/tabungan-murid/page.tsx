@@ -188,6 +188,7 @@ export default function TabunganMuridPage() {
         onGradeChange={(v) => { if (v !== null) setGrade(v); }}
         gradeDisabled={userRole !== "admin" && userRole !== "kepala"}
         className="relative z-20"
+        gridClassName="grid-cols-1 md:grid-cols-2"
       >
         <div>
           <label className="mb-2 block text-xs font-semibold text-gray-500 dark:text-gray-400 tracking-wider">
@@ -310,23 +311,23 @@ export default function TabunganMuridPage() {
       ) : (
         <>
           <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-md border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5 animate-fadeIn relative z-10">
-            <div className="flex gap-1 bg-slate-100 dark:bg-gray-900 rounded-xl p-1 w-full md:w-fit">
+            <div className="flex w-full h-[42px] items-center gap-1 p-1 bg-slate-100 dark:bg-gray-800/80 rounded-xl border border-slate-300 dark:border-gray-700 shadow-inner md:w-fit">
               <button
                 onClick={() => setActiveTab("harian")}
-                className={`flex-1 px-4 py-2 rounded-lg text-xs font-semibold transition-colors cursor-pointer whitespace-nowrap ${
+                className={`flex-1 flex justify-center items-center px-6 h-full rounded-lg text-sm font-semibold transition-all duration-200 cursor-pointer whitespace-nowrap ${
                   activeTab === "harian"
-                    ? "bg-white dark:bg-gray-800 text-indigo-600 dark:text-indigo-300 shadow-sm"
-                    : "text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
+                    ? "bg-indigo-600 text-white shadow"
+                    : "text-slate-500 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700"
                 }`}
               >
                 Transaksi Harian
               </button>
               <button
                 onClick={() => setActiveTab("bulanan")}
-                className={`flex-1 px-4 py-2 rounded-lg text-xs font-semibold transition-colors cursor-pointer whitespace-nowrap ${
+                className={`flex-1 flex justify-center items-center px-6 h-full rounded-lg text-sm font-semibold transition-all duration-200 cursor-pointer whitespace-nowrap ${
                   activeTab === "bulanan"
-                    ? "bg-white dark:bg-gray-800 text-indigo-600 dark:text-indigo-300 shadow-sm"
-                    : "text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
+                    ? "bg-indigo-600 text-white shadow"
+                    : "text-slate-500 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700"
                 }`}
               >
                 Rekap Bulanan

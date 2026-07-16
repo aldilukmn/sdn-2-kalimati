@@ -147,6 +147,7 @@ export default function PresensiMuridPage() {
         onGradeChange={(v) => { if (v !== null) setGrade(v); }}
         gradeDisabled={userRole !== "admin" && userRole !== "kepala"}
         className="relative z-10"
+        gridClassName="grid-cols-1 md:grid-cols-2"
       >
         <div>
           <label className="mb-2 block text-xs font-semibold text-gray-500 dark:text-gray-400 tracking-wider">

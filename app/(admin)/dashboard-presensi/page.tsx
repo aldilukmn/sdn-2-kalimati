@@ -31,7 +31,6 @@ import { DailyPresensiView } from "./components/DailyPresensiView";
 import { DistribusiStatus } from "./components/DistribusiStatus";
 import { PresensiStatCards } from "./components/PresensiStatCards";
 
-// ── toggle mode ──────────────────────────────────────────────────────────────
 function ViewToggle({
   mode,
   onChange,
@@ -43,18 +42,18 @@ function ViewToggle({
     <button
       key={m}
       onClick={() => onChange(m)}
-      className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all duration-200 cursor-pointer ${
+      className={`flex-1 flex justify-center items-center gap-2 h-full rounded-lg text-sm font-semibold transition-all duration-200 cursor-pointer ${
         mode === m
           ? "bg-indigo-600 text-white shadow"
-          : "text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700"
+          : "text-slate-500 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700"
       }`}
     >
-      <Icon size={13} />
+      <Icon size={16} />
       {label}
     </button>
   );
   return (
-    <div className="flex items-center gap-0.5 p-0.5 bg-slate-100 dark:bg-slate-800 rounded-xl">
+    <div className="flex w-full h-[42px] items-center gap-1 p-1 bg-slate-100 dark:bg-gray-800/80 rounded-xl border border-slate-300 dark:border-gray-700 shadow-inner">
       {btn("harian", "Harian", CalendarDays)}
       {btn("bulanan", "Bulanan", Calendar)}
     </div>
@@ -116,6 +115,7 @@ export default function DashboardPresensiPage() {
         months={MONTHS_ID}
         year={String(year)}
         onYearChange={(v) => { if (v !== null) setYear(Number(v)); }}
+        gridClassName={isHarian ? "grid-cols-1 sm:grid-cols-3" : "grid-cols-1 sm:grid-cols-2 lg:grid-cols-4"}
       >
         {isHarian && (
           <div>

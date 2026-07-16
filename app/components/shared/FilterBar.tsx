@@ -40,6 +40,7 @@ interface FilterBarProps {
   year?: string;
   onYearChange?: (v: string) => void;
   className?: string;
+  gridClassName?: string;
   children?: ReactNode;
 }
 
@@ -62,12 +63,13 @@ export default function FilterBar({
   year = "",
   onYearChange,
   className = "",
+  gridClassName = "grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4",
   children,
 }: FilterBarProps) {
   // Use a generic grid that wraps nicely
   return (
     <div className={`bg-white/70 dark:bg-gray-800/40 border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5 relative z-10 ${className}`}>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+      <div className={`grid gap-4 ${gridClassName}`}>
         {config.showAcademicYear && onAcademicYearChange && (
           <div>
             <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 tracking-wider mb-2">Tahun Ajaran</label>
