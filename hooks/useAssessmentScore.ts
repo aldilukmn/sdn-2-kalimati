@@ -8,6 +8,8 @@ import StudentAttendanceService from "@/services/student-attendance.service";
 import AssessmentConfigService from "@/services/assessment-config.service";
 import AssessmentScoreService from "@/services/assessment-score.service";
 import CharacterAssessmentService from "@/services/character-assessment.service";
+import TaskService from "@/services/task.service";
+import TaskScoreService from "@/services/task-score.service";
 import { useAuth } from "@/hooks/useAuth";
 import { GRADES, SEMESTERS, ACADEMIC_YEARS } from "@/lib/constants";
 import type { GradeSubject, Chapter, Score, AssessmentConfig, AssessmentComponent } from "@/types/nilai-harian";
@@ -42,6 +44,9 @@ export function useAssessmentScore() {
 
   const [harianScores, setHarianScores] = useState<Record<string, number>>({});
   const [harianLoading, setHarianLoading] = useState(false);
+
+  const [tugasScores, setTugasScores] = useState<Record<string, number>>({});
+  const [tugasLoading, setTugasLoading] = useState(false);
 
   // Karakter: computed from character_assessment (NOT from assessment_scores)
   const [karakterStudents, setKarakterStudents] = useState<KarakterStudent[]>([]);
@@ -138,14 +143,18 @@ export function useAssessmentScore() {
     return () => ctrl.abort();
   }, [grade, retryCount]);
 
+  const safeKey = (key: string) => key?.trim().toLowerCase() || "";
+
   // Fetch harian / non-harian scores when tab or subject changes
   // NOTE: karakter is handled by its own separate useEffect below
   useEffect(() => {
     if (!selectedComponentKey || !selectedGS || !config || students.length === 0) return;
-    if (selectedComponentKey === "karakter" || selectedComponentKey === "presensi") return; // handled separately
+    if (safeKey(selectedComponentKey) === "karakter" || safeKey(selectedComponentKey) === "presensi") return; // handled separately
 
-    if (selectedComponentKey === "harian") {
+    if (safeKey(selectedComponentKey) === "harian") {
       fetchHarianData();
+    } else if (safeKey(selectedComponentKey) === "tugas") {
+      fetchTugasData();
     } else {
       fetchNonHarianData();
     }
@@ -153,7 +162,7 @@ export function useAssessmentScore() {
 
   // ─── Karakter: fetch from character_assessment, merge with students list ───
   useEffect(() => {
-    if (selectedComponentKey !== "karakter") return;
+    if (safeKey(selectedComponentKey) !== "karakter") return;
     if (!role || !grade || !semester || !academicYear) return;
     if (students.length === 0) return;
 
@@ -198,7 +207,7 @@ export function useAssessmentScore() {
 
   // ─── Presensi: fetch attendance reports for all semester months, compute formula ───
   useEffect(() => {
-    if (selectedComponentKey !== "presensi") return;
+    if (safeKey(selectedComponentKey) !== "presensi") return;
     if (!role || !grade || !semester || !academicYear) return;
     if (students.length === 0) return;
 
@@ -314,6 +323,45 @@ export function useAssessmentScore() {
     }
   };
 
+  const fetchTugasData = async () => {
+    if (!selectedGS) return;
+    setTugasLoading(true);
+    try {
+      const tasksRes = await TaskService.getAll(selectedGS);
+      const tasks = tasksRes?.result || [];
+      if (tasks.length === 0) { setTugasScores({}); return; }
+
+      const scoreResults = await Promise.all(
+        tasks.map((t: any) => TaskScoreService.getAll(t._id).catch(() => ({ result: [] as any[] })))
+      );
+
+      const scoresByTask: Record<string, any[]> = {};
+      tasks.forEach((t: any, i: number) => {
+        scoresByTask[t._id] = (scoreResults[i]?.result || []) as any[];
+      });
+
+      const computed: Record<string, number> = {};
+      students.forEach((s) => {
+        let totalScore = 0;
+        let taskCount = 0;
+        tasks.forEach((t: any) => {
+          const taskScore = scoresByTask[t._id].find((sc) => sc.studentId === s.studentId);
+          if (taskScore) {
+            totalScore += taskScore.score;
+            taskCount++;
+          }
+        });
+        if (taskCount > 0) computed[s.studentId] = Math.round((totalScore / taskCount) * 100) / 100;
+      });
+      setTugasScores(computed);
+    } catch {
+      setTugasScores({});
+      setError("Gagal memuat nilai tugas.");
+    } finally {
+      setTugasLoading(false);
+    }
+  };
+
   const fetchNonHarianData = async () => {
     if (!selectedGS || !selectedComponentKey) return;
     setNonHarianLoading(true);
@@ -352,7 +400,8 @@ export function useAssessmentScore() {
   };
 
   const handleSave = async () => {
-    if (!selectedGS || !selectedComponentKey || selectedComponentKey === "harian" || selectedComponentKey === "karakter" || selectedComponentKey === "presensi") return;
+    const sKey = safeKey(selectedComponentKey);
+    if (!selectedGS || !selectedComponentKey || sKey === "harian" || sKey === "karakter" || sKey === "presensi" || sKey === "tugas") return;
     const gs = gradeSubjects.find((gs) => gs._id === selectedGS);
     if (!gs) return;
 
@@ -402,7 +451,10 @@ export function useAssessmentScore() {
   };
 
   const components = config?.components || [];
-  const nonHarianComponents = components.filter((c) => c.key !== "harian" && c.key !== "presensi");
+  const nonHarianComponents = components.filter((c) => {
+    const k = safeKey(c.key);
+    return k !== "harian" && k !== "presensi" && k !== "tugas" && k !== "karakter";
+  });
 
   const gsId = selectedGS;
   const selectedGSData = gradeSubjects.find((gs) => gs._id === gsId);
@@ -419,6 +471,7 @@ export function useAssessmentScore() {
     selectedComponentKey, setSelectedComponentKey,
     students,
     harianScores, harianLoading,
+    tugasScores, tugasLoading,
     karakterStudents, karakterLoading,
     presensiStudents, presensiLoading,
     nonHarianScores, nonHarianLoading,

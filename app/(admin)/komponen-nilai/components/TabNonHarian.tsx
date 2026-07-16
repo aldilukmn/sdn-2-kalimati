@@ -129,7 +129,7 @@ export default function TabNonHarian({
         ) : (
           <Save size={16} />
         )}
-        {saving ? "Menyimpan..." : "💾 Simpan Semua"}
+        {saving ? "Menyimpan..." : "Simpan Semua"}
       </button>
     </>
   );

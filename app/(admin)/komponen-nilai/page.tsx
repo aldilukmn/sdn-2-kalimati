@@ -13,6 +13,7 @@ import PageHero from "@/app/components/PageHero";
 import TabNilaiHarian from "./components/TabNilaiHarian";
 import TabKarakter from "./components/TabKarakter";
 import TabPresensi from "./components/TabPresensi";
+import TabTugas from "./components/TabTugas";
 import TabNonHarian from "./components/TabNonHarian";
 import FilterBar from "@/app/components/shared/FilterBar";
 
@@ -28,6 +29,7 @@ export default function NilaiKomponenPage() {
     selectedComponentKey, setSelectedComponentKey,
     students,
     harianScores, harianLoading,
+    tugasScores, tugasLoading,
     karakterStudents, karakterLoading,
     presensiStudents, presensiLoading,
     nonHarianScores, nonHarianLoading,
@@ -78,9 +80,12 @@ export default function NilaiKomponenPage() {
 
   const getTabColor = (index: number) => colorPalette[index % colorPalette.length];
 
-  const isHarianTab = selectedComponentKey === "harian";
-  const isKarakterTab = selectedComponentKey === "karakter";
-  const isPresensiTab = selectedComponentKey === "presensi";
+  const safeKey = (key: string) => key?.trim().toLowerCase() || "";
+  
+  const isHarianTab = safeKey(selectedComponentKey) === "harian";
+  const isKarakterTab = safeKey(selectedComponentKey) === "karakter";
+  const isPresensiTab = safeKey(selectedComponentKey) === "presensi";
+  const isTugasTab = safeKey(selectedComponentKey) === "tugas";
 
   const presensiStartIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const paginatedPresensiStudents = presensiStudents.slice(presensiStartIndex, presensiStartIndex + ITEMS_PER_PAGE);
@@ -97,10 +102,8 @@ export default function NilaiKomponenPage() {
         <ErrorState error={error} onRetry={retry} />
       ) : initialLoading ? (
         <LoadingSkeleton rows={1} />
-      ) : (!selectedGS || gradeSubjects.length === 0) && !isKarakterTab ? (
-        // Tampilkan "Belum ada Mapel" HANYA jika tab yang aktif bukan karakter
-        // (karakter tidak terikat mata pelajaran)
-        <EmptyState icon={ClipboardList} title="Belum ada Mapel untuk kelas ini." description="Hubungi Admin untuk menetapkan Mata Pelajaran terlebih dahulu." />
+      ) : (!selectedGS || gradeSubjects.length === 0) ? (
+        <EmptyState icon={ClipboardList} title="Belum ada Mapel untuk kelas ini." description="Silakan pilih Mata Pelajaran terlebih dahulu untuk melihat data." />
       ) : configLoading ? (
         <LoadingSkeleton type="pulse-table" rows={5} />
       ) : !config ? (
@@ -137,7 +140,7 @@ export default function NilaiKomponenPage() {
                   }`}
                 >
                   {comp.name}
-                  {(comp.key === "harian" || comp.key === "karakter" || comp.key === "presensi") && " (Readonly)"}
+                  {(safeKey(comp.key) === "harian" || safeKey(comp.key) === "karakter" || safeKey(comp.key) === "presensi" || safeKey(comp.key) === "tugas") && " (Readonly)"}
                 </button>
               ))}
             </div>
@@ -174,6 +177,17 @@ export default function NilaiKomponenPage() {
               presensiTotalPages={presensiTotalPages}
               setCurrentPage={setCurrentPage}
               totalPresensiStudents={presensiStudents.length}
+            />
+          ) : isTugasTab ? (
+            <TabTugas
+              paginatedStudents={paginatedStudents}
+              tugasScores={tugasScores}
+              tugasLoading={tugasLoading}
+              ITEMS_PER_PAGE={ITEMS_PER_PAGE}
+              currentPage={currentPage}
+              totalPages={totalPages}
+              setCurrentPage={setCurrentPage}
+              totalStudents={students.length}
             />
           ) : (
             <TabNonHarian

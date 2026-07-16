@@ -31,6 +31,8 @@ export function useTugas() {
 
   const [loading, setLoading] = useState(false);
   const [initialLoading, setInitialLoading] = useState(true);
+  const [scoresLoading, setScoresLoading] = useState(false);
+  const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const [selectedSubjectFirst, setSelectedSubjectFirst] = useState(false);
@@ -54,8 +56,8 @@ export function useTugas() {
         });
         const list = res?.result || [];
         setSubjects(list);
-        if (list.length > 0 && !subjectId) {
-          setSubjectId(list[0]._id);
+        if (list.length === 0) {
+          setSubjectId("");
         }
       } catch {
         setError("Gagal memuat mata pelajaran.");
@@ -71,6 +73,7 @@ export function useTugas() {
     if (!subjectId) return;
     const ctrl = new AbortController();
     (async () => {
+      setLoading(true);
       try {
         const res = await TaskService.getAll(subjectId);
         setTasks(res?.result || []);
@@ -83,6 +86,8 @@ export function useTugas() {
         setSelectedSubjectFirst(true);
       } catch {
         toast.error("Gagal memuat data tugas.");
+      } finally {
+        setLoading(false);
       }
     })();
     return () => ctrl.abort();
@@ -96,6 +101,7 @@ export function useTugas() {
     }
     const ctrl = new AbortController();
     (async () => {
+      setScoresLoading(true);
       try {
         const res = await TaskScoreService.getAll(selectedTaskId);
         const scoreList = res?.result || [];
@@ -108,6 +114,8 @@ export function useTugas() {
         setScoreInputs(inputs);
       } catch {
         toast.error("Gagal memuat nilai tugas.");
+      } finally {
+        setScoresLoading(false);
       }
     })();
     return () => ctrl.abort();
@@ -153,10 +161,13 @@ export function useTugas() {
 
   const saveScores = useCallback(async () => {
     if (!selectedTaskId) return;
-    const entries = students.map((s) => ({
-      studentId: s.studentId,
-      score: Number(scoreInputs[s.studentId]) || 0,
-    }));
+    setSaving(true);
+    const entries = students
+      .filter((s) => scoreInputs[s.studentId] !== undefined && scoreInputs[s.studentId] !== "")
+      .map((s) => ({
+        studentId: s.studentId,
+        score: Number(scoreInputs[s.studentId]),
+      }));
     try {
       const res = await TaskScoreService.bulkCreate({
         taskId: selectedTaskId,
@@ -174,6 +185,8 @@ export function useTugas() {
       toast.success("Nilai tugas berhasil disimpan");
     } catch {
       toast.error("Gagal menyimpan nilai tugas");
+    } finally {
+      setSaving(false);
     }
   }, [selectedTaskId, students, scoreInputs]);
 
@@ -182,6 +195,7 @@ export function useTugas() {
   }, []);
 
   return {
+    role,
     semester, setSemester,
     academicYear, setAcademicYear,
     SEMESTERS, ACADEMIC_YEARS,
@@ -189,7 +203,7 @@ export function useTugas() {
     subjects, subjectId, setSubjectId,
     tasks, selectedTaskId, setSelectedTaskId,
     scores, students, scoreInputs,
-    loading, initialLoading, error,
+    loading, initialLoading, scoresLoading, saving, error,
     selectedSubjectFirst,
     addTask, editTask, removeTask,
     saveScores, updateScoreInput,
