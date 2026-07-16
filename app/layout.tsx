@@ -81,9 +81,11 @@ export default function RootLayout({
             }}
           />
           <ThemeProvider>
+            {/* Background dipisah ke layer fixed agar scroll lebih smooth */}
             <div
-              className="min-h-screen bg-[radial-gradient(circle_at_top_left,rgba(59,130,246,0.12),transparent_35%),radial-gradient(circle_at_bottom_right,rgba(96,165,250,0.1),transparent_35%),linear-gradient(180deg,#f8fbff_0%,#eef6ff_45%,#dbeafe_100%)] dark:bg-[radial-gradient(circle_at_top_left,rgba(96,165,250,0.12),transparent_35%),radial-gradient(circle_at_bottom_right,rgba(59,130,246,0.1),transparent_35%),linear-gradient(180deg,#0f172a_0%,#111827_45%,#1e293b_100%)]"
-            >
+              className="fixed inset-0 -z-10 bg-[radial-gradient(circle_at_top_left,rgba(59,130,246,0.12),transparent_35%),radial-gradient(circle_at_bottom_right,rgba(96,165,250,0.1),transparent_35%),linear-gradient(180deg,#f8fbff_0%,#eef6ff_45%,#dbeafe_100%)] dark:bg-[radial-gradient(circle_at_top_left,rgba(96,165,250,0.12),transparent_35%),radial-gradient(circle_at_bottom_right,rgba(59,130,246,0.1),transparent_35%),linear-gradient(180deg,#0f172a_0%,#111827_45%,#1e293b_100%)]"
+            />
+            <div className="relative z-0 min-h-screen">
               {children}
             </div>
           </ThemeProvider>
