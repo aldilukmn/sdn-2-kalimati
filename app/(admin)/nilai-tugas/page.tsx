@@ -27,11 +27,8 @@ export default function NilaiTugasPage() {
     setSemester,
     academicYear,
     setAcademicYear,
-    SEMESTERS,
-    ACADEMIC_YEARS,
     grade,
     setGrade,
-    GRADES,
     subjects,
     subjectId,
     setSubjectId,
@@ -162,7 +159,7 @@ export default function NilaiTugasPage() {
           </p>
         </div>
       ) : loading ? (
-        <LoadingSkeleton rows={4} />
+        <LoadingSkeleton rows={1} />
       ) : (
         <>
           <div className="flex items-center justify-between mb-2">
@@ -195,8 +192,8 @@ export default function NilaiTugasPage() {
                     disabled={saving}
                     className={`w-full text-left flex flex-row items-center justify-between gap-2 px-4 py-3 rounded-xl border transition-all cursor-pointer disabled:cursor-not-allowed ${
                       isActive
-                        ? "bg-indigo-50 dark:bg-indigo-900/30 border-indigo-300 dark:border-indigo-700 shadow-sm"
-                        : "bg-white/70 dark:bg-gray-800/40 border-white/20 dark:border-gray-700/50 hover:border-indigo-200 dark:hover:border-indigo-700"
+                        ? "bg-indigo-50 dark:bg-indigo-900/30 border-indigo-300 dark:border-indigo-700"
+                        : "bg-white dark:bg-gray-800 border-slate-200 dark:border-gray-700 hover:bg-slate-50 dark:hover:bg-gray-750 hover:border-indigo-300 dark:hover:border-indigo-600 shadow-md "
                     }`}
                   >
                     <div className="flex items-center gap-3 flex-1 min-w-0">
