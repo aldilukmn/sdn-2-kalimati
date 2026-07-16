@@ -1,6 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/hooks/useAuth";
 import DashboardSidebar from "@/app/components/DashboardSidebar";
 import DashboardNavbar from "@/app/components/DashboardNavbar";
 
@@ -16,6 +18,14 @@ export default function DashboardShell({
   userRole = null,
 }: Props) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const router = useRouter();
+  const { role, isLoading } = useAuth();
+
+  useEffect(() => {
+    if (!isLoading && !role) {
+      router.replace("/login");
+    }
+  }, [isLoading, role, router]);
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950">

@@ -7,6 +7,8 @@ import AuthService from "@/services/auth.service";
 import toast from "react-hot-toast";
 import { decodeJWT } from "@/lib/jwt";
 
+import { useAuth } from "@/hooks/useAuth";
+
 const ROLE_STYLES: Record<string, { bg: string; label: string }> = {
   admin: { bg: "bg-indigo-500", label: "Admin" },
   guru: { bg: "bg-emerald-500", label: "Guru" },
@@ -18,53 +20,21 @@ const DEFAULT_ROLE_STYLE = ROLE_STYLES.admin;
 
 export default function LogoutButton() {
   const router = useRouter();
-  const [loaded, setLoaded] = useState(false);
+  const { role, userName, payload, isLoading: authLoading } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const [user, setUser] = useState<{ fullName: string; role: string; initial: string; roleStyle: { bg: string; label: string }; image_url?: string }>({
-    fullName: "User",
-    role: "admin",
-    initial: "U",
-    roleStyle: DEFAULT_ROLE_STYLE,
-    image_url: undefined,
-  });
 
-  useEffect(() => {
-    const getCookie = (name: string) => {
-      const match = document.cookie.match(new RegExp(`(?:^|; )${name}=([^;]*)`));
-      return match ? decodeURIComponent(match[1]) : null;
-    };
+  const user = {
+    fullName: userName || "User",
+    role: role || "admin",
+    initial: (userName || "User").charAt(0).toUpperCase(),
+    roleStyle: ROLE_STYLES[role || "admin"] || DEFAULT_ROLE_STYLE,
+    image_url: payload?.image_url as string | undefined,
+  };
 
-    const token = sessionStorage.getItem("user_session") || getCookie("user_session");
-    if (token) {
-      const payload = decodeJWT(token);
-      if (payload) {
-        const fullName = payload.fullName || "User";
-        const role: string = payload.role || "admin";
-        setUser({
-          fullName,
-          role,
-          initial: fullName.charAt(0).toUpperCase(),
-          roleStyle: ROLE_STYLES[role] || DEFAULT_ROLE_STYLE,
-          image_url: payload.image_url,
-        });
-      }
-    } else {
-      const cookieRole = getCookie("user_role");
-      const cookieName = getCookie("user_fullName");
-      if (cookieRole) {
-        const fullName = cookieName || "User";
-        setUser({
-          fullName,
-          role: cookieRole,
-          initial: fullName.charAt(0).toUpperCase(),
-          roleStyle: ROLE_STYLES[cookieRole] || DEFAULT_ROLE_STYLE,
-        });
-      }
-    }
-    setLoaded(true);
-  }, []);
+  // loaded state untuk mencegah hydration mismatch / render sebelum auth beres
+  const loaded = !authLoading;
 
   useEffect(() => {
     if (!dropdownOpen) return;
@@ -117,6 +87,8 @@ export default function LogoutButton() {
       </div>
     );
   }
+
+  if (!role) return null;
 
   return (
     <div className="relative" ref={dropdownRef}>
