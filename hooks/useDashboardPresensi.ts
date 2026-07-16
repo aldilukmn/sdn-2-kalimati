@@ -41,7 +41,7 @@ export function useDashboardPresensi(
 ) {
   const now = new Date();
 
-  const [viewMode, setViewMode] = useState<ViewMode>("bulanan");
+  const [viewMode, setViewMode] = useState<ViewMode>("harian");
   const [grade, setGrade] = useState(userGrade ?? "1");
   const [month, setMonth] = useState(now.getMonth() + 1);
   const [year, setYear] = useState(now.getFullYear());
@@ -235,12 +235,12 @@ export function useDashboardPresensi(
 
   // ── Derived data (bulanan only makes sense for these) ───────────────────
   const topAbsen = viewMode === "bulanan"
-    ? [...studentRows].sort((a, b) => b.absen - a.absen).slice(0, 5)
+    ? [...studentRows].filter((r) => r.absen > 0).sort((a, b) => b.absen - a.absen).slice(0, 5)
     : studentRows.filter((r) => r.hadir === 0); // hari ini yang tidak hadir
 
   const topLowHadir = viewMode === "bulanan"
     ? [...studentRows]
-        .filter((r) => r.total > 0)
+        .filter((r) => r.total > 0 && r.hadirRate < 100)
         .sort((a, b) => a.hadirRate - b.hadirRate)
         .slice(0, 5)
     : studentRows.filter((r) => r.hadir === 0); // hari ini yang tidak hadir

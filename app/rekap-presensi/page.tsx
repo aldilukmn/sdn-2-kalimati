@@ -117,7 +117,7 @@ export default function RekapPresensi() {
   };
 
   const getStudentStats = (studentId: string) => {
-    const record = dataPresensi.find((d) => d._id === studentId);
+    const record = dataPresensi.find((d) => d.studentId === studentId || d._id === studentId);
     if (!record) return { total: 0, hadir: 0, sakit: 0, izin: 0, absen: 0 };
     const hadir = record.hadir ?? 0;
     const sakit = record.sakit ?? 0;
@@ -135,77 +135,79 @@ export default function RekapPresensi() {
       <div className="w-full max-w-6xl">
         <BackButton />
       </div>
-      <Card className="w-full max-w-6xl">
-        <div className="text-center mb-6">
-          <div className="text-4xl md:text-5xl mb-3">📊</div>
+      <Card className="w-full max-w-6xl p-5 md:p-8 border-none bg-white/70 dark:bg-gray-800/40 shadow-xl backdrop-blur-md rounded-3xl flex flex-col gap-6">
+        <div className="text-center mb-2">
+          <div className="text-4xl md:text-5xl mb-4 drop-shadow-sm">📊</div>
           <h1 className="text-2xl md:text-3xl font-bold text-gray-800 dark:text-gray-200">
             Rekap Presensi Siswa
           </h1>
-          <p className="text-sm opacity-70 text-gray-600 dark:text-gray-300 mt-1">
+          <p className="text-sm opacity-70 text-gray-600 dark:text-gray-300 mt-2">
             Pantau kehadiran siswa per kelas dan bulan
           </p>
         </div>
 
-        <div className="flex flex-col sm:flex-row gap-4 mb-4 justify-center">
-          <div>
-            <label className="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-300">
-              Kelas
-            </label>
-            <Select
-              value={grade}
-              onValueChange={(v) => {
-                if (v !== null) setGrade(v);
-              }}
-            >
-              <SelectTrigger className="w-full md:w-32">
-                <SelectValue placeholder="Kelas" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  <SelectLabel>Kelas</SelectLabel>
-                  {GRADES.map((g) => (
-                    <SelectItem key={g} value={g}>
-                      Kelas {g}
-                    </SelectItem>
-                  ))}
-                </SelectGroup>
-              </SelectContent>
-            </Select>
+        <div className="relative z-20 bg-white/60 dark:bg-gray-800/40 backdrop-blur-sm border border-gray-200 dark:border-gray-700/50 rounded-2xl p-4 md:p-5 flex flex-col md:flex-row items-end justify-between gap-5">
+          <div className="flex flex-col sm:flex-row gap-4 w-full md:w-auto">
+            <div className="w-full sm:w-32">
+              <label className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
+                Kelas
+              </label>
+              <Select
+                value={grade}
+                onValueChange={(v) => {
+                  if (v !== null) setGrade(v);
+                }}
+              >
+                <SelectTrigger className="w-full h-auto rounded-xl border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100">
+                  <SelectValue placeholder="Kelas" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectLabel>Kelas</SelectLabel>
+                    {GRADES.map((g) => (
+                      <SelectItem key={g} value={g}>
+                        Kelas {g}
+                      </SelectItem>
+                    ))}
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="w-full sm:w-48">
+              <label className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
+                Periode
+              </label>
+              <MonthYearPicker
+                month={month}
+                year={year}
+                onMonthChange={setMonth}
+                onYearChange={setYear}
+              />
+            </div>
           </div>
-          <div>
-            <label className="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-300">
-              Periode
-            </label>
-            <MonthYearPicker
-              month={month}
-              year={year}
-              onMonthChange={setMonth}
-              onYearChange={setYear}
-            />
-          </div>
-          <div className="flex items-end">
+
+          <div className="flex flex-col items-center sm:items-end w-full md:w-auto gap-3">
+             <div className="h-9 flex items-center justify-center">
+              {teacherLoading ? (
+                <span className="inline-flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-full bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300">
+                  👤 Wali Kelas: <span className="inline-block h-3.5 w-24 bg-purple-300 dark:bg-purple-600 rounded animate-pulse" />
+                </span>
+              ) : teacherName ? (
+                <span className="inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-full bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300">
+                  👤 Wali Kelas: {teacherName}
+                </span>
+              ) : null}
+            </div>
+            
             <button
               onClick={handleExport}
               disabled={dataPresensi.length === 0}
-              className="flex items-center gap-2 px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-sm font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+              className="flex items-center justify-center gap-2 px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-sm font-semibold transition-all disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer w-full sm:w-auto shadow-sm hover:shadow-md hover:-translate-y-0.5"
             >
               <Download size={18} />
               Export CSV
             </button>
           </div>
-        </div>
-
-        <div className="flex justify-center mb-4">
-          {teacherLoading ? (
-            <span className="inline-flex items-center gap-1.5 text-sm px-3 py-1.5 rounded-full bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300">
-              👤 Guru:{" "}
-              <span className="inline-block h-3.5 w-28 bg-purple-300 dark:bg-purple-600 rounded animate-pulse align-middle" />
-            </span>
-          ) : teacherName ? (
-            <span className="inline-flex items-center gap-1.5 text-sm px-3 py-1.5 rounded-full bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300">
-              👤 Guru: {teacherName}
-            </span>
-          ) : null}
         </div>
 
         {error && (
@@ -260,7 +262,7 @@ export default function RekapPresensi() {
           </div>
         ) : (
           <>
-            <div className="overflow-x-auto rounded-xl border border-slate-200 dark:border-gray-700">
+            <div className="overflow-x-auto animate-fadeIn rounded-xl border border-gray-200 dark:border-gray-700 bg-white/80 md:bg-white/60 dark:bg-gray-800/30">
               {siswaList.length === 0 ? (
                 <div className="px-5 py-6 text-center text-gray-500 dark:text-gray-400">
                   Tidak ada data siswa
@@ -268,7 +270,7 @@ export default function RekapPresensi() {
               ) : (
                 <table className="w-full">
                   <thead>
-                    <tr className="bg-blue-600 text-white">
+                    <tr className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-xs md:text-sm">
                       <th className="px-4 py-3 text-left text-xs font-semibold">
                         No
                       </th>
@@ -292,7 +294,7 @@ export default function RekapPresensi() {
                       </th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y bg-white divide-gray-200 dark:divide-gray-700 dark:bg-gray-800">
+                  <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
                     {paginatedSiswa.map((siswa, i) => {
                       const stats = getStudentStats(siswa.studentId);
                       const persentase =
@@ -302,7 +304,7 @@ export default function RekapPresensi() {
                       return (
                         <tr
                           key={siswa.studentId}
-                          className="hover:bg-blue-50 dark:hover:bg-gray-700/50 transition-colors"
+                          className="hover:bg-indigo-50/50 dark:hover:bg-indigo-900/20 transition-colors animate-fadeIn"
                         >
                           <td className="px-4 py-3 text-sm text-gray-500 dark:text-gray-400">
                             {startIndex + i + 1}

@@ -71,6 +71,7 @@ export default function RootLayout({
                 padding: "12px 16px",
                 fontSize: "13px",
                 fontWeight: 500,
+                pointerEvents: "none",
               },
               success: {
                 iconTheme: { primary: "#10b981", secondary: "#fff" },

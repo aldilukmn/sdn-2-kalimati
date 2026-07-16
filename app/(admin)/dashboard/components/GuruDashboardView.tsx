@@ -2,11 +2,10 @@
 
 import { useState, useEffect } from "react";
 import { Users, Mars, Venus, CalendarCheck, LayoutDashboard } from "lucide-react";
+import Link from "next/link";
 import { useTeacherDashboard, type TeacherSummary } from "@/hooks/useDashboard";
 import { useTeacherChart } from "@/hooks/useTeacherChart";
 import AttendanceDonutChart from "@/app/components/AttendanceDonutChart";
-import StudentAttendanceTable from "@/app/components/StudentAttendanceTable";
-import Pagination from "@/app/components/Pagination";
 import PageHero from "@/app/components/PageHero";
 import TabunganSection from "./TabunganSection";
 import type { AttendanceRow } from "@/lib/merge-attendance";
@@ -171,94 +170,50 @@ export default function GuruDashboardView({
         ))}
       </div>
       <TabunganSection grade={userGrade} userRole={userRole} isSavingsHolder={isSavingsHolder} />
-      {chartLoading ? (
-        <div className="bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-md border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5 relative z-0">
-          <div className="flex flex-col md:flex-row items-center md:justify-between gap-4 mb-4">
-            <div className="text-center md:text-start">
-              <h3 className="text-lg md:text-xl font-semibold text-gray-800 dark:text-gray-200">
-                Rekapitulasi Kehadiran Murid
-              </h3>
-              <p className="text-sm text-gray-500 dark:text-gray-400 mt-0.5">
-                Pantau kehadiran siswa per bulan
-              </p>
-            </div>
-            <div className="shrink-0 w-full md:w-auto">
-              {monthYearFilter}
-            </div>
-          </div>
-          <StudentAttendanceTable
-            data={paginatedData}
-            loading={chartLoading}
-            totalItems={chartData.length}
-          />
-        </div>
-      ) : !hasAttendanceData ? (
-        <div className="bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-md border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5 relative z-0">
-          <div className="flex flex-col md:flex-row items-center md:justify-between gap-4 mb-4">
-            <div className="text-center md:text-start">
-              <h3 className="text-lg md:text-xl font-semibold text-gray-800 dark:text-gray-200">
-                Rekapitulasi Kehadiran Murid
-              </h3>
-              <p className="text-sm text-gray-500 dark:text-gray-400 mt-0.5">
-                Pantau kehadiran siswa per bulan
-              </p>
-            </div>
-            <div className="shrink-0 w-full md:w-auto">
-              {monthYearFilter}
-            </div>
-          </div>
-          <div className="flex flex-col items-center justify-center py-16 px-4 text-center">
-            <div className="text-5xl mb-4">📭</div>
-            <p className="text-lg font-semibold text-gray-700 dark:text-gray-300">
-              Belum Ada Data Kehadiran
+      <div className="bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-md border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5 relative z-0">
+        <div className="flex flex-col md:flex-row items-center md:justify-between gap-4 mb-4">
+          <div className="text-center md:text-start">
+            <h3 className="text-lg md:text-xl font-semibold text-gray-800 dark:text-gray-200">
+              Ringkasan Kehadiran
+            </h3>
+            <p className="text-sm text-gray-500 dark:text-gray-400 mt-0.5">
+              Distribusi kehadiran siswa per bulan
             </p>
-            <p className="text-sm text-gray-500 dark:text-gray-400 mt-1 max-w-sm">
-              Silakan pilih bulan lain atau input presensi melalui menu Presensi
-              Murid terlebih dahulu.
-            </p>
+          </div>
+          <div className="shrink-0 w-full md:w-auto">
+            {monthYearFilter}
           </div>
         </div>
-      ) : (
-        <div className="bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-md border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5 relative z-0">
-          <div className="flex flex-col md:flex-row items-center md:justify-between gap-4 mb-4">
-            <div className="text-center md:text-start">
-              <h3 className="text-lg md:text-xl font-semibold text-gray-800 dark:text-gray-200">
-                Rekapitulasi Kehadiran Murid
-              </h3>
-              <p className="text-sm text-gray-500 dark:text-gray-400 mt-0.5">
-                Pantau kehadiran siswa per bulan
-              </p>
-            </div>
-            <div className="shrink-0 w-full md:w-auto">
-              {monthYearFilter}
-            </div>
-          </div>
-          <div className="bg-slate-50/80 dark:bg-gray-900/50 rounded-xl p-4 border border-slate-200/50 dark:border-gray-700/30 mb-4">
-            <p className="text-sm md:text-base text-gray-500 dark:text-gray-400 mb-2">
-              Distribusi Kehadiran
-            </p>
+
+        {chartLoading || hasAttendanceData ? (
+          <div className="bg-slate-50/80 dark:bg-gray-900/50 rounded-xl p-4 border border-slate-200/50 dark:border-gray-700/30">
             <AttendanceDonutChart
               data={guruDonutData}
               loading={chartLoading}
               totalDays={guruTotalDays}
             />
           </div>
-          <StudentAttendanceTable
-            data={paginatedData}
-            loading={chartLoading}
-            totalItems={chartData.length}
-          />
-          <div className="mt-4">
-            <Pagination
-              currentPage={currentPage}
-              totalPages={totalPages}
-              onPageChange={setCurrentPage}
-              itemsPerPage={itemsPerPage}
-              totalItems={chartData.length}
-            />
+        ) : (
+          <div className="flex flex-col items-center justify-center py-10 px-4 text-center">
+            <div className="text-5xl mb-4">📭</div>
+            <p className="text-lg font-semibold text-gray-700 dark:text-gray-300">
+              Belum Ada Data Kehadiran
+            </p>
+            <p className="text-sm text-gray-500 dark:text-gray-400 mt-1 max-w-sm">
+              Silakan pilih bulan lain atau input presensi melalui menu Presensi Murid.
+            </p>
           </div>
+        )}
+
+        <div className="mt-5 flex justify-center md:justify-end">
+          <Link
+            href="/dashboard-presensi"
+            className="text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-500 px-4 py-2 rounded-lg transition-colors flex items-center gap-2 shadow-md hover:shadow-lg"
+          >
+            Lihat Detail Presensi &rarr;
+          </Link>
         </div>
-      )}
+      </div>
     </div>
   );
 }

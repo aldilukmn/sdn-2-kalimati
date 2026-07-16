@@ -24,7 +24,7 @@ export default function TabPresensi({
   const presensiStartIndex = (currentPage - 1) * ITEMS_PER_PAGE;
 
   return (
-    <div className="bg-white/70 dark:bg-gray-800/40 border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl overflow-hidden">
+    <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-md border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5 flex flex-col gap-4">
       {presensiLoading ? (
         <div className="animate-pulse p-5 space-y-3">
           {[1, 2, 3, 4, 5].map((i) => (
@@ -36,19 +36,19 @@ export default function TabPresensi({
           Belum ada data presensi untuk kelas ini.
         </div>
       ) : (
-        <div className="overflow-x-auto">
+        <div className="overflow-x-auto animate-fadeIn rounded-xl border border-gray-200 dark:border-gray-700 bg-white/80 md:bg-white/60 dark:bg-gray-800/30">
           <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800/50">
-                <th className="text-center px-4 py-3 font-semibold text-slate-600 dark:text-slate-300 w-12 whitespace-nowrap">No</th>
-                <th className="text-left px-4 py-3 font-semibold text-slate-600 dark:text-slate-300 whitespace-nowrap">Nama Siswa</th>
-                <th className="text-center px-4 py-3 font-semibold text-slate-600 dark:text-slate-300 w-40 whitespace-nowrap">Rata-rata Presensi</th>
-                <th className="text-center px-4 py-3 font-semibold text-slate-600 dark:text-slate-300 w-24 whitespace-nowrap">Status</th>
-              </tr>
-            </thead>
+              <thead>
+                <tr className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-xs md:text-sm">
+                  <th className="text-center px-4 py-3 font-semibold whitespace-nowrap w-12">No</th>
+                  <th className="text-left px-4 py-3 font-semibold whitespace-nowrap">Nama Siswa</th>
+                  <th className="text-center px-4 py-3 font-semibold whitespace-nowrap w-40">Rata-rata Presensi</th>
+                  <th className="text-center px-4 py-3 font-semibold whitespace-nowrap w-24">Status</th>
+                </tr>
+              </thead>
             <tbody>
               {paginatedPresensiStudents.map((s, i) => (
-                <tr key={s.studentId} className="border-b border-slate-100 dark:border-slate-700/50">
+                <tr key={s.studentId} className="border-b border-slate-100 dark:border-slate-700/50 hover:bg-indigo-50/50 dark:hover:bg-indigo-900/20 transition-colors">
                   <td className="px-4 py-2.5 text-center text-slate-500 dark:text-slate-400">{presensiStartIndex + i + 1}</td>
                   <td className="px-4 py-2.5 font-medium text-slate-700 dark:text-slate-300 whitespace-nowrap">{s.name}</td>
                   <td className="px-4 py-2.5 text-center">

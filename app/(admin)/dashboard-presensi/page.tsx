@@ -85,8 +85,8 @@ function ViewToggle({
   );
   return (
     <div className="flex items-center gap-0.5 p-0.5 bg-slate-100 dark:bg-slate-800 rounded-xl">
-      {btn("bulanan", "Bulanan", Calendar)}
       {btn("harian", "Harian", CalendarDays)}
+      {btn("bulanan", "Bulanan", Calendar)}
     </div>
   );
 }
@@ -187,7 +187,7 @@ export default function DashboardPresensiPage() {
           <ViewToggle mode={viewMode} onChange={setViewMode} />
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+        <div className={`grid grid-cols-1 gap-4 ${isHarian ? 'sm:grid-cols-2' : 'sm:grid-cols-2 md:grid-cols-3'}`}>
           {/* Kelas */}
           <div>
             <label className="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">
@@ -216,7 +216,7 @@ export default function DashboardPresensiPage() {
 
           {isHarian ? (
             /* Mode Harian: pilih tanggal */
-            <div className="sm:col-span-2">
+            <div>
               <label className="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">
                 Tanggal
               </label>

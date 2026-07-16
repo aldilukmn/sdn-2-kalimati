@@ -110,12 +110,11 @@ export function useAssessmentScore() {
         setConfig(cfg);
         const comps = cfg?.components || [];
         if (comps.length > 0) {
-          const harianFirst = [...comps].sort((a) => (a.key === "harian" ? -1 : 1));
-          const firstNonHarian = harianFirst.find((c) => c.key !== "harian");
-          if (firstNonHarian) {
-            setSelectedComponentKey(firstNonHarian.key);
+          const hasHarian = comps.find((c) => c.key === "harian");
+          if (hasHarian) {
+            setSelectedComponentKey("harian");
           } else {
-            setSelectedComponentKey(harianFirst[0].key);
+            setSelectedComponentKey(comps[0].key);
           }
         }
       } catch {

@@ -48,7 +48,7 @@ export default function MonthYearPicker({ month, year, onMonthChange, onYearChan
           setOpen(!open);
           setShowYearGrid(false);
         }}
-        className="flex md:flex-none h-8 md:w-40 items-center justify-center gap-2.5 rounded border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm text-slate-800 transition-colors hover:border-blue-400 hover:bg-blue-50 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100 dark:hover:border-blue-500 dark:hover:bg-blue-950/30 cursor-pointer"
+        className="flex w-full h-auto items-center justify-center md:justify-start gap-2.5 rounded-xl border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm text-slate-800 transition-colors hover:border-blue-400 hover:bg-blue-50 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100 dark:hover:border-blue-500 dark:hover:bg-blue-950/30 cursor-pointer"
       >
         <CalendarDays size={18} className="shrink-0 text-blue-500" />
         <span className="capitalize">{formatted}</span>
