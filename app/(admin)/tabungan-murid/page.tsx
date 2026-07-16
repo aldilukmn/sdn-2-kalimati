@@ -23,6 +23,7 @@ import { getTodayLocal, MONTHS_ID, formatCompactRupiah } from "@/lib/format";
 import HolidayInfoCard from "@/app/components/HolidayInfoCard";
 import PageHero from "@/app/components/PageHero";
 import { useHolidays } from "@/hooks/useHolidays";
+import FilterBar from "@/app/components/shared/FilterBar";
 import {
   Select,
   SelectContent,
@@ -181,41 +182,25 @@ export default function TabunganMuridPage() {
       />
 
       {/* Filter */}
-      <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-md border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5 relative z-20">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <label className="mb-2 block text-xs font-semibold text-gray-500 dark:text-gray-400 tracking-wider">Kelas</label>
-            <Select
-              value={grade}
-              onValueChange={(v) => { if (v !== null) setGrade(v); }}
-              disabled={userRole !== "admin" && userRole !== "kepala"}
-            >
-              <SelectTrigger className="w-full h-auto rounded-xl border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100">
-                <SelectValue placeholder="Pilih kelas" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  <SelectLabel>Kelas</SelectLabel>
-                  {GRADES.map((g) => (
-                    <SelectItem key={g} value={g}>{g}</SelectItem>
-                  ))}
-                </SelectGroup>
-              </SelectContent>
-            </Select>
-          </div>
-          <div>
-            <label className="mb-2 block text-xs font-semibold text-gray-500 dark:text-gray-400 tracking-wider">
-              Tanggal
-            </label>
-            <DateDayPicker
-              value={date}
-              onChange={setDate}
-              max={getTodayLocal()}
-              blockedDates={blockedDates}
-            />
-          </div>
+      <FilterBar
+        config={{ showGrade: true }}
+        grade={grade}
+        onGradeChange={(v) => { if (v !== null) setGrade(v); }}
+        gradeDisabled={userRole !== "admin" && userRole !== "kepala"}
+        className="relative z-20"
+      >
+        <div>
+          <label className="mb-2 block text-xs font-semibold text-gray-500 dark:text-gray-400 tracking-wider">
+            Tanggal
+          </label>
+          <DateDayPicker
+            value={date}
+            onChange={setDate}
+            max={getTodayLocal()}
+            blockedDates={blockedDates}
+          />
         </div>
-      </div>
+      </FilterBar>
 
       {showGradeRecap && (
         <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-md border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5 relative z-10">

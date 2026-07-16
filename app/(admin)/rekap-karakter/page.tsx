@@ -9,6 +9,7 @@ import { MONTHS_ID } from "@/lib/format";
 import { downloadCSV, wrap } from "@/lib/csv-utils";
 import PageHero from "@/app/components/PageHero";
 import StatCard from "@/app/components/StatCard";
+import FilterBar from "@/app/components/shared/FilterBar";
 import RekapKarakterTable from "@/app/components/karakter/RekapKarakterTable";
 import {
   Select,
@@ -81,68 +82,33 @@ export default function RekapKarapkterPage() {
     <div className="flex flex-col gap-6 p-4 md:p-6">
       <PageHero icon={ClipboardList} title="Rekap Karakter" description="Rekapitulasi penilaian karakter siswa per bulan" />
 
-      {/* Filter */}
-      <div className="bg-white/70 dark:bg-gray-800/40 border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-          <div>
-            <label className="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">Tahun Ajaran</label>
-            <Select value={academicYear} onValueChange={(v) => v && setAcademicYear(v)}>
-              <SelectTrigger className="w-full h-auto rounded-xl border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100"><SelectValue /></SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  <SelectLabel>Tahun Ajaran</SelectLabel>
-                  {ACADEMIC_YEARS.map((y) => (
-                    <SelectItem key={y} value={y}>{y}</SelectItem>
-                  ))}
-                </SelectGroup>
-              </SelectContent>
-            </Select>
-          </div>
-          <div>
-            <label className="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">Semester</label>
-            <Select value={semester} onValueChange={(v) => v && setSemester(v)}>
-              <SelectTrigger className="w-full h-auto rounded-xl border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100"><SelectValue /></SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  <SelectLabel>Semester</SelectLabel>
-                  {SEMESTERS.map((s) => (
-                    <SelectItem key={s} value={s}>Semester {s}</SelectItem>
-                  ))}
-                </SelectGroup>
-              </SelectContent>
-            </Select>
-          </div>
-          <div>
-            <label className="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">Bulan</label>
-            <Select value={month || ""} onValueChange={(v) => setMonth(v != null ? (v === "__all__" ? "" : v) : "")}>
-              <SelectTrigger className="w-full h-auto rounded-xl border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100"><SelectValue placeholder="Semua Bulan" /></SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  <SelectLabel>Bulan</SelectLabel>
-                  <SelectItem value="__all__">Semua Bulan</SelectItem>
-                  {MONTHS_ID.map((m) => (
-                    <SelectItem key={m} value={m}>{m}</SelectItem>
-                  ))}
-                </SelectGroup>
-              </SelectContent>
-            </Select>
-          </div>
-          <div>
-            <label className="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">Kelas</label>
-            <Select value={grade} onValueChange={(v) => v && setGrade(v)} disabled={userRole === "guru"}>
-              <SelectTrigger className="w-full h-auto rounded-xl border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100"><SelectValue /></SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  <SelectLabel>Kelas</SelectLabel>
-                  {GRADES.map((g) => (
-                    <SelectItem key={g} value={g}>Kelas {g}</SelectItem>
-                  ))}
-                </SelectGroup>
-              </SelectContent>
-            </Select>
-          </div>
+      {/* Filters */}
+      <FilterBar
+        config={{ showAcademicYear: true, showSemester: true, showGrade: true }}
+        academicYear={academicYear}
+        onAcademicYearChange={(v) => v && setAcademicYear(v)}
+        semester={semester}
+        onSemesterChange={(v) => v && setSemester(v)}
+        grade={grade}
+        onGradeChange={(v) => v && setGrade(v)}
+        gradeDisabled={userRole === "guru"}
+      >
+        <div>
+          <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 tracking-wider mb-2">Bulan</label>
+          <Select value={month || ""} onValueChange={(v) => setMonth(v != null ? (v === "__all__" ? "" : v) : "")}>
+            <SelectTrigger className="w-full h-auto rounded-xl border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100"><SelectValue placeholder="Semua Bulan" /></SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectLabel>Bulan</SelectLabel>
+                <SelectItem value="__all__">Semua Bulan</SelectItem>
+                {MONTHS_ID.map((m) => (
+                  <SelectItem key={m} value={m}>{m}</SelectItem>
+                ))}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
         </div>
-      </div>
+      </FilterBar>
 
       {/* Content */}
       {error ? (

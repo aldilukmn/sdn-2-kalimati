@@ -24,6 +24,7 @@ import { MONTHS_ID } from "@/lib/format";
 import PageHero from "@/app/components/PageHero";
 import LoadingSkeleton from "@/app/components/shared/LoadingSkeleton";
 import DateDayPicker from "@/app/components/DateDayPicker";
+import FilterBar from "@/app/components/shared/FilterBar";
 
 import { MonthlyPresensiView } from "./components/MonthlyPresensiView";
 import { DailyPresensiView } from "./components/DailyPresensiView";
@@ -101,108 +102,40 @@ export default function DashboardPresensiPage() {
       />
 
       {/* ── Filter ─────────────────────────────────────────────────────── */}
-      <div className="bg-white/70 dark:bg-gray-800/40 border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
-        {/* Toggle mode */}
-        <div className="flex items-center justify-between gap-3 mb-4">
-          <span className="text-xs font-medium text-slate-500 dark:text-slate-400">
+      <FilterBar
+        config={{
+          showGrade: true,
+          showMonth: !isHarian,
+          showYear: !isHarian,
+        }}
+        grade={grade}
+        onGradeChange={(v) => { if (v !== null) setGrade(v); }}
+        gradeDisabled={userRole === "guru"}
+        month={String(month)}
+        onMonthChange={(v) => { if (v !== null) setMonth(Number(v)); }}
+        months={MONTHS_ID}
+        year={String(year)}
+        onYearChange={(v) => { if (v !== null) setYear(Number(v)); }}
+      >
+        {isHarian && (
+          <div>
+            <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 tracking-wider mb-2">
+              Tanggal
+            </label>
+            <DateDayPicker
+              value={selectedDate}
+              onChange={setSelectedDate}
+              max={new Date().toISOString().split("T")[0]}
+            />
+          </div>
+        )}
+        <div className="flex flex-col justify-end">
+          <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 tracking-wider mb-2">
             Mode Tampilan
-          </span>
+          </label>
           <ViewToggle mode={viewMode} onChange={setViewMode} />
         </div>
-
-        <div className={`grid grid-cols-1 gap-4 ${isHarian ? 'sm:grid-cols-2' : 'sm:grid-cols-2 md:grid-cols-3'}`}>
-          {/* Kelas */}
-          <div>
-            <label className="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">
-              Kelas
-            </label>
-            <Select
-              value={grade}
-              onValueChange={(v) => v && setGrade(v)}
-              disabled={userRole === "guru"}
-            >
-              <SelectTrigger className="w-full h-auto rounded-xl border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  <SelectLabel>Kelas</SelectLabel>
-                  {GRADES.map((g) => (
-                    <SelectItem key={g} value={g}>
-                      Kelas {g}
-                    </SelectItem>
-                  ))}
-                </SelectGroup>
-              </SelectContent>
-            </Select>
-          </div>
-
-          {isHarian ? (
-            /* Mode Harian: pilih tanggal */
-            <div>
-              <label className="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">
-                Tanggal
-              </label>
-              <DateDayPicker
-                value={selectedDate}
-                onChange={setSelectedDate}
-                max={new Date().toISOString().split("T")[0]}
-              />
-            </div>
-          ) : (
-            /* Mode Bulanan: pilih bulan + tahun */
-            <>
-              <div>
-                <label className="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">
-                  Bulan
-                </label>
-                <Select
-                  value={String(month)}
-                  onValueChange={(v) => v && setMonth(Number(v))}
-                >
-                  <SelectTrigger className="w-full h-auto rounded-xl border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100">
-                    <SelectValue placeholder="Bulan" className="sr-only" />
-                    {MONTHS_ID[month - 1]}
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectGroup>
-                      <SelectLabel>Bulan</SelectLabel>
-                      {MONTHS_ID.map((name, i) => (
-                        <SelectItem key={i + 1} value={String(i + 1)}>
-                          {name}
-                        </SelectItem>
-                      ))}
-                    </SelectGroup>
-                  </SelectContent>
-                </Select>
-              </div>
-              <div>
-                <label className="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">
-                  Tahun
-                </label>
-                <Select
-                  value={String(year)}
-                  onValueChange={(v) => v && setYear(Number(v))}
-                >
-                  <SelectTrigger className="w-full h-auto rounded-xl border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectGroup>
-                      <SelectLabel>Tahun</SelectLabel>
-                      {AVAILABLE_YEARS.map((y) => (
-                        <SelectItem key={y} value={String(y)}>
-                          {y}
-                        </SelectItem>
-                      ))}
-                    </SelectGroup>
-                  </SelectContent>
-                </Select>
-              </div>
-            </>
-          )}
-        </div>
-      </div>
+      </FilterBar>
 
       {/* ── Content ────────────────────────────────────────────────────── */}
       {error ? (
