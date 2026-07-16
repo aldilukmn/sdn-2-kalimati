@@ -23,7 +23,7 @@ export default function DashboardShell({
 
   useEffect(() => {
     if (!isLoading && !role) {
-      router.replace("/login");
+      router.replace("/");
     }
   }, [isLoading, role, router]);
 

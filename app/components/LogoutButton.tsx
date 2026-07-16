@@ -70,7 +70,7 @@ export default function LogoutButton() {
       // Notify AuthContext to clear its cached state
       window.dispatchEvent(new Event("auth-update"));
 
-      router.replace("/login");
+      router.replace("/");
     }
   };
 
