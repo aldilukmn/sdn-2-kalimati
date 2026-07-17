@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { useAuth } from "@/hooks/useAuth";
 import DashboardSidebar from "@/app/components/DashboardSidebar";
 import DashboardNavbar from "@/app/components/DashboardNavbar";
@@ -19,6 +19,7 @@ export default function DashboardShell({
 }: Props) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const router = useRouter();
+  const pathname = usePathname();
   const { role, isLoading } = useAuth();
 
   useEffect(() => {
@@ -26,6 +27,28 @@ export default function DashboardShell({
       router.replace("/");
     }
   }, [isLoading, role, router]);
+
+  useEffect(() => {
+    if (!pathname) return;
+    const titleOverrides: Record<string, string> = {
+      "/data-gtk": "Data GTK",
+      "/konfigurasi-kaih": "Konfigurasi KAIH",
+      "/nilai-litnum": "Nilai LitNum",
+    };
+
+    let title = "Dashboard";
+    if (titleOverrides[pathname]) {
+      title = titleOverrides[pathname];
+    } else if (pathname !== "/" && pathname !== "/dashboard") {
+      const slug = pathname.split("/").pop() || "";
+      title = slug
+        .split("-")
+        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(" ");
+    }
+    
+    document.title = `${title} - SDN 2 Kalimati`;
+  }, [pathname]);
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950">
