@@ -3,6 +3,7 @@
 import { useMemo, useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useAuth } from "@/hooks/useAuth";
 import AssessmentConfigService from "@/services/assessment-config.service";
 import {
   LayoutDashboard,
@@ -109,6 +110,7 @@ export default function DashboardSidebar({
   userRole,
 }: SidebarProps) {
   const pathname = usePathname();
+  const { grade: userGrade } = useAuth();
   const [openGroups, setOpenGroups] = useState<Record<string, boolean>>({
     "Nilai Akademik": true,
     Karakter: true,
@@ -117,7 +119,7 @@ export default function DashboardSidebar({
 
   useEffect(() => {
     if (!userRole) return;
-    AssessmentConfigService.getAll()
+    AssessmentConfigService.getAll(userRole === "guru" && userGrade ? { grade: userGrade } : undefined)
       .then((res) => {
         const configs = res?.result || [];
         const hasLitnum = configs.some((cfg) =>
@@ -126,7 +128,7 @@ export default function DashboardSidebar({
         setShowLitnum(hasLitnum);
       })
       .catch(() => {});
-  }, [userRole]);
+  }, [userRole, userGrade]);
 
   const guruAllowedHrefs = new Set([
     "/dashboard",

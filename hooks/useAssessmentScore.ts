@@ -10,6 +10,7 @@ import { useTugasData } from "./assessment/useTugasData";
 import { useKarakterData } from "./assessment/useKarakterData";
 import { usePresensiData } from "./assessment/usePresensiData";
 import { useNonHarianData } from "./assessment/useNonHarianData";
+import { useLitnumData } from "./assessment/useLitnumData";
 import { useState } from "react";
 
 export type { KarakterStudent } from "./assessment/useKarakterData";
@@ -75,6 +76,17 @@ export function useAssessmentScore() {
     configHook.safeKey
   );
 
+  const litnumHook = useLitnumData(
+    configHook.selectedComponentKey,
+    role,
+    configHook.grade,
+    configHook.semester,
+    configHook.academicYear,
+    studentsHook.students,
+    configHook.retryCount,
+    configHook.safeKey
+  );
+
   return {
     ...configHook,
     ...studentsHook,
@@ -83,6 +95,7 @@ export function useAssessmentScore() {
     ...karakterHook,
     ...presensiHook,
     ...nonHarianHook,
+    ...litnumHook,
     role,
     error: configHook.error || globalError,
     SEMESTERS, 

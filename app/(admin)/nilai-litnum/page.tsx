@@ -131,6 +131,7 @@ export default function NilaiLitnumPage() {
         grade={grade}
         onGradeChange={setGrade}
         gradeDisabled={role === "guru"}
+        gridClassName="grid-cols-1 md:grid-cols-3"
       />
 
       {error ? (

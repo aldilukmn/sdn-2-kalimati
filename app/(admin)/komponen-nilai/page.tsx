@@ -14,6 +14,7 @@ import TabNilaiHarian from "./components/TabNilaiHarian";
 import TabKarakter from "./components/TabKarakter";
 import TabPresensi from "./components/TabPresensi";
 import TabTugas from "./components/TabTugas";
+import TabLitnum from "./components/TabLitnum";
 import TabNonHarian from "./components/TabNonHarian";
 import FilterBar from "@/app/components/shared/FilterBar";
 
@@ -32,6 +33,7 @@ export default function NilaiKomponenPage() {
     tugasScores, tugasLoading,
     karakterStudents, karakterLoading,
     presensiStudents, presensiLoading,
+    litnumStudents, litnumLoading,
     nonHarianScores, nonHarianLoading,
     saving, error, retry, initialLoading,
     handleScoreChange, handleSave,
@@ -86,10 +88,15 @@ export default function NilaiKomponenPage() {
   const isKarakterTab = safeKey(selectedComponentKey) === "karakter";
   const isPresensiTab = safeKey(selectedComponentKey) === "presensi";
   const isTugasTab = safeKey(selectedComponentKey) === "tugas";
+  const isLitnumTab = safeKey(selectedComponentKey) === "litnum";
 
   const presensiStartIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const paginatedPresensiStudents = presensiStudents.slice(presensiStartIndex, presensiStartIndex + ITEMS_PER_PAGE);
   const presensiTotalPages = Math.ceil(presensiStudents.length / ITEMS_PER_PAGE);
+
+  const litnumStartIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const paginatedLitnumStudents = litnumStudents?.slice(litnumStartIndex, litnumStartIndex + ITEMS_PER_PAGE) || [];
+  const litnumTotalPages = Math.ceil((litnumStudents?.length || 0) / ITEMS_PER_PAGE);
 
   return (
     <div className="flex flex-col gap-6 p-4 md:p-6">
@@ -140,7 +147,7 @@ export default function NilaiKomponenPage() {
                   }`}
                 >
                   {comp.name}
-                  {(safeKey(comp.key) === "harian" || safeKey(comp.key) === "karakter" || safeKey(comp.key) === "presensi" || safeKey(comp.key) === "tugas") && " (Readonly)"}
+                  {(safeKey(comp.key) === "harian" || safeKey(comp.key) === "karakter" || safeKey(comp.key) === "presensi" || safeKey(comp.key) === "tugas" || safeKey(comp.key) === "litnum") && " (Readonly)"}
                 </button>
               ))}
             </div>
@@ -188,6 +195,16 @@ export default function NilaiKomponenPage() {
               totalPages={totalPages}
               setCurrentPage={setCurrentPage}
               totalStudents={students.length}
+            />
+          ) : isLitnumTab ? (
+            <TabLitnum
+              paginatedLitnumStudents={paginatedLitnumStudents}
+              litnumLoading={litnumLoading}
+              ITEMS_PER_PAGE={ITEMS_PER_PAGE}
+              currentPage={currentPage}
+              litnumTotalPages={litnumTotalPages}
+              setCurrentPage={setCurrentPage}
+              totalLitnumStudents={litnumStudents?.length || 0}
             />
           ) : (
             <TabNonHarian
