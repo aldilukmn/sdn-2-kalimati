@@ -1,8 +1,9 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import AssessmentConfigService from "@/services/assessment-config.service";
 import {
   LayoutDashboard,
   ClipboardList,
@@ -62,6 +63,7 @@ const menuItems: SidebarItem[] = [
         href: "/rekap-nilai-harian",
       },
       { label: "Nilai Tugas", icon: FileEdit, href: "/nilai-tugas" },
+      { label: "Nilai LitNum", icon: PieChart, href: "/nilai-litnum" },
       { label: "Komponen Nilai", icon: ClipboardList, href: "/komponen-nilai" },
       { label: "Nilai Akhir", icon: Calculator, href: "/nilai-akhir" },
       {
@@ -111,6 +113,20 @@ export default function DashboardSidebar({
     "Nilai Akademik": true,
     Karakter: true,
   });
+  const [showLitnum, setShowLitnum] = useState(false);
+
+  useEffect(() => {
+    if (!userRole) return;
+    AssessmentConfigService.getAll()
+      .then((res) => {
+        const configs = res?.result || [];
+        const hasLitnum = configs.some((cfg) =>
+          cfg.components.some((c) => c.key === "litnum")
+        );
+        setShowLitnum(hasLitnum);
+      })
+      .catch(() => {});
+  }, [userRole]);
 
   const guruAllowedHrefs = new Set([
     "/dashboard",
@@ -120,6 +136,7 @@ export default function DashboardSidebar({
     "/rekap-karakter",
     "/nilai-harian",
     "/nilai-tugas",
+    "/nilai-litnum",
     "/komponen-nilai",
     "/rekap-nilai-harian",
     "/rekap-nilai-akhir",
@@ -137,11 +154,25 @@ export default function DashboardSidebar({
 
   const filteredMenuItems = useMemo(() => {
     if (userRole === null) return [];
-    if (userRole === "guru") return menuItems.filter(isItemAllowed);
-    if (userRole === "kepala") return menuItems;
+    
+    let baseMenu = menuItems;
     if (userRole === "penjaga") return penjagaMenuItems;
-    return menuItems;
-  }, [userRole]);
+    
+    if (!showLitnum) {
+      baseMenu = baseMenu.map((item) => {
+        if ("children" in item) {
+          return {
+            ...item,
+            children: item.children.filter((c) => c.href !== "/nilai-litnum"),
+          };
+        }
+        return item;
+      });
+    }
+
+    if (userRole === "guru") return baseMenu.filter(isItemAllowed);
+    return baseMenu;
+  }, [userRole, showLitnum]);
 
   const isActive = (href: string) => {
     if (href === "/daftar-mapel") {
