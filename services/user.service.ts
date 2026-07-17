@@ -6,12 +6,12 @@ export default class UserService {
     return await api<TeacherType[]>("/user?role=guru");
   }
 
-  static async getStaffByRoles(roles: string) {
-    return await api<TeacherType[]>(`/user?role=${roles}`);
+  static async getStaffByRoles(roles: string, skipAuthRedirect = false) {
+    return await api<TeacherType[]>(`/user?role=${roles}`, { skipAuthRedirect });
   }
 
-  static async getTeacherByGrade(grade: string) {
-    return await api<TeacherType>(`/teacher-by-grade/${grade}`);
+  static async getTeacherByGrade(grade: string, skipAuthRedirect = false) {
+    return await api<TeacherType>(`/teacher-by-grade/${grade}`, { skipAuthRedirect });
   }
 
   static async getAll() {

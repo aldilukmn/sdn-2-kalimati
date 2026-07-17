@@ -10,7 +10,7 @@ function getCookie(name: string): string | null {
 
 export const api = async <T = any>(
   endpoint: string,
-  options: RequestInit = {}
+  options: RequestInit & { skipAuthRedirect?: boolean } = {}
 ): Promise<ApiResponse<T>> => {
   const token =
     typeof window !== "undefined"
@@ -53,9 +53,11 @@ export const api = async <T = any>(
 
   if (!response.ok) {
     if (response.status === 401) {
-      sessionStorage.removeItem("user_session");
-      document.cookie = "user_session=; max-age=0; path=/";
-      window.location.href = "/login";
+      if (!options.skipAuthRedirect) {
+        sessionStorage.removeItem("user_session");
+        document.cookie = "user_session=; max-age=0; path=/";
+        window.location.href = "/login";
+      }
       throw new Error("Sesi berakhir, silakan login ulang");
     }
 

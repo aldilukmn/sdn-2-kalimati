@@ -23,10 +23,13 @@ import { GRADES } from "@/lib/constants";
 import type {
   MasterStudentType,
   AttendanceReportItem,
+  StudentAttendanceType
 } from "@/types/attendance";
+import { useAuth } from "@/hooks/useAuth";
 
 export default function RekapPresensi() {
-  const [grade, setGrade] = useState("1");
+  const { role, grade: userGrade } = useAuth();
+  const [grade, setGrade] = useState(userGrade || "1");
 
   const [month, setMonth] = useState(new Date().getMonth() + 1);
   const [year, setYear] = useState(new Date().getFullYear());
@@ -85,6 +88,12 @@ export default function RekapPresensi() {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    if (role === "guru" && userGrade) {
+      setGrade(userGrade);
+    }
+  }, [role, userGrade]);
 
   useEffect(() => {
     const ctrl = new AbortController();
@@ -154,6 +163,7 @@ export default function RekapPresensi() {
               </label>
               <Select
                 value={grade}
+                disabled={role === "guru"}
                 onValueChange={(v) => {
                   if (v !== null) setGrade(v);
                 }}
@@ -199,14 +209,16 @@ export default function RekapPresensi() {
               ) : null}
             </div>
             
-            <button
-              onClick={handleExport}
-              disabled={dataPresensi.length === 0}
-              className="flex items-center justify-center gap-2 px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-sm font-semibold transition-all disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer w-full sm:w-auto shadow-sm hover:shadow-md hover:-translate-y-0.5"
-            >
-              <Download size={18} />
-              Export CSV
-            </button>
+            <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+              <button
+                onClick={handleExport}
+                disabled={dataPresensi.length === 0}
+                className="flex items-center justify-center gap-2 px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-sm font-semibold transition-all disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer w-full sm:w-auto shadow-sm hover:shadow-md hover:-translate-y-0.5"
+              >
+                <Download size={18} />
+                CSV
+              </button>
+            </div>
           </div>
         </div>
 

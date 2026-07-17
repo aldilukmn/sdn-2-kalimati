@@ -71,7 +71,8 @@ export default function PresensiMuridPage() {
 
   const currentHoliday = holidayList.find((h) => h.date === date);
   const [manageOpen, setManageOpen] = useState(false);
-  const [newDate, setNewDate] = useState("");
+  const [newDateStart, setNewDateStart] = useState("");
+  const [newDateEnd, setNewDateEnd] = useState("");
   const [newDesc, setNewDesc] = useState("");
   const [addSaving, setAddSaving] = useState(false);
   const [removingDate, setRemovingDate] = useState<string | null>(null);
@@ -93,15 +94,39 @@ export default function PresensiMuridPage() {
   );
 
   const handleAddHoliday = async () => {
-    if (!newDate || !newDesc.trim()) return;
+    if (!newDateStart || !newDesc.trim()) return;
     setAddSaving(true);
     try {
-      await HolidayService.add({ date: newDate, description: newDesc.trim() });
-      await refreshHolidays();
-      setNewDate("");
-      setNewDesc("");
-      toast.success("Hari libur berhasil ditambahkan");
-      setManageOpen(false);
+      const start = new Date(newDateStart);
+      const end = newDateEnd ? new Date(newDateEnd) : start;
+      if (end < start) {
+        toast.error("Tanggal akhir tidak boleh sebelum tanggal mulai");
+        setAddSaving(false);
+        return;
+      }
+      
+      const promises = [];
+      const current = new Date(start);
+      while (current <= end) {
+        // hindari hari minggu karena otomatis libur
+        if (current.getDay() !== 0) {
+          const dStr = current.toLocaleDateString('en-CA'); // 'YYYY-MM-DD'
+          promises.push(HolidayService.add({ date: dStr, description: newDesc.trim() }));
+        }
+        current.setDate(current.getDate() + 1);
+      }
+      
+      if (promises.length > 0) {
+        await Promise.all(promises);
+        await refreshHolidays();
+        setNewDateStart("");
+        setNewDateEnd("");
+        setNewDesc("");
+        toast.success("Hari libur berhasil ditambahkan");
+        setManageOpen(false);
+      } else {
+        toast.error("Tidak ada hari kerja yang bisa ditambahkan sebagai libur (hanya Minggu)");
+      }
     } catch (e: unknown) {
       toast.error(e instanceof Error ? e.message : "Gagal menambah hari libur");
     } finally {
@@ -230,66 +255,87 @@ export default function PresensiMuridPage() {
       {/* Holiday Management Modal */}
       {manageOpen && (
         <Modal open onClose={() => setManageOpen(false)} title="Kelola Hari Libur" className="max-w-lg max-h-[80vh] flex flex-col">
-
-            <div className="grid grid-cols-2 gap-2 mb-4">
-              <Select
-                value={holidayMonth ?? ""}
-                onValueChange={(v) => {
-                  if (!v) return;
-                  setHolidayMonth(v);
-                  setHolidayPage(1);
-                }}
-              >
-                <SelectTrigger className="rounded-xl border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100">
-                  <SelectValue
-                    placeholder="Pilih bulan"
-                    className="text-xs md:text-sm tracking-widest"
+            {/* Add Holiday Section */}
+            <div className="mb-5 p-4 bg-slate-50 dark:bg-gray-900/50 rounded-xl border border-slate-200 dark:border-gray-800">
+              <h4 className="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-3">Tambah Libur Baru</h4>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-3">
+                <div className="flex flex-col">
+                  <label className="text-[10px] text-gray-500 mb-1 ml-1">Dari Tanggal</label>
+                  <DateDayPicker value={newDateStart} onChange={setNewDateStart} />
+                </div>
+                <div className="flex flex-col">
+                  <label className="text-[10px] text-gray-500 mb-1 ml-1">Sampai (Opsional)</label>
+                  <DateDayPicker value={newDateEnd} onChange={setNewDateEnd} />
+                </div>
+              </div>
+              <div className="flex flex-col sm:flex-row gap-3 items-end">
+                <div className="flex flex-col flex-1 w-full">
+                  <label className="text-[10px] text-gray-500 mb-1 ml-1">Keterangan Libur</label>
+                  <input
+                    type="text"
+                    value={newDesc}
+                    onChange={(e) => setNewDesc(e.target.value)}
+                    placeholder="Contoh: Hari Raya Idul Fitri"
+                    className="rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm outline-none focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100 placeholder:text-xs md:placeholder:text-sm h-[42px] w-full"
                   />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    <SelectLabel>Bulan</SelectLabel>
-                    {MONTHS_ID.map((name, i) => (
-                      <SelectItem key={i + 1} value={name}>
-                        {name}
-                      </SelectItem>
-                    ))}
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-              <DateDayPicker value={newDate} onChange={setNewDate} />
-              <input
-                type="text"
-                value={newDesc}
-                onChange={(e) => setNewDesc(e.target.value)}
-                placeholder="Deskripsi"
-                className="rounded-xl border border-slate-300 bg-slate-50 px-3 py-2 text-sm outline-none focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100 placeholder:text-xs md:placeholder:text-sm"
-              />
-              <button
-                onClick={handleAddHoliday}
-                disabled={addSaving || !newDate || !newDesc.trim()}
-                className="flex items-center justify-center gap-1 px-3 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs md:text-sm font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
-              >
-                {addSaving ? (
-                  <Loader2 size={14} className="animate-spin" />
-                ) : (
-                  <Plus size={14} />
-                )}
-                Tambah
-              </button>
+                </div>
+                <button
+                  onClick={handleAddHoliday}
+                  disabled={addSaving || !newDateStart || !newDesc.trim()}
+                  className="w-full sm:w-auto h-[42px] flex items-center justify-center gap-1.5 px-6 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer shrink-0"
+                >
+                  {addSaving ? (
+                    <Loader2 size={16} className="animate-spin" />
+                  ) : (
+                    <Plus size={16} />
+                  )}
+                  Simpan
+                </button>
+              </div>
             </div>
 
-            <div className="flex-1 overflow-y-auto">
-              <Table>
+            {/* List Holidays Section */}
+            <div className="flex items-center justify-between mb-3 mt-2 px-1">
+              <h4 className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Daftar Libur Tersimpan</h4>
+              <div>
+                <Select
+                  value={holidayMonth ?? ""}
+                  onValueChange={(v) => {
+                    if (!v) return;
+                    setHolidayMonth(v);
+                    setHolidayPage(1);
+                  }}
+                >
+                  <SelectTrigger className="h-[36px] rounded-xl border border-slate-300 bg-slate-50 px-3 py-2 text-xs md:text-sm focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100">
+                    <SelectValue
+                      placeholder="Pilih bulan"
+                    />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      <SelectLabel className="text-xs">Bulan</SelectLabel>
+                      {MONTHS_ID.map((name, i) => (
+                        <SelectItem key={i + 1} value={name} className="text-xs">
+                          {name}
+                        </SelectItem>
+                      ))}
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+
+            <div className="flex-1 overflow-y-auto overflow-x-auto rounded-xl border border-slate-200 dark:border-gray-800">
+              <Table className="min-w-[450px]">
                 <TableHeader>
                   <TableRow className="text-xs font-semibold text-gray-400 dark:text-gray-500 tracking-wider">
-                    <TableHead className="w-[80px] md:w-[120px]">
+                    <TableHead className="w-[100px] md:w-[130px]">
                       Tanggal
                     </TableHead>
-                    <TableHead className="border-x border-slate-200 dark:border-gray-700">
+                    <TableHead className="border-x border-slate-200 dark:border-gray-700 px-3">
                       Keterangan
                     </TableHead>
-                    <TableHead className="w-[36px] text-center">Aksi</TableHead>
+                    <TableHead className="w-[50px] text-center">Aksi</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -317,7 +363,7 @@ export default function PresensiMuridPage() {
                             {formatDateShort(h.date)}
                           </span>
                         </TableCell>
-                        <TableCell className="border-x border-slate-200 dark:border-gray-700 text-gray-800 dark:text-slate-100 truncate">
+                        <TableCell className="border-x border-slate-200 dark:border-gray-700 text-gray-800 dark:text-slate-100 px-3 py-2 text-xs md:text-sm leading-relaxed">
                           {h.description}
                         </TableCell>
                         <TableCell className="text-center">

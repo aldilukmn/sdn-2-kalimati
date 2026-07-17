@@ -25,6 +25,7 @@ import PageHero from "@/app/components/PageHero";
 import LoadingSkeleton from "@/app/components/shared/LoadingSkeleton";
 import DateDayPicker from "@/app/components/DateDayPicker";
 import FilterBar from "@/app/components/shared/FilterBar";
+import ExportWordButton from "@/app/components/ExportWordButton";
 
 import { MonthlyPresensiView } from "./components/MonthlyPresensiView";
 import { DailyPresensiView } from "./components/DailyPresensiView";
@@ -210,14 +211,18 @@ export default function DashboardPresensiPage() {
           )}
 
           {/* Footer link */}
-          <div className="text-center">
+          <div className="flex flex-col sm:flex-row justify-center items-center gap-4 mt-6">
             <Link
               href="/rekap-presensi"
-              className="inline-flex items-center gap-1.5 text-sm text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 font-medium transition-colors"
+              className="inline-flex items-center gap-1.5 px-5 py-2.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 rounded-xl text-sm font-semibold transition-all shadow-sm hover:shadow-md dark:bg-indigo-900/40 dark:text-indigo-300 dark:hover:bg-indigo-900/60"
             >
               Lihat Rekap Lengkap
               <ArrowRight size={16} />
             </Link>
+            
+            {!isHarian && userRole === "guru" && (
+              <ExportWordButton grade={grade} month={month} year={year} />
+            )}
           </div>
         </>
       )}
