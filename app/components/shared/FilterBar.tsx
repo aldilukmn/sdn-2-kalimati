@@ -153,7 +153,9 @@ export default function FilterBar({
             <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 tracking-wider mb-2">Bulan</label>
             <Select value={month} onValueChange={(v) => v && onMonthChange(v)}>
               <SelectTrigger className="w-full h-auto rounded-xl border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100">
-                <SelectValue placeholder="Pilih Bulan" />
+                <SelectValue placeholder="Pilih Bulan">
+                  {month && months.length > 0 ? months[Number(month) - 1] : null}
+                </SelectValue>
               </SelectTrigger>
               <SelectContent>
                 <SelectGroup>
