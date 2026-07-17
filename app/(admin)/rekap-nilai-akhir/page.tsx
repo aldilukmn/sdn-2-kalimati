@@ -47,6 +47,8 @@ export default function RekapNilaiAkhirPage() {
         grade={grade}
         onGradeChange={setGrade}
         gradeDisabled={userRole === "guru"}
+        gridClassName="grid-cols-2 md:grid-cols-3"
+        gradeClassName="col-span-2 md:col-span-1"
       />
 
       {/* Content */}

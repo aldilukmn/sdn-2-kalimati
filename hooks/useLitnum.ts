@@ -29,10 +29,53 @@ export function useLitnum() {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  const [availableGrades, setAvailableGrades] = useState<string[]>(GRADES);
+
   useEffect(() => {
-    if (role === "guru" && authGrade) setGrade(authGrade);
-    else if (role && role !== "guru") setGrade("1");
+    if (role === "guru" && authGrade) {
+      setGrade(authGrade);
+      setAvailableGrades([authGrade]);
+    } else if (role && role !== "guru") {
+      setGrade(""); // Default to empty "Pilih Kelas"
+    }
   }, [role, authGrade]);
+
+  // Fetch available grades for admin based on AssessmentConfig
+  useEffect(() => {
+    if (!role || role === "guru" || !semester || !academicYear) return;
+    const fetchConfigs = async () => {
+      try {
+        const { default: AssessmentConfigService } = await import("@/services/assessment-config.service");
+        const res = await AssessmentConfigService.getAll();
+        if (res?.result) {
+          const configs = res.result;
+          const validGrades = new Set<string>();
+          configs.forEach(cfg => {
+            if (cfg.semester === semester && cfg.academicYear === academicYear) {
+               if (cfg.components.some(c => c.key.toLowerCase() === "litnum")) {
+                  validGrades.add(cfg.grade);
+               }
+            }
+          });
+          const newAvailable = GRADES.filter(g => validGrades.has(g));
+          setAvailableGrades(newAvailable);
+          
+          setGrade(prev => {
+            // Only auto-reset if they HAD a grade selected and it became invalid
+            if (prev && !validGrades.has(prev)) {
+               return "";
+            }
+            return prev;
+          });
+        }
+      } catch(e) {
+        console.error("Failed to fetch assessment configs for litnum filter", e);
+      } finally {
+        setInitialLoading(false);
+      }
+    }
+    fetchConfigs();
+  }, [semester, academicYear, role]);
 
   useEffect(() => {
     if (!role || !grade || !academicYear || !semester) return;
@@ -169,7 +212,7 @@ export function useLitnum() {
     semester, setSemester,
     academicYear, setAcademicYear,
     SEMESTERS, ACADEMIC_YEARS,
-    grade, setGrade, GRADES,
+    grade, setGrade, GRADES, availableGrades,
     tasks, selectedTaskId, setSelectedTaskId,
     scores, students, scoreInputs,
     loading, initialLoading, scoresLoading, saving, error,

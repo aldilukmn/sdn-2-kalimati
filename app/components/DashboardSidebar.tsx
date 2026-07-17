@@ -259,7 +259,7 @@ export default function DashboardSidebar({
                     )}
                   </button>
                   <div
-                    className={`ml-5 mt-0.5 space-y-0.5 border-l-2 border-slate-200 dark:border-slate-700 overflow-hidden transition-all duration-500 ${
+                    className={`ml-5 mt-0.5 space-y-0.5 border-l-2 border-slate-300 dark:border-slate-700 overflow-hidden transition-all duration-500 ${
                       groupIsOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
                     }`}
                   >

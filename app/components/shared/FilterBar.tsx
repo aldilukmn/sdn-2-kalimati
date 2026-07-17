@@ -30,6 +30,7 @@ interface FilterBarProps {
   grade?: string;
   onGradeChange?: (v: string) => void;
   gradeDisabled?: boolean;
+  availableGrades?: string[];
   selectedGS?: string;
   onSelectedGSChange?: (v: string) => void;
   gradeSubjects?: { _id: string; subjectName?: string }[];
@@ -41,6 +42,7 @@ interface FilterBarProps {
   onYearChange?: (v: string) => void;
   className?: string;
   gridClassName?: string;
+  gradeClassName?: string;
   children?: ReactNode;
 }
 
@@ -53,6 +55,7 @@ export default function FilterBar({
   grade = "",
   onGradeChange,
   gradeDisabled = false,
+  availableGrades = GRADES,
   selectedGS = "",
   onSelectedGSChange,
   gradeSubjects = [],
@@ -64,6 +67,7 @@ export default function FilterBar({
   onYearChange,
   className = "",
   gridClassName = "grid-cols-2 md:grid-cols-3 lg:grid-cols-4",
+  gradeClassName = "",
   children,
 }: FilterBarProps) {
   // Use a generic grid that wraps nicely
@@ -100,7 +104,7 @@ export default function FilterBar({
                 <SelectGroup>
                   <SelectLabel>Semester</SelectLabel>
                   {SEMESTERS.map((s) => (
-                    <SelectItem key={s} value={s}>Semester {s}</SelectItem>
+                    <SelectItem key={s} value={s}>{s}</SelectItem>
                   ))}
                 </SelectGroup>
               </SelectContent>
@@ -109,7 +113,7 @@ export default function FilterBar({
         )}
 
         {config.showGrade && onGradeChange && (
-          <div>
+          <div className={gradeClassName}>
             <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 tracking-wider mb-2">Kelas</label>
             <Select value={grade} onValueChange={(v) => v && onGradeChange(v)} disabled={gradeDisabled}>
               <SelectTrigger className={`w-full h-auto rounded-xl border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100 ${!grade ? "opacity-60" : ""}`}>
@@ -118,8 +122,8 @@ export default function FilterBar({
               <SelectContent>
                 <SelectGroup>
                   <SelectLabel>Kelas</SelectLabel>
-                  {GRADES.map((g) => (
-                    <SelectItem key={g} value={g}>Kelas {g}</SelectItem>
+                  {availableGrades.map((g) => (
+                    <SelectItem key={g} value={g}>{g}</SelectItem>
                   ))}
                 </SelectGroup>
               </SelectContent>

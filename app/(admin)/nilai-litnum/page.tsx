@@ -29,6 +29,7 @@ export default function NilaiLitnumPage() {
     setAcademicYear,
     grade,
     setGrade,
+    availableGrades,
     tasks,
     selectedTaskId,
     setSelectedTaskId,
@@ -131,7 +132,9 @@ export default function NilaiLitnumPage() {
         grade={grade}
         onGradeChange={setGrade}
         gradeDisabled={role === "guru"}
+        availableGrades={availableGrades}
         gridClassName="grid-cols-2 md:grid-cols-3"
+        gradeClassName="col-span-2 md:col-span-1"
       />
 
       {error ? (
@@ -145,7 +148,7 @@ export default function NilaiLitnumPage() {
             className="mx-auto text-slate-300 dark:text-slate-600 mb-3"
           />
           <p className="text-slate-500 dark:text-slate-400 text-sm">
-            Pilih kelas untuk mulai mengelola nilai LitNum
+            Pilih kelas untuk mulai mengelola nilai literasi & numerasi
           </p>
         </div>
       ) : loading ? (
