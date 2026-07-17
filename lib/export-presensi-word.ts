@@ -166,6 +166,17 @@ export function exportPresensiMatriksToWord(
     return t.nip;
   };
 
+  let lastWorkingDate = daysInMonth;
+  for (let d = daysInMonth; d >= 1; d--) {
+    const dateStr = `${year}-${String(month).padStart(2, "0")}-${String(d).padStart(2, "0")}`;
+    const isSunday = new Date(year, month - 1, d).getDay() === 0;
+    const isHoliday = holidayMap.has(dateStr);
+    if (!isSunday && !isHoliday) {
+      lastWorkingDate = d;
+      break;
+    }
+  }
+
   const htmlContent = `
     <html xmlns:o="urn:schemas-microsoft-com:office:office"
           xmlns:w="urn:schemas-microsoft-com:office:word"
@@ -256,14 +267,14 @@ export function exportPresensiMatriksToWord(
           <tr>
             <td style="width: 35%; border: none; margin: 0; mso-margin-top-alt: 0; mso-margin-bottom-alt: 0;">
               Mengetahui,<br/>
-              Kepala Sekolah<br/>
+              Kepala UPTD SDN 2 Kalimati<br/>
               <br/><br/><br/><br/>
               <b><u>Dewi Arti Handayani, S.Pd.SD.</u></b><br/>
               NIP. 197303302007012005
             </td>
             <td style="width: 30%; border: none; margin: 0; mso-margin-top-alt: 0; mso-margin-bottom-alt: 0;"></td>
             <td style="width: 35%; border: none; margin: 0; mso-margin-top-alt: 0; mso-margin-bottom-alt: 0;">
-              Mengetahui,<br/>
+              Kalimati, ${lastWorkingDate} ${monthName} ${year}<br/>
               Guru Kelas ${gradeText}<br/>
               <br/><br/><br/><br/>
               <b><u>${formatTeacherName(teacher)}</u></b><br/>
