@@ -13,6 +13,7 @@ import { useAssessmentScore } from "@/hooks/useAssessmentScore";
 import ErrorState from "@/app/components/shared/ErrorState";
 import EmptyState from "@/app/components/shared/EmptyState";
 import LoadingSkeleton from "@/app/components/shared/LoadingSkeleton";
+import { usePagination } from "@/hooks/usePagination";
 import { ITEMS_PER_PAGE } from "@/lib/constants";
 import type { AssessmentComponent } from "@/types/nilai-harian";
 import toast from "react-hot-toast";
@@ -46,7 +47,6 @@ export default function NilaiKomponenPage() {
     handleScoreChange, handleSave,
   } = useAssessmentScore();
 
-  const [currentPage, setCurrentPage] = useState(1);
   const [showConfig, setShowConfig] = useState(false);
 
   useEffect(() => {
@@ -54,20 +54,6 @@ export default function NilaiKomponenPage() {
       setShowConfig(true);
     }
   }, []);
-
-  useEffect(() => {
-    setCurrentPage(1);
-  }, [selectedComponentKey, selectedGS]);
-
-  // Harian & non-harian pagination (uses students array)
-  const totalPages = Math.ceil(students.length / ITEMS_PER_PAGE);
-  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-  const paginatedStudents = students.slice(startIndex, startIndex + ITEMS_PER_PAGE);
-
-  // Karakter pagination (uses karakterStudents — from character_assessment directly)
-  const karakterTotalPages = Math.ceil(karakterStudents.length / ITEMS_PER_PAGE);
-  const karakterStartIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-  const paginatedKarakterStudents = karakterStudents.slice(karakterStartIndex, karakterStartIndex + ITEMS_PER_PAGE);
 
   const onSave = async () => {
     const ok = await handleSave();
@@ -120,13 +106,25 @@ export default function NilaiKomponenPage() {
   const isTugasTab = safeKey(selectedComponentKey) === "tugas";
   const isLitnumTab = safeKey(selectedComponentKey) === "litnum";
 
-  const presensiStartIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-  const paginatedPresensiStudents = presensiStudents.slice(presensiStartIndex, presensiStartIndex + ITEMS_PER_PAGE);
-  const presensiTotalPages = Math.ceil(presensiStudents.length / ITEMS_PER_PAGE);
+  const getActiveData = () => {
+    if (isKarakterTab) return karakterStudents;
+    if (isPresensiTab) return presensiStudents;
+    if (isLitnumTab) return litnumStudents || [];
+    return students;
+  };
 
-  const litnumStartIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-  const paginatedLitnumStudents = litnumStudents?.slice(litnumStartIndex, litnumStartIndex + ITEMS_PER_PAGE) || [];
-  const litnumTotalPages = Math.ceil((litnumStudents?.length || 0) / ITEMS_PER_PAGE);
+  const {
+    currentPage,
+    setCurrentPage,
+    totalPages,
+    paginatedData,
+  } = usePagination<any>(getActiveData(), ITEMS_PER_PAGE, [selectedComponentKey, selectedGS]);
+
+  // Cast paginated data for specific tabs
+  const paginatedStudents = paginatedData as typeof students;
+  const paginatedKarakterStudents = paginatedData as typeof karakterStudents;
+  const paginatedPresensiStudents = paginatedData as typeof presensiStudents;
+  const paginatedLitnumStudents = paginatedData as NonNullable<typeof litnumStudents>;
 
   return (
     <div className="flex flex-col gap-6 p-4 md:p-6">
@@ -305,7 +303,7 @@ export default function NilaiKomponenPage() {
               karakterLoading={karakterLoading}
               ITEMS_PER_PAGE={ITEMS_PER_PAGE}
               currentPage={currentPage}
-              karakterTotalPages={karakterTotalPages}
+              karakterTotalPages={totalPages}
               setCurrentPage={setCurrentPage}
               totalKarakterStudents={karakterStudents.length}
             />
@@ -315,7 +313,7 @@ export default function NilaiKomponenPage() {
               presensiLoading={presensiLoading}
               ITEMS_PER_PAGE={ITEMS_PER_PAGE}
               currentPage={currentPage}
-              presensiTotalPages={presensiTotalPages}
+              presensiTotalPages={totalPages}
               setCurrentPage={setCurrentPage}
               totalPresensiStudents={presensiStudents.length}
             />
@@ -336,7 +334,7 @@ export default function NilaiKomponenPage() {
               litnumLoading={litnumLoading}
               ITEMS_PER_PAGE={ITEMS_PER_PAGE}
               currentPage={currentPage}
-              litnumTotalPages={litnumTotalPages}
+              litnumTotalPages={totalPages}
               setCurrentPage={setCurrentPage}
               totalLitnumStudents={litnumStudents?.length || 0}
             />
