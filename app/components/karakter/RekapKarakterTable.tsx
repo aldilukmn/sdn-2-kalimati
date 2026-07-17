@@ -48,7 +48,7 @@ export default function RekapKarakterTable({ recapRows, monthsToShow, classAvera
               )}
               {showMonthColumns && (
                 <th className="px-3 py-3 text-center font-semibold whitespace-nowrap min-w-[80px]">
-                  Rata-rata
+                  Rerata
                 </th>
               )}
               <th className="px-3 py-3 text-center font-semibold whitespace-nowrap w-20">
@@ -118,7 +118,7 @@ export default function RekapKarakterTable({ recapRows, monthsToShow, classAvera
               <td className="px-3 py-3" />
               <td className="p-3 whitespace-nowrap">
                 <span className="text-sm font-bold text-gray-700 dark:text-gray-300">
-                  Rata-rata Kelas
+                  Rerata Kelas
                 </span>
               </td>
               {showMonthColumns ? (

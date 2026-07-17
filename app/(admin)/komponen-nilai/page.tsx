@@ -1,7 +1,14 @@
 "use client";
-
 import { useState, useEffect } from "react";
-import { ClipboardList } from "lucide-react";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { ClipboardList, Scale, ChevronDown, ChevronUp, Lock } from "lucide-react";
 import { useAssessmentScore } from "@/hooks/useAssessmentScore";
 import ErrorState from "@/app/components/shared/ErrorState";
 import EmptyState from "@/app/components/shared/EmptyState";
@@ -40,6 +47,13 @@ export default function NilaiKomponenPage() {
   } = useAssessmentScore();
 
   const [currentPage, setCurrentPage] = useState(1);
+  const [showConfig, setShowConfig] = useState(false);
+
+  useEffect(() => {
+    if (typeof window !== "undefined" && window.innerWidth >= 768) {
+      setShowConfig(true);
+    }
+  }, []);
 
   useEffect(() => {
     setCurrentPage(1);
@@ -74,11 +88,27 @@ export default function NilaiKomponenPage() {
     "text-orange-600 dark:text-orange-300",
     "text-teal-600 dark:text-teal-300",
   ];
+  const bgPalette = [
+    "bg-indigo-500 dark:bg-indigo-400",
+    "bg-emerald-500 dark:bg-emerald-400",
+    "bg-amber-500 dark:bg-amber-400",
+    "bg-rose-500 dark:bg-rose-400",
+    "bg-cyan-500 dark:bg-cyan-400",
+    "bg-purple-500 dark:bg-purple-400",
+    "bg-orange-500 dark:bg-orange-400",
+    "bg-teal-500 dark:bg-teal-400",
+  ];
   const formulaComponents = (config?.components
     ?.reduce((acc, c, i) => {
-      if (c.weight > 0) acc.push({ ...c, color: colorPalette[i % colorPalette.length] });
+      if (c.weight > 0) {
+        acc.push({ 
+          ...c, 
+          color: colorPalette[i % colorPalette.length],
+          bgColor: bgPalette[i % bgPalette.length]
+        });
+      }
       return acc;
-    }, [] as (AssessmentComponent & { color: string })[]) || []);
+    }, [] as (AssessmentComponent & { color: string; bgColor: string })[]) || []);
 
   const getTabColor = (index: number) => colorPalette[index % colorPalette.length];
 
@@ -119,37 +149,141 @@ export default function NilaiKomponenPage() {
         <>
           {/* Active config info */}
           {formulaComponents.length > 0 && (
-            <div className="bg-indigo-50/50 dark:bg-indigo-900/20 border border-indigo-200 dark:border-indigo-800/50 rounded-2xl px-5 py-3">
-              <p className="text-xs text-indigo-500 dark:text-indigo-400 font-medium mb-0.5">Konfigurasi Aktif:</p>
-              <p className="text-sm font-semibold">
-                <span className="text-indigo-700 dark:text-indigo-300">Nilai Akhir = </span>
-                {formulaComponents.map((c, i) => (
-                  <span key={c.key}>
-                    {i > 0 && <span className="text-slate-400 dark:text-slate-500"> + </span>}
-                    <span className={c.color}>{c.name} × {c.weight}%</span>
-                  </span>
-                ))}
-              </p>
+            <div className="bg-white/80 dark:bg-gray-800/40 border border-indigo-100 dark:border-indigo-900/50 shadow-sm rounded-2xl p-4 md:p-5 relative overflow-hidden transition-all">
+              <div 
+                className="flex items-center justify-between relative z-10 cursor-pointer select-none group"
+                onClick={() => setShowConfig(!showConfig)}
+              >
+                <div className="flex items-center gap-2">
+                  <div className="p-1.5 bg-indigo-100 dark:bg-indigo-900/50 rounded-lg text-indigo-600 dark:text-indigo-400 group-hover:bg-indigo-200 dark:group-hover:bg-indigo-900/70 transition-colors">
+                    <Scale size={16} />
+                  </div>
+                  <h3 className="text-sm font-bold text-slate-700 dark:text-slate-200 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+                    Konfigurasi Bobot Nilai Akhir
+                  </h3>
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="text-[11px] font-bold text-slate-400 dark:text-slate-500 bg-slate-100 dark:bg-slate-800 px-2 py-1 rounded-md uppercase tracking-wider hidden sm:block">
+                    Total 100%
+                  </div>
+                  <button className="text-slate-400 group-hover:text-indigo-500 transition-colors">
+                    {showConfig ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+                  </button>
+                </div>
+              </div>
+              
+              <div className={`transition-all duration-300 ease-in-out flex flex-col gap-4 overflow-hidden ${showConfig ? "max-h-96 opacity-100 mt-4" : "max-h-0 opacity-0 mt-0"}`}>
+                {/* Stacked Progress Bar */}
+                <div className="w-full h-3 flex rounded-full overflow-hidden relative z-10 bg-slate-100 dark:bg-slate-800/50 shadow-inner">
+                  {formulaComponents.map((c) => (
+                    <div
+                      key={c.key}
+                      className={`h-full ${c.bgColor} transition-all duration-500 border-r border-white/20 last:border-0`}
+                      style={{ width: `${c.weight}%` }}
+                      title={`${c.name} (${c.weight}%)`}
+                    />
+                  ))}
+                </div>
+
+                {/* Legend Grid */}
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-2.5 relative z-10">
+                  {formulaComponents.map((c) => (
+                    <div key={c.key} className="flex items-center justify-between p-2.5 rounded-xl bg-slate-50 dark:bg-slate-900/50 border border-slate-100 dark:border-slate-800/80 transition-colors hover:bg-slate-200/50 dark:hover:bg-slate-800/50">
+                      <div className="flex items-center gap-2.5 truncate pr-2">
+                        <div className={`w-2.5 h-2.5 rounded-full shrink-0 ${c.bgColor} shadow-sm`} />
+                        <span className="text-xs font-semibold text-slate-600 dark:text-slate-300 truncate">{c.name}</span>
+                      </div>
+                      <span className="text-xs font-bold text-slate-800 dark:text-slate-100">{c.weight}%</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
           )}
 
-          {/* Component tabs */}
+          {/* Component tabs - Responsive (Dropdown Mobile, Chips Desktop) */}
           {components.length > 0 && (
-            <div className="flex gap-1 bg-slate-100 dark:bg-gray-900 rounded-xl p-1 w-full md:w-fit flex-wrap">
-              {components.map((comp, i) => (
-                <button
-                  key={comp.key}
-                  onClick={() => setSelectedComponentKey(comp.key)}
-                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-all cursor-pointer ${
-                    selectedComponentKey === comp.key
-                      ? `bg-white dark:bg-gray-800 ${getTabColor(i)} shadow-sm`
-                      : "text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300"
-                  }`}
-                >
-                  {comp.name}
-                  {(safeKey(comp.key) === "harian" || safeKey(comp.key) === "karakter" || safeKey(comp.key) === "presensi" || safeKey(comp.key) === "tugas" || safeKey(comp.key) === "litnum") && " (Readonly)"}
-                </button>
-              ))}
+            <div className="w-full">
+              {/* Mobile View: Select Dropdown */}
+              <div className="block md:hidden">
+                <Select value={selectedComponentKey} onValueChange={(v) => v && setSelectedComponentKey(v)}>
+                  <SelectTrigger className="w-full h-auto rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm font-semibold shadow-sm focus:border-indigo-500 dark:border-gray-700 dark:bg-gray-900 dark:text-slate-100 [&>span]:w-full [&>span]:text-left">
+                    <SelectValue placeholder="Pilih Komponen Nilai">
+                      {(() => {
+                        const idx = components.findIndex(c => c.key === selectedComponentKey);
+                        if (idx === -1) return "Pilih Komponen Nilai";
+                        const comp = components[idx];
+                        const activeBg = bgPalette[idx % bgPalette.length];
+                        const isReadonly = (safeKey(comp.key) === "harian" || safeKey(comp.key) === "karakter" || safeKey(comp.key) === "presensi" || safeKey(comp.key) === "tugas" || safeKey(comp.key) === "litnum");
+                        return (
+                          <div className="flex items-center gap-2.5">
+                            <div className={`w-2.5 h-2.5 rounded-full shrink-0 shadow-sm ${activeBg}`} />
+                            <span className="truncate flex-1">{comp.name}</span>
+                            {isReadonly && <Lock size={14} className="text-slate-400 shrink-0 mr-2" />}
+                          </div>
+                        );
+                      })()}
+                    </SelectValue>
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      {components.map((comp, idx) => {
+                        const isReadonly = (safeKey(comp.key) === "harian" || safeKey(comp.key) === "karakter" || safeKey(comp.key) === "presensi" || safeKey(comp.key) === "tugas" || safeKey(comp.key) === "litnum");
+                        const itemBg = bgPalette[idx % bgPalette.length];
+                        return (
+                          <SelectItem key={comp.key} value={comp.key}>
+                            <div className="flex items-center gap-2.5">
+                              <div className={`w-2.5 h-2.5 rounded-full shrink-0 shadow-sm ${itemBg}`} />
+                              <span>{comp.name}</span>
+                              {isReadonly && <Lock size={12} className="text-slate-400 shrink-0" />}
+                            </div>
+                          </SelectItem>
+                        );
+                      })}
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {/* Desktop View: Minimalist Underline Tabs */}
+              <div className="hidden md:flex flex-wrap gap-x-6 gap-y-2 px-1 border-b border-slate-200 dark:border-slate-800">
+                {components.map((comp, i) => {
+                  const isReadonly = (safeKey(comp.key) === "harian" || safeKey(comp.key) === "karakter" || safeKey(comp.key) === "presensi" || safeKey(comp.key) === "tugas" || safeKey(comp.key) === "litnum");
+                  const isActive = selectedComponentKey === comp.key;
+                  const activeBg = bgPalette[i % bgPalette.length];
+                  const activeText = colorPalette[i % colorPalette.length];
+                  
+                  return (
+                    <button
+                      key={comp.key}
+                      onClick={() => setSelectedComponentKey(comp.key)}
+                      className={`
+                        relative flex items-center gap-2 pb-3 pt-2 text-sm font-semibold transition-all duration-300
+                        ${isActive 
+                          ? activeText
+                          : "text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200"
+                        }
+                      `}
+                    >
+                      <span>{comp.name}</span>
+                      
+                      {isReadonly && (
+                        <div 
+                          className={`flex items-center justify-center opacity-70 transition-colors ${isActive ? 'text-inherit' : 'text-slate-400'}`} 
+                          title="Hanya Baca (Nilai ditarik otomatis)"
+                        >
+                          <Lock size={14} strokeWidth={2.5} />
+                        </div>
+                      )}
+
+                      {/* Active Underline Indicator */}
+                      {isActive && (
+                        <span className={`absolute bottom-0 left-0 w-full h-0.5 rounded-t-full ${activeBg}`} />
+                      )}
+                    </button>
+                  )
+                })}
+              </div>
             </div>
           )}
 

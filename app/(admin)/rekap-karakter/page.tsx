@@ -56,7 +56,7 @@ export default function RekapKarapkterPage() {
     const showMonthColumns = monthsToShow.length > 1;
     const headers = ["No", "Nama"];
     if (showMonthColumns) {
-      headers.push(...monthsToShow, "Rata-rata");
+      headers.push(...monthsToShow, "Rerata");
     } else {
       headers.push("Skor Karakter");
     }
@@ -145,7 +145,7 @@ export default function RekapKarapkterPage() {
               loading={loading}
             />
             <StatCard
-              label="Rata-rata Skor"
+              label="Rerata Skor"
               value={avgScore !== null ? avgScore.toFixed(2) : "-"}
               icon={Hash}
               color="teal"

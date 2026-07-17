@@ -27,7 +27,7 @@ export default function TabKarakter({
     <>
       <th className="text-center px-4 py-3 font-semibold whitespace-nowrap w-12">No</th>
       <th className="text-left px-4 py-3 font-semibold whitespace-nowrap">Nama Siswa</th>
-      <th className="text-center px-4 py-3 font-semibold whitespace-nowrap w-40">Rata-rata Nilai Karakter</th>
+      <th className="text-center px-4 py-3 font-semibold whitespace-nowrap w-40">Rerata Nilai Karakter</th>
       <th className="text-center px-4 py-3 font-semibold whitespace-nowrap w-24">Status</th>
     </>
   );

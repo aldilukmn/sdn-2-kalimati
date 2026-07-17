@@ -63,7 +63,7 @@ export default function FilterBar({
   year = "",
   onYearChange,
   className = "",
-  gridClassName = "grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4",
+  gridClassName = "grid-cols-2 md:grid-cols-3 lg:grid-cols-4",
   children,
 }: FilterBarProps) {
   // Use a generic grid that wraps nicely
