@@ -46,15 +46,13 @@ export function useLitnum() {
     const fetchConfigs = async () => {
       try {
         const { default: AssessmentConfigService } = await import("@/services/assessment-config.service");
-        const res = await AssessmentConfigService.getAll();
+        const res = await AssessmentConfigService.getAll({ semester, academicYear });
         if (res?.result) {
           const configs = res.result;
           const validGrades = new Set<string>();
           configs.forEach(cfg => {
-            if (cfg.semester === semester && cfg.academicYear === academicYear) {
-               if (cfg.components.some(c => c.key.toLowerCase() === "litnum")) {
-                  validGrades.add(cfg.grade);
-               }
+            if (cfg.components.some(c => c.key.toLowerCase() === "litnum")) {
+              validGrades.add(cfg.grade);
             }
           });
           const newAvailable = GRADES.filter(g => validGrades.has(g));

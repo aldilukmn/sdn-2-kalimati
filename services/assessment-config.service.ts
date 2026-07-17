@@ -9,9 +9,11 @@ export interface AssessmentConfigCreateRequest {
 }
 
 export default class AssessmentConfigService {
-  static async getAll(params?: { grade?: string }) {
+  static async getAll(params?: { grade?: string; semester?: string; academicYear?: string }) {
     const searchParams = new URLSearchParams();
     if (params?.grade) searchParams.set("grade", params.grade);
+    if (params?.semester) searchParams.set("semester", params.semester);
+    if (params?.academicYear) searchParams.set("academicYear", params.academicYear);
     const qs = searchParams.toString();
     return await api<AssessmentConfig[]>(`/assessment-configs${qs ? `?${qs}` : ""}`);
   }
