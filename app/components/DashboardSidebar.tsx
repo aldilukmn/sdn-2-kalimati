@@ -259,35 +259,37 @@ export default function DashboardSidebar({
                     )}
                   </button>
                   <div
-                    className={`ml-5 mt-0.5 space-y-0.5 border-l-2 border-slate-300 dark:border-slate-700 overflow-hidden transition-all duration-500 ${
-                      groupIsOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
+                    className={`ml-5 mt-0.5 border-l-2 border-slate-300 dark:border-slate-700 grid transition-[grid-template-rows,opacity] duration-300 ease-in-out ${
+                      groupIsOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
                     }`}
                   >
-                    {group.children
-                      .filter(
-                        (child) =>
-                          userRole !== "guru" ||
-                          guruAllowedHrefs.has(child.href),
-                      )
-                      .map((child) => {
-                        const childActive = isActive(child.href);
-                        const ChildIcon = child.icon;
-                        return (
-                          <Link
-                            key={child.label}
-                            href={child.href}
-                            onClick={onClose}
-                            className={`flex items-center gap-3 px-3.5 py-2 rounded-lg text-sm font-medium transition-all duration-200 ml-2 ${
-                              childActive
-                                ? "bg-indigo-500/50 dark:bg-indigo-900/70 text-indigo-600 dark:text-indigo-300 border-r-2 border-indigo-500 dark:border-indigo-400"
-                                : "text-slate-600 dark:text-slate-400 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 hover:text-slate-800 dark:hover:text-slate-200"
-                            }`}
-                          >
-                            <ChildIcon size={16} className="shrink-0" />
-                            <span>{child.label}</span>
-                          </Link>
-                        );
-                      })}
+                    <div className="overflow-hidden space-y-0.5 flex flex-col">
+                      {group.children
+                        .filter(
+                          (child) =>
+                            userRole !== "guru" ||
+                            guruAllowedHrefs.has(child.href),
+                        )
+                        .map((child) => {
+                          const childActive = isActive(child.href);
+                          const ChildIcon = child.icon;
+                          return (
+                            <Link
+                              key={child.label}
+                              href={child.href}
+                              onClick={onClose}
+                              className={`flex items-center gap-3 px-3.5 py-2 rounded-lg text-sm font-medium transition-all duration-200 ml-2 ${
+                                childActive
+                                  ? "bg-indigo-500/50 dark:bg-indigo-900/70 text-indigo-600 dark:text-indigo-300 border-r-2 border-indigo-500 dark:border-indigo-400"
+                                  : "text-slate-600 dark:text-slate-400 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 hover:text-slate-800 dark:hover:text-slate-200"
+                              }`}
+                            >
+                              <ChildIcon size={16} className="shrink-0" />
+                              <span>{child.label}</span>
+                            </Link>
+                          );
+                        })}
+                    </div>
                   </div>
                 </div>
               );
