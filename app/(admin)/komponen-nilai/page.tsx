@@ -14,7 +14,7 @@ import ErrorState from "@/app/components/shared/ErrorState";
 import EmptyState from "@/app/components/shared/EmptyState";
 import LoadingSkeleton from "@/app/components/shared/LoadingSkeleton";
 import { usePagination } from "@/hooks/usePagination";
-import { ITEMS_PER_PAGE } from "@/lib/constants";
+import { ITEMS_PER_PAGE, COMPONENT_COLORS, COMPONENT_BGS } from "@/lib/constants";
 import type { AssessmentComponent } from "@/types/nilai-harian";
 import toast from "react-hot-toast";
 import PageHero from "@/app/components/PageHero";
@@ -64,39 +64,19 @@ export default function NilaiKomponenPage() {
     }
   };
 
-  const colorPalette = [
-    "text-indigo-600 dark:text-indigo-300",
-    "text-emerald-600 dark:text-emerald-300",
-    "text-amber-600 dark:text-amber-300",
-    "text-rose-600 dark:text-rose-300",
-    "text-cyan-600 dark:text-cyan-300",
-    "text-purple-600 dark:text-purple-300",
-    "text-orange-600 dark:text-orange-300",
-    "text-teal-600 dark:text-teal-300",
-  ];
-  const bgPalette = [
-    "bg-indigo-500 dark:bg-indigo-400",
-    "bg-emerald-500 dark:bg-emerald-400",
-    "bg-amber-500 dark:bg-amber-400",
-    "bg-rose-500 dark:bg-rose-400",
-    "bg-cyan-500 dark:bg-cyan-400",
-    "bg-purple-500 dark:bg-purple-400",
-    "bg-orange-500 dark:bg-orange-400",
-    "bg-teal-500 dark:bg-teal-400",
-  ];
   const formulaComponents = (config?.components
     ?.reduce((acc, c, i) => {
       if (c.weight > 0) {
         acc.push({ 
           ...c, 
-          color: colorPalette[i % colorPalette.length],
-          bgColor: bgPalette[i % bgPalette.length]
+          color: COMPONENT_COLORS[i % COMPONENT_COLORS.length],
+          bgColor: COMPONENT_BGS[i % COMPONENT_BGS.length]
         });
       }
       return acc;
     }, [] as (AssessmentComponent & { color: string; bgColor: string })[]) || []);
 
-  const getTabColor = (index: number) => colorPalette[index % colorPalette.length];
+  const getTabColor = (index: number) => COMPONENT_COLORS[index % COMPONENT_COLORS.length];
 
   const safeKey = (key: string) => key?.trim().toLowerCase() || "";
   
@@ -211,7 +191,7 @@ export default function NilaiKomponenPage() {
                         const idx = components.findIndex(c => c.key === selectedComponentKey);
                         if (idx === -1) return "Pilih Komponen Nilai";
                         const comp = components[idx];
-                        const activeBg = bgPalette[idx % bgPalette.length];
+                        const activeBg = COMPONENT_BGS[idx % COMPONENT_BGS.length];
                         const isReadonly = (safeKey(comp.key) === "harian" || safeKey(comp.key) === "karakter" || safeKey(comp.key) === "presensi" || safeKey(comp.key) === "tugas" || safeKey(comp.key) === "litnum");
                         return (
                           <div className="flex items-center gap-2.5">
@@ -227,7 +207,7 @@ export default function NilaiKomponenPage() {
                     <SelectGroup>
                       {components.map((comp, idx) => {
                         const isReadonly = (safeKey(comp.key) === "harian" || safeKey(comp.key) === "karakter" || safeKey(comp.key) === "presensi" || safeKey(comp.key) === "tugas" || safeKey(comp.key) === "litnum");
-                        const itemBg = bgPalette[idx % bgPalette.length];
+                        const itemBg = COMPONENT_BGS[idx % COMPONENT_BGS.length];
                         return (
                           <SelectItem key={comp.key} value={comp.key}>
                             <div className="flex items-center gap-2.5">
@@ -248,8 +228,8 @@ export default function NilaiKomponenPage() {
                 {components.map((comp, i) => {
                   const isReadonly = (safeKey(comp.key) === "harian" || safeKey(comp.key) === "karakter" || safeKey(comp.key) === "presensi" || safeKey(comp.key) === "tugas" || safeKey(comp.key) === "litnum");
                   const isActive = selectedComponentKey === comp.key;
-                  const activeBg = bgPalette[i % bgPalette.length];
-                  const activeText = colorPalette[i % colorPalette.length];
+                  const activeBg = COMPONENT_BGS[i % COMPONENT_BGS.length];
+                  const activeText = COMPONENT_COLORS[i % COMPONENT_COLORS.length];
                   
                   return (
                     <button
