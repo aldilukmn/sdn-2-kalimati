@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { TrendingUp, BarChart3, UserX, UserCheck } from "lucide-react";
 import {
   Select,
@@ -9,6 +10,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { AVAILABLE_YEARS } from "@/lib/constants";
+import { MONTHS_ID } from "@/lib/format";
 import AttendanceTrendChart from "@/app/components/AttendanceTrendChart";
 import AttendanceBarChart from "@/app/components/AttendanceBarChart";
 import { InsightTable } from "./InsightTable";
@@ -47,6 +49,9 @@ export function MonthlyPresensiView({
   topAbsen,
   topLowHadir,
 }: MonthlyPresensiViewProps) {
+  const [trendType, setTrendType] = useState<"bulanan" | "harian">("bulanan");
+  const [trendMonth, setTrendMonth] = useState<number>(new Date().getMonth() + 1);
+
   return (
     <>
       {/* Tren Kehadiran Bulanan */}
@@ -58,29 +63,72 @@ export function MonthlyPresensiView({
               className="text-indigo-500 dark:text-indigo-400 shrink-0"
             />
             <h3 className="text-sm font-semibold text-slate-600 dark:text-slate-400">
-              Tren Kehadiran Bulanan
+              Tren Kehadiran
             </h3>
           </div>
-          <Select
-            value={String(trendYear)}
-            onValueChange={(v) => v && setTrendYear(Number(v))}
-          >
-            <SelectTrigger className="w-28 h-auto rounded-lg border border-slate-300 bg-slate-50 px-3 py-1.5 text-xs focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                <SelectLabel>Tahun</SelectLabel>
-                {AVAILABLE_YEARS.map((y) => (
-                  <SelectItem key={y} value={String(y)}>
-                    {y}
-                  </SelectItem>
-                ))}
-              </SelectGroup>
-            </SelectContent>
-          </Select>
+          <div className="flex items-center gap-2">
+            <Select
+              value={trendType}
+              onValueChange={(v) => setTrendType(v as "bulanan" | "harian")}
+            >
+              <SelectTrigger className="w-[140px] h-auto rounded-lg border border-slate-300 bg-slate-50 px-3 py-1.5 text-xs focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100 capitalize">
+                <SelectValue placeholder="Pilih Tipe" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectLabel>Tipe Tren</SelectLabel>
+                  <SelectItem value="bulanan">Bulanan</SelectItem>
+                  <SelectItem value="harian">Harian</SelectItem>
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+
+            {trendType === "harian" && (
+              <Select
+                value={String(trendMonth)}
+                onValueChange={(v) => v && setTrendMonth(Number(v))}
+              >
+                <SelectTrigger className="w-[130px] h-auto rounded-lg border border-slate-300 bg-slate-50 px-3 py-1.5 text-xs focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100">
+                  <SelectValue>{MONTHS_ID[trendMonth - 1]}</SelectValue>
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectLabel>Bulan</SelectLabel>
+                    {MONTHS_ID.map((m, i) => (
+                      <SelectItem key={i} value={String(i + 1)}>
+                        {m}
+                      </SelectItem>
+                    ))}
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            )}
+
+            <Select
+              value={String(trendYear)}
+              onValueChange={(v) => v && setTrendYear(Number(v))}
+            >
+              <SelectTrigger className="w-24 h-auto rounded-lg border border-slate-300 bg-slate-50 px-3 py-1.5 text-xs focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectLabel>Tahun</SelectLabel>
+                  {AVAILABLE_YEARS.map((y) => (
+                    <SelectItem key={y} value={String(y)}>
+                      {y}
+                    </SelectItem>
+                  ))}
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+          </div>
         </div>
-        <AttendanceTrendChart year={trendYear} grade={grade} />
+        <AttendanceTrendChart 
+          year={trendYear} 
+          grade={grade} 
+          month={trendType === "harian" ? trendMonth : undefined} 
+        />
       </div>
 
       {/* Kehadiran per Kelas (admin/kepala only) */}

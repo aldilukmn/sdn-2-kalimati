@@ -14,10 +14,11 @@ export default class DashboardService {
     return await api<TeacherDashboardSummary>("/dashboard/teacher");
   }
 
-  static async getAttendanceTrend(year?: number, grade?: string) {
+  static async getAttendanceTrend(year?: number, grade?: string, month?: number) {
     const params = new URLSearchParams();
     if (year) params.set("year", String(year));
     if (grade) params.set("grade", grade);
+    if (month) params.set("month", String(month));
     const query = params.toString();
     return await api<AttendanceTrendItem[]>(`/dashboard/attendance-trend${query ? `?${query}` : ""}`);
   }

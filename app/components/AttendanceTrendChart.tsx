@@ -7,6 +7,7 @@ import type { AttendanceTrendItem } from "@/types/dashboard";
 
 interface Props {
   year: number;
+  month?: number;
   grade?: string;
   loading?: boolean;
 }
@@ -16,7 +17,7 @@ const MONTHS_SHORT = [
   "Jul", "Agu", "Sep", "Okt", "Nov", "Des",
 ];
 
-export default function AttendanceTrendChart({ year, grade, loading: parentLoading }: Props) {
+export default function AttendanceTrendChart({ year, month, grade, loading: parentLoading }: Props) {
   const [data, setData] = useState<AttendanceTrendItem[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -27,7 +28,7 @@ export default function AttendanceTrendChart({ year, grade, loading: parentLoadi
     (async () => {
       setLoading(true);
       try {
-        const res = await DashboardService.getAttendanceTrend(year, grade);
+        const res = await DashboardService.getAttendanceTrend(year, grade, month);
         if (!cancelled) {
           setData(res.result || []);
         }
@@ -39,7 +40,7 @@ export default function AttendanceTrendChart({ year, grade, loading: parentLoadi
     })();
 
     return () => { cancelled = true; controller.abort(); };
-  }, [year, grade]);
+  }, [year, month, grade]);
 
   const isLoading = parentLoading ?? loading;
 
@@ -63,10 +64,10 @@ export default function AttendanceTrendChart({ year, grade, loading: parentLoadi
     <div className="h-[250px]">
       <ResponsiveContainer width="100%" height="100%">
         <LineChart data={data} margin={{ top: 10, right: 10, left: -20, bottom: 5 }}>
-          <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" className="dark:opacity-20" />
+          <CartesianGrid strokeDasharray="3 3" stroke="#cbd5e1" className="dark:opacity-20" />
           <XAxis
-            dataKey="month"
-            tickFormatter={(m) => MONTHS_SHORT[m - 1]}
+            dataKey={month ? "day" : "month"}
+            tickFormatter={(val) => (month ? String(val) : MONTHS_SHORT[val - 1])}
             tick={{ fontSize: 11, className: "fill-gray-500 dark:fill-gray-400" }}
             axisLine={{ className: "stroke-gray-300 dark:stroke-gray-600" }}
             tickLine={false}
@@ -79,8 +80,21 @@ export default function AttendanceTrendChart({ year, grade, loading: parentLoadi
             tickLine={false}
           />
           <Tooltip
-            formatter={(value: any) => [`${value}%`, "Kehadiran"]}
-            labelFormatter={(m: any) => MONTHS_SHORT[m - 1]}
+            content={({ active, payload, label }) => {
+              if (active && payload && payload.length) {
+                return (
+                  <div className="bg-white dark:bg-gray-800 border border-slate-200 dark:border-gray-700 p-3 rounded-lg shadow-sm">
+                    <p className="text-sm font-semibold text-slate-700 dark:text-slate-200 mb-1">
+                      {month ? `Tanggal ${label}` : MONTHS_SHORT[(label as number) - 1]}
+                    </p>
+                    <p className="text-sm text-indigo-600 dark:text-indigo-400 font-medium">
+                      Kehadiran: {payload[0].value}%
+                    </p>
+                  </div>
+                );
+              }
+              return null;
+            }}
           />
           <Line
             type="monotone"

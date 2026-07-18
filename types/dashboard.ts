@@ -23,6 +23,7 @@ export interface TeacherDashboardSummary {
 }
 
 export interface AttendanceTrendItem {
-  month: number;
+  month?: number;
+  day?: number;
   rate: number;
 }
