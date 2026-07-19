@@ -1,102 +1,12 @@
 "use client";
 
-import { useMemo, useState, useEffect } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useAuth } from "@/hooks/useAuth";
-import AssessmentConfigService from "@/services/assessment-config.service";
-import {
-  LayoutDashboard,
-  ClipboardList,
-  CalendarCheck,
-  Users,
-  Wallet,
-  BookOpen,
-  ClipboardEdit,
-  ScrollText,
-  Scale,
-  Calculator,
-  BarChart3,
-  GraduationCap,
-  ChevronDown,
-  ChevronRight,
-  ListChecks,
-  UserCog,
-  PieChart,
-  FileEdit,
-} from "lucide-react";
-import type { LucideIcon } from "lucide-react";
-
-type MenuItem = {
-  label: string;
-  icon: LucideIcon;
-  href: string;
-};
-
-type MenuGroup = {
-  label: string;
-  icon: LucideIcon;
-  children: MenuItem[];
-};
-
-type SidebarItem = MenuItem | MenuGroup;
-
-const menuItems: SidebarItem[] = [
-  { label: "Dashboard", icon: LayoutDashboard, href: "/dashboard" },
-  {
-    label: "Presensi",
-    icon: CalendarCheck,
-    children: [
-      { label: "Dashboard", icon: LayoutDashboard, href: "/dashboard-presensi" },
-      { label: "Input Presensi", icon: CalendarCheck, href: "/presensi-murid" },
-    ],
-  },
-  { label: "Tabungan Murid", icon: Wallet, href: "/tabungan-murid" },
-  { label: "Daftar Mapel", icon: BookOpen, href: "/daftar-mapel" },
-  {
-    label: "Nilai Akademik",
-    icon: GraduationCap,
-    children: [
-      { label: "Nilai Harian", icon: ClipboardEdit, href: "/nilai-harian" },
-      {
-        label: "Rekap Nilai Harian",
-        icon: ScrollText,
-        href: "/rekap-nilai-harian",
-      },
-      { label: "Nilai Tugas", icon: FileEdit, href: "/nilai-tugas" },
-      { label: "Nilai LitNum", icon: PieChart, href: "/nilai-litnum" },
-      { label: "Komponen Nilai", icon: ClipboardList, href: "/komponen-nilai" },
-      { label: "Nilai Akhir", icon: Calculator, href: "/nilai-akhir" },
-      {
-        label: "Rekap Nilai Akhir",
-        icon: BarChart3,
-        href: "/rekap-nilai-akhir",
-      },
-      { label: "Konfigurasi Nilai", icon: Scale, href: "/konfigurasi-nilai" },
-    ],
-  },
-  {
-    label: "Nilai Karakter",
-    icon: ListChecks,
-    children: [
-      {
-        label: "Dashboard",
-        icon: LayoutDashboard,
-        href: "/dashboard-karakter",
-      },
-      { label: "Penilaian", icon: ClipboardEdit, href: "/penilaian-karakter" },
-      { label: "Rekapitulasi", icon: ClipboardList, href: "/rekap-karakter" },
-      { label: "Konfigurasi KAIH", icon: Scale, href: "/konfigurasi-kaih" },
-    ],
-  },
-  { label: "Data GTK", icon: Users, href: "/data-gtk" },
-  { label: "Data Pendaftar", icon: ClipboardList, href: "/data-pendaftar" },
-  { label: "Profil Saya", icon: UserCog, href: "/profil" },
-];
-
-const penjagaMenuItems = [
-  { label: "Beranda", icon: LayoutDashboard, href: "/beranda-penjaga" },
-];
+import { useSidebarData } from "@/hooks/useSidebarData";
+import { ChevronDown, ChevronRight } from "lucide-react";
+import type { MenuGroup } from "@/lib/constants/menu";
 
 interface SidebarProps {
   isOpen: boolean;
@@ -115,66 +25,8 @@ export default function DashboardSidebar({
     "Nilai Akademik": true,
     Karakter: true,
   });
-  const [showLitnum, setShowLitnum] = useState(false);
 
-  useEffect(() => {
-    if (!userRole) return;
-    AssessmentConfigService.getAll(userRole === "guru" && userGrade ? { grade: userGrade } : undefined)
-      .then((res) => {
-        const configs = res?.result || [];
-        const hasLitnum = configs.some((cfg) =>
-          cfg.components.some((c) => c.key === "litnum")
-        );
-        setShowLitnum(hasLitnum);
-      })
-      .catch(() => {});
-  }, [userRole, userGrade]);
-
-  const guruAllowedHrefs = new Set([
-    "/dashboard",
-    "/dashboard-karakter",
-    "/dashboard-presensi",
-    "/penilaian-karakter",
-    "/rekap-karakter",
-    "/nilai-harian",
-    "/nilai-tugas",
-    "/nilai-litnum",
-    "/komponen-nilai",
-    "/rekap-nilai-harian",
-    "/rekap-nilai-akhir",
-    "/nilai-akhir",
-    "/daftar-mapel",
-    "/presensi-murid",
-    "/tabungan-murid",
-    "/profil",
-  ]);
-
-  const isItemAllowed = (item: SidebarItem): boolean => {
-    if ("href" in item) return guruAllowedHrefs.has(item.href);
-    return item.children.some((c) => guruAllowedHrefs.has(c.href));
-  };
-
-  const filteredMenuItems = useMemo(() => {
-    if (userRole === null) return [];
-    
-    let baseMenu = menuItems;
-    if (userRole === "penjaga") return penjagaMenuItems;
-    
-    if (!showLitnum) {
-      baseMenu = baseMenu.map((item) => {
-        if ("children" in item) {
-          return {
-            ...item,
-            children: item.children.filter((c) => c.href !== "/nilai-litnum"),
-          };
-        }
-        return item;
-      });
-    }
-
-    if (userRole === "guru") return baseMenu.filter(isItemAllowed);
-    return baseMenu;
-  }, [userRole, showLitnum]);
+  const { filteredMenuItems, guruAllowedHrefs } = useSidebarData(userRole, userGrade);
 
   const isActive = (href: string) => {
     if (href === "/daftar-mapel") {
