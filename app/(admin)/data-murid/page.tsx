@@ -32,7 +32,7 @@ export default function DataMuridPage() {
       setLoading(true);
       setError(null);
       const response = await MasterStudentService.getByGrade(grade);
-      setStudents(response.data || []);
+      setStudents(response.result || response.data || []);
     } catch (e: any) {
       setError(e.message || "Gagal mengambil data murid");
     } finally {
