@@ -7,10 +7,10 @@ import { decodeJWT } from "@/lib/jwt";
 import { GRADES } from "@/lib/constants";
 import { MONTHS_ID } from "@/lib/format";
 import { downloadCSV, wrap } from "@/lib/csv-utils";
-import PageHero from "@/app/components/PageHero";
-import StatCard from "@/app/components/StatCard";
-import FilterBar from "@/app/components/shared/FilterBar";
-import RekapKarakterTable from "@/app/components/karakter/RekapKarakterTable";
+import PageHero from "@/components/layout/PageHero";
+import StatCard from "@/components/common/StatCard";
+import FilterBar from "@/components/shared/FilterBar";
+import RekapKarakterTable from "@/components/karakter/RekapKarakterTable";
 import {
   Select,
   SelectContent,
@@ -20,7 +20,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import LoadingSkeleton from '@/app/components/shared/LoadingSkeleton';
+import LoadingSkeleton from '@/components/shared/LoadingSkeleton';
 
 export default function RekapKarapkterPage() {
   const [userRole, setUserRole] = useState<string | null>(null);

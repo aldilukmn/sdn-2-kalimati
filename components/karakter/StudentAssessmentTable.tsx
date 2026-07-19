@@ -5,7 +5,7 @@ import HabitRadioGroup from "./HabitRadioGroup";
 import type { CharacterHabit } from "@/types/character-habit";
 import { Trash2, RotateCcw, Eye } from "lucide-react";
 import { ITEMS_PER_PAGE } from "@/lib/constants";
-import Pagination from "@/app/components/Pagination";
+import Pagination from "@/components/common/Pagination";
 
 interface StudentRow {
   studentId: string;

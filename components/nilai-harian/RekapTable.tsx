@@ -4,7 +4,7 @@ import { useState } from "react";
 import { ChevronDown, ChevronRight } from "lucide-react";
 import type { Chapter, RekapEntry, ClassAverageItem } from "@/types/nilai-harian";
 import { ITEMS_PER_PAGE } from "@/lib/constants";
-import Pagination from "@/app/components/Pagination";
+import Pagination from "@/components/common/Pagination";
 import LoadingSkeleton from '../shared/LoadingSkeleton';
 
 interface Props {

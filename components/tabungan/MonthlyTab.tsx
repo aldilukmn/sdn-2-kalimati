@@ -1,8 +1,8 @@
 "use client";
 
-import Pagination from "@/app/components/Pagination";
-import YearSelect from "@/app/components/YearSelect";
-import LoadingDots from "@/app/components/LoadingDots";
+import Pagination from "@/components/common/Pagination";
+import YearSelect from "@/components/common/YearSelect";
+import LoadingDots from "@/components/common/LoadingDots";
 import { formatCompactRupiah } from "@/lib/format";
 import { StudentWithBalance } from "@/hooks/useStudentList";
 import type { MonthlyBreakdownItem } from "@/types/student-savings";

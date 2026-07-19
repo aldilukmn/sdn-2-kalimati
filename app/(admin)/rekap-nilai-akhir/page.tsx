@@ -3,13 +3,13 @@
 import { BarChart3 } from "lucide-react";
 import { useRekapNilaiAkhir } from "@/hooks/useRekapNilaiAkhir";
 import { useAuth } from "@/hooks/useAuth";
-import PageHero from "@/app/components/PageHero";
-import ErrorState from "@/app/components/shared/ErrorState";
-import EmptyState from "@/app/components/shared/EmptyState";
-import LoadingSkeleton from "@/app/components/shared/LoadingSkeleton";
-import RekapNilaiAkhirSheet from "@/app/components/nilai-harian/RekapNilaiAkhirSheet";
-import FilterBar from "@/app/components/shared/FilterBar";
-import TableSkeleton from "@/app/components/TableSkeleton";
+import PageHero from "@/components/layout/PageHero";
+import ErrorState from "@/components/shared/ErrorState";
+import EmptyState from "@/components/shared/EmptyState";
+import LoadingSkeleton from "@/components/shared/LoadingSkeleton";
+import RekapNilaiAkhirSheet from "@/components/nilai-harian/RekapNilaiAkhirSheet";
+import FilterBar from "@/components/shared/FilterBar";
+import TableSkeleton from "@/components/tables/TableSkeleton";
 
 export default function RekapNilaiAkhirPage() {
   const { role: userRole, grade: userGrade } = useAuth();

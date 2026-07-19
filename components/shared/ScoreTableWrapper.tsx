@@ -1,6 +1,6 @@
 "use client";
 
-import Pagination from "@/app/components/Pagination";
+import Pagination from "@/components/common/Pagination";
 import React from "react";
 
 interface ScoreTableWrapperProps {

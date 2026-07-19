@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/hooks/useAuth";
-import PageHero from "@/app/components/PageHero";
+import PageHero from "@/components/layout/PageHero";
 import type { TeacherType } from "@/types/user";
 import {
   Plus,
@@ -20,8 +20,8 @@ import UserService from "@/services/user.service";
 import StudentAttendanceService from "@/services/student-attendance.service";
 import AddEditModal, { FormData, emptyForm, ROLE_OPTIONS } from "./components/AddEditModal";
 import ConfirmDialog from "./components/ConfirmDialog";
-import TableSkeleton from "@/app/components/TableSkeleton";
-import EmptyState from "@/app/components/shared/EmptyState";
+import TableSkeleton from "@/components/tables/TableSkeleton";
+import EmptyState from "@/components/shared/EmptyState";
 
 export default function DataGTK() {
   const router = useRouter();

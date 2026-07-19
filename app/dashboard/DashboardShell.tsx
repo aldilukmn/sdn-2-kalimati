@@ -3,8 +3,8 @@
 import { useState, useEffect } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { useAuth } from "@/hooks/useAuth";
-import DashboardSidebar from "@/app/components/DashboardSidebar";
-import DashboardNavbar from "@/app/components/DashboardNavbar";
+import DashboardSidebar from "@/components/layout/DashboardSidebar";
+import DashboardNavbar from "@/components/layout/DashboardNavbar";
 
 interface Props {
   children: React.ReactNode;

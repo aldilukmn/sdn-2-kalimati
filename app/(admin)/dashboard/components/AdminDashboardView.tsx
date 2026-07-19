@@ -3,9 +3,9 @@
 import Link from "next/link";
 import { LayoutDashboard, TrendingUp, ArrowRight, TrendingDown, Minus } from "lucide-react";
 import { useDashboard, type DashboardSummary } from "@/hooks/useDashboard";
-import DashboardStatCards from "@/app/components/DashboardStatCards";
-import InsightCards from "@/app/components/InsightCards";
-import PageHero from "@/app/components/PageHero";
+import DashboardStatCards from "@/components/common/DashboardStatCards";
+import InsightCards from "@/components/common/InsightCards";
+import PageHero from "@/components/layout/PageHero";
 import TabunganSection from "./TabunganSection";
 
 export default function AdminDashboardView({

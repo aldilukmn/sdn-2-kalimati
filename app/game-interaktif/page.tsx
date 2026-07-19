@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import { Gamepad2, ExternalLink } from "lucide-react";
-import BackButton from "../components/BackButton";
-import Pagination from "../components/Pagination";
+import BackButton from "../components/common/BackButton";
+import Pagination from "../components/common/Pagination";
 import { gameLinks } from './data/data.game.interaktif';
 
 const ITEMS_PER_PAGE = 10;

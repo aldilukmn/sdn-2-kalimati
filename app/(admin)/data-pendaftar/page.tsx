@@ -17,15 +17,15 @@ import {
 } from "lucide-react";
 import toast from "react-hot-toast";
 import RegistrationService from "@/services/registration.service";
-import Pagination from "@/app/components/Pagination";
-import StatCard from "@/app/components/StatCard";
-import PageHero from "@/app/components/PageHero";
+import Pagination from "@/components/common/Pagination";
+import StatCard from "@/components/common/StatCard";
+import PageHero from "@/components/layout/PageHero";
 import { exportRegistrantsToCSV } from "@/lib/export-csv";
 import { printRegistrantForm } from "@/lib/print-form";
 import { formatDateID } from "@/lib/format";
 import type { Registrant, PaginatedRegistrants } from "@/types/registration";
-import TableSkeleton from "@/app/components/TableSkeleton";
-import EmptyState from "@/app/components/shared/EmptyState";
+import TableSkeleton from "@/components/tables/TableSkeleton";
+import EmptyState from "@/components/shared/EmptyState";
 
 const formatDateTime = (isoStr?: string): string => {
   if (!isoStr) return "-";

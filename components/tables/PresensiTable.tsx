@@ -3,7 +3,7 @@
 import type { Entry } from "@/hooks/usePresensi";
 import { STATUS_LABEL, STATUS_BTN } from "@/hooks/usePresensi";
 import { ITEMS_PER_PAGE } from "@/lib/constants";
-import Pagination from "@/app/components/Pagination";
+import Pagination from "@/components/common/Pagination";
 
 interface Props {
   paginatedEntries: Entry[];

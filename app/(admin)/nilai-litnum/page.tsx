@@ -10,13 +10,13 @@ import {
   FileText,
   ClipboardList,
 } from "lucide-react";
-import PageHero from "@/app/components/PageHero";
-import FilterBar from "@/app/components/shared/FilterBar";
-import LoadingSkeleton from "@/app/components/shared/LoadingSkeleton";
-import ErrorState from "@/app/components/shared/ErrorState";
-import EmptyState from "@/app/components/shared/EmptyState";
-import Modal from "@/app/components/Modal";
-import Pagination from "@/app/components/Pagination";
+import PageHero from "@/components/layout/PageHero";
+import FilterBar from "@/components/shared/FilterBar";
+import LoadingSkeleton from "@/components/shared/LoadingSkeleton";
+import ErrorState from "@/components/shared/ErrorState";
+import EmptyState from "@/components/shared/EmptyState";
+import Modal from "@/components/modals/Modal";
+import Pagination from "@/components/common/Pagination";
 import { useLitnum } from "@/hooks/useLitnum";
 import { ITEMS_PER_PAGE } from "@/lib/constants";
 

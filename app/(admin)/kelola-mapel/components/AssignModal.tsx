@@ -1,6 +1,6 @@
 "use client";
 
-import Modal from "@/app/components/Modal";
+import Modal from "@/components/modals/Modal";
 import {
   Select,
   SelectContent,

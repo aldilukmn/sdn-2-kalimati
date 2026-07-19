@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import { Music, ExternalLink } from "lucide-react";
-import BackButton from "../components/BackButton";
-import Pagination from "../components/Pagination";
+import BackButton from "../components/common/BackButton";
+import Pagination from "../components/common/Pagination";
 import { tariLinks } from './data/data.tari';
 
 const ITEMS_PER_PAGE = 10;

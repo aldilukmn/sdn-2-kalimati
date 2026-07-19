@@ -21,11 +21,11 @@ import { useAuth } from "@/hooks/useAuth";
 import { useDashboardPresensi, type ViewMode } from "@/hooks/useDashboardPresensi";
 import { GRADES, AVAILABLE_YEARS } from "@/lib/constants";
 import { MONTHS_ID } from "@/lib/format";
-import PageHero from "@/app/components/PageHero";
-import LoadingSkeleton from "@/app/components/shared/LoadingSkeleton";
-import DateDayPicker from "@/app/components/DateDayPicker";
-import FilterBar from "@/app/components/shared/FilterBar";
-import ExportWordButton from "@/app/components/ExportWordButton";
+import PageHero from "@/components/layout/PageHero";
+import LoadingSkeleton from "@/components/shared/LoadingSkeleton";
+import DateDayPicker from "@/components/common/DateDayPicker";
+import FilterBar from "@/components/shared/FilterBar";
+import ExportWordButton from "@/components/common/ExportWordButton";
 
 import { MonthlyPresensiView } from "./components/MonthlyPresensiView";
 import { DailyPresensiView } from "./components/DailyPresensiView";

@@ -1,13 +1,13 @@
 "use client";
 
 import { ScrollText } from "lucide-react";
-import ErrorState from "@/app/components/shared/ErrorState";
-import EmptyState from "@/app/components/shared/EmptyState";
-import LoadingSkeleton from "@/app/components/shared/LoadingSkeleton";
+import ErrorState from "@/components/shared/ErrorState";
+import EmptyState from "@/components/shared/EmptyState";
+import LoadingSkeleton from "@/components/shared/LoadingSkeleton";
 import { useRekapNilai } from "@/hooks/useRekapNilai";
-import PageHero from "@/app/components/PageHero";
-import RekapTable from "@/app/components/nilai-harian/RekapTable";
-import FilterBar from "@/app/components/shared/FilterBar";
+import PageHero from "@/components/layout/PageHero";
+import RekapTable from "@/components/nilai-harian/RekapTable";
+import FilterBar from "@/components/shared/FilterBar";
 
 export default function RekapNilaiPage() {
   const {

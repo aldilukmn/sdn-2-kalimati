@@ -1,6 +1,6 @@
 "use client";
 
-import { useAuth as useAuthContext } from "@/app/contexts/AuthContext";
+import { useAuth as useAuthContext } from "@/contexts/AuthContext";
 import { decodeJWT } from "@/lib/jwt";
 
 export interface AuthResult {

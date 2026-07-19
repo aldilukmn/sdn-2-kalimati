@@ -3,7 +3,7 @@
 import { Save, Loader2 } from "lucide-react";
 import { formatCompactRupiah } from "@/lib/format";
 import { StudentWithBalance } from "@/hooks/useStudentList";
-import Modal from "@/app/components/Modal";
+import Modal from "@/components/modals/Modal";
 
 interface TransactionModalProps {
   open: boolean;

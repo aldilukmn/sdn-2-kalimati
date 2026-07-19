@@ -5,11 +5,11 @@ import { Users, Mars, Venus, CalendarCheck, LayoutDashboard } from "lucide-react
 import Link from "next/link";
 import { useTeacherDashboard, type TeacherSummary } from "@/hooks/useDashboard";
 import { useTeacherChart } from "@/hooks/useTeacherChart";
-import AttendanceDonutChart from "@/app/components/AttendanceDonutChart";
-import PageHero from "@/app/components/PageHero";
+import AttendanceDonutChart from "@/components/charts/AttendanceDonutChart";
+import PageHero from "@/components/layout/PageHero";
 import TabunganSection from "./TabunganSection";
 import type { AttendanceRow } from "@/lib/merge-attendance";
-import MonthYearFilter from "@/app/components/shared/MonthYearFilter";
+import MonthYearFilter from "@/components/shared/MonthYearFilter";
 
 export default function GuruDashboardView({
   initialSummary,

@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import TextType from "./reactbits/Text-Type/TextType";
-import GraduationCountdownModal from "./components/GraduationCountdownModal";
+import GraduationCountdownModal from "./components/modals/GraduationCountdownModal";
 import { navigationLinks } from './data/data.navigate';
 
 const buttonClassName =

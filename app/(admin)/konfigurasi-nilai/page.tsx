@@ -2,13 +2,13 @@
 
 import { Plus, Save, Trash2, Scale, Pencil } from "lucide-react";
 import { useAssessmentConfig } from "@/hooks/useAssessmentConfig";
-import ErrorState from "@/app/components/shared/ErrorState";
-import EmptyState from "@/app/components/shared/EmptyState";
-import TableSkeleton from "@/app/components/TableSkeleton";
+import ErrorState from "@/components/shared/ErrorState";
+import EmptyState from "@/components/shared/EmptyState";
+import TableSkeleton from "@/components/tables/TableSkeleton";
 import { GRADES, CONFIG_PRESETS, CUSTOM_KEY } from "@/lib/constants";
 import toast from "react-hot-toast";
 import { X } from "lucide-react";
-import PageHero from "@/app/components/PageHero";
+import PageHero from "@/components/layout/PageHero";
 import {
   Select,
   SelectContent,

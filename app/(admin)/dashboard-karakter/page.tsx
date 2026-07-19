@@ -27,10 +27,10 @@ import {
 import { useDashboardKarakter } from "@/hooks/useDashboardKarakter";
 import { useAuth } from "@/hooks/useAuth";
 import { GRADES } from "@/lib/constants";
-import PageHero from "@/app/components/PageHero";
-import StatCard from "@/app/components/StatCard";
-import FilterBar from "@/app/components/shared/FilterBar";
-import LoadingSkeleton from "@/app/components/shared/LoadingSkeleton";
+import PageHero from "@/components/layout/PageHero";
+import StatCard from "@/components/common/StatCard";
+import FilterBar from "@/components/shared/FilterBar";
+import LoadingSkeleton from "@/components/shared/LoadingSkeleton";
 
 export default function DashboardKarakterPage() {
   const { role: userRole, grade: userGrade } = useAuth();

@@ -8,9 +8,9 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import type { HistoryItem } from "@/types/character-assessment";
 import { decodeJWT } from "@/lib/jwt";
 import toast from "react-hot-toast";
-import PageHero from "@/app/components/PageHero";
-import BackButton from "@/app/components/BackButton";
-import DataField from "@/app/components/DataField";
+import PageHero from "@/components/layout/PageHero";
+import BackButton from "@/components/common/BackButton";
+import DataField from "@/components/common/DataField";
 
 const SCORE_COLORS: Record<string, string> = {
   high: "text-emerald-600 dark:text-emerald-400 font-semibold",

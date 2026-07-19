@@ -4,14 +4,14 @@ import { useEffect, useState } from "react";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import RegistrationService from "@/services/registration.service";
-import LoadingModal from "@/app/components/LoadingModal";
-import RegistrationCounter from "@/app/components/RegistrationCounter";
-import RegistrationCard from "@/app/components/RegistrationCard";
-import BackButton from "@/app/components/BackButton";
+import LoadingModal from "@/components/modals/LoadingModal";
+import RegistrationCounter from "@/components/common/RegistrationCounter";
+import RegistrationCard from "@/components/common/RegistrationCard";
+import BackButton from "@/components/common/BackButton";
 import type { RegistrationForm } from "@/types/registration";
-import StudentDataStep from "@/app/components/pmb/StudentDataStep";
-import ParentDataStep from "@/app/components/pmb/ParentDataStep";
-import GuardianDataStep from "@/app/components/pmb/GuardianDataStep";
+import StudentDataStep from "@/components/pmb/StudentDataStep";
+import ParentDataStep from "@/components/pmb/ParentDataStep";
+import GuardianDataStep from "@/components/pmb/GuardianDataStep";
 
 const initialFormData: RegistrationForm = {
   student: {

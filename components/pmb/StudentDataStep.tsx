@@ -1,10 +1,10 @@
 "use client";
 
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
-import InputField from "@/app/components/form/InputField";
-import SelectField from "@/app/components/form/SelectField";
-import DatePickerField from "@/app/components/DatePickerField";
-import { GENDER_OPTIONS, RELIGION_OPTIONS } from "@/app/data/form-options";
+import InputField from "@/components/form/InputField";
+import SelectField from "@/components/form/SelectField";
+import DatePickerField from "@/components/common/DatePickerField";
+import { GENDER_OPTIONS, RELIGION_OPTIONS } from "@/data/form-options";
 import type { RegistrationForm } from "@/types/registration";
 
 interface StudentDataStepProps {

@@ -3,7 +3,7 @@
 import { useState, useRef } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { useProfile } from "@/hooks/useProfile";
-import PageHero from "@/app/components/PageHero";
+import PageHero from "@/components/layout/PageHero";
 import { UserCircle, Camera, Save, X, Loader2, Eye, EyeOff, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import toast from "react-hot-toast";

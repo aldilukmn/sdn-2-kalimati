@@ -10,21 +10,21 @@ import {
 } from "@/components/ui/select";
 import { ClipboardList, Scale, ChevronDown, ChevronUp, Lock } from "lucide-react";
 import { useAssessmentScore } from "@/hooks/useAssessmentScore";
-import ErrorState from "@/app/components/shared/ErrorState";
-import EmptyState from "@/app/components/shared/EmptyState";
-import LoadingSkeleton from "@/app/components/shared/LoadingSkeleton";
+import ErrorState from "@/components/shared/ErrorState";
+import EmptyState from "@/components/shared/EmptyState";
+import LoadingSkeleton from "@/components/shared/LoadingSkeleton";
 import { usePagination } from "@/hooks/usePagination";
 import { ITEMS_PER_PAGE, COMPONENT_COLORS, COMPONENT_BGS } from "@/lib/constants";
 import type { AssessmentComponent } from "@/types/nilai-harian";
 import toast from "react-hot-toast";
-import PageHero from "@/app/components/PageHero";
+import PageHero from "@/components/layout/PageHero";
 import TabNilaiHarian from "./components/TabNilaiHarian";
 import TabKarakter from "./components/TabKarakter";
 import TabPresensi from "./components/TabPresensi";
 import TabTugas from "./components/TabTugas";
 import TabLitnum from "./components/TabLitnum";
 import TabNonHarian from "./components/TabNonHarian";
-import FilterBar from "@/app/components/shared/FilterBar";
+import FilterBar from "@/components/shared/FilterBar";
 
 export default function NilaiKomponenPage() {
   const {

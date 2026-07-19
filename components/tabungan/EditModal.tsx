@@ -1,7 +1,7 @@
 "use client";
 
 import { Save, Loader2 } from "lucide-react";
-import Modal from "@/app/components/Modal";
+import Modal from "@/components/modals/Modal";
 import type { Transaction } from "@/types/student-savings";
 
 interface EditModalProps {

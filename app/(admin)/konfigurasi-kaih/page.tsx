@@ -6,12 +6,12 @@ import toast from "react-hot-toast";
 import CharacterHabitService from "@/services/character-habit.service";
 import type { CharacterHabit } from "@/types/character-habit";
 import { decodeJWT } from "@/lib/jwt";
-import PageHero from "@/app/components/PageHero";
-import Modal from "@/app/components/Modal";
-import TableSkeleton from "@/app/components/TableSkeleton";
-import ErrorState from "@/app/components/shared/ErrorState";
-import EmptyState from "@/app/components/shared/EmptyState";
-import InputField from "@/app/components/form/InputField";
+import PageHero from "@/components/layout/PageHero";
+import Modal from "@/components/modals/Modal";
+import TableSkeleton from "@/components/tables/TableSkeleton";
+import ErrorState from "@/components/shared/ErrorState";
+import EmptyState from "@/components/shared/EmptyState";
+import InputField from "@/components/form/InputField";
 
 export default function KonfigurasiKaihPage() {
   const [userRole, setUserRole] = useState<string | null>(null);

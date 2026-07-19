@@ -1,7 +1,7 @@
 "use client";
 
 import { Loader2, Trash2 } from "lucide-react";
-import Modal from "@/app/components/Modal";
+import Modal from "@/components/modals/Modal";
 
 interface ConfirmDeleteModalProps {
   open: boolean;

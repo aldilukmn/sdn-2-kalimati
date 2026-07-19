@@ -3,15 +3,15 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { ClipboardList, Save, Loader2, Trash2 } from "lucide-react";
-import ErrorState from "@/app/components/shared/ErrorState";
-import EmptyState from "@/app/components/shared/EmptyState";
+import ErrorState from "@/components/shared/ErrorState";
+import EmptyState from "@/components/shared/EmptyState";
 import { useCharacterAssessment } from "@/hooks/useCharacterAssessment";
 import toast from "react-hot-toast";
-import PageHero from "@/app/components/PageHero";
-import StudentAssessmentTable from "@/app/components/karakter/StudentAssessmentTable";
-import Modal from "@/app/components/Modal";
-import FilterBar from "@/app/components/shared/FilterBar";
-import TableSkeleton from '@/app/components/TableSkeleton';
+import PageHero from "@/components/layout/PageHero";
+import StudentAssessmentTable from "@/components/karakter/StudentAssessmentTable";
+import Modal from "@/components/modals/Modal";
+import FilterBar from "@/components/shared/FilterBar";
+import TableSkeleton from '@/components/tables/TableSkeleton';
 
 export default function PenilaianKarakterPage() {
   const router = useRouter();

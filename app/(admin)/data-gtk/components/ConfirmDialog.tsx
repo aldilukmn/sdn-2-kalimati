@@ -1,6 +1,6 @@
 "use client";
 
-import Modal from "@/app/components/Modal";
+import Modal from "@/components/modals/Modal";
 import { AlertTriangle, Loader2 } from "lucide-react";
 
 export default function ConfirmDialog({

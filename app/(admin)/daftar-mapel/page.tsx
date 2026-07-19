@@ -9,8 +9,8 @@ import {
 import { useChapters } from "@/hooks/useChapters";
 import { GRADES } from "@/lib/constants";
 import toast from "react-hot-toast";
-import Modal from "@/app/components/Modal";
-import PageHero from "@/app/components/PageHero";
+import Modal from "@/components/modals/Modal";
+import PageHero from "@/components/layout/PageHero";
 import {
   Select,
   SelectContent,

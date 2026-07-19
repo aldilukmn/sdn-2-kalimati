@@ -12,13 +12,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import TableSkeleton from "@/app/components/TableSkeleton";
+import TableSkeleton from "@/components/tables/TableSkeleton";
 import StudentAttendanceService from "@/services/student-attendance.service";
 import UserService from "@/services/user.service";
 import { exportPresensiRecapToCSV } from "@/lib/export-presensi-csv";
-import BackButton from "../components/BackButton";
-import Pagination from "@/app/components/Pagination";
-import MonthYearPicker from "../components/MonthYearPicker";
+import BackButton from "../components/common/BackButton";
+import Pagination from "@/components/common/Pagination";
+import MonthYearPicker from "../components/common/MonthYearPicker";
 import { GRADES } from "@/lib/constants";
 import type {
   MasterStudentType,

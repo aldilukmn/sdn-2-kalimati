@@ -2,15 +2,15 @@
 
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { useAuth } from "@/app/contexts/AuthContext";
+import { useAuth } from "@/contexts/AuthContext";
 import Link from "next/link";
 import { ArrowLeft, Loader2, Save } from "lucide-react";
 import RegistrationService from "@/services/registration.service";
-import StudentDataStep from "@/app/components/pmb/StudentDataStep";
-import ParentDataStep from "@/app/components/pmb/ParentDataStep";
+import StudentDataStep from "@/components/pmb/StudentDataStep";
+import ParentDataStep from "@/components/pmb/ParentDataStep";
 import type { Registrant } from "@/types/registration";
-import GuardianDataStep from "@/app/components/pmb/GuardianDataStep";
-import LoadingModal from "@/app/components/LoadingModal";
+import GuardianDataStep from "@/components/pmb/GuardianDataStep";
+import LoadingModal from "@/components/modals/LoadingModal";
 import type { RegistrationForm } from "@/types/registration";
 
 const emptyForm: RegistrationForm = {

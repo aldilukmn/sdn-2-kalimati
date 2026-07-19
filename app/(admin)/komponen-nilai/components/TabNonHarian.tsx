@@ -2,7 +2,7 @@
 
 import { Save } from "lucide-react";
 import type { AssessmentComponent } from "@/types/nilai-harian";
-import ScoreTableWrapper from "@/app/components/shared/ScoreTableWrapper";
+import ScoreTableWrapper from "@/components/shared/ScoreTableWrapper";
 
 interface TabNonHarianProps {
   nonHarianComponents: AssessmentComponent[];

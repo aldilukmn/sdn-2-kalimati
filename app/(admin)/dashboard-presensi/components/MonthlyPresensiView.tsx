@@ -11,8 +11,8 @@ import {
 } from "@/components/ui/select";
 import { AVAILABLE_YEARS } from "@/lib/constants";
 import { MONTHS_ID } from "@/lib/format";
-import AttendanceTrendChart from "@/app/components/AttendanceTrendChart";
-import AttendanceBarChart from "@/app/components/AttendanceBarChart";
+import AttendanceTrendChart from "@/components/charts/AttendanceTrendChart";
+import AttendanceBarChart from "@/components/charts/AttendanceBarChart";
 import { InsightTable } from "./InsightTable";
 
 const RATE_COLOR = (rate: number) => {

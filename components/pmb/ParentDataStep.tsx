@@ -1,13 +1,13 @@
 "use client";
 
 import { Card, CardTitle } from "@/components/ui/card";
-import InputField from "@/app/components/form/InputField";
-import SelectField from "@/app/components/form/SelectField";
+import InputField from "@/components/form/InputField";
+import SelectField from "@/components/form/SelectField";
 import {
   OCCUPATION_OPTIONS,
   EDUCATION_OPTIONS,
   INCOME_OPTIONS,
-} from "@/app/data/form-options";
+} from "@/data/form-options";
 import type { RegistrationForm } from "@/types/registration";
 
 interface ParentDataStepProps {

@@ -10,7 +10,7 @@ import {
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import type { DashboardSummary } from "@/hooks/useDashboard";
-import StatCard from "@/app/components/StatCard";
+import StatCard from "@/components/common/StatCard";
 
 type StatCardKey =
   | "totalStudents"

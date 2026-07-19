@@ -1,7 +1,7 @@
 "use client";
 
 import { GRADES } from "@/lib/constants";
-import Modal from "@/app/components/Modal";
+import Modal from "@/components/modals/Modal";
 import { Loader2 } from "lucide-react";
 
 export interface FormData {

@@ -1,6 +1,6 @@
 "use client";
 
-import ScoreTableWrapper from "@/app/components/shared/ScoreTableWrapper";
+import ScoreTableWrapper from "@/components/shared/ScoreTableWrapper";
 
 interface TabPresensiProps {
   paginatedPresensiStudents: Array<{ studentId: string; name: string; avg: number | null }>;

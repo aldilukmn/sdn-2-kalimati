@@ -5,7 +5,7 @@ import { useState } from "react";
 import { BookOpen, ArrowLeft } from "lucide-react";
 import { useSubjects } from "@/hooks/useSubjects";
 import toast from "react-hot-toast";
-import PageHero from "@/app/components/PageHero";
+import PageHero from "@/components/layout/PageHero";
 import SubjectModal from "./components/SubjectModal";
 import AssignModal from "./components/AssignModal";
 import ConfirmDeleteModal from "./components/ConfirmDeleteModal";

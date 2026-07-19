@@ -4,8 +4,8 @@ import { FormEvent, useState } from "react";
 import AuthService from "@/services/auth.service";
 import { useRouter } from "next/navigation";
 import { User, Lock, ArrowRight, Loader2, Eye, EyeOff } from "lucide-react";
-import BackButton from "../components/BackButton";
-import AuthCard from "../components/AuthCard";
+import BackButton from "../components/common/BackButton";
+import AuthCard from "../components/layout/AuthCard";
 import toast from "react-hot-toast";
 import { decodeJWT } from "@/lib/jwt";
 

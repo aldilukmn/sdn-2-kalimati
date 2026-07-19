@@ -3,15 +3,15 @@
 import { useState, useEffect } from "react";
 import { Calculator, AlertCircle, RefreshCw, ChevronDown, ChevronRight, AlertTriangle } from "lucide-react";
 import { useFinalScore } from "@/hooks/useFinalScore";
-import ErrorState from "@/app/components/shared/ErrorState";
-import EmptyState from "@/app/components/shared/EmptyState";
-import TableSkeleton from "@/app/components/TableSkeleton";
+import ErrorState from "@/components/shared/ErrorState";
+import EmptyState from "@/components/shared/EmptyState";
+import TableSkeleton from "@/components/tables/TableSkeleton";
 import { ITEMS_PER_PAGE } from "@/lib/constants";
-import Pagination from "@/app/components/Pagination";
+import Pagination from "@/components/common/Pagination";
 import toast from "react-hot-toast";
-import PageHero from "@/app/components/PageHero";
-import FilterBar from "@/app/components/shared/FilterBar";
-import LoadingSkeleton from '@/app/components/shared/LoadingSkeleton';
+import PageHero from "@/components/layout/PageHero";
+import FilterBar from "@/components/shared/FilterBar";
+import LoadingSkeleton from '@/components/shared/LoadingSkeleton';
 
 export default function NilaiAkhirPage() {
   const {

@@ -16,14 +16,14 @@ import { useEditTransaction } from "@/hooks/useEditTransaction";
 import { useDeleteTransaction } from "@/hooks/useDeleteTransaction";
 import { useStudentMonthlyBreakdown } from "@/hooks/useStudentMonthlyBreakdown";
 import { useGradeRecap } from "@/hooks/useGradeRecap";
-import DateDayPicker from "@/app/components/DateDayPicker";
-import StatCard from "@/app/components/StatCard";
+import DateDayPicker from "@/components/common/DateDayPicker";
+import StatCard from "@/components/common/StatCard";
 import toast from "react-hot-toast";
 import { getTodayLocal, MONTHS_ID, formatCompactRupiah } from "@/lib/format";
-import HolidayInfoCard from "@/app/components/HolidayInfoCard";
-import PageHero from "@/app/components/PageHero";
+import HolidayInfoCard from "@/components/common/HolidayInfoCard";
+import PageHero from "@/components/layout/PageHero";
 import { useHolidays } from "@/hooks/useHolidays";
-import FilterBar from "@/app/components/shared/FilterBar";
+import FilterBar from "@/components/shared/FilterBar";
 import {
   Select,
   SelectContent,
@@ -33,13 +33,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import DailyTab from "@/app/components/tabungan/DailyTab";
-import MonthlyTab from "@/app/components/tabungan/MonthlyTab";
-import GradeRecapTable from "@/app/components/tabungan/GradeRecapTable";
-import TransactionModal from "@/app/components/tabungan/TransactionModal";
-import HistoryModal from "@/app/components/tabungan/HistoryModal";
-import EditModal from "@/app/components/tabungan/EditModal";
-import ConfirmDeleteModal from "@/app/components/tabungan/ConfirmDeleteModal";
+import DailyTab from "@/components/tabungan/DailyTab";
+import MonthlyTab from "@/components/tabungan/MonthlyTab";
+import GradeRecapTable from "@/components/tabungan/GradeRecapTable";
+import TransactionModal from "@/components/tabungan/TransactionModal";
+import HistoryModal from "@/components/tabungan/HistoryModal";
+import EditModal from "@/components/tabungan/EditModal";
+import ConfirmDeleteModal from "@/components/tabungan/ConfirmDeleteModal";
 
 export default function TabunganMuridPage() {
   const {

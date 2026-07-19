@@ -5,8 +5,8 @@ import { Wallet, TrendingUp, TrendingDown } from "lucide-react";
 import { useSavingsRecap } from "@/hooks/useSavingsRecap";
 import { GRADES } from "@/lib/constants";
 import { formatCompactRupiah } from "@/lib/format";
-import StatCard from "@/app/components/StatCard";
-import SavingsTrendChart from "@/app/components/SavingsTrendChart";
+import StatCard from "@/components/common/StatCard";
+import SavingsTrendChart from "@/components/charts/SavingsTrendChart";
 import {
   Select,
   SelectContent,
@@ -16,7 +16,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import MonthYearFilter from "@/app/components/shared/MonthYearFilter";
+import MonthYearFilter from "@/components/shared/MonthYearFilter";
 
 export default function TabunganSection({
   grade,

@@ -2,7 +2,7 @@
 
 import { useCallback, useRef, type KeyboardEvent } from "react";
 import type { ScoreEntry } from "@/types/nilai-harian";
-import Pagination from "@/app/components/Pagination";
+import Pagination from "@/components/common/Pagination";
 import { ITEMS_PER_PAGE } from "@/lib/constants";
 
 interface Props {

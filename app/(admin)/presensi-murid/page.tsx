@@ -9,17 +9,17 @@ import {
   Plus,
   X,
 } from "lucide-react";
-import DateDayPicker from "@/app/components/DateDayPicker";
-import PresensiStatusBadge from "@/app/components/PresensiStatusBadge";
-import PresensiTable from "@/app/components/PresensiTable";
+import DateDayPicker from "@/components/common/DateDayPicker";
+import PresensiStatusBadge from "@/components/common/PresensiStatusBadge";
+import PresensiTable from "@/components/tables/PresensiTable";
 import { usePresensi } from "@/hooks/usePresensi";
 import { GRADES } from "@/lib/constants";
 import toast from "react-hot-toast";
 import HolidayService from "@/services/holiday.service";
-import Modal from "@/app/components/Modal";
-import PageHero from "@/app/components/PageHero";
-import HolidayInfoCard from "@/app/components/HolidayInfoCard";
-import FilterBar from "@/app/components/shared/FilterBar";
+import Modal from "@/components/modals/Modal";
+import PageHero from "@/components/layout/PageHero";
+import HolidayInfoCard from "@/components/common/HolidayInfoCard";
+import FilterBar from "@/components/shared/FilterBar";
 import { formatDateID, formatDateShort, MONTHS_ID, getTodayLocal } from "@/lib/format";
 import {
   Select,

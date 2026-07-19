@@ -5,8 +5,8 @@ import { X, Pencil, Trash2, Loader2, Info } from "lucide-react";
 import { formatCompactRupiah, formatDateID, formatDateShort, MONTHS_ID } from "@/lib/format";
 import { StudentWithBalance } from "@/hooks/useStudentList";
 import type { Transaction } from "@/types/student-savings";
-import Modal from "@/app/components/Modal";
-import YearSelect from "@/app/components/YearSelect";
+import Modal from "@/components/modals/Modal";
+import YearSelect from "@/components/common/YearSelect";
 import {
   Select,
   SelectContent,

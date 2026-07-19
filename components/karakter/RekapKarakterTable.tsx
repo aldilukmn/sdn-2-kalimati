@@ -5,7 +5,7 @@ import Link from "next/link";
 import { Eye } from "lucide-react";
 import type { RecapRow } from "@/hooks/useRekapKarakter";
 import { ITEMS_PER_PAGE } from "@/lib/constants";
-import Pagination from "@/app/components/Pagination";
+import Pagination from "@/components/common/Pagination";
 
 interface Props {
   recapRows: RecapRow[];

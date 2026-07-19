@@ -10,9 +10,9 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import type { GradeSubject } from "@/types/nilai-harian";
-import ErrorState from "@/app/components/shared/ErrorState";
-import EmptyState from "@/app/components/shared/EmptyState";
-import TableSkeleton from "@/app/components/TableSkeleton";
+import ErrorState from "@/components/shared/ErrorState";
+import EmptyState from "@/components/shared/EmptyState";
+import TableSkeleton from "@/components/tables/TableSkeleton";
 
 interface AssignTabProps {
   error: string | null;

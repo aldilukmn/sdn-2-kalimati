@@ -10,9 +10,9 @@ import type { CharacterAssessment } from "@/types/character-assessment";
 import type { CharacterHabit } from "@/types/character-habit";
 import { decodeJWT } from "@/lib/jwt";
 import toast from "react-hot-toast";
-import PageHero from "@/app/components/PageHero";
-import BackButton from "@/app/components/BackButton";
-import DataField from "@/app/components/DataField";
+import PageHero from "@/components/layout/PageHero";
+import BackButton from "@/components/common/BackButton";
+import DataField from "@/components/common/DataField";
 
 interface HabitDisplay {
   name: string;

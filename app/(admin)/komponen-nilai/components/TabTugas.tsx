@@ -1,6 +1,6 @@
 "use client";
 
-import ScoreTableWrapper from "@/app/components/shared/ScoreTableWrapper";
+import ScoreTableWrapper from "@/components/shared/ScoreTableWrapper";
 
 interface TabTugasProps {
   paginatedStudents: Array<{ studentId: string; name: string }>;

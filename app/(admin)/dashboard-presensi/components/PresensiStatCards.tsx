@@ -5,7 +5,7 @@ import {
   XCircle,
   TrendingUp,
 } from "lucide-react";
-import StatCard from "@/app/components/StatCard";
+import StatCard from "@/components/common/StatCard";
 
 interface PresensiStatCardsProps {
   summary: {

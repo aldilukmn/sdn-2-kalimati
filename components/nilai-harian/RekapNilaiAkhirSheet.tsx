@@ -3,7 +3,7 @@
 import { useState } from "react";
 import type { SubjectColumn, MatrixRow } from "@/hooks/useRekapNilaiAkhir";
 import { ITEMS_PER_PAGE } from "@/lib/constants";
-import Pagination from "@/app/components/Pagination";
+import Pagination from "@/components/common/Pagination";
 
 interface Props {
   matrix: MatrixRow[];

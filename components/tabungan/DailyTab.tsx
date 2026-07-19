@@ -8,7 +8,7 @@ import {
 } from "lucide-react";
 import { StudentWithBalance } from "@/hooks/useStudentList";
 import { ITEMS_PER_PAGE } from "@/lib/constants";
-import Pagination from "@/app/components/Pagination";
+import Pagination from "@/components/common/Pagination";
 import { formatCompactRupiah } from "@/lib/format";
 
 interface DailyTabProps {
