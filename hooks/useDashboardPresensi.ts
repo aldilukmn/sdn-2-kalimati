@@ -245,7 +245,11 @@ export function useDashboardPresensi(
         .slice(0, 5)
     : studentRows.filter((r) => r.hadir === 0); // hari ini yang tidak hadir
 
-  const hasData = summary !== null && (summary.total > 0 || totalStudents > 0);
+  const hasData =
+    summary !== null &&
+    (viewMode === "harian"
+      ? studentRows.length > 0
+      : summary.total > 0 || totalStudents > 0);
 
   // Rata-rata hari hadir per siswa (untuk label tambahan di mode bulanan)
   const avgHadirPerSiswa =
