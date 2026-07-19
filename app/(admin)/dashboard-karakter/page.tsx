@@ -116,6 +116,8 @@ export default function DashboardKarakterPage() {
         grade={grade}
         onGradeChange={(v) => v && setGrade(v)}
         gradeDisabled={userRole === "guru"}
+        gridClassName="grid-cols-2 md:grid-cols-3"
+        gradeClassName="col-span-2 md:col-span-1"
       />
 
       {/* Content */}
