@@ -50,8 +50,9 @@ export default function DataMuridPage() {
 
   useEffect(() => {
     if (authLoading) return;
+    if (role === "guru" && authGrade && grade !== authGrade) return; // Prevent race condition
     fetchStudents();
-  }, [grade, authLoading]);
+  }, [grade, authLoading, role, authGrade]);
 
   const handleSave = async () => {
     try {
