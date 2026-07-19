@@ -6,6 +6,7 @@ import DashboardService from "@/services/dashboard.service";
 import type { AttendanceReportItem, StudentAttendanceType } from "@/types/attendance";
 import { AVAILABLE_YEARS } from "@/lib/constants";
 import { getTodayLocal } from "@/lib/format";
+import { useHolidays } from "@/hooks/useHolidays";
 
 export type ViewMode = "bulanan" | "harian";
 
@@ -57,6 +58,8 @@ export function useDashboardPresensi(
   const [retryCount, setRetryCount] = useState(0);
   // Total siswa di kelas (untuk mode harian — context "X dari Y siswa")
   const [totalStudents, setTotalStudents] = useState<number>(0);
+
+  const { holidays } = useHolidays();
 
   const retry = useCallback(() => {
     setError(null);
@@ -283,5 +286,6 @@ export function useDashboardPresensi(
     retry,
     hasData,
     AVAILABLE_YEARS,
+    holidays,
   };
 }

@@ -88,6 +88,7 @@ export default function DashboardPresensiPage() {
     error,
     retry,
     hasData,
+    holidays,
   } = useDashboardPresensi(userRole, userGrade);
 
   const isAdminOrKepala = userRole === "admin" || userRole === "kepala";
@@ -127,6 +128,7 @@ export default function DashboardPresensiPage() {
               value={selectedDate}
               onChange={setSelectedDate}
               max={new Date().toISOString().split("T")[0]}
+              blockedDates={holidays}
             />
           </div>
         )}
