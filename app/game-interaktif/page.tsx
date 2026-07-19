@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import { Gamepad2, ExternalLink } from "lucide-react";
-import BackButton from "../components/common/BackButton";
-import Pagination from "../components/common/Pagination";
+import BackButton from "@/components/common/BackButton";
+import Pagination from "@/components/common/Pagination";
 import { gameLinks } from './data/data.game.interaktif';
 
 const ITEMS_PER_PAGE = 10;
@@ -73,7 +73,7 @@ export default function GameInteraktif() {
       <Pagination
         currentPage={currentPage}
         totalPages={totalPages}
-        onPageChange={(page) => setCurrentPage(page)}
+        onPageChange={(page: number) => setCurrentPage(page)}
         itemsPerPage={ITEMS_PER_PAGE}
         totalItems={sortedLinks.length}
       />

@@ -4,7 +4,7 @@ import { Search, AlertCircle, Loader } from "lucide-react";
 import { useState } from "react";
 import { dataKelulusan } from "./data";
 import confetti from "canvas-confetti";
-import BackButton from "../components/common/BackButton";
+import BackButton from "@/components/common/BackButton";
 import { Card } from "@/components/ui/card";
 
 export default function Kelulusan() {

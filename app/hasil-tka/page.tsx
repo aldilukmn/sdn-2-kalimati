@@ -3,8 +3,8 @@
 import { Search, AlertCircle, Loader } from "lucide-react";
 import { useState } from "react";
 import { dataTKA, getGrade } from "./data";
-import DataField from "../components/common/DataField";
-import BackButton from "../components/common/BackButton";
+import DataField from "@/components/common/DataField";
+import BackButton from "@/components/common/BackButton";
 import { Card } from "@/components/ui/card";
 
 export default function HasilTKA() {

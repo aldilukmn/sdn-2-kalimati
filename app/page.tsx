@@ -2,9 +2,9 @@
 
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import TextType from "./reactbits/Text-Type/TextType";
-import GraduationCountdownModal from "./components/modals/GraduationCountdownModal";
-import { navigationLinks } from './data/data.navigate';
+import TextType from "@/reactbits/Text-Type/TextType";
+import GraduationCountdownModal from "@/components/modals/GraduationCountdownModal";
+import { navigationLinks } from '@/data/data.navigate';
 
 const buttonClassName =
   "cursor-pointer flex flex-col md:flex-row items-center justify-center gap-2 border border-blue-700 px-7 py-3 rounded-lg bg-blue-700 text-white text-xs md:text-lg font-semibold md:tracking-wide duration-300 hover:bg-blue-800 hover:border-blue-800";
@@ -75,7 +75,7 @@ export default function Menu() {
         className="grid md:grid-cols-2 lg:grid-cols-3 grid-cols-2 gap-5 md:py-10 items-center text-sm md:text-base text-center mx-5 md:mx-0"
         style={{ "--card-padding": "20px" } as React.CSSProperties}
       >
-        {navigationLinks.map((link) => {
+        {navigationLinks.map((link: any) => {
           const isDisabled = link.href === "/kelulusan" ? !isGraduationButtonEnabled : link.disabled;
           const Icon = link.icon;
 

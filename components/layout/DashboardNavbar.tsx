@@ -1,7 +1,7 @@
 "use client";
 
 import { Menu } from "lucide-react";
-import LogoutButton from "./LogoutButton";
+import LogoutButton from "@/components/common/LogoutButton";
 
 interface NavbarProps {
   onMenuClick: () => void;

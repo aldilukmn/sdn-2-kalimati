@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import { Music, ExternalLink } from "lucide-react";
-import BackButton from "../components/common/BackButton";
-import Pagination from "../components/common/Pagination";
+import BackButton from "@/components/common/BackButton";
+import Pagination from "@/components/common/Pagination";
 import { tariLinks } from './data/data.tari';
 
 const ITEMS_PER_PAGE = 10;
@@ -72,7 +72,7 @@ export default function TariTarian() {
       <Pagination
         currentPage={currentPage}
         totalPages={totalPages}
-        onPageChange={(page) => setCurrentPage(page)}
+        onPageChange={(page: number) => setCurrentPage(page)}
         itemsPerPage={ITEMS_PER_PAGE}
         totalItems={sortedLinks.length}
       />
