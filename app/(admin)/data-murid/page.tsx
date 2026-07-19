@@ -14,7 +14,7 @@ import { useAuth } from "@/hooks/useAuth";
 const Modal = dynamic(() => import("@/components/modals/Modal"), { ssr: false });
 
 export default function DataMuridPage() {
-  const { role, isLoading: authLoading } = useAuth();
+  const { role, grade: authGrade, isLoading: authLoading } = useAuth();
   const [grade, setGrade] = useState("1");
   const [students, setStudents] = useState<MasterStudentType[]>([]);
   const [loading, setLoading] = useState(true);
@@ -41,8 +41,15 @@ export default function DataMuridPage() {
   };
 
   useEffect(() => {
+    if (role === "guru" && authGrade) {
+      setGrade(authGrade);
+    }
+  }, [role, authGrade]);
+
+  useEffect(() => {
+    if (authLoading) return;
     fetchStudents();
-  }, [grade]);
+  }, [grade, authLoading]);
 
   const handleSave = async () => {
     try {
@@ -80,8 +87,8 @@ export default function DataMuridPage() {
 
   if (authLoading) return null;
 
-  if (role !== "admin" && role !== "kepala_sekolah") {
-    return <div className="p-6 text-center text-red-500">Akses ditolak. Hanya Admin / Kepala Sekolah yang bisa mengelola data murid.</div>;
+  if (role !== "admin" && role !== "kepala_sekolah" && role !== "guru") {
+    return <div className="p-6 text-center text-red-500">Akses ditolak.</div>;
   }
 
   return (
@@ -91,7 +98,7 @@ export default function DataMuridPage() {
       <div className="bg-white/70 dark:bg-gray-800/40 border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5 flex flex-col sm:flex-row gap-4 items-center justify-between">
         <div className="w-full sm:w-64">
           <label className="block text-xs font-semibold text-gray-500 dark:text-gray-400 tracking-wider mb-2">Pilih Kelas</label>
-          <Select value={grade} onValueChange={(val) => val && setGrade(val)}>
+          <Select value={grade} onValueChange={(val) => val && setGrade(val)} disabled={role === "guru"}>
             <SelectTrigger className="w-full h-auto rounded-xl bg-slate-50 border-slate-300 dark:bg-gray-950 dark:border-gray-700 px-4 py-2.5 text-sm">
               <SelectValue />
             </SelectTrigger>

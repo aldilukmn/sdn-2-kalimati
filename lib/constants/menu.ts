@@ -106,5 +106,6 @@ export const guruAllowedHrefs = new Set([
   "/daftar-mapel",
   "/presensi-murid",
   "/tabungan-murid",
+  "/data-murid",
   "/profil",
 ]);
