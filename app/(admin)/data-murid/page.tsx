@@ -123,7 +123,7 @@ export default function DataMuridPage() {
 
       <div className="w-full">
         {loading ? (
-          <TableSkeleton columns={["NIS/ID", "Nama Murid", "L/P", "Aksi"]} rows={5} />
+          <TableSkeleton headers={["NIS/ID", "Nama Murid", "L/P", "Aksi"]} rows={5} />
         ) : error ? (
           <div className="p-6 text-center text-red-500 flex items-center justify-center gap-2 bg-white/70 dark:bg-gray-800/40 rounded-2xl border border-red-100"><AlertCircle /> {error}</div>
         ) : students.length === 0 ? (
