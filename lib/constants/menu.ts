@@ -80,6 +80,7 @@ export const menuItems: SidebarItem[] = [
       { label: "Konfigurasi KAIH", icon: Scale, href: "/konfigurasi-kaih" },
     ],
   },
+  { label: "Data Murid", icon: Users, href: "/data-murid" },
   { label: "Data GTK", icon: Users, href: "/data-gtk" },
   { label: "Data Pendaftar", icon: ClipboardList, href: "/data-pendaftar" },
   { label: "Profil Saya", icon: UserCog, href: "/profil" },
