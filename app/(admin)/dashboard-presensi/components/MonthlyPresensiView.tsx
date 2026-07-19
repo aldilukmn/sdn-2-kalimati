@@ -67,12 +67,12 @@ export function MonthlyPresensiView({
               Tren Kehadiran
             </h3>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 w-full sm:w-auto">
             <Select
               value={trendType}
               onValueChange={(v) => setTrendType(v as "bulanan" | "harian")}
             >
-              <SelectTrigger className="w-[140px] h-auto rounded-lg border border-slate-300 bg-slate-50 px-3 py-1.5 text-xs focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100 capitalize">
+              <SelectTrigger className="flex-1 sm:flex-none sm:w-[140px] h-auto rounded-lg border border-slate-300 bg-slate-50 px-3 py-1.5 text-xs focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100 capitalize">
                 <SelectValue placeholder="Pilih Tipe" />
               </SelectTrigger>
               <SelectContent>
@@ -89,7 +89,7 @@ export function MonthlyPresensiView({
                 value={String(trendMonth)}
                 onValueChange={(v) => v && setTrendMonth(Number(v))}
               >
-                <SelectTrigger className="w-[130px] h-auto rounded-lg border border-slate-300 bg-slate-50 px-3 py-1.5 text-xs focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100">
+                <SelectTrigger className="flex-1 sm:flex-none sm:w-[130px] h-auto rounded-lg border border-slate-300 bg-slate-50 px-3 py-1.5 text-xs focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100">
                   <SelectValue>{MONTHS_ID[trendMonth - 1]}</SelectValue>
                 </SelectTrigger>
                 <SelectContent>
@@ -109,7 +109,7 @@ export function MonthlyPresensiView({
               value={String(trendYear)}
               onValueChange={(v) => v && setTrendYear(Number(v))}
             >
-              <SelectTrigger className="w-24 h-auto rounded-lg border border-slate-300 bg-slate-50 px-3 py-1.5 text-xs focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100">
+              <SelectTrigger className="w-[70px] sm:w-24 shrink-0 sm:flex-none h-auto rounded-lg border border-slate-300 bg-slate-50 px-2 sm:px-3 py-1.5 text-xs focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
