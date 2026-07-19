@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { Users, Plus, Pencil, Trash2, Upload, AlertCircle } from "lucide-react";
 import { MasterStudentService } from "@/services/master-student.service";
-import { MasterStudentType } from "@/types";
+import { MasterStudentType } from "@/types/attendance";
 import { GRADES } from "@/lib/constants";
 import PageHero from "@/components/layout/PageHero";
 import toast from "react-hot-toast";

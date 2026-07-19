@@ -1,5 +1,5 @@
 import { api } from "@/lib/api";
-import { MasterStudentType } from "@/types";
+import { MasterStudentType } from "@/types/attendance";
 
 export class MasterStudentService {
   static async getByGrade(grade: string) {
