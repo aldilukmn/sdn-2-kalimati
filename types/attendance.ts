@@ -1,7 +1,9 @@
 export interface MasterStudentType {
+  _id?: string;
   studentId: string;
   name: string;
   grade: string;
+  gender?: string;
   nisn?: string;
 }
 
