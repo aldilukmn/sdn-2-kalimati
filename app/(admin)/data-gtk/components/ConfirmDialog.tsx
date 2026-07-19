@@ -1,6 +1,7 @@
 "use client";
 
-import Modal from "@/components/modals/Modal";
+import dynamic from "next/dynamic";
+const Modal = dynamic(() => import("@/components/modals/Modal"), { ssr: false });
 import { AlertTriangle, Loader2 } from "lucide-react";
 
 export default function ConfirmDialog({

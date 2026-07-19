@@ -6,7 +6,8 @@ import { useSavingsRecap } from "@/hooks/useSavingsRecap";
 import { GRADES } from "@/lib/constants";
 import { formatCompactRupiah } from "@/lib/format";
 import StatCard from "@/components/common/StatCard";
-import SavingsTrendChart from "@/components/charts/SavingsTrendChart";
+import dynamic from "next/dynamic";
+const SavingsTrendChart = dynamic(() => import("@/components/charts/SavingsTrendChart"), { ssr: false });
 import {
   Select,
   SelectContent,

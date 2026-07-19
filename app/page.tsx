@@ -3,7 +3,8 @@
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import TextType from "@/reactbits/Text-Type/TextType";
-import GraduationCountdownModal from "@/components/modals/GraduationCountdownModal";
+import dynamic from "next/dynamic";
+const GraduationCountdownModal = dynamic(() => import("@/components/modals/GraduationCountdownModal"), { ssr: false });
 import { navigationLinks } from '@/data/data.navigate';
 
 const buttonClassName =

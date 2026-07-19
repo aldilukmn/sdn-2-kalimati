@@ -5,7 +5,8 @@ import { Users, Mars, Venus, CalendarCheck, LayoutDashboard } from "lucide-react
 import Link from "next/link";
 import { useTeacherDashboard, type TeacherSummary } from "@/hooks/useDashboard";
 import { useTeacherChart } from "@/hooks/useTeacherChart";
-import AttendanceDonutChart from "@/components/charts/AttendanceDonutChart";
+import dynamic from "next/dynamic";
+const AttendanceDonutChart = dynamic(() => import("@/components/charts/AttendanceDonutChart"), { ssr: false });
 import PageHero from "@/components/layout/PageHero";
 import TabunganSection from "./TabunganSection";
 import type { AttendanceRow } from "@/lib/merge-attendance";

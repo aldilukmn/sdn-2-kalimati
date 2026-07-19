@@ -9,7 +9,8 @@ import {
 import { useChapters } from "@/hooks/useChapters";
 import { GRADES } from "@/lib/constants";
 import toast from "react-hot-toast";
-import Modal from "@/components/modals/Modal";
+import dynamic from "next/dynamic";
+const Modal = dynamic(() => import("@/components/modals/Modal"), { ssr: false });
 import PageHero from "@/components/layout/PageHero";
 import {
   Select,

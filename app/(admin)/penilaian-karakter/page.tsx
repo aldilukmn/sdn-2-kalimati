@@ -9,7 +9,8 @@ import { useCharacterAssessment } from "@/hooks/useCharacterAssessment";
 import toast from "react-hot-toast";
 import PageHero from "@/components/layout/PageHero";
 import StudentAssessmentTable from "@/components/karakter/StudentAssessmentTable";
-import Modal from "@/components/modals/Modal";
+import dynamic from "next/dynamic";
+const Modal = dynamic(() => import("@/components/modals/Modal"), { ssr: false });
 import FilterBar from "@/components/shared/FilterBar";
 import TableSkeleton from '@/components/tables/TableSkeleton';
 
