@@ -10,6 +10,8 @@ import toast from "react-hot-toast";
 import dynamic from "next/dynamic";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useAuth } from "@/hooks/useAuth";
+import EmptyState from "@/components/shared/EmptyState";
+import TableSkeleton from "@/components/tables/TableSkeleton";
 
 const Modal = dynamic(() => import("@/components/modals/Modal"), { ssr: false });
 
@@ -118,33 +120,33 @@ export default function DataMuridPage() {
         </button>
       </div>
 
-      <div className="bg-white/70 dark:bg-gray-800/40 border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl overflow-hidden">
+      <div className="w-full">
         {loading ? (
-          <div className="p-6 text-center text-slate-500">Memuat data...</div>
+          <TableSkeleton columns={["NIS/ID", "Nama Murid", "L/P", "Aksi"]} rows={5} />
         ) : error ? (
-          <div className="p-6 text-center text-red-500 flex items-center justify-center gap-2"><AlertCircle /> {error}</div>
+          <div className="p-6 text-center text-red-500 flex items-center justify-center gap-2 bg-white/70 dark:bg-gray-800/40 rounded-2xl border border-red-100"><AlertCircle /> {error}</div>
         ) : students.length === 0 ? (
-          <div className="p-6 text-center text-slate-500">Tidak ada murid di kelas ini.</div>
+          <EmptyState icon={Users} title="Tidak ada murid di kelas ini" />
         ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm text-left">
-              <thead className="text-xs text-slate-500 dark:text-slate-400 uppercase bg-slate-50 dark:bg-gray-900">
-                <tr>
-                  <th className="px-6 py-4">NIS/ID</th>
-                  <th className="px-6 py-4">Nama Murid</th>
-                  <th className="px-6 py-4">L/P</th>
-                  <th className="px-6 py-4 text-right">Aksi</th>
+          <div className="overflow-x-auto animate-fadeIn rounded-xl border border-gray-200 dark:border-gray-700 bg-white/80 md:bg-white/60 dark:bg-gray-800/30 shadow-lg">
+            <table className="w-full">
+              <thead>
+                <tr className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-xs md:text-sm">
+                  <th className="px-4 py-3 text-left font-semibold whitespace-nowrap">NIS/ID</th>
+                  <th className="px-4 py-3 text-left font-semibold whitespace-nowrap">Nama Murid</th>
+                  <th className="px-4 py-3 text-left font-semibold whitespace-nowrap">L/P</th>
+                  <th className="px-4 py-3 text-right font-semibold whitespace-nowrap">Aksi</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100 dark:divide-gray-800">
+              <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
                 {students.map(student => (
-                  <tr key={student._id} className="bg-white dark:bg-transparent">
-                    <td className="px-6 py-4 font-medium text-slate-900 dark:text-white">{student.studentId}</td>
-                    <td className="px-6 py-4">{student.name}</td>
-                    <td className="px-6 py-4">{student.gender}</td>
-                    <td className="px-6 py-4 flex justify-end gap-2">
-                      <button onClick={() => { setEditMode(true); setFormData(student); setModalOpen(true); }} className="p-2 text-indigo-600 hover:bg-indigo-50 rounded-lg"><Pencil size={16} /></button>
-                      <button onClick={() => handleDelete(student._id!)} className="p-2 text-red-600 hover:bg-red-50 rounded-lg"><Trash2 size={16} /></button>
+                  <tr key={student._id} className="transition-colors animate-fadeIn hover:bg-indigo-50/50 dark:hover:bg-indigo-900/20">
+                    <td className="px-4 py-3 md:px-6 md:py-4 text-sm font-medium text-gray-900 dark:text-white whitespace-nowrap">{student.studentId}</td>
+                    <td className="px-4 py-3 md:px-6 md:py-4 text-sm text-gray-600 dark:text-gray-300 whitespace-nowrap">{student.name}</td>
+                    <td className="px-4 py-3 md:px-6 md:py-4 text-sm text-gray-600 dark:text-gray-300 whitespace-nowrap">{student.gender}</td>
+                    <td className="px-4 py-3 md:px-6 md:py-4 flex justify-end gap-2">
+                      <button onClick={() => { setEditMode(true); setFormData(student); setModalOpen(true); }} className="p-2 text-indigo-600 hover:bg-indigo-100 rounded-lg transition-colors"><Pencil size={16} /></button>
+                      <button onClick={() => handleDelete(student._id!)} className="p-2 text-red-600 hover:bg-red-100 rounded-lg transition-colors"><Trash2 size={16} /></button>
                     </td>
                   </tr>
                 ))}
