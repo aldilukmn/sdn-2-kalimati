@@ -31,8 +31,8 @@ export default function DataMuridPage() {
     try {
       setLoading(true);
       setError(null);
-      const data = await MasterStudentService.getByGrade(grade);
-      setStudents(data || []);
+      const response = await MasterStudentService.getByGrade(grade);
+      setStudents(response.data || []);
     } catch (e: any) {
       setError(e.message || "Gagal mengambil data murid");
     } finally {
