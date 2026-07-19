@@ -174,6 +174,30 @@ export default function MasterStrukturPage() {
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
               <div className="mb-3 md:mb-0">
                 <label className="block text-xs font-semibold text-gray-500 dark:text-gray-400 tracking-wider mb-2">
+                  Kelas
+                </label>
+                <Select
+                  value={grade}
+                  onValueChange={(v) => v && setGrade(v)}
+                  disabled={userRole === "guru"}
+                >
+                  <SelectTrigger className="w-full rounded-xl border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm focus:border-blue-500 dark:focus:border-blue-400 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      <SelectLabel>Kelas</SelectLabel>
+                      {GRADES.map((g) => (
+                        <SelectItem key={g} value={g}>
+                          Kelas {g}
+                        </SelectItem>
+                      ))}
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div>
+                <label className="block text-xs font-semibold text-gray-500 dark:text-gray-400 tracking-wider mb-2">
                   Mata Pelajaran
                 </label>
                 <Select
@@ -197,30 +221,6 @@ export default function MasterStrukturPage() {
                           {userRole === "guru"
                             ? gs.subjectName || "-"
                             : `${gs.subjectName || "-"} — Kelas ${gs.grade}`}
-                        </SelectItem>
-                      ))}
-                    </SelectGroup>
-                  </SelectContent>
-                </Select>
-              </div>
-              <div>
-                <label className="block text-xs font-semibold text-gray-500 dark:text-gray-400 tracking-wider mb-2">
-                  Kelas
-                </label>
-                <Select
-                  value={grade}
-                  onValueChange={(v) => v && setGrade(v)}
-                  disabled={userRole === "guru"}
-                >
-                  <SelectTrigger className="w-full rounded-xl border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm focus:border-blue-500 dark:focus:border-blue-400 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectGroup>
-                      <SelectLabel>Kelas</SelectLabel>
-                      {GRADES.map((g) => (
-                        <SelectItem key={g} value={g}>
-                          Kelas {g}
                         </SelectItem>
                       ))}
                     </SelectGroup>
