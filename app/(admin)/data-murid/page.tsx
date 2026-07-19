@@ -89,7 +89,7 @@ export default function DataMuridPage() {
       <div className="bg-white/70 dark:bg-gray-800/40 border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5 flex flex-col sm:flex-row gap-4 items-center justify-between">
         <div className="w-full sm:w-64">
           <label className="block text-xs font-semibold text-gray-500 dark:text-gray-400 tracking-wider mb-2">Pilih Kelas</label>
-          <Select value={grade} onValueChange={setGrade}>
+          <Select value={grade} onValueChange={(val) => val && setGrade(val)}>
             <SelectTrigger className="w-full h-auto rounded-xl bg-slate-50 border-slate-300 dark:bg-gray-950 dark:border-gray-700 px-4 py-2.5 text-sm">
               <SelectValue />
             </SelectTrigger>
