@@ -103,7 +103,7 @@ export default function DashboardKarakterPage() {
       <PageHero
         icon={BarChart3}
         title="Dashboard Karakter"
-        description="Ringkasan penilaian karakter siswa"
+        description="Ringkasan penilaian karakter murid"
       />
 
       {/* Filter */}
@@ -171,7 +171,7 @@ export default function DashboardKarakterPage() {
           {/* Summary Cards */}
           <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
             <StatCard
-              label="Total Siswa"
+              label="Total Murid"
               value={totalStudents}
               icon={Users}
               color="indigo"

@@ -48,7 +48,7 @@ export function InsightTable({
           <TableHeader>
             <TableRow className={`bg-gradient-to-r ${headerClass} text-white`}>
               <TableHead className="w-10 text-center text-xs font-semibold text-white">No</TableHead>
-              <TableHead className="text-xs font-semibold text-white">Nama Siswa</TableHead>
+              <TableHead className="text-xs font-semibold text-white">Nama Murid</TableHead>
               <TableHead className="text-center text-xs font-semibold text-white w-14">{col3Label}</TableHead>
               <TableHead className="text-center text-xs font-semibold text-white w-16">Hadir %</TableHead>
             </TableRow>

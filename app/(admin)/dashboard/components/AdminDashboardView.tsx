@@ -42,7 +42,7 @@ export default function AdminDashboardView({
       <PageHero
         icon={LayoutDashboard}
         title="Dashboard Admin"
-        description="Ringkasan data pendaftar, guru, dan kehadiran siswa"
+        description="Ringkasan data pendaftar, guru, dan kehadiran murid"
       />
 
       {error && (

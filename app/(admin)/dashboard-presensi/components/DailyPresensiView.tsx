@@ -27,7 +27,7 @@ export function DailyPresensiView({
       <div className="flex items-center gap-2 mb-3">
         <UserMinus size={16} className="text-red-500 dark:text-red-400 shrink-0" />
         <h3 className="text-sm font-semibold text-slate-600 dark:text-slate-400">
-          Siswa Tidak Hadir Hari Ini
+          Murid Tidak Hadir Hari Ini
         </h3>
       </div>
       <div className="overflow-x-auto animate-fadeIn rounded-xl border border-gray-200 dark:border-gray-700 bg-white/80 dark:bg-gray-800/30">
@@ -35,7 +35,7 @@ export function DailyPresensiView({
           <TableHeader>
             <TableRow className="bg-gradient-to-r from-amber-500 to-orange-500 text-white">
               <TableHead className="w-10 text-center text-xs font-semibold text-white">No</TableHead>
-              <TableHead className="text-xs font-semibold text-white">Nama Siswa</TableHead>
+              <TableHead className="text-xs font-semibold text-white">Nama Murid</TableHead>
               <TableHead className="text-center text-xs font-semibold text-white w-24">Status</TableHead>
             </TableRow>
           </TableHeader>
@@ -43,7 +43,7 @@ export function DailyPresensiView({
             {topAbsen.length === 0 ? (
               <TableRow>
                 <TableCell colSpan={3} className="text-center py-6 text-sm text-emerald-500 dark:text-emerald-400 font-medium">
-                  🎉 Semua siswa hadir!
+                  🎉 Semua murid hadir!
                 </TableCell>
               </TableRow>
             ) : (

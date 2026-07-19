@@ -34,7 +34,7 @@ export default function GameInteraktif() {
 
       <p className="text-sm md:text-base text-gray-600 dark:text-gray-400 text-center max-w-lg">
         Kumpulan link game edukatif interaktif untuk mendukung pembelajaran
-        siswa SD. Klik tombol <strong>Kunjungi</strong> untuk membuka di tab
+        murid SD. Klik tombol <strong>Kunjungi</strong> untuk membuka di tab
         baru.
       </p>
 

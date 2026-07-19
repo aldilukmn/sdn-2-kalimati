@@ -28,7 +28,7 @@ export default function TabTugas({
   const headers = (
     <>
       <th className="text-center px-4 py-3 font-semibold whitespace-nowrap w-12">No</th>
-      <th className="text-left px-4 py-3 font-semibold whitespace-nowrap">Nama Siswa</th>
+      <th className="text-left px-4 py-3 font-semibold whitespace-nowrap">Nama Murid</th>
       <th className="text-center px-4 py-3 font-semibold whitespace-nowrap w-32">Rerata Nilai Tugas</th>
       <th className="text-center px-4 py-3 font-semibold whitespace-nowrap w-24">Status</th>
     </>
@@ -38,7 +38,7 @@ export default function TabTugas({
     <ScoreTableWrapper
       loading={tugasLoading}
       empty={paginatedStudents.length === 0}
-      emptyMessage="Tidak ada siswa."
+      emptyMessage="Tidak ada murid."
       totalPages={totalPages}
       totalItems={totalStudents}
       currentPage={currentPage}

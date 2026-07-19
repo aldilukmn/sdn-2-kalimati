@@ -178,7 +178,7 @@ export default function GuruDashboardView({
               Ringkasan Kehadiran
             </h3>
             <p className="text-sm text-gray-500 dark:text-gray-400 mt-0.5">
-              Distribusi kehadiran siswa per bulan
+              Distribusi kehadiran murid per bulan
             </p>
           </div>
           <div className="shrink-0 w-full md:w-auto">

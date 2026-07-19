@@ -91,7 +91,7 @@ export default function StudentAssessmentTable({
             {students.length === 0 ? (
               <tr>
                 <td colSpan={3 + habits.length + 1} className="p-3 text-center text-sm text-gray-400 dark:text-gray-500">
-                  Tidak ada siswa di kelas ini
+                  Tidak ada murid di kelas ini
                 </td>
               </tr>
             ) : (

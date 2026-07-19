@@ -40,7 +40,7 @@ export default function StudentDataStep({
           <InputField
             label="NISN (Jika Ada)"
             name="student.nisn"
-            placeholder="Nomor Induk Siswa Nasional"
+            placeholder="Nomor Induk Murid Nasional"
             value={formData.student.nisn}
             onChange={onChange}
             numericOnly

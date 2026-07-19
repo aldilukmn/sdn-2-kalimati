@@ -40,7 +40,7 @@ export default function ExportWordButton({
       holidayData.forEach((h: any) => holidayMap.set(h.date, h.description));
 
       if (siswaList.length === 0) {
-        toast.error("Belum ada data siswa untuk kelas ini.");
+        toast.error("Belum ada data murid untuk kelas ini.");
         return;
       }
 

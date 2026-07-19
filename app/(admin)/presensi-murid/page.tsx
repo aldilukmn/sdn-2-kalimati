@@ -164,7 +164,7 @@ export default function PresensiMuridPage() {
 
   return (
     <div className="flex flex-col gap-6 p-4 md:p-6">
-      <PageHero icon={CalendarCheck} title="Presensi Murid Harian" description="Input kehadiran siswa per kelas" />
+      <PageHero icon={CalendarCheck} title="Presensi Murid Harian" description="Input kehadiran murid per kelas" />
 
       {/* Filter */}
       <FilterBar

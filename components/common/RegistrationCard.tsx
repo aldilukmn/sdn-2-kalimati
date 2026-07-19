@@ -94,7 +94,7 @@ export default function RegistrationCard({name}: {name: string}) {
 
           <div className="px-1">
             <p className="text-blue-200 text-[10px] mb-1 uppercase tracking-widest font-semibold">
-              Nama Calon Siswa
+              Nama Calon Murid
             </p>
             <p className="text-xl font-bold capitalize leading-snug">{name}</p>
           </div>

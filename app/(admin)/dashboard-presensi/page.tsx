@@ -99,7 +99,7 @@ export default function DashboardPresensiPage() {
       <PageHero
         icon={CalendarCheck}
         title="Dashboard Presensi"
-        description="Ringkasan kehadiran siswa per kelas"
+        description="Ringkasan kehadiran murid per kelas"
       />
 
       {/* ── Filter ─────────────────────────────────────────────────────── */}

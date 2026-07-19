@@ -74,7 +74,7 @@ export default function PenilaianKarakterPage() {
       <PageHero
         icon={ClipboardList}
         title="Penilaian Karakter"
-        description="Input penilaian karakter siswa per bulan"
+        description="Input penilaian karakter murid per bulan"
       />
 
       <FilterBar
@@ -109,7 +109,7 @@ export default function PenilaianKarakterPage() {
           <TableSkeleton headers={["No", "Nama", "Kebiasaan", "Aksi"]} rows={5} />
         </div>
       ) : students.length === 0 ? (
-        <EmptyState icon={ClipboardList} title="Tidak ada siswa di kelas ini" />
+        <EmptyState icon={ClipboardList} title="Tidak ada murid di kelas ini" />
       ) : (
         <>
           {/* Student table */}

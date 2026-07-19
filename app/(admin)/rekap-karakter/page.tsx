@@ -80,7 +80,7 @@ export default function RekapKarapkterPage() {
 
   return (
     <div className="flex flex-col gap-6 p-4 md:p-6">
-      <PageHero icon={ClipboardList} title="Rekap Karakter" description="Rekapitulasi penilaian karakter siswa per bulan" />
+      <PageHero icon={ClipboardList} title="Rekap Karakter" description="Rekapitulasi penilaian karakter murid per bulan" />
 
       {/* Filters */}
       <FilterBar
@@ -138,7 +138,7 @@ export default function RekapKarapkterPage() {
           {/* Summary Cards */}
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
             <StatCard
-              label="Total Siswa"
+              label="Total Murid"
               value={totalStudents}
               icon={Users}
               color="indigo"

@@ -67,8 +67,8 @@ export function DistribusiStatus({
       </div>
       <p className="text-[11px] text-slate-400 dark:text-slate-500 mb-3">
         {isHarian
-          ? `Total ${totalStudents} siswa terdaftar di kelas ini`
-          : `Total entri per siswa selama bulan yang dipilih — % dihitung dari keseluruhan`}
+          ? `Total ${totalStudents} murid terdaftar di kelas ini`
+          : `Total entri per murid selama bulan yang dipilih — % dihitung dari keseluruhan`}
       </p>
       {loading ? (
         <div className="space-y-3">
@@ -87,7 +87,7 @@ export function DistribusiStatus({
             total={summary?.total ?? 0}
             colorBar="bg-emerald-500"
             colorText="text-emerald-600 dark:text-emerald-400"
-            subtitle={isHarian ? "siswa" : "entri"}
+            subtitle={isHarian ? "murid" : "entri"}
           />
           <DistBar
             label="Sakit"
@@ -95,7 +95,7 @@ export function DistribusiStatus({
             total={summary?.total ?? 0}
             colorBar="bg-amber-400"
             colorText="text-amber-600 dark:text-amber-400"
-            subtitle={isHarian ? "siswa" : "entri"}
+            subtitle={isHarian ? "murid" : "entri"}
           />
           <DistBar
             label="Izin"
@@ -103,7 +103,7 @@ export function DistribusiStatus({
             total={summary?.total ?? 0}
             colorBar="bg-blue-500"
             colorText="text-blue-600 dark:text-blue-400"
-            subtitle={isHarian ? "siswa" : "entri"}
+            subtitle={isHarian ? "murid" : "entri"}
           />
           <DistBar
             label="Alpa"
@@ -111,7 +111,7 @@ export function DistribusiStatus({
             total={summary?.total ?? 0}
             colorBar="bg-red-500"
             colorText="text-red-600 dark:text-red-400"
-            subtitle={isHarian ? "siswa" : "entri"}
+            subtitle={isHarian ? "murid" : "entri"}
           />
         </div>
       )}

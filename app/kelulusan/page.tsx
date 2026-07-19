@@ -13,7 +13,7 @@ export default function Kelulusan() {
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  const siswa = dataKelulusan.find((item) =>
+  const murid = dataKelulusan.find((item) =>
     item.nama.toLowerCase().includes(nama.toLowerCase()),
   );
 
@@ -27,8 +27,8 @@ export default function Kelulusan() {
 
     setIsLoading(false);
 
-    if (siswa) {
-      setHasil(siswa);
+    if (murid) {
+      setHasil(murid);
       confetti({
         particleCount: 150,
         spread: 120,

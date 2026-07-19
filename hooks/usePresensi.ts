@@ -148,7 +148,7 @@ export function usePresensi() {
         setIsExisting(false);
         setMessage({
           type: "error",
-          text: err instanceof Error ? err.message : "Gagal memuat data siswa",
+          text: err instanceof Error ? err.message : "Gagal memuat data murid",
         });
       } finally {
         if (!cancelled) {

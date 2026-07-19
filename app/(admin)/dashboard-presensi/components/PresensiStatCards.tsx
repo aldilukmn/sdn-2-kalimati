@@ -38,9 +38,9 @@ export function PresensiStatCards({
         loading={loading}
         subtitle={
           isHarian
-            ? `dari ${totalStudents} siswa`
+            ? `dari ${totalStudents} murid`
             : avgHadirPerSiswa !== null
-            ? `rata-rata ${avgHadirPerSiswa} hari/siswa`
+            ? `rata-rata ${avgHadirPerSiswa} hari/murid`
             : undefined
         }
       />
@@ -50,7 +50,7 @@ export function PresensiStatCards({
         icon={HeartPulse}
         color="yellow"
         loading={loading}
-        subtitle={isHarian ? `siswa` : undefined}
+        subtitle={isHarian ? `murid` : undefined}
       />
       <StatCard
         label="Izin"
@@ -58,7 +58,7 @@ export function PresensiStatCards({
         icon={FileText}
         color="blue"
         loading={loading}
-        subtitle={isHarian ? `siswa` : undefined}
+        subtitle={isHarian ? `murid` : undefined}
       />
       <StatCard
         label="Alpa"
@@ -66,7 +66,7 @@ export function PresensiStatCards({
         icon={XCircle}
         color="red"
         loading={loading}
-        subtitle={isHarian ? `siswa` : undefined}
+        subtitle={isHarian ? `murid` : undefined}
       />
       <div className="col-span-2 lg:col-span-1">
         <StatCard

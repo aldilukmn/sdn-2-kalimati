@@ -49,7 +49,7 @@ export default function NilaiHarianPage() {
 
   return (
     <div className="flex flex-col gap-6 p-4 md:p-6">
-      <PageHero icon={ClipboardEdit} title="Nilai Harian" description="Input nilai siswa per bab atau per materi" />
+      <PageHero icon={ClipboardEdit} title="Nilai Harian" description="Input nilai murid per bab atau per materi" />
 
       <FilterBar config={{ showAcademicYear: true, showSemester: true, showGrade: true, showSubject: true }} academicYear={academicYear} onAcademicYearChange={setAcademicYear} semester={semester} onSemesterChange={setSemester} grade={grade} onGradeChange={setGrade} gradeDisabled={userRole === "guru"} selectedGS={selectedGS} onSelectedGSChange={setSelectedGS} gradeSubjects={gradeSubjects} />
 

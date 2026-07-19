@@ -22,7 +22,7 @@ export default function RekapNilaiPage() {
 
   return (
     <div className="flex flex-col gap-6 p-4 md:p-6">
-      <PageHero icon={ScrollText} title="Rekap Nilai Harian" description="Rekapitulasi nilai siswa per bab dan per mapel" />
+      <PageHero icon={ScrollText} title="Rekap Nilai Harian" description="Rekapitulasi nilai murid per bab dan per mapel" />
 
       <FilterBar config={{ showAcademicYear: true, showSemester: true, showGrade: true, showSubject: true }} academicYear={academicYear} onAcademicYearChange={setAcademicYear} semester={semester} onSemesterChange={setSemester} grade={grade} onGradeChange={setGrade} gradeDisabled={userRole === "guru"} selectedGS={selectedGS} onSelectedGSChange={setSelectedGS} gradeSubjects={gradeSubjects} />
 

@@ -1,16 +1,16 @@
 "use client";
 import { useState } from "react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { siswa } from "../data";
+import { murid } from "../data";
 
 const PAGE_SIZE = 5;
 
 export default function NamaMurid() {
   const [page, setPage] = useState(1);
-  const totalPages = Math.ceil(siswa.length / PAGE_SIZE);
+  const totalPages = Math.ceil(murid.length / PAGE_SIZE);
 
   const startIdx = (page - 1) * PAGE_SIZE;
-  const currentData = siswa.slice(startIdx, startIdx + PAGE_SIZE);
+  const currentData = murid.slice(startIdx, startIdx + PAGE_SIZE);
 
   return (
     <div>
@@ -21,7 +21,7 @@ export default function NamaMurid() {
             <TableHead>No</TableHead>
             <TableHead>NISN</TableHead>
             <TableHead>NIS</TableHead>
-            <TableHead>Nama Siswa</TableHead>
+            <TableHead>Nama Murid</TableHead>
             <TableHead>Jenis Kelamin</TableHead>
             <TableHead>Status</TableHead>
           </TableHeader>

@@ -30,7 +30,7 @@ export default function KarakterHistoryPage() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const studentId = searchParams.get("studentId");
-  const studentName = searchParams.get("name") || "Siswa";
+  const studentName = searchParams.get("name") || "Murid";
   const studentGrade = searchParams.get("grade") || "-";
 
   const [historyData, setHistoryData] = useState<HistoryItem[]>([]);
@@ -82,7 +82,7 @@ export default function KarakterHistoryPage() {
       <div className="flex flex-col gap-6 p-4 md:p-6">
         <PageHero icon={History} title="Riwayat Penilaian Karakter" />
         <div className="text-center py-12 text-slate-500 dark:text-slate-400">
-          Data siswa tidak ditemukan
+          Data murid tidak ditemukan
         </div>
       </div>
     );
@@ -127,7 +127,7 @@ export default function KarakterHistoryPage() {
             <div className="bg-white/70 dark:bg-gray-800/40 border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
               <div className="text-center py-12">
                 <History size={40} className="mx-auto text-slate-300 dark:text-slate-600 mb-3" aria-hidden="true" />
-                <p className="text-slate-500 dark:text-slate-400 font-medium">Siswa belum memiliki penilaian karakter</p>
+                <p className="text-slate-500 dark:text-slate-400 font-medium">Murid belum memiliki penilaian karakter</p>
                 <button
                   onClick={() => router.push("/penilaian-karakter")}
                   className="mt-3 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-sm font-medium transition-colors cursor-pointer"

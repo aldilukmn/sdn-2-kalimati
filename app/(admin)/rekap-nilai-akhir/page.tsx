@@ -35,7 +35,7 @@ export default function RekapNilaiAkhirPage() {
       <PageHero
         icon={BarChart3}
         title="Rekap Nilai Akhir"
-        description="Rekapitulasi nilai akhir siswa per mata pelajaran"
+        description="Rekapitulasi nilai akhir murid per mata pelajaran"
       />
 
       <FilterBar

@@ -56,7 +56,7 @@ export function useDashboardPresensi(
   const [initialLoading, setInitialLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [retryCount, setRetryCount] = useState(0);
-  // Total siswa di kelas (untuk mode harian — context "X dari Y siswa")
+  // Total murid di kelas (untuk mode harian — context "X dari Y murid")
   const [totalStudents, setTotalStudents] = useState<number>(0);
 
   const { holidays } = useHolidays();
@@ -165,7 +165,7 @@ export function useDashboardPresensi(
       setLoading(true);
       setError(null);
       try {
-        // Ambil data presensi hari itu + daftar seluruh siswa di kelas
+        // Ambil data presensi hari itu + daftar seluruh murid di kelas
         const [presensiRes, siswaRes] = await Promise.all([
           StudentAttendanceService.getByGradeAndDate(grade, selectedDate),
           StudentAttendanceService.getStudentsByGrade(grade),
@@ -185,14 +185,14 @@ export function useDashboardPresensi(
         const sakit = presensiList.filter((p) => p.status === "sakit").length;
         const izin = presensiList.filter((p) => p.status === "izin").length;
         const absen = presensiList.filter((p) => p.status === "absen").length;
-        const total = presensiList.length; // siswa yang sudah tercatat
+        const total = presensiList.length; // murid yang sudah tercatat
 
         setSummary({
           hadir,
           sakit,
           izin,
           absen,
-          total: jumlahSiswa, // gunakan total siswa sebagai denominator
+          total: jumlahSiswa, // gunakan total murid sebagai denominator
           hadirRate:
             jumlahSiswa > 0 ? Math.round((hadir / jumlahSiswa) * 100) : 0,
         });
@@ -254,7 +254,7 @@ export function useDashboardPresensi(
       ? studentRows.length > 0
       : summary.total > 0 || totalStudents > 0);
 
-  // Rata-rata hari hadir per siswa (untuk label tambahan di mode bulanan)
+  // Rata-rata hari hadir per murid (untuk label tambahan di mode bulanan)
   const avgHadirPerSiswa =
     viewMode === "bulanan" && totalStudents > 0 && summary
       ? Math.round((summary.hadir / totalStudents) * 10) / 10

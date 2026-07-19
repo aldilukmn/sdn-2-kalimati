@@ -28,7 +28,7 @@ export default function GradeRecapTable({
         <thead>
           <tr className="bg-linear-to-r from-indigo-600 to-purple-600 text-white text-xs md:text-sm">
             <th className="px-3 py-3 font-semibold whitespace-nowrap">Kelas</th>
-            <th className="px-3 py-3 font-semibold whitespace-nowrap">Siswa</th>
+            <th className="px-3 py-3 font-semibold whitespace-nowrap">Murid</th>
             <th className="px-3 py-3 font-semibold whitespace-nowrap">
               {mode === "daily" ? "Setoran" : "Saldo"}
             </th>

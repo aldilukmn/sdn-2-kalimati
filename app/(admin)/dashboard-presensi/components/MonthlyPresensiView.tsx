@@ -150,9 +150,9 @@ export function MonthlyPresensiView({
 
       {/* Dua tabel insight (bulanan) */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        {/* Tabel: Siswa Alpa Terbanyak */}
+        {/* Tabel: Murid Alpa Terbanyak */}
         <InsightTable
-          title="Siswa Alpa Terbanyak"
+          title="Murid Alpa Terbanyak"
           icon={<UserX size={16} className="text-red-500 dark:text-red-400 shrink-0" />}
           headerClass="from-red-600 to-rose-600"
           hoverClass="hover:bg-red-50/50 dark:hover:bg-red-900/20"
@@ -168,9 +168,9 @@ export function MonthlyPresensiView({
           })}
         />
 
-        {/* Tabel: Siswa Kehadiran Terendah */}
+        {/* Tabel: Murid Kehadiran Terendah */}
         <InsightTable
-          title="Siswa Kehadiran Terendah"
+          title="Murid Kehadiran Terendah"
           icon={<UserCheck size={16} className="text-amber-500 dark:text-amber-400 shrink-0" />}
           headerClass="from-amber-500 to-orange-500"
           hoverClass="hover:bg-amber-50/50 dark:hover:bg-amber-900/20"

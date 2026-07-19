@@ -43,7 +43,7 @@ export default function TabNonHarian({
   const headers = (
     <>
       <th className="text-center px-4 py-3 font-semibold whitespace-nowrap w-12">No</th>
-      <th className="text-left px-4 py-3 font-semibold whitespace-nowrap">Nama Siswa</th>
+      <th className="text-left px-4 py-3 font-semibold whitespace-nowrap">Nama Murid</th>
       <th className="text-center px-4 py-3 font-semibold whitespace-nowrap w-40">
         {nonHarianComponents.find((c) => c.key === selectedComponentKey)?.name || selectedComponentKey}
       </th>
@@ -70,7 +70,7 @@ export default function TabNonHarian({
     <ScoreTableWrapper
       loading={nonHarianLoading}
       empty={paginatedStudents.length === 0}
-      emptyMessage="Tidak ada siswa."
+      emptyMessage="Tidak ada murid."
       totalPages={totalPages}
       totalItems={totalStudents}
       currentPage={currentPage}

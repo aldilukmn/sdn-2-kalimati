@@ -104,7 +104,7 @@ export default function TabunganSection({
             Belum Ada Data Tabungan
           </p>
           <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">
-            Belum ada siswa yang menabung di bulan ini
+            Belum ada murid yang menabung di bulan ini
           </p>
         </div>
       ) : (
@@ -116,7 +116,7 @@ export default function TabunganSection({
             icon={Wallet}
             color="sky"
             loading={loading}
-            subtitle={data ? `${data.totalStudents || 0} siswa menabung` : undefined}
+            subtitle={data ? `${data.totalStudents || 0} murid menabung` : undefined}
           />
           <StatCard
             variant="simple"

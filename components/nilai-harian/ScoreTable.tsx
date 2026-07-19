@@ -83,7 +83,7 @@ export default function ScoreTable({
     return (
       <div className="bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-md border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl">
         <div className="text-center py-12 text-gray-400 dark:text-gray-500 text-sm">
-          Tidak ada siswa di kelas ini
+          Tidak ada murid di kelas ini
         </div>
       </div>
     );
@@ -97,7 +97,7 @@ export default function ScoreTable({
             <thead>
               <tr className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-xs md:text-sm">
                 <th className="px-3 py-3 text-center font-semibold w-12 whitespace-nowrap">No</th>
-                <th className="px-3 py-3 text-left font-semibold whitespace-nowrap">Nama Siswa</th>
+                <th className="px-3 py-3 text-left font-semibold whitespace-nowrap">Nama Murid</th>
                 <th className="px-3 py-3 text-center font-semibold w-24 whitespace-nowrap">Nilai</th>
                 <th className="px-3 py-3 text-center font-semibold w-20 whitespace-nowrap">Maks</th>
                 <th className="px-3 py-3 text-center font-semibold w-28 whitespace-nowrap">Status</th>
@@ -128,7 +128,7 @@ export default function ScoreTable({
           <thead>
             <tr className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-xs md:text-sm">
               <th className="px-3 py-3 text-center font-semibold w-12">No</th>
-              <th className="px-3 py-3 text-left font-semibold">Nama Siswa</th>
+              <th className="px-3 py-3 text-left font-semibold">Nama Murid</th>
               <th className="px-3 py-3 text-center font-semibold w-24">Nilai</th>
               <th className="px-3 py-3 text-center font-semibold w-20">Maks</th>
               <th className="px-3 py-3 text-center font-semibold w-28">Status</th>

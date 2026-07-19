@@ -21,14 +21,14 @@ export default function HasilTKA() {
     // Simulasi loading delay
     await new Promise((resolve) => setTimeout(resolve, 1500));
 
-    const siswa = dataTKA.find((item) =>
+    const murid = dataTKA.find((item) =>
       item.nama.toLowerCase().includes(nama.toLowerCase()),
     );
 
     setIsLoading(false);
 
-    if (siswa) {
-      setHasil(siswa);
+    if (murid) {
+      setHasil(murid);
     } else {
       setError("Data tidak ditemukan");
       setTimeout(() => {
@@ -125,7 +125,7 @@ export default function HasilTKA() {
           "
           >
             <Loader size={18} className="animate-spin" />
-            <p>Mencari data siswa...</p>
+            <p>Mencari data murid...</p>
           </div>
         )}
 

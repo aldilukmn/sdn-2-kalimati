@@ -93,20 +93,20 @@ export default function NilaiAkhirPage() {
               <div className="space-y-3">
                 <div>
                   <p className="text-sm font-semibold text-slate-700 dark:text-slate-200">
-                    {selectedGSData?.subjectName || "-"} — {totalStudents} Siswa
+                    {selectedGSData?.subjectName || "-"} — {totalStudents} Murid
                   </p>
                 </div>
                 <div className="space-y-1">
                   <p className="text-sm text-emerald-600 dark:text-emerald-400">
-                    ✅ Lengkap: {completeStudents} siswa
+                    ✅ Lengkap: {completeStudents} murid
                   </p>
                   {Object.keys(missingByComponent).length > 0 && (
                     <div className="text-sm text-red-500 dark:text-red-400">
-                      <span title={`${incompleteStudents} siswa belum lengkap`}><AlertCircle size={16} className="inline shrink-0 mr-1" /></span>
-                      Belum lengkap: {incompleteStudents} siswa
+                      <span title={`${incompleteStudents} murid belum lengkap`}><AlertCircle size={16} className="inline shrink-0 mr-1" /></span>
+                      Belum lengkap: {incompleteStudents} murid
                       <ul className="list-disc list-inside ml-4 text-xs text-red-400 dark:text-red-500 mt-0.5">
                         {Object.entries(missingByComponent).map(([key, count]) => (
-                          <li key={key}>{key}: {count} siswa belum diisi</li>
+                          <li key={key}>{key}: {count} murid belum diisi</li>
                         ))}
                       </ul>
                     </div>
@@ -141,7 +141,7 @@ export default function NilaiAkhirPage() {
                   <tr className="border-b border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800/50">
                     <th className="text-center px-4 py-3 font-semibold text-slate-600 dark:text-slate-300 w-10 whitespace-nowrap" />
                     <th className="text-center px-4 py-3 font-semibold text-slate-600 dark:text-slate-300 w-12 whitespace-nowrap">No</th>
-                    <th className="text-left px-4 py-3 font-semibold text-slate-600 dark:text-slate-300 whitespace-nowrap">Siswa</th>
+                    <th className="text-left px-4 py-3 font-semibold text-slate-600 dark:text-slate-300 whitespace-nowrap">Murid</th>
                     <th className="text-center px-4 py-3 font-semibold text-slate-600 dark:text-slate-300 whitespace-nowrap">Komponen</th>
                     <th className="text-center px-4 py-3 font-semibold text-slate-600 dark:text-slate-300 w-24 whitespace-nowrap">Nilai Akhir</th>
                   </tr>

@@ -36,7 +36,7 @@ export default function TransactionModal({
     <Modal open onClose={closeTxModal} title={mode === "simpan" ? "Simpan" : "Tarik Tabungan"} className="max-w-md">
       <div className="space-y-3">
           <div>
-            <p className="text-xs text-gray-500">Siswa</p>
+            <p className="text-xs text-gray-500">Murid</p>
             <p className="text-sm font-medium text-gray-800 dark:text-slate-100">{student.name}</p>
           </div>
           <div>

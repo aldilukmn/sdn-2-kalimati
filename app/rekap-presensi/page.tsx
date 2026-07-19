@@ -110,11 +110,11 @@ export default function RekapPresensi() {
   }, [grade, month, year]);
 
   const handleExport = () => {
-    const rows = siswaList.map((siswa) => {
-      const stats = getStudentStats(siswa.studentId);
+    const rows = siswaList.map((murid) => {
+      const stats = getStudentStats(murid.studentId);
       return {
-        studentId: siswa.studentId,
-        name: siswa.name,
+        studentId: murid.studentId,
+        name: murid.name,
         grade,
         hadir: stats.hadir,
         sakit: stats.sakit,
@@ -148,10 +148,10 @@ export default function RekapPresensi() {
         <div className="text-center mb-2">
           <div className="text-4xl md:text-5xl mb-4 drop-shadow-sm">📊</div>
           <h1 className="text-2xl md:text-3xl font-bold text-gray-800 dark:text-gray-200">
-            Rekap Presensi Siswa
+            Rekap Presensi Murid
           </h1>
           <p className="text-sm opacity-70 text-gray-600 dark:text-gray-300 mt-2">
-            Pantau kehadiran siswa per kelas dan bulan
+            Pantau kehadiran murid per kelas dan bulan
           </p>
         </div>
 
@@ -277,7 +277,7 @@ export default function RekapPresensi() {
             <div className="overflow-x-auto animate-fadeIn rounded-xl border border-gray-200 dark:border-gray-700 bg-white/80 md:bg-white/60 dark:bg-gray-800/30">
               {siswaList.length === 0 ? (
                 <div className="px-5 py-6 text-center text-gray-500 dark:text-gray-400">
-                  Tidak ada data siswa
+                  Tidak ada data murid
                 </div>
               ) : (
                 <table className="w-full">
@@ -307,22 +307,22 @@ export default function RekapPresensi() {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
-                    {paginatedSiswa.map((siswa, i) => {
-                      const stats = getStudentStats(siswa.studentId);
+                    {paginatedSiswa.map((murid, i) => {
+                      const stats = getStudentStats(murid.studentId);
                       const persentase =
                         stats.total > 0
                           ? Math.round((stats.hadir / stats.total) * 100)
                           : 0;
                       return (
                         <tr
-                          key={siswa.studentId}
+                          key={murid.studentId}
                           className="hover:bg-indigo-50/50 dark:hover:bg-indigo-900/20 transition-colors animate-fadeIn"
                         >
                           <td className="px-4 py-3 text-sm text-gray-500 dark:text-gray-400">
                             {startIndex + i + 1}
                           </td>
                           <td className="px-4 py-3 text-sm font-medium text-gray-900 dark:text-white">
-                            {siswa.name}
+                            {murid.name}
                           </td>
                           <td className="px-4 py-3 text-sm text-center text-green-600 dark:text-green-400 font-medium">
                             {stats.hadir}
@@ -370,7 +370,7 @@ export default function RekapPresensi() {
             )}
 
             <div className="mt-4 text-xs text-gray-500 dark:text-gray-400 text-right">
-              Total siswa: {dataPresensi.length} siswa
+              Total murid: {dataPresensi.length} murid
             </div>
           </>
         )}

@@ -36,7 +36,7 @@ export default function PresensiTable({
     return (
       <div className="bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-md border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl">
         <div className="text-center py-12 text-gray-400 dark:text-gray-500 text-sm">
-          Tidak ada siswa di kelas ini
+          Tidak ada murid di kelas ini
         </div>
       </div>
     );

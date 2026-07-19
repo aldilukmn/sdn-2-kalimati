@@ -5,7 +5,7 @@ interface SiswaType {
   jk: string,
 }
 
-export const siswa: SiswaType[] = [
+export const murid: SiswaType[] = [
     { nisn: '3148940926', nis: 202101003, nama: "Afika Naila", jk:"Perempuan" },
     { nisn: '3146302896', nis: 202101013, nama: "Kholifah", jk:"Perempuan" },
     { nisn: '3153515482', nis: 212201001, nama: "Abyan Bagas Pradipta", jk:"Laki-laki" },
