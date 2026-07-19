@@ -14,7 +14,7 @@ import { useAuth } from "@/hooks/useAuth";
 const Modal = dynamic(() => import("@/components/modals/Modal"), { ssr: false });
 
 export default function DataMuridPage() {
-  const { role } = useAuth();
+  const { role, isLoading: authLoading } = useAuth();
   const [grade, setGrade] = useState("1");
   const [students, setStudents] = useState<MasterStudentType[]>([]);
   const [loading, setLoading] = useState(true);
@@ -77,6 +77,8 @@ export default function DataMuridPage() {
       toast.error(e.message || "Gagal menghapus murid");
     }
   };
+
+  if (authLoading) return null;
 
   if (role !== "admin" && role !== "kepala_sekolah") {
     return <div className="p-6 text-center text-red-500">Akses ditolak. Hanya Admin / Kepala Sekolah yang bisa mengelola data murid.</div>;
