@@ -192,6 +192,7 @@ export function useLitnum() {
           inputs[s.studentId] = String(s.score);
         }
         setScoreInputs(inputs);
+        setTasks(prev => prev.map(t => t._id === selectedTaskId ? { ...t, inputtedCount: scoreList.length } : t));
       }
       toast.success("Nilai LitNum berhasil disimpan");
     } catch {

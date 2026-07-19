@@ -4,6 +4,7 @@ export interface LitnumTask {
   semester: string;
   grade: string;
   name: string;
+  inputtedCount?: number;
   createdAt: string;
   updatedAt: string;
 }

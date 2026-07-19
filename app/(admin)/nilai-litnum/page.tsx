@@ -199,16 +199,25 @@ export default function NilaiLitnumPage() {
                         {index + 1}. {t.name}
                         {t.createdAt && (
                           <span className="text-xs font-normal opacity-70 ml-2">
-                            (
-                            {new Date(t.createdAt).toLocaleDateString("id-ID", {
+                            ({new Date(t.createdAt).toLocaleDateString("id-ID", {
                               day: "numeric",
                               month: "short",
                               year: "numeric",
-                            })}
-                            )
+                            })})
                           </span>
                         )}
                       </span>
+                      <div className="ml-2 flex items-center">
+                        {(t.inputtedCount ?? 0) >= students.length && students.length > 0 ? (
+                          <span className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-medium bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300">
+                            ✅ Selesai
+                          </span>
+                        ) : (
+                          <span className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-medium bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300">
+                            {t.inputtedCount ?? 0}/{students.length}
+                          </span>
+                        )}
+                      </div>
                     </div>
                     <div className="flex items-center gap-2 sm:gap-4 shrink-0">
                       <div
