@@ -137,19 +137,19 @@ export default function DataMuridPage() {
             <table className="w-full">
               <thead>
                 <tr className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-xs md:text-sm">
-                  <th className="px-4 py-3 text-left font-semibold whitespace-nowrap">NIS/ID</th>
+                  <th className="px-4 py-3 text-center font-semibold whitespace-nowrap">NIS/ID</th>
                   <th className="px-4 py-3 text-left font-semibold whitespace-nowrap">Nama Murid</th>
-                  <th className="px-4 py-3 text-left font-semibold whitespace-nowrap">L/P</th>
-                  <th className="px-4 py-3 text-right font-semibold whitespace-nowrap">Aksi</th>
+                  <th className="px-4 py-3 text-center font-semibold whitespace-nowrap">L/P</th>
+                  <th className="px-4 py-3 text-center font-semibold whitespace-nowrap">Aksi</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
                 {students.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE).map(student => (
                   <tr key={student._id} className="transition-colors animate-fadeIn hover:bg-indigo-50/50 dark:hover:bg-indigo-900/20">
-                    <td className="px-4 py-3 md:px-6 md:py-4 text-sm font-medium text-gray-900 dark:text-white whitespace-nowrap">{student.studentId}</td>
+                    <td className="px-4 py-3 md:px-6 md:py-4 text-center text-sm font-medium text-gray-900 dark:text-white whitespace-nowrap">{student.studentId}</td>
                     <td className="px-4 py-3 md:px-6 md:py-4 text-sm text-gray-600 dark:text-gray-300 whitespace-nowrap">{student.name}</td>
-                    <td className="px-4 py-3 md:px-6 md:py-4 text-sm text-gray-600 dark:text-gray-300 whitespace-nowrap">{student.gender}</td>
-                    <td className="px-4 py-3 md:px-6 md:py-4 flex justify-end gap-2">
+                    <td className="px-4 py-3 md:px-6 md:py-4 text-center text-sm text-gray-600 dark:text-gray-300 whitespace-nowrap">{student.gender}</td>
+                    <td className="px-4 py-3 md:px-6 md:py-4 flex justify-center gap-2">
                       <button onClick={() => { setEditMode(true); setFormData(student); setModalOpen(true); }} className="p-2 text-indigo-600 hover:bg-indigo-100 rounded-lg transition-colors"><Pencil size={16} /></button>
                       <button onClick={() => handleDelete(student._id!)} className="p-2 text-red-600 hover:bg-red-100 rounded-lg transition-colors"><Trash2 size={16} /></button>
                     </td>
