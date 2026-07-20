@@ -15,6 +15,15 @@ import FilterBar from "@/components/shared/FilterBar";
 import LoadingSkeleton from "@/components/shared/LoadingSkeleton";
 import ErrorState from "@/components/shared/ErrorState";
 import EmptyState from "@/components/shared/EmptyState";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import dynamic from "next/dynamic";
 const Modal = dynamic(() => import("@/components/modals/Modal"), { ssr: false });
 import Pagination from "@/components/common/Pagination";
@@ -124,14 +133,20 @@ export default function PenilaianPage() {
       />
 
       <div className="flex flex-col sm:flex-row gap-4 w-full">
-        <select
-          value={category}
-          onChange={(e) => setCategory(e.target.value)}
-          className="px-4 py-2 rounded-xl border border-slate-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-slate-700 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-shadow appearance-none cursor-pointer sm:w-48"
-        >
-          <option value="tugas">Nilai Tugas</option>
-          <option value="keaktifan">Nilai Keaktifan</option>
-        </select>
+        <div className="w-full sm:w-48">
+          <Select value={category} onValueChange={(v) => v && setCategory(v)}>
+            <SelectTrigger className="w-full h-auto rounded-xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm font-semibold focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100 shadow-sm">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectLabel>Kategori Penilaian</SelectLabel>
+                <SelectItem value="tugas">Nilai Tugas</SelectItem>
+                <SelectItem value="keaktifan">Nilai Keaktifan</SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+        </div>
         <div className="flex-1">
           <FilterBar
         config={{
