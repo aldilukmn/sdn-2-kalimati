@@ -136,7 +136,9 @@ export default function PenilaianPage() {
         <div className="w-full sm:w-48">
           <Select value={category} onValueChange={(v) => v && setCategory(v)}>
             <SelectTrigger className="w-full h-auto rounded-xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm font-semibold focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100 shadow-sm">
-              <SelectValue />
+              <SelectValue placeholder="Pilih Kategori">
+                {category === "tugas" ? "Nilai Tugas" : "Nilai Keaktifan"}
+              </SelectValue>
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
