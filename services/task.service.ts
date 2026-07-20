@@ -2,12 +2,12 @@ import { api } from "@/lib/api";
 import type { Task } from "@/types/tugas";
 
 export default class TaskService {
-  static async getAll(gradeSubjectId: string) {
-    const params = new URLSearchParams({ gradeSubjectId });
+  static async getAll(gradeSubjectId: string, category: string = "tugas") {
+    const params = new URLSearchParams({ gradeSubjectId, category });
     return await api<Task[]>(`/tasks?${params.toString()}`);
   }
 
-  static async create(data: { gradeSubjectId: string; name: string }) {
+  static async create(data: { gradeSubjectId: string; name: string; category?: string }) {
     return await api<Task>("/tasks", {
       method: "POST",
       body: JSON.stringify(data),

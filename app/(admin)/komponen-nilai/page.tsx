@@ -22,6 +22,7 @@ import TabNilaiHarian from "./components/TabNilaiHarian";
 import TabKarakter from "./components/TabKarakter";
 import TabPresensi from "./components/TabPresensi";
 import TabTugas from "./components/TabTugas";
+import TabKeaktifan from "./components/TabKeaktifan";
 import TabLitnum from "./components/TabLitnum";
 import TabNonHarian from "./components/TabNonHarian";
 import FilterBar from "@/components/shared/FilterBar";
@@ -39,6 +40,7 @@ export default function NilaiKomponenPage() {
     students,
     harianScores, harianLoading,
     tugasScores, tugasLoading,
+    keaktifanScores, keaktifanLoading,
     karakterStudents, karakterLoading,
     presensiStudents, presensiLoading,
     litnumStudents, litnumLoading,
@@ -84,6 +86,7 @@ export default function NilaiKomponenPage() {
   const isKarakterTab = safeKey(selectedComponentKey) === "karakter";
   const isPresensiTab = safeKey(selectedComponentKey) === "presensi";
   const isTugasTab = safeKey(selectedComponentKey) === "tugas";
+  const isKeaktifanTab = safeKey(selectedComponentKey) === "keaktifan";
   const isLitnumTab = safeKey(selectedComponentKey) === "litnum";
 
   const getActiveData = () => {
@@ -299,14 +302,25 @@ export default function NilaiKomponenPage() {
             />
           ) : isTugasTab ? (
             <TabTugas
-              paginatedStudents={paginatedStudents}
+              paginatedStudents={paginatedData}
               tugasScores={tugasScores}
               tugasLoading={tugasLoading}
               ITEMS_PER_PAGE={ITEMS_PER_PAGE}
               currentPage={currentPage}
               totalPages={totalPages}
               setCurrentPage={setCurrentPage}
-              totalStudents={students.length}
+              totalStudents={getActiveData().length}
+            />
+          ) : isKeaktifanTab ? (
+            <TabKeaktifan
+              paginatedStudents={paginatedData}
+              keaktifanScores={keaktifanScores}
+              keaktifanLoading={keaktifanLoading}
+              ITEMS_PER_PAGE={ITEMS_PER_PAGE}
+              currentPage={currentPage}
+              totalPages={totalPages}
+              setCurrentPage={setCurrentPage}
+              totalStudents={getActiveData().length}
             />
           ) : isLitnumTab ? (
             <TabLitnum
