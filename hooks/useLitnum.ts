@@ -149,7 +149,7 @@ export function useLitnum() {
     try {
       const res = await LitnumTaskService.update(id, { name });
       if (res?.result) {
-        setTasks((prev) => prev.map((t) => (t._id === id ? res.result as LitnumTask : t)));
+        setTasks((prev) => prev.map((t) => (t._id === id ? { ...res.result as LitnumTask, inputtedCount: t.inputtedCount } : t)));
         toast.success("Sub-penilaian berhasil diubah");
       }
     } catch {
