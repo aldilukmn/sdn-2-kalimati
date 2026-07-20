@@ -129,7 +129,7 @@ export default function PenilaianPage() {
       <PageHero
         icon={ClipboardEdit}
         title="Penilaian"
-        description="Kelola tugas dan input nilai"
+        description={`Kelola ${category === "tugas" ? "tugas" : "keaktifan"} dan input nilai`}
       />
 
       <div className="flex flex-col sm:flex-row gap-4 w-full">
@@ -186,7 +186,7 @@ export default function PenilaianPage() {
             className="mx-auto text-slate-300 dark:text-slate-600 mb-3"
           />
           <p className="text-slate-500 dark:text-slate-400 text-sm">
-            Pilih mata pelajaran untuk mulai mengelola tugas
+            Pilih mata pelajaran untuk mulai mengelola {category === "tugas" ? "tugas" : "keaktifan"}
           </p>
         </div>
       ) : loading ? (
@@ -195,7 +195,7 @@ export default function PenilaianPage() {
         <>
           <div className="flex items-center justify-between mb-2">
             <h2 className="font-semibold text-slate-700 dark:text-slate-200">
-              Daftar Tugas
+              Daftar {category === "tugas" ? "Tugas" : "Keaktifan"}
             </h2>
             <button
               onClick={openAdd}
@@ -203,7 +203,7 @@ export default function PenilaianPage() {
               className="flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 text-white text-sm font-medium rounded-lg transition-colors cursor-pointer disabled:cursor-not-allowed"
             >
               <Plus size={16} />
-              Tambah Tugas
+              Tambah {category === "tugas" ? "Tugas" : "Keaktifan"}
             </button>
           </div>
           <div className="space-y-2">
@@ -211,7 +211,7 @@ export default function PenilaianPage() {
               <EmptyState
                 icon={ClipboardList}
                 title="Belum ada data"
-                description={`Klik Tambah ${category === "tugas" ? "Tugas" : category === "keaktifan" ? "Keaktifan" : category} untuk membuat data baru`}
+                description={`Klik Tambah ${category === "tugas" ? "Tugas" : "Keaktifan"} untuk membuat data baru`}
               />
             ) : (
               tasks.map((t: any, index: number) => {
@@ -462,7 +462,7 @@ export default function PenilaianPage() {
           setTaskModal(null);
           setTaskName("");
         }}
-        title={taskModal?.mode === "add" ? `Tambah ${category === "tugas" ? "Tugas" : category === "keaktifan" ? "Keaktifan" : category}` : "Edit Data"}
+        title={taskModal?.mode === "add" ? `Tambah ${category === "tugas" ? "Tugas" : "Keaktifan"}` : "Edit Data"}
       >
         <div className="space-y-3">
           <input
@@ -470,7 +470,7 @@ export default function PenilaianPage() {
             value={taskName}
             disabled={isSubmitting}
             onChange={(e) => setTaskName(e.target.value)}
-            placeholder="Masukkan nama tugas"
+            placeholder={`Masukkan nama ${category === "tugas" ? "tugas" : "keaktifan"}`}
             className="w-full h-auto rounded-xl border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm focus:outline-none focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100 dark:focus:border-blue-400 disabled:opacity-50 transition-colors"
             autoFocus
           />
@@ -497,11 +497,11 @@ export default function PenilaianPage() {
         className="max-w-md"
         open={confirmDelete !== null}
         onClose={() => setConfirmDelete(null)}
-        title="Hapus Tugas"
+        title={`Hapus ${category === "tugas" ? "Tugas" : "Keaktifan"}`}
       >
         <p className="text-sm text-slate-600 dark:text-slate-400 mb-4">
-          Yakin ingin menghapus tugas ini? Semua nilai terkait juga akan
-          terhapus.
+          Yakin ingin menghapus {category === "tugas" ? "tugas" : "keaktifan"} ini? Semua nilai terkait juga akan
+          dihapus.
         </p>
         <div className="flex gap-2 justify-end">
           <button
