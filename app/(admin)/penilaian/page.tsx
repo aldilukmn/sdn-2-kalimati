@@ -123,7 +123,17 @@ export default function PenilaianPage() {
         description="Kelola tugas dan input nilai"
       />
 
-      <FilterBar
+      <div className="flex flex-col sm:flex-row gap-4 w-full">
+        <select
+          value={category}
+          onChange={(e) => setCategory(e.target.value)}
+          className="px-4 py-2 rounded-xl border border-slate-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-slate-700 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-shadow appearance-none cursor-pointer sm:w-48"
+        >
+          <option value="tugas">Nilai Tugas</option>
+          <option value="keaktifan">Nilai Keaktifan</option>
+        </select>
+        <div className="flex-1">
+          <FilterBar
         config={{
           showAcademicYear: true,
           showSemester: true,
@@ -145,6 +155,8 @@ export default function PenilaianPage() {
         }))}
         subjectPlaceholder="Pilih Mapel"
       />
+        </div>
+      </div>
 
       {error ? (
         <ErrorState error={error} onRetry={() => window.location.reload()} />
