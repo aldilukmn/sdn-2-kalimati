@@ -10,7 +10,13 @@ export function useAssessmentStudents(role: string | null, grade: string, retryC
     (async () => {
       try {
         const res = await StudentAttendanceService.getStudentsByGrade(grade);
-        setStudents(res?.result || []);
+        const fetchedStudents = res?.result || [];
+        fetchedStudents.sort((a, b) => {
+          const idA = a.studentId || "";
+          const idB = b.studentId || "";
+          return idA.localeCompare(idB, undefined, { numeric: true });
+        });
+        setStudents(fetchedStudents);
       } catch {
         setStudents([]);
       }

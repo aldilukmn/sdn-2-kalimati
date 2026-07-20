@@ -51,7 +51,11 @@ export function useKarakterData(
             : null;
           return { studentId: s.studentId, name: s.name, avg };
         });
-        merged.sort((a, b) => a.name.localeCompare(b.name, "id"));
+        merged.sort((a, b) => {
+          const idA = a.studentId || "";
+          const idB = b.studentId || "";
+          return idA.localeCompare(idB, undefined, { numeric: true });
+        });
         setKarakterStudents(merged);
       })
       .catch(() => {

@@ -80,7 +80,11 @@ export function usePresensiData(
           return { studentId: s.studentId, name: s.name, avg };
         });
 
-        merged.sort((a, b) => a.name.localeCompare(b.name, "id"));
+        merged.sort((a, b) => {
+          const idA = a.studentId || "";
+          const idB = b.studentId || "";
+          return idA.localeCompare(idB, undefined, { numeric: true });
+        });
         if (!cancelled) setPresensiStudents(merged);
       } catch {
         if (!cancelled) setPresensiStudents([]);
