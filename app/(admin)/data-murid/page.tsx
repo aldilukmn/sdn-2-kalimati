@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Users, Plus, Pencil, Trash2, Upload, AlertCircle } from "lucide-react";
+import { Users, Plus, Pencil, Trash2, Upload, AlertCircle, Loader2 } from "lucide-react";
 import { MasterStudentService } from "@/services/master-student.service";
 import { MasterStudentType } from "@/types/attendance";
 import { GRADES } from "@/lib/constants";
@@ -172,25 +172,39 @@ export default function DataMuridPage() {
       </div>
 
       <Modal open={modalOpen} onClose={() => setModalOpen(false)} title={editMode ? "Ubah Data Murid" : "Tambah Murid Baru"} className="max-w-md">
-        <div className="space-y-4">
-          <div><label className="block text-sm mb-1">ID/NIS</label><input type="text" value={formData.studentId || ""} onChange={e => setFormData({ ...formData, studentId: e.target.value })} className="w-full border p-2 rounded-xl" /></div>
-          <div><label className="block text-sm mb-1">Nama Lengkap</label><input type="text" value={formData.name || ""} onChange={e => setFormData({ ...formData, name: e.target.value })} className="w-full border p-2 rounded-xl" /></div>
+        <div className="space-y-4 pt-2">
+          <div>
+            <label className="block text-sm font-medium mb-1.5 text-gray-700 dark:text-gray-300">ID/NIS</label>
+            <input type="text" value={formData.studentId || ""} onChange={e => setFormData({ ...formData, studentId: e.target.value })} className="w-full rounded-xl border border-slate-300 dark:border-gray-700 bg-slate-50 dark:bg-gray-950 px-4 py-2.5 text-sm outline-none focus:border-blue-500 dark:text-slate-100" />
+          </div>
+          <div>
+            <label className="block text-sm font-medium mb-1.5 text-gray-700 dark:text-gray-300">Nama Lengkap</label>
+            <input type="text" value={formData.name || ""} onChange={e => setFormData({ ...formData, name: e.target.value })} className="w-full rounded-xl border border-slate-300 dark:border-gray-700 bg-slate-50 dark:bg-gray-950 px-4 py-2.5 text-sm outline-none focus:border-blue-500 dark:text-slate-100" />
+          </div>
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm mb-1">Kelas</label>
-              <select value={formData.grade || "1"} onChange={e => setFormData({ ...formData, grade: e.target.value })} className="w-full border p-2 rounded-xl">
+              <label className="block text-sm font-medium mb-1.5 text-gray-700 dark:text-gray-300">Kelas</label>
+              <select value={formData.grade || "1"} onChange={e => setFormData({ ...formData, grade: e.target.value })} className="w-full rounded-xl border border-slate-300 dark:border-gray-700 bg-slate-50 dark:bg-gray-950 px-4 py-2.5 text-sm outline-none focus:border-blue-500 dark:text-slate-100">
                 {GRADES.map(g => <option key={g} value={g}>Kelas {g}</option>)}
               </select>
             </div>
             <div>
-              <label className="block text-sm mb-1">Jenis Kelamin</label>
-              <select value={formData.gender || "L"} onChange={e => setFormData({ ...formData, gender: e.target.value })} className="w-full border p-2 rounded-xl">
+              <label className="block text-sm font-medium mb-1.5 text-gray-700 dark:text-gray-300">Jenis Kelamin</label>
+              <select value={formData.gender || "L"} onChange={e => setFormData({ ...formData, gender: e.target.value })} className="w-full rounded-xl border border-slate-300 dark:border-gray-700 bg-slate-50 dark:bg-gray-950 px-4 py-2.5 text-sm outline-none focus:border-blue-500 dark:text-slate-100">
                 <option value="L">Laki-laki (L)</option>
                 <option value="P">Perempuan (P)</option>
               </select>
             </div>
           </div>
-          <button onClick={handleSave} disabled={saving} className="w-full bg-indigo-600 text-white p-2 rounded-xl">{saving ? "Menyimpan..." : "Simpan"}</button>
+          <div className="flex gap-3 mt-5">
+            <button onClick={() => setModalOpen(false)} className="flex-1 px-4 py-2.5 rounded-xl border border-slate-300 text-sm text-gray-600 hover:bg-slate-100 transition-colors dark:border-gray-700 dark:text-slate-300 dark:hover:bg-gray-800 cursor-pointer">
+              Batal
+            </button>
+            <button onClick={handleSave} disabled={saving} className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white text-sm font-semibold transition-all disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer">
+              {saving ? <Loader2 size={16} className="animate-spin" /> : null}
+              {saving ? "Menyimpan..." : (editMode ? "Simpan" : "Tambah")}
+            </button>
+          </div>
         </div>
       </Modal>
     </div>
