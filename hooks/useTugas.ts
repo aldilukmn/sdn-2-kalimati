@@ -181,6 +181,7 @@ export function useTugas() {
           inputs[s.studentId] = String(s.score);
         }
         setScoreInputs(inputs);
+        setTasks((prev) => prev.map(t => t._id === selectedTaskId ? { ...t, inputtedCount: scoreList.length } : t));
       }
       toast.success("Nilai tugas berhasil disimpan");
     } catch {
