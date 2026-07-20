@@ -30,7 +30,7 @@ export default function RekapKarakterTable({ recapRows, monthsToShow, classAvera
             <tr className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-xs md:text-sm">
               <th className="px-3 py-3 text-center w-10">No</th>
               <th className="px-3 py-3 text-left font-semibold whitespace-nowrap">
-                Nama Murid
+                Nama
               </th>
               {showMonthColumns ? (
                 monthsToShow.map((m) => (

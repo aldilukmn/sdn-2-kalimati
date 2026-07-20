@@ -58,7 +58,7 @@ export default function RekapTable({ chapters, entries, classAverages, loading }
           <thead>
             <tr className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-xs md:text-sm">
               <th className="px-2 py-3 text-center w-8" />
-              <th className="px-3 py-3 text-left font-semibold whitespace-nowrap">Nama Murid</th>
+              <th className="px-3 py-3 text-left font-semibold whitespace-nowrap">Nama</th>
               {chapters.map((ch) => (
                 <th key={ch._id} className="px-3 py-3 text-center font-semibold whitespace-nowrap min-w-[80px]">
                   {ch.name}

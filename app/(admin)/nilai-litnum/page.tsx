@@ -279,7 +279,7 @@ export default function NilaiLitnumPage() {
                         No
                       </th>
                       <th className="text-left px-4 py-3 font-semibold whitespace-nowrap">
-                        Nama Murid
+                        Nama
                       </th>
                       <th className="px-4 py-3 font-semibold w-32 whitespace-nowrap">
                         Nilai (0-100)

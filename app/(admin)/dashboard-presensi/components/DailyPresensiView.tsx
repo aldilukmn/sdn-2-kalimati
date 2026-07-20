@@ -35,7 +35,7 @@ export function DailyPresensiView({
           <TableHeader>
             <TableRow className="bg-gradient-to-r from-amber-500 to-orange-500 text-white">
               <TableHead className="w-10 text-center text-xs font-semibold text-white">No</TableHead>
-              <TableHead className="text-xs font-semibold text-white">Nama Murid</TableHead>
+              <TableHead className="text-xs font-semibold text-white">Nama</TableHead>
               <TableHead className="text-center text-xs font-semibold text-white w-24">Status</TableHead>
             </TableRow>
           </TableHeader>

@@ -21,7 +21,7 @@ export default function NamaMurid() {
             <TableHead>No</TableHead>
             <TableHead>NISN</TableHead>
             <TableHead>NIS</TableHead>
-            <TableHead>Nama Murid</TableHead>
+            <TableHead>Nama</TableHead>
             <TableHead>Jenis Kelamin</TableHead>
             <TableHead>Status</TableHead>
           </TableHeader>
