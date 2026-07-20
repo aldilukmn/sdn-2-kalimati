@@ -5,6 +5,7 @@ export interface Task {
   semester: string;
   academicYear: string;
   order: number;
+  inputtedCount?: number;
   recordedBy: string;
   createdAt: string;
   updatedAt: string;
