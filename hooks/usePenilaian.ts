@@ -133,7 +133,7 @@ export function usePenilaian(category: string) {
     } catch {
       toast.error("Gagal menambahkan");
     }
-  }, [subjectId]);
+  }, [subjectId, category]);
 
   const editTask = useCallback(async (id: string, name: string) => {
     try {
@@ -185,7 +185,7 @@ export function usePenilaian(category: string) {
         setTasks((prev) =>
           prev.map((t) =>
             t._id === selectedTaskId
-              ? { ...t, inputtedCount: students.length }
+              ? { ...t, inputtedCount: scoreList.length }
               : t
           )
         );
