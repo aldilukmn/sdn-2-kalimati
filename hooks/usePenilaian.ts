@@ -139,7 +139,7 @@ export function usePenilaian(category: string) {
     try {
       const res = await TaskService.update(id, { name });
       if (res?.result) {
-        setTasks((prev) => prev.map((t) => (t._id === id ? res.result as Task : t)));
+        setTasks((prev) => prev.map((t) => (t._id === id ? { ...res.result as Task, inputtedCount: t.inputtedCount } : t)));
         toast.success("Berhasil diubah");
       }
     } catch {
