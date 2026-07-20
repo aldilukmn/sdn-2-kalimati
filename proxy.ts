@@ -20,7 +20,7 @@ const ROLE_ROUTES: Record<string, string[]> = {
   "/komponen-nilai": ["admin", "kepala", "guru"],
   "/nilai-akhir": ["admin", "kepala", "guru"],
   "/nilai-harian": ["admin", "kepala", "guru"],
-  "/nilai-tugas": ["admin", "kepala", "guru"],
+  "/penilaian": ["admin", "kepala", "guru"],
   "/rekap-nilai-harian": ["admin", "kepala", "guru"],
   "/rekap-nilai-akhir": ["admin", "kepala", "guru"],
   "/rekap-karakter": ["admin", "kepala", "guru"],
