@@ -127,7 +127,7 @@ export default function DataMuridPage() {
 
       <div className="w-full">
         {loading ? (
-          <TableSkeleton headers={["NIS/ID", "Nama Murid", "L/P", "Aksi"]} rows={5} />
+          <TableSkeleton headers={["NIS/ID", "Nama", "L/P", "Aksi"]} rows={5} />
         ) : error ? (
           <div className="p-6 text-center text-red-500 flex items-center justify-center gap-2 bg-white/70 dark:bg-gray-800/40 rounded-2xl border border-red-100"><AlertCircle /> {error}</div>
         ) : students.length === 0 ? (
@@ -138,7 +138,7 @@ export default function DataMuridPage() {
               <thead>
                 <tr className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-xs md:text-sm">
                   <th className="px-4 py-3 text-center font-semibold whitespace-nowrap">NIS/ID</th>
-                  <th className="px-4 py-3 text-left font-semibold whitespace-nowrap">Nama Murid</th>
+                  <th className="px-4 py-3 text-left font-semibold whitespace-nowrap">Nama</th>
                   <th className="px-4 py-3 text-center font-semibold whitespace-nowrap">L/P</th>
                   <th className="px-4 py-3 text-center font-semibold whitespace-nowrap">Aksi</th>
                 </tr>
