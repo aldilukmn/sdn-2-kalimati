@@ -12,6 +12,8 @@ import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrig
 import { useAuth } from "@/hooks/useAuth";
 import EmptyState from "@/components/shared/EmptyState";
 import TableSkeleton from "@/components/tables/TableSkeleton";
+import Pagination from "@/components/common/Pagination";
+import { ITEMS_PER_PAGE } from "@/lib/constants";
 
 const Modal = dynamic(() => import("@/components/modals/Modal"), { ssr: false });
 
@@ -21,6 +23,7 @@ export default function DataMuridPage() {
   const [students, setStudents] = useState<MasterStudentType[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
 
   const [modalOpen, setModalOpen] = useState(false);
   const [editMode, setEditMode] = useState(false);
@@ -35,6 +38,7 @@ export default function DataMuridPage() {
       setError(null);
       const response = await MasterStudentService.getByGrade(grade);
       setStudents(response.result || response.data || []);
+      setCurrentPage(1);
     } catch (e: any) {
       setError(e.message || "Gagal mengambil data murid");
     } finally {
@@ -140,7 +144,7 @@ export default function DataMuridPage() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
-                {students.map(student => (
+                {students.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE).map(student => (
                   <tr key={student._id} className="transition-colors animate-fadeIn hover:bg-indigo-50/50 dark:hover:bg-indigo-900/20">
                     <td className="px-4 py-3 md:px-6 md:py-4 text-sm font-medium text-gray-900 dark:text-white whitespace-nowrap">{student.studentId}</td>
                     <td className="px-4 py-3 md:px-6 md:py-4 text-sm text-gray-600 dark:text-gray-300 whitespace-nowrap">{student.name}</td>
@@ -154,6 +158,16 @@ export default function DataMuridPage() {
               </tbody>
             </table>
           </div>
+        )}
+
+        {!loading && students.length > 0 && (
+          <Pagination
+            currentPage={currentPage}
+            totalPages={Math.ceil(students.length / ITEMS_PER_PAGE)}
+            onPageChange={(page) => setCurrentPage(page)}
+            itemsPerPage={ITEMS_PER_PAGE}
+            totalItems={students.length}
+          />
         )}
       </div>
 
