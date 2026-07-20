@@ -23,7 +23,8 @@ export function useKeaktifanData(
       setKeaktifanLoading(true);
       try {
         const tasksRes = await TaskService.getAll(selectedGS, "keaktifan");
-        const tasks = tasksRes?.result || [];
+        const allTasks = tasksRes?.result || [];
+        const tasks = allTasks.filter((t: any) => t.category === "keaktifan");
         if (tasks.length === 0) { 
           if (!cancelled) setKeaktifanScores({}); 
           return; 

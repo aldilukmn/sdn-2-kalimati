@@ -23,7 +23,8 @@ export function useTugasData(
       setTugasLoading(true);
       try {
         const tasksRes = await TaskService.getAll(selectedGS);
-        const tasks = tasksRes?.result || [];
+        const allTasks = tasksRes?.result || [];
+        const tasks = allTasks.filter((t: any) => t.category === "tugas" || !t.category);
         if (tasks.length === 0) { 
           if (!cancelled) setTugasScores({}); 
           return; 

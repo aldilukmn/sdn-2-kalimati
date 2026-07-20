@@ -76,7 +76,8 @@ export function useTugas() {
       setLoading(true);
       try {
         const res = await TaskService.getAll(subjectId);
-        setTasks(res?.result || []);
+        const allTasks = res?.result || [];
+        setTasks(allTasks.filter((t: any) => t.category === "tugas" || !t.category));
         setSelectedTaskId(null);
         setScores([]);
         setScoreInputs({});

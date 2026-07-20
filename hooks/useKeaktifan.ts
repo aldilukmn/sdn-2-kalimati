@@ -76,7 +76,8 @@ export function useKeaktifan() {
       setLoading(true);
       try {
         const res = await TaskService.getAll(subjectId, "keaktifan");
-        setTasks(res?.result || []);
+        const allTasks = res?.result || [];
+        setTasks(allTasks.filter((t: any) => t.category === "keaktifan"));
         setSelectedTaskId(null);
         setScores([]);
         setScoreInputs({});
