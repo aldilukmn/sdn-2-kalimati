@@ -125,7 +125,7 @@ export default function DataMuridPage() {
         </button>
       </div>
 
-      <div className="w-full">
+      <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-md border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5 overflow-hidden">
         {loading ? (
           <TableSkeleton headers={["NIS/ID", "Nama", "L/P", "Aksi"]} rows={5} />
         ) : error ? (
