@@ -16,6 +16,7 @@ import { useEditTransaction } from "@/hooks/useEditTransaction";
 import { useDeleteTransaction } from "@/hooks/useDeleteTransaction";
 import { useStudentMonthlyBreakdown } from "@/hooks/useStudentMonthlyBreakdown";
 import { useGradeRecap } from "@/hooks/useGradeRecap";
+import { useWeeklyRecap } from "@/hooks/useWeeklyRecap";
 import DateDayPicker from "@/components/common/DateDayPicker";
 import StatCard from "@/components/common/StatCard";
 import toast from "react-hot-toast";
@@ -36,6 +37,7 @@ import {
 import DailyTab from "@/components/tabungan/DailyTab";
 import MonthlyTab from "@/components/tabungan/MonthlyTab";
 import GradeRecapTable from "@/components/tabungan/GradeRecapTable";
+import WeeklyRecapTable from "@/components/tabungan/WeeklyRecapTable";
 import TransactionModal from "@/components/tabungan/TransactionModal";
 import HistoryModal from "@/components/tabungan/HistoryModal";
 import EditModal from "@/components/tabungan/EditModal";
@@ -135,7 +137,7 @@ export default function TabunganMuridPage() {
     monthlyPage * MONTHLY_PER_PAGE
   );
 
-  const [gradeRecapMode, setGradeRecapMode] = useState<"daily" | "monthly">("daily");
+  const [gradeRecapMode, setGradeRecapMode] = useState<"daily" | "weekly" | "monthly">("daily");
   const [gradeRecapMonth, setGradeRecapMonth] = useState(new Date().getMonth() + 1);
   const [gradeRecapYear, setGradeRecapYear] = useState(new Date().getFullYear());
   const { data: gradeRecapData, loading: gradeRecapLoading } = useGradeRecap(
@@ -143,6 +145,12 @@ export default function TabunganMuridPage() {
     gradeRecapMode === "monthly" ? gradeRecapMonth : undefined,
     gradeRecapMode === "monthly" ? gradeRecapYear : undefined,
     refreshKey,
+  );
+
+  const { data: weeklyData, loading: weeklyLoading } = useWeeklyRecap(
+    date,
+    grade,
+    refreshKey
   );
 
   const summary = useMemo(() => {
@@ -154,7 +162,7 @@ export default function TabunganMuridPage() {
       dailyWithdrawals: gradeData.withdrawals,
     } : null;
   }, [gradeRecapData, gradeRecapMode, grade]);
-  const summaryLoading = gradeRecapLoading;
+  const summaryLoading = gradeRecapLoading || (gradeRecapMode === "weekly" && weeklyLoading);
 
   useEffect(() => { setMonthlyPage(1); }, [grade, year]);
 
@@ -230,6 +238,16 @@ export default function TabunganMuridPage() {
                   Harian
                 </button>
                 <button
+                  onClick={() => setGradeRecapMode("weekly")}
+                  className={`px-2.5 py-2 rounded-md text-xs font-semibold transition-colors cursor-pointer ${
+                    gradeRecapMode === "weekly"
+                      ? "bg-white dark:bg-gray-800 text-indigo-600 dark:text-indigo-300 shadow-sm"
+                      : "text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
+                  }`}
+                >
+                  7 Hari
+                </button>
+                <button
                   onClick={() => setGradeRecapMode("monthly")}
                   className={`px-2.5 py-2 rounded-md text-xs font-semibold transition-colors cursor-pointer ${
                     gradeRecapMode === "monthly"
@@ -293,6 +311,8 @@ export default function TabunganMuridPage() {
               currentHoliday={currentHoliday}
               message="Tidak ada data tabungan — hari libur."
             />
+          ) : gradeRecapMode === "weekly" ? (
+            <WeeklyRecapTable data={weeklyData} loading={weeklyLoading} />
           ) : (
             <GradeRecapTable
               data={gradeRecapData}
