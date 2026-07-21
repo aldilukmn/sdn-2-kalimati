@@ -105,15 +105,44 @@ export default function DataMuridPage() {
       const data = await file.arrayBuffer();
       const workbook = XLSX.read(data);
       const worksheet = workbook.Sheets[workbook.SheetNames[0]];
-      const jsonData = XLSX.utils.sheet_to_json(worksheet) as any[];
+      const rawData = XLSX.utils.sheet_to_json(worksheet, { header: 1 }) as any[][];
 
-      const newStudents: Partial<MasterStudentType>[] = jsonData.map((row: any) => ({
-        studentId: String(row["NIS"] || row["NIS/ID"] || row["studentId"] || row["ID"] || "").trim(),
-        name: String(row["Nama"] || row["name"] || "").trim(),
-        gender: String(row["L/P"] || row["gender"] || row["Jenis Kelamin"] || "L").trim().toUpperCase(),
-        grade: String(row["Kelas"] || row["grade"] || grade).trim(),
-        nisn: String(row["NISN"] || row["nisn"] || "").trim(),
-      })).filter((s) => s.studentId && s.name);
+      const firstRowStr = (rawData[0] || []).join(" ").toLowerCase();
+      const hasHeader = firstRowStr.includes("nama") || firstRowStr.includes("nis") || firstRowStr.includes("id");
+      const startIndex = hasHeader ? 1 : 0;
+
+      const newStudents: Partial<MasterStudentType>[] = [];
+      for (let i = startIndex; i < rawData.length; i++) {
+        const row = rawData[i];
+        if (!row || row.length === 0 || (!row[0] && !row[1])) continue;
+
+        let studentId = "";
+        let name = "";
+        let gender = "L";
+        let rowGrade = grade;
+        let nisn = "";
+
+        if (row.length === 1 || !row[1]) {
+          name = String(row[0] || row[1] || "").trim();
+          studentId = `STU${Date.now()}${i}`;
+        } else {
+          studentId = String(row[0] || "").trim();
+          name = String(row[1] || "").trim();
+          gender = row.length > 2 ? String(row[2] || "L").trim().toUpperCase() : "L";
+          rowGrade = row.length > 3 ? String(row[3] || grade).trim() : grade;
+          nisn = row.length > 4 ? String(row[4] || "").trim() : "";
+        }
+
+        if (name) {
+          newStudents.push({
+            studentId: studentId || `STU${Date.now()}${i}`,
+            name,
+            gender: ["L", "P"].includes(gender) ? gender : "L",
+            grade: rowGrade || grade,
+            nisn: nisn || "",
+          });
+        }
+      }
 
       if (newStudents.length === 0) {
         toast.error("Format Excel tidak sesuai atau kosong.");
