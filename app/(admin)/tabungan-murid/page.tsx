@@ -137,11 +137,10 @@ export default function TabunganMuridPage() {
     monthlyPage * MONTHLY_PER_PAGE
   );
 
-  const gradeRecapMode = "weekly";
   const [gradeRecapMonth, setGradeRecapMonth] = useState(new Date().getMonth() + 1);
   const [gradeRecapYear, setGradeRecapYear] = useState(new Date().getFullYear());
-  const { data: gradeRecapData, loading: gradeRecapLoading } = useGradeRecap(
-    undefined,
+  const { data: dailyGradeRecapData, loading: dailyGradeRecapLoading } = useGradeRecap(
+    date,
     undefined,
     undefined,
     refreshKey,
@@ -154,15 +153,15 @@ export default function TabunganMuridPage() {
   );
 
   const summary = useMemo(() => {
-    if (gradeRecapMode !== "daily" || gradeRecapData.length === 0 || !grade) return null;
-    const gradeData = gradeRecapData.find(g => g.grade === grade);
+    if (dailyGradeRecapData.length === 0 || !grade) return null;
+    const gradeData = dailyGradeRecapData.find(g => g.grade === grade);
     return gradeData ? {
       totalStudents: gradeData.totalStudents,
       dailyDeposits: gradeData.deposits,
       dailyWithdrawals: gradeData.withdrawals,
     } : null;
-  }, [gradeRecapData, gradeRecapMode, grade]);
-  const summaryLoading = gradeRecapLoading || (gradeRecapMode === "weekly" && weeklyLoading);
+  }, [dailyGradeRecapData, grade]);
+  const summaryLoading = dailyGradeRecapLoading;
 
   useEffect(() => { setMonthlyPage(1); }, [grade, year]);
 
