@@ -452,7 +452,7 @@ export default function NilaiLitnumPage() {
           <button
             onClick={handleTaskSubmit}
             disabled={!taskName.trim() || isSubmitting}
-            className="flex items-center justify-center w-full px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 disabled:bg-slate-300 dark:disabled:bg-slate-700 disabled:opacity-50 text-white text-sm rounded-xl transition-colors cursor-pointer disabled:cursor-not-allowed"
+            className="flex items-center justify-center gap-2 w-full px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 disabled:bg-slate-300 dark:disabled:bg-slate-700 disabled:opacity-50 text-white text-sm rounded-xl transition-colors cursor-pointer disabled:cursor-not-allowed"
           >
             {isSubmitting ? (
               <>
@@ -482,7 +482,7 @@ export default function NilaiLitnumPage() {
           <button
             disabled={isSubmitting}
             onClick={() => setConfirmDelete(null)}
-            className="px-4 py-2 rounded-xl border border-slate-300 dark:border-gray-600 text-sm hover:bg-slate-100 dark:hover:bg-gray-700 disabled:opacity-50 transition-colors cursor-pointer disabled:cursor-not-allowed"
+            className="px-4 py-2 rounded-xl border border-slate-300 dark:border-gray-600 text-sm text-gray-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-gray-700 disabled:opacity-50 transition-colors cursor-pointer disabled:cursor-not-allowed"
           >
             Batal
           </button>

@@ -492,7 +492,7 @@ export default function MasterKonfigurasiNilaiPage() {
             <div className="flex items-center justify-end gap-3 p-5 border-t border-slate-200 dark:border-slate-700">
               <button
                 onClick={closeModal}
-                className="px-4 py-2 text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors cursor-pointer"
+                className="px-4 py-2 text-sm font-medium text-slate-600 dark:text-slate-400 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 rounded-lg transition-colors cursor-pointer"
               >
                 Batal
               </button>
