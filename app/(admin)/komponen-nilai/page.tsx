@@ -209,7 +209,7 @@ export default function NilaiKomponenPage() {
                   <SelectContent>
                     <SelectGroup>
                       {components.map((comp, idx) => {
-                        const isReadonly = (safeKey(comp.key) === "harian" || safeKey(comp.key) === "karakter" || safeKey(comp.key) === "presensi" || safeKey(comp.key) === "tugas" || safeKey(comp.key) === "litnum");
+                        const isReadonly = (safeKey(comp.key) === "harian" || safeKey(comp.key) === "karakter" || safeKey(comp.key) === "presensi" || safeKey(comp.key) === "tugas" || safeKey(comp.key) === "keaktifan" || safeKey(comp.key) === "litnum");
                         const itemBg = COMPONENT_BGS[idx % COMPONENT_BGS.length];
                         return (
                           <SelectItem key={comp.key} value={comp.key}>
@@ -229,7 +229,7 @@ export default function NilaiKomponenPage() {
               {/* Desktop View: Minimalist Underline Tabs */}
               <div className="hidden md:flex flex-wrap gap-x-6 gap-y-2 px-1 border-b border-slate-200 dark:border-slate-800">
                 {components.map((comp, i) => {
-                  const isReadonly = (safeKey(comp.key) === "harian" || safeKey(comp.key) === "karakter" || safeKey(comp.key) === "presensi" || safeKey(comp.key) === "tugas" || safeKey(comp.key) === "litnum");
+                  const isReadonly = (safeKey(comp.key) === "harian" || safeKey(comp.key) === "karakter" || safeKey(comp.key) === "presensi" || safeKey(comp.key) === "tugas" || safeKey(comp.key) === "keaktifan" || safeKey(comp.key) === "litnum");
                   const isActive = selectedComponentKey === comp.key;
                   const activeBg = COMPONENT_BGS[i % COMPONENT_BGS.length];
                   const activeText = COMPONENT_COLORS[i % COMPONENT_COLORS.length];
