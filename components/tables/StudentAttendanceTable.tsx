@@ -74,7 +74,7 @@ export default function StudentAttendanceTable({
   }
 
   return (
-    <div key={loading ? "skeleton" : "data"} className="overflow-x-auto animate-fadeIn rounded-xl border border-gray-200 dark:border-gray-700 bg-white/60 dark:bg-gray-800/30 md:backdrop-blur-md">
+    <div key={loading ? "skeleton" : "data"} className="overflow-x-auto animate-fadeIn rounded-xl border border-gray-200 dark:border-gray-700 bg-white/60 dark:bg-gray-800/30 md:">
       <table className="w-full text-sm">
           <thead>
             <tr className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-xs md:text-sm">

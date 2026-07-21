@@ -241,7 +241,7 @@ export default function DashboardKarakterPage() {
               <h3 className="text-sm font-semibold text-slate-600 dark:text-slate-400 mb-3">
                 Penilaian Terbaru
               </h3>
-              <div className="overflow-x-auto animate-fadeIn rounded-xl border border-gray-200 dark:border-gray-700 bg-white/80 dark:bg-gray-800/30 backdrop-blur-sm">
+              <div className="overflow-x-auto animate-fadeIn rounded-xl border border-gray-200 dark:border-gray-700 bg-white/80 dark:bg-gray-800/30 ">
                 <Table>
                   <TableHeader>
                     <TableRow className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white">

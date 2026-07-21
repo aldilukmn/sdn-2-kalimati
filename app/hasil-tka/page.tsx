@@ -161,7 +161,7 @@ export default function HasilTKA() {
               to-cyan-500/5
               p-6
               text-left
-              backdrop-blur-xl
+              -xl
               shadow-[0_0_25px_rgba(59,130,246,0.15)]
               animate-in
               fade-in

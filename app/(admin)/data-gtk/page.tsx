@@ -223,7 +223,7 @@ export default function DataGTK() {
               setFormData(emptyForm);
               setShowAddModal(true);
             }}
-            className="flex items-center gap-2 px-2.5 md:px-4 py-2.5 bg-white/20 hover:bg-white/30 text-white rounded-xl text-sm font-semibold transition-colors cursor-pointer shrink-0 backdrop-blur-sm"
+            className="flex items-center gap-2 px-2.5 md:px-4 py-2.5 bg-white/20 hover:bg-white/30 text-white rounded-xl text-sm font-semibold transition-colors cursor-pointer shrink-0 "
           >
             <Plus size={18} />{" "}
             <span className="hidden md:inline">Tambah</span>
@@ -231,7 +231,7 @@ export default function DataGTK() {
         )}
       </PageHero>
 
-      <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-md border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5 overflow-hidden">
+      <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 md: border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5 overflow-hidden">
         {loading ? (
           <TableSkeleton
             headers={[
@@ -367,7 +367,7 @@ export default function DataGTK() {
         )}
       </div>
 
-      <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-md border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5 overflow-hidden">
+      <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 md: border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5 overflow-hidden">
         {staffLoading ? (
           <TableSkeleton
             headers={[

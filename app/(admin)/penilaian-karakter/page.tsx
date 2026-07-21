@@ -105,7 +105,7 @@ export default function PenilaianKarakterPage() {
           title="Pilih Bulan dan Kelas untuk memulai penilaian"
         />
       ) : loading ? (
-        <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-md border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5 overflow-hidden">
+        <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 md: border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5 overflow-hidden">
           <TableSkeleton headers={["No", "Nama", "Kebiasaan", "Aksi"]} rows={5} />
         </div>
       ) : students.length === 0 ? (

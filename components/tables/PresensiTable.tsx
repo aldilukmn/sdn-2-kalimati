@@ -34,7 +34,7 @@ export default function PresensiTable({
 }: Props) {
   if (!loading && totalItems === 0) {
     return (
-      <div className="bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-md border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl">
+      <div className="bg-white/70 dark:bg-gray-800/40 md: border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl">
         <div className="text-center py-12 text-gray-400 dark:text-gray-500 text-sm">
           Tidak ada murid di kelas ini
         </div>
@@ -43,10 +43,10 @@ export default function PresensiTable({
   }
 
   return (
-    <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-md border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5 overflow-hidden">
+    <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 md: border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5 overflow-hidden">
       <div
         key={loading ? "skeleton" : "data"}
-        className="overflow-x-auto animate-fadeIn rounded-xl border border-gray-200 dark:border-gray-700 bg-white/80 md:bg-white/60 dark:bg-gray-800/30 backdrop-blur-sm"
+        className="overflow-x-auto animate-fadeIn rounded-xl border border-gray-200 dark:border-gray-700 bg-white/80 md:bg-white/60 dark:bg-gray-800/30 "
         style={{ transform: "translateZ(0)" }}
       >
         <table className="w-full">

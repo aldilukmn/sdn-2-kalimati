@@ -174,7 +174,7 @@ export default function DataPendaftar() {
         <button
           onClick={handleRefresh}
           disabled={refreshing}
-          className="flex items-center gap-2 px-4 py-2.5 bg-white/90 md:bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-md border border-white/20 dark:border-gray-700/50 text-gray-700 dark:text-gray-200 rounded-xl text-sm font-semibold shadow-lg transition-all duration-200 hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+          className="flex items-center gap-2 px-4 py-2.5 bg-white/90 md:bg-white/70 dark:bg-gray-800/40 md: border border-white/20 dark:border-gray-700/50 text-gray-700 dark:text-gray-200 rounded-xl text-sm font-semibold shadow-lg transition-all duration-200 hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
           title="Perbarui Data"
         >
           <RefreshCw size={18} className={refreshing ? "animate-spin" : ""} />
@@ -185,7 +185,7 @@ export default function DataPendaftar() {
       </div>
 
       {/* Table */}
-      <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-md border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5 overflow-hidden">
+      <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 md: border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5 overflow-hidden">
         {loading || pageLoading ? (
           <TableSkeleton
             headers={[

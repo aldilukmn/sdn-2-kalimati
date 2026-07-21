@@ -25,7 +25,7 @@ export default function GraduationCountdownModal({
   if (!show) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 animate-in fade-in duration-300">
+    <div className="fixed inset-0 bg-black/60  flex items-center justify-center z-50 animate-in fade-in duration-300">
       <div className="rounded-3xl bg-gradient-to-br from-amber-300 via-yellow-300 to-orange-300 dark:from-amber-700 dark:via-yellow-600 dark:to-orange-600 p-10 max-w-sm md:max-w-lg text-center shadow-2xl animate-in zoom-in-95 duration-300 border-4 border-yellow-200 dark:border-yellow-500 relative overflow-hidden">
         <div className="absolute -top-12 -right-12 w-32 h-32 bg-yellow-200 dark:bg-yellow-500 rounded-full opacity-30 blur-3xl animate-pulse" />
         <div
@@ -50,7 +50,7 @@ export default function GraduationCountdownModal({
             Terima kasih atas kesabaranmu. 😊
           </p>
 
-          <div className="bg-white/40 dark:bg-black/30 rounded-2xl p-6 mb-8 backdrop-blur-sm border-2 border-yellow-100 dark:border-yellow-400/50">
+          <div className="bg-white/40 dark:bg-black/30 rounded-2xl p-6 mb-8  border-2 border-yellow-100 dark:border-yellow-400/50">
             <p className="text-xs md:text-sm font-semibold text-amber-900 dark:text-yellow-100 mb-4 uppercase tracking-widest">
               Waktu Mundur
             </p>

@@ -3,7 +3,7 @@ import Link from "next/link";
 export default function NotFound() {
   return (
     <div className="flex items-center justify-center min-h-screen px-5 py-10 motion-safe:animate-fadeIn">
-      <div className="w-full max-w-sm rounded-2xl bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm shadow-xl shadow-blue-500/5 dark:shadow-blue-500/10 overflow-hidden">
+      <div className="w-full max-w-sm rounded-2xl bg-white/80 dark:bg-slate-900/80  shadow-xl shadow-blue-500/5 dark:shadow-blue-500/10 overflow-hidden">
         <div className="h-1 bg-amber-400" />
         <div className="px-8 py-12 text-center">
           <div className="mx-auto mb-6 w-20 h-20 rounded-full border-2 border-slate-200 dark:border-slate-700 p-2.5 flex items-center justify-center">

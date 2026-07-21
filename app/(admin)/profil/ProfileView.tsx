@@ -47,7 +47,7 @@ export default function ProfileView({ userId }: Props) {
     return (
       <div className="flex flex-col gap-6 p-4 md:p-6 animate-fadeIn">
         <PageHero icon={UserCircle} title="Profil" description="Memuat..." />
-        <div className="bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-md border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
+        <div className="bg-white/70 dark:bg-gray-800/40 md: border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
           <div className="h-64 bg-slate-200 dark:bg-slate-700 rounded-2xl animate-pulse" />
         </div>
       </div>
@@ -150,7 +150,7 @@ export default function ProfileView({ userId }: Props) {
         {userId && (
           <Link
             href={isSelf ? "/profil" : "/data-gtk"}
-            className="flex items-center gap-2 px-3 py-2 bg-white/20 hover:bg-white/30 text-white rounded-xl text-sm font-semibold transition-colors cursor-pointer backdrop-blur-sm"
+            className="flex items-center gap-2 px-3 py-2 bg-white/20 hover:bg-white/30 text-white rounded-xl text-sm font-semibold transition-colors cursor-pointer "
           >
             <ArrowLeft size={16} />
             Kembali
@@ -161,7 +161,7 @@ export default function ProfileView({ userId }: Props) {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {/* Left column */}
         <div className="md:col-span-1">
-          <div className="bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-md border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-6 text-center">
+          <div className="bg-white/70 dark:bg-gray-800/40 md: border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-6 text-center">
             <div className="relative inline-block">
               <div
                 className={`w-28 h-28 mx-auto rounded-full flex items-center justify-center text-white text-4xl font-bold overflow-hidden ${roleColor}`}
@@ -217,7 +217,7 @@ export default function ProfileView({ userId }: Props) {
         {/* Right column */}
         <div className="md:col-span-2 space-y-6">
           {/* Data Diri */}
-          <div className="bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-md border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-6">
+          <div className="bg-white/70 dark:bg-gray-800/40 md: border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-6">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-xs font-semibold text-gray-500 dark:text-gray-400 tracking-wider">
                 DATA DIRI
@@ -305,7 +305,7 @@ export default function ProfileView({ userId }: Props) {
 
           {/* Ganti Password */}
           {canEdit && (
-            <div className="bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-md border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
+            <div className="bg-white/70 dark:bg-gray-800/40 md: border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
               <h3 className="text-xs font-semibold text-gray-500 dark:text-gray-400 tracking-wider mb-4">
                 GANTI PASSWORD
               </h3>

@@ -174,7 +174,7 @@ export default function Kelulusan() {
               to-emerald-500/5
               p-6
               text-left
-              backdrop-blur-xl
+              -xl
               shadow-[0_0_25px_rgba(34,197,94,0.15)]
               animate-in
               fade-in

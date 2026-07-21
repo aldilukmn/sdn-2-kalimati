@@ -60,7 +60,7 @@ export default function AdminDashboardView({
       />
 
       {/* Kehadiran — Card Ringkas */}
-      <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-md border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
+      <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 md: border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
         <div className="flex items-center justify-between gap-4 flex-wrap">
           {/* Kiri: label + angka */}
           <div className="flex items-center gap-3">

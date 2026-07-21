@@ -83,7 +83,7 @@ export default function RegistrationCard({name}: {name: string}) {
         </div>
 
         <div className="space-y-5 relative z-10">
-          <div className="bg-white/10 p-3 rounded-lg border border-white/10 backdrop-blur-sm">
+          <div className="bg-white/10 p-3 rounded-lg border border-white/10 ">
             <p className="text-blue-200 text-[10px] mb-1 uppercase tracking-widest font-semibold">
               Nomor Pendaftaran
             </p>

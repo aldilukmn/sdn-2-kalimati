@@ -64,7 +64,7 @@ export default function PresensiStatusBadge({ loading, countByStatus }: Props) {
         return (
           <div
             key={item.key}
-            className={`border ${item.cardBg} backdrop-blur-sm rounded-xl px-3.5 py-2.5 flex items-center gap-3`}
+            className={`border ${item.cardBg}  rounded-xl px-3.5 py-2.5 flex items-center gap-3`}
           >
             <div
               className={`w-9 h-9 ${item.iconBg} rounded-lg flex items-center justify-center shadow-sm`}

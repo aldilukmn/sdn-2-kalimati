@@ -144,7 +144,7 @@ export default function RekapPresensi() {
       <div className="w-full max-w-6xl">
         <BackButton />
       </div>
-      <Card className="w-full max-w-6xl p-5 md:p-8 border-none bg-white/70 dark:bg-gray-800/40 shadow-xl backdrop-blur-md rounded-3xl flex flex-col gap-6">
+      <Card className="w-full max-w-6xl p-5 md:p-8 border-none bg-white/70 dark:bg-gray-800/40 shadow-xl  rounded-3xl flex flex-col gap-6">
         <div className="text-center mb-2">
           <div className="text-4xl md:text-5xl mb-4 drop-shadow-sm">📊</div>
           <h1 className="text-2xl md:text-3xl font-bold text-gray-800 dark:text-gray-200">
@@ -155,7 +155,7 @@ export default function RekapPresensi() {
           </p>
         </div>
 
-        <div className="relative z-20 bg-white/60 dark:bg-gray-800/40 backdrop-blur-sm border border-gray-200 dark:border-gray-700/50 rounded-2xl p-4 md:p-5 flex flex-col md:flex-row items-end justify-between gap-5">
+        <div className="relative z-20 bg-white/60 dark:bg-gray-800/40  border border-gray-200 dark:border-gray-700/50 rounded-2xl p-4 md:p-5 flex flex-col md:flex-row items-end justify-between gap-5">
           <div className="flex flex-col sm:flex-row gap-4 w-full md:w-auto">
             <div className="w-full sm:w-32">
               <label className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
@@ -229,7 +229,7 @@ export default function RekapPresensi() {
         )}
 
         {loading ? (
-          <div className="bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-md border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl overflow-hidden">
+          <div className="bg-white/70 dark:bg-gray-800/40 md: border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl overflow-hidden">
             <TableSkeleton
               headers={[
                 "No",

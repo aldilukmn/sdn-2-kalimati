@@ -156,7 +156,7 @@ export default function StatCard({
   const c = GlassColors[color] ?? GlassColors.indigo;
   return (
     <div
-      className={`${c.bg} md:backdrop-blur-md border ${c.border} shadow-lg rounded-2xl p-3 md:p-5 transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 hover:shadow-xl`}
+      className={`${c.bg} md: border ${c.border} shadow-lg rounded-2xl p-3 md:p-5 transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 hover:shadow-xl`}
     >
       <div className="flex items-center md:items-start justify-center md:justify-between mb-1 md:mb-3 min-h-10">
         <span className="text-[13px] text-center md:text-base font-semibold text-gray-600 dark:text-gray-400">

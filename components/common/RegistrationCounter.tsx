@@ -45,7 +45,7 @@ export default function RegistrationCounter() {
           {/* Left Side - Icon & Text */}
           <div className="flex items-center gap-4 md:gap-6 flex-1">
             <div className="flex-shrink-0">
-              <div className="flex items-center justify-center w-16 h-16 md:w-20 md:h-20 rounded-full bg-white/20 backdrop-blur-md">
+              <div className="flex items-center justify-center w-16 h-16 md:w-20 md:h-20 rounded-full bg-white/20 ">
                 <Users className="w-8 h-8 md:w-10 md:h-10 text-white" />
               </div>
             </div>
@@ -65,7 +65,7 @@ export default function RegistrationCounter() {
           </div>
 
           {/* Right Side - Status Badge */}
-          <div className="flex items-center gap-2 bg-white/10 backdrop-blur-md px-4 md:px-6 py-3 rounded-full">
+          <div className="flex items-center gap-2 bg-white/10  px-4 md:px-6 py-3 rounded-full">
             <div className="flex items-center gap-1.5">
               <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
               <span className="text-xs md:text-sm font-medium text-white">

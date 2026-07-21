@@ -60,7 +60,7 @@ export default function StudentAssessmentTable({
 
   if (habits.length === 0) {
     return (
-      <div className="bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-md border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl">
+      <div className="bg-white/70 dark:bg-gray-800/40 md: border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl">
         <div className="text-center py-12 text-gray-400 dark:text-gray-500 text-sm">
           Belum ada kebiasaan karakter. Tambahkan kebiasaan terlebih dahulu.
         </div>
@@ -69,11 +69,11 @@ export default function StudentAssessmentTable({
   }
 
   return (
-    <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-md border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5 overflow-hidden">
+    <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 md: border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5 overflow-hidden">
       {headerSlot && <div className="mb-3">{headerSlot}</div>}
 
       {/* Table */}
-      <div className="overflow-x-auto animate-fadeIn rounded-xl border border-gray-200 dark:border-gray-700 bg-white/80 md:bg-white/60 dark:bg-gray-800/30 backdrop-blur-sm">
+      <div className="overflow-x-auto animate-fadeIn rounded-xl border border-gray-200 dark:border-gray-700 bg-white/80 md:bg-white/60 dark:bg-gray-800/30 ">
         <table className="w-full">
           <thead>
             <tr className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-xs md:text-sm">

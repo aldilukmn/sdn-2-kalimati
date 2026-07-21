@@ -31,7 +31,7 @@ export default function ScoreTableWrapper({
   footer,
 }: ScoreTableWrapperProps) {
   return (
-    <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-md border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5 flex flex-col gap-4">
+    <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 md: border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5 flex flex-col gap-4">
       {loading ? (
         <div className="animate-pulse p-5 space-y-3">
           {[1, 2, 3, 4, 5].map((i) => (

@@ -142,7 +142,7 @@ export default function GuruDashboardView({
         {statCards.map((card) => (
           <div
             key={card.label}
-            className={`group ${card.orderClass} bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-md border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-3 md:p-5 flex items-center gap-3 md:gap-4 transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 hover:shadow-xl`}
+            className={`group ${card.orderClass} bg-white/70 dark:bg-gray-800/40 md: border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-3 md:p-5 flex items-center gap-3 md:gap-4 transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 hover:shadow-xl`}
           >
             <div
               className={`w-10 h-10 md:w-14 md:h-14 ${card.color} rounded-2xl flex items-center justify-center shadow-lg shadow-black/10 transition-transform duration-300 group-hover:rotate-3`}
@@ -171,7 +171,7 @@ export default function GuruDashboardView({
         ))}
       </div>
       <TabunganSection grade={userGrade} userRole={userRole} isSavingsHolder={isSavingsHolder} />
-      <div className="bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-md border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5 relative z-0">
+      <div className="bg-white/70 dark:bg-gray-800/40 md: border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5 relative z-0">
         <div className="flex flex-col md:flex-row items-center md:justify-between gap-4 mb-4">
           <div className="text-center md:text-start">
             <h3 className="text-lg md:text-xl font-semibold text-gray-800 dark:text-gray-200">
