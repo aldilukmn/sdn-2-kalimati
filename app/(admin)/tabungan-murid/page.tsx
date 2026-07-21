@@ -178,7 +178,7 @@ export default function TabunganMuridPage() {
     }
   }, [message, setMessage]);
 
-  const showGradeRecap = userRole === "admin" || userRole === "kepala" || isSavingsHolder;
+  const showGradeRecap = true;
 
 
   return (
