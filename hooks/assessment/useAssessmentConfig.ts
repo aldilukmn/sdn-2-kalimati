@@ -99,7 +99,7 @@ export function useAssessmentConfig(role: string | null, authGrade: string | nul
   const components = config?.components || [];
   const nonHarianComponents = components.filter((c) => {
     const k = safeKey(c.key);
-    return k !== "harian" && k !== "presensi" && k !== "tugas" && k !== "keaktifan" && k !== "karakter";
+    return k !== "harian" && k !== "presensi" && k !== "tugas" && k !== "keaktifan" && k !== "partisipasi" && k !== "karakter";
   });
 
   const selectedGSData = gradeSubjects.find((gs) => gs._id === selectedGS);

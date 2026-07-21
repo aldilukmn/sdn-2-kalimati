@@ -12,6 +12,7 @@ import { usePresensiData } from "./assessment/usePresensiData";
 import { useNonHarianData } from "./assessment/useNonHarianData";
 import { useLitnumData } from "./assessment/useLitnumData";
 import { useKeaktifanData } from "./assessment/useKeaktifanData";
+import { usePartisipasiData } from "./assessment/usePartisipasiData";
 import { useState } from "react";
 
 export type { KarakterStudent } from "./assessment/useKarakterData";
@@ -97,6 +98,15 @@ export function useAssessmentScore() {
     configHook.safeKey
   );
 
+  const partisipasiHook = usePartisipasiData(
+    configHook.selectedComponentKey,
+    configHook.selectedGS,
+    studentsHook.students,
+    configHook.retryCount,
+    setGlobalError,
+    configHook.safeKey
+  );
+
   return {
     ...configHook,
     ...studentsHook,
@@ -107,6 +117,7 @@ export function useAssessmentScore() {
     ...nonHarianHook,
     ...litnumHook,
     ...keaktifanHook,
+    ...partisipasiHook,
     role,
     error: configHook.error || globalError,
     SEMESTERS, 

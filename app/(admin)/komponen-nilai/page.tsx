@@ -23,6 +23,7 @@ import TabKarakter from "./components/TabKarakter";
 import TabPresensi from "./components/TabPresensi";
 import TabTugas from "./components/TabTugas";
 import TabKeaktifan from "./components/TabKeaktifan";
+import TabPartisipasi from "./components/TabPartisipasi";
 import TabLitnum from "./components/TabLitnum";
 import TabNonHarian from "./components/TabNonHarian";
 import FilterBar from "@/components/shared/FilterBar";
@@ -41,6 +42,7 @@ export default function NilaiKomponenPage() {
     harianScores, harianLoading,
     tugasScores, tugasLoading,
     keaktifanScores, keaktifanLoading,
+    partisipasiScores, partisipasiLoading,
     karakterStudents, karakterLoading,
     presensiStudents, presensiLoading,
     litnumStudents, litnumLoading,
@@ -87,6 +89,7 @@ export default function NilaiKomponenPage() {
   const isPresensiTab = safeKey(selectedComponentKey) === "presensi";
   const isTugasTab = safeKey(selectedComponentKey) === "tugas";
   const isKeaktifanTab = safeKey(selectedComponentKey) === "keaktifan";
+  const isPartisipasiTab = safeKey(selectedComponentKey) === "partisipasi";
   const isLitnumTab = safeKey(selectedComponentKey) === "litnum";
 
   const getActiveData = () => {
@@ -209,7 +212,7 @@ export default function NilaiKomponenPage() {
                   <SelectContent>
                     <SelectGroup>
                       {components.map((comp, idx) => {
-                        const isReadonly = (safeKey(comp.key) === "harian" || safeKey(comp.key) === "karakter" || safeKey(comp.key) === "presensi" || safeKey(comp.key) === "tugas" || safeKey(comp.key) === "keaktifan" || safeKey(comp.key) === "litnum");
+                        const isReadonly = (safeKey(comp.key) === "harian" || safeKey(comp.key) === "karakter" || safeKey(comp.key) === "presensi" || safeKey(comp.key) === "tugas" || safeKey(comp.key) === "keaktifan" || safeKey(comp.key) === "partisipasi" || safeKey(comp.key) === "litnum");
                         const itemBg = COMPONENT_BGS[idx % COMPONENT_BGS.length];
                         return (
                           <SelectItem key={comp.key} value={comp.key}>
@@ -229,7 +232,7 @@ export default function NilaiKomponenPage() {
               {/* Desktop View: Minimalist Underline Tabs */}
               <div className="hidden md:flex flex-wrap gap-x-6 gap-y-2 px-1 border-b border-slate-200 dark:border-slate-800">
                 {components.map((comp, i) => {
-                  const isReadonly = (safeKey(comp.key) === "harian" || safeKey(comp.key) === "karakter" || safeKey(comp.key) === "presensi" || safeKey(comp.key) === "tugas" || safeKey(comp.key) === "keaktifan" || safeKey(comp.key) === "litnum");
+                  const isReadonly = (safeKey(comp.key) === "harian" || safeKey(comp.key) === "karakter" || safeKey(comp.key) === "presensi" || safeKey(comp.key) === "tugas" || safeKey(comp.key) === "keaktifan" || safeKey(comp.key) === "partisipasi" || safeKey(comp.key) === "litnum");
                   const isActive = selectedComponentKey === comp.key;
                   const activeBg = COMPONENT_BGS[i % COMPONENT_BGS.length];
                   const activeText = COMPONENT_COLORS[i % COMPONENT_COLORS.length];
@@ -316,6 +319,17 @@ export default function NilaiKomponenPage() {
               paginatedStudents={paginatedData}
               keaktifanScores={keaktifanScores}
               keaktifanLoading={keaktifanLoading}
+              ITEMS_PER_PAGE={ITEMS_PER_PAGE}
+              currentPage={currentPage}
+              totalPages={totalPages}
+              setCurrentPage={setCurrentPage}
+              totalStudents={getActiveData().length}
+            />
+          ) : isPartisipasiTab ? (
+            <TabPartisipasi
+              paginatedStudents={paginatedData}
+              partisipasiScores={partisipasiScores}
+              partisipasiLoading={partisipasiLoading}
               ITEMS_PER_PAGE={ITEMS_PER_PAGE}
               currentPage={currentPage}
               totalPages={totalPages}

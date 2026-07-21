@@ -19,7 +19,7 @@ export function useNonHarianData(
     if (!selectedGS || !selectedComponentKey) return;
     
     const sKey = safeKey(selectedComponentKey);
-    if (sKey === "harian" || sKey === "tugas" || sKey === "karakter" || sKey === "presensi" || sKey === "keaktifan") return;
+    if (sKey === "harian" || sKey === "tugas" || sKey === "karakter" || sKey === "presensi" || sKey === "keaktifan" || sKey === "partisipasi") return;
 
     const gs = gradeSubjects.find((gs) => gs._id === selectedGS);
     if (!gs) { 
@@ -72,7 +72,7 @@ export function useNonHarianData(
 
   const handleSave = async () => {
     const sKey = safeKey(selectedComponentKey);
-    if (!selectedGS || !selectedComponentKey || sKey === "harian" || sKey === "karakter" || sKey === "presensi" || sKey === "tugas" || sKey === "keaktifan") return false;
+    if (!selectedGS || !selectedComponentKey || sKey === "harian" || sKey === "karakter" || sKey === "presensi" || sKey === "tugas" || sKey === "keaktifan" || sKey === "partisipasi") return false;
     
     const gs = gradeSubjects.find((gs) => gs._id === selectedGS);
     if (!gs) return false;

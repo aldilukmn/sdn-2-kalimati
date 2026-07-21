@@ -23,6 +23,7 @@ export const CONFIG_PRESETS: ConfigPreset[] = [
   { key: "presensi", name: "Presensi", type: "system" },
   { key: "tugas", name: "Tugas", type: "system" },
   { key: "keaktifan", name: "Keaktifan", type: "system" },
+  { key: "partisipasi", name: "Partisipasi", type: "system" },
   { key: "litnum", name: "Literasi & Numerasi", type: "system" },
   { key: "asts", name: "ASTS", type: "manual" },
   { key: "asas", name: "ASAS", type: "manual" },
