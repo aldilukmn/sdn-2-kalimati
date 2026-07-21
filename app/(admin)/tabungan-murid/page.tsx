@@ -222,7 +222,7 @@ export default function TabunganMuridPage() {
                 />
               </div>
               <h3 className="font-semibold text-gray-700 dark:text-gray-300">
-                Riwayat 6 Hari Terakhir
+                Rekapitulasi Riwayat Tabungan Murid
               </h3>
             </div>
           </div>
