@@ -19,6 +19,7 @@ interface WeeklyRecapTableProps {
 
 export default function WeeklyRecapTable({ data, loading }: WeeklyRecapTableProps) {
   const cols = 5;
+  const filteredData = data.filter((row) => (row.recap?.deposits || 0) > 0 || (row.recap?.withdrawals || 0) > 0);
 
   return (
     <div className="overflow-x-auto rounded-xl border border-gray-200 dark:border-gray-700 bg-white/80 dark:bg-gray-800/30">
@@ -43,7 +44,7 @@ export default function WeeklyRecapTable({ data, loading }: WeeklyRecapTableProp
                   ))}
                 </TableRow>
               ))
-            ) : data.length === 0 ? (
+            ) : filteredData.length === 0 ? (
               <TableRow>
                 <TableCell
                   colSpan={cols}
@@ -53,7 +54,7 @@ export default function WeeklyRecapTable({ data, loading }: WeeklyRecapTableProp
                 </TableCell>
               </TableRow>
             ) : (
-              data.map((row, idx) => {
+              filteredData.map((row, idx) => {
                 const diff = (row.recap?.deposits || 0) - (row.recap?.withdrawals || 0);
                 const dateObj = new Date(row.date);
 
