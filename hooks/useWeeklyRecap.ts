@@ -27,7 +27,22 @@ export function useWeeklyRecap(endDate: string, grade: string, refreshKey?: numb
         try {
           const res = await StudentSavingsService.getGradeRecap(date);
           const recaps: GradeRecap[] = res?.result || [];
-          return { date, recap: recaps.find(r => r.grade === grade) || null };
+          let recapData: GradeRecap | null = null;
+          if (grade) {
+            recapData = recaps.find((r) => r.grade === grade) || null;
+          } else if (recaps.length > 0) {
+            recapData = recaps.reduce(
+              (acc, curr) => {
+                acc.deposits += curr.deposits;
+                acc.withdrawals += curr.withdrawals;
+                acc.totalStudents += curr.totalStudents;
+                acc.totalBalance += curr.totalBalance;
+                return acc;
+              },
+              { grade: "", totalStudents: 0, deposits: 0, withdrawals: 0, totalBalance: 0 }
+            );
+          }
+          return { date, recap: recapData };
         } catch {
           return { date, recap: null };
         }
