@@ -132,47 +132,49 @@ export default function PenilaianPage() {
         description={`Kelola ${category === "tugas" ? "tugas" : category === "keaktifan" ? "keaktifan" : "partisipasi"} dan input nilai`}
       />
 
-      <div className="flex flex-col sm:flex-row gap-4 w-full">
-        <div className="w-full sm:w-48">
-          <Select value={category} onValueChange={(v) => v && setCategory(v)}>
-            <SelectTrigger className="w-full h-auto rounded-xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm font-semibold focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100 shadow-sm">
-              <SelectValue placeholder="Pilih Kategori">
-                {category === "tugas" ? "Nilai Tugas" : category === "keaktifan" ? "Nilai Keaktifan" : "Nilai Partisipasi"}
-              </SelectValue>
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                <SelectLabel>Kategori Penilaian</SelectLabel>
-                <SelectItem value="tugas">Nilai Tugas</SelectItem>
-                <SelectItem value="keaktifan">Nilai Keaktifan</SelectItem>
-                <SelectItem value="partisipasi">Nilai Partisipasi</SelectItem>
-              </SelectGroup>
-            </SelectContent>
-          </Select>
-        </div>
-        <div className="flex-1">
+      <div className="flex flex-col gap-4 w-full">
+        <div className="w-full relative z-20">
           <FilterBar
-        config={{
-          showAcademicYear: true,
-          showSemester: true,
-          showGrade: true,
-          showSubject: true,
-        }}
-        academicYear={academicYear}
-        onAcademicYearChange={setAcademicYear}
-        semester={semester}
-        onSemesterChange={setSemester}
-        grade={grade}
-        onGradeChange={setGrade}
-        gradeDisabled={role === "guru"}
-        selectedGS={subjectId}
-        onSelectedGSChange={setSubjectId}
-        gradeSubjects={subjects.map((s: any) => ({
-          _id: s._id,
-          subjectName: s.subjectName,
-        }))}
-        subjectPlaceholder="Pilih Mapel"
-      />
+            config={{
+              showAcademicYear: true,
+              showSemester: true,
+              showGrade: true,
+              showSubject: true,
+            }}
+            academicYear={academicYear}
+            onAcademicYearChange={setAcademicYear}
+            semester={semester}
+            onSemesterChange={setSemester}
+            grade={grade}
+            onGradeChange={setGrade}
+            gradeDisabled={role === "guru"}
+            selectedGS={subjectId}
+            onSelectedGSChange={setSubjectId}
+            gradeSubjects={subjects.map((s: any) => ({
+              _id: s._id,
+              subjectName: s.subjectName,
+            }))}
+            subjectPlaceholder="Pilih Mapel"
+          />
+        </div>
+        <div className="flex w-full justify-start md:justify-end">
+          <div className="w-full sm:w-56">
+            <Select value={category} onValueChange={(v) => v && setCategory(v)}>
+              <SelectTrigger className="w-full h-auto rounded-xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm font-semibold focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100 shadow-sm">
+                <SelectValue placeholder="Pilih Kategori">
+                  {category === "tugas" ? "Nilai Tugas" : category === "keaktifan" ? "Nilai Keaktifan" : "Nilai Partisipasi"}
+                </SelectValue>
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectLabel>Kategori Penilaian</SelectLabel>
+                  <SelectItem value="tugas">Nilai Tugas</SelectItem>
+                  <SelectItem value="keaktifan">Nilai Keaktifan</SelectItem>
+                  <SelectItem value="partisipasi">Nilai Partisipasi</SelectItem>
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+          </div>
         </div>
       </div>
 
