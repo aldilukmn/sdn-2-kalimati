@@ -39,7 +39,10 @@ export function useTransactionModal({
 
   const handleSaveTransaction = async () => {
     if (!txModal.student) return;
-    const amount = parseInt(txAmount.replace(/\./g, ""));
+    let amount = parseInt(txAmount.replace(/\./g, ""));
+    if (amount > 0 && amount < 1000) {
+      amount = amount * 1000;
+    }
     if (!amount || amount <= 0) {
       setMessage({ type: "error", text: "Jumlah harus lebih dari 0!" });
       return;

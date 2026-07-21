@@ -54,6 +54,11 @@ export default function TransactionModal({
               placeholder="Masukkan jumlah"
               className="w-full rounded-xl border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm outline-none focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100"
             />
+            {txAmount && !isNaN(Number(txAmount)) && (
+              <p className="text-xs text-blue-600 mt-1 dark:text-blue-400">
+                Akan disimpan: Rp {(Number(txAmount) < 1000 ? Number(txAmount) * 1000 : Number(txAmount)).toLocaleString("id-ID")}
+              </p>
+            )}
           </div>
           <div>
             <label className="text-xs text-gray-500 mb-1 block">
