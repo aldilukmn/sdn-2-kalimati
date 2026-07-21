@@ -15,9 +15,11 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(false);
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    if (loggedIn) return;
     setSubmitting(true);
 
     try {
@@ -45,6 +47,7 @@ export default function LoginPage() {
       window.dispatchEvent(new Event("auth-update"));
 
       toast.success(`Selamat datang, ${fullName}!`);
+      setLoggedIn(true);
       await new Promise((r) => setTimeout(r, 1500));
 
 
@@ -126,7 +129,7 @@ export default function LoginPage() {
                   ? "opacity-50 disabled:cursor-not-allowed"
                   : "cursor-pointer"
               }`}
-              disabled={submitting || !identifier || !password}
+              disabled={submitting || !identifier || !password || loggedIn}
             >
               {submitting ? (
                 <Loader2 size={18} className="animate-spin" />

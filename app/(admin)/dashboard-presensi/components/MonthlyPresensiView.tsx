@@ -50,7 +50,7 @@ export function MonthlyPresensiView({
   topAbsen,
   topLowHadir,
 }: MonthlyPresensiViewProps) {
-  const [trendType, setTrendType] = useState<"bulanan" | "harian">("bulanan");
+  const [trendType, setTrendType] = useState<"bulanan" | "harian">("harian");
   const [trendMonth, setTrendMonth] = useState<number>(new Date().getMonth() + 1);
 
   return (
