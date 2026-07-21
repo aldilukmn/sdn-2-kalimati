@@ -245,7 +245,7 @@ export default function TabunganMuridPage() {
                       : "text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
                   }`}
                 >
-                  7 Hari
+                  6 Hari
                 </button>
                 <button
                   onClick={() => setGradeRecapMode("monthly")}

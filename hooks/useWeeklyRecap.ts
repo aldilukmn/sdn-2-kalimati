@@ -16,7 +16,7 @@ export function useWeeklyRecap(endDate: string, grade: string, refreshKey?: numb
   const fetchData = useCallback(async () => {
     const datesToFetch: string[] = [];
     const end = new Date(endDate);
-    for (let i = 0; i < 7; i++) {
+    for (let i = 0; i < 6; i++) {
       const d = new Date(end);
       d.setDate(d.getDate() - i);
       datesToFetch.push(d.toISOString().split("T")[0]);
