@@ -14,6 +14,8 @@ import EmptyState from "@/components/shared/EmptyState";
 import TableSkeleton from "@/components/tables/TableSkeleton";
 import Pagination from "@/components/common/Pagination";
 import { ITEMS_PER_PAGE } from "@/lib/constants";
+import * as XLSX from "xlsx";
+import { useRef } from "react";
 
 const Modal = dynamic(() => import("@/components/modals/Modal"), { ssr: false });
 
@@ -31,6 +33,8 @@ export default function DataMuridPage() {
     studentId: "", name: "", grade: "1", gender: "L", nisn: ""
   });
   const [saving, setSaving] = useState(false);
+  const [importing, setImporting] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const fetchStudents = async () => {
     try {
@@ -92,6 +96,43 @@ export default function DataMuridPage() {
     }
   };
 
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setImporting(true);
+    try {
+      const data = await file.arrayBuffer();
+      const workbook = XLSX.read(data);
+      const worksheet = workbook.Sheets[workbook.SheetNames[0]];
+      const jsonData = XLSX.utils.sheet_to_json(worksheet) as any[];
+
+      const newStudents: Partial<MasterStudentType>[] = jsonData.map((row: any) => ({
+        studentId: String(row["NIS"] || row["NIS/ID"] || row["studentId"] || row["ID"] || "").trim(),
+        name: String(row["Nama"] || row["name"] || "").trim(),
+        gender: String(row["L/P"] || row["gender"] || row["Jenis Kelamin"] || "L").trim().toUpperCase(),
+        grade: String(row["Kelas"] || row["grade"] || grade).trim(),
+        nisn: String(row["NISN"] || row["nisn"] || "").trim(),
+      })).filter((s) => s.studentId && s.name);
+
+      if (newStudents.length === 0) {
+        toast.error("Format Excel tidak sesuai atau kosong.");
+        return;
+      }
+
+      await MasterStudentService.importData(newStudents);
+      toast.success(`${newStudents.length} murid berhasil diimpor`);
+      fetchStudents();
+    } catch (err: any) {
+      toast.error(err.message || "Gagal mengimpor file Excel");
+    } finally {
+      setImporting(false);
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
+    }
+  };
+
   if (authLoading) return null;
 
   if (role !== "admin" && role !== "kepala_sekolah" && role !== "guru") {
@@ -117,12 +158,29 @@ export default function DataMuridPage() {
             </SelectContent>
           </Select>
         </div>
-        <button
-          onClick={() => { setEditMode(false); setFormData({ studentId: "", name: "", grade, gender: "L", nisn: "" }); setModalOpen(true); }}
-          className="w-full sm:w-auto flex items-center justify-center gap-2 px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-sm font-semibold transition-all"
-        >
-          <Plus size={16} /> Tambah Murid
-        </button>
+        <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
+          <input
+            type="file"
+            accept=".xlsx, .xls"
+            className="hidden"
+            ref={fileInputRef}
+            onChange={handleFileUpload}
+          />
+          <button
+            onClick={() => fileInputRef.current?.click()}
+            disabled={importing}
+            className="w-full sm:w-auto flex items-center justify-center gap-2 px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-sm font-semibold transition-all disabled:opacity-50"
+          >
+            {importing ? <Loader2 size={16} className="animate-spin" /> : <Upload size={16} />}
+            {importing ? "Mengimpor..." : "Import Excel"}
+          </button>
+          <button
+            onClick={() => { setEditMode(false); setFormData({ studentId: "", name: "", grade, gender: "L", nisn: "" }); setModalOpen(true); }}
+            className="w-full sm:w-auto flex items-center justify-center gap-2 px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-sm font-semibold transition-all"
+          >
+            <Plus size={16} /> Tambah Murid
+          </button>
+        </div>
       </div>
 
       <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 md:backdrop-blur-md border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5 overflow-hidden">
