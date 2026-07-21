@@ -45,7 +45,7 @@ export default function ProfileView({ userId }: Props) {
 
   if (loading) {
     return (
-      <div className="flex flex-col gap-6 p-4 md:p-6 animate-fadeIn">
+      <div className="flex flex-col gap-6 p-4 md:p-6 ">
         <PageHero icon={UserCircle} title="Profil" description="Memuat..." />
         <div className="bg-white/70 dark:bg-gray-800/40 md: border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
           <div className="h-64 bg-slate-200 dark:bg-slate-700 rounded-2xl animate-pulse" />
@@ -56,7 +56,7 @@ export default function ProfileView({ userId }: Props) {
 
   if (!profile) {
     return (
-      <div className="flex flex-col gap-6 p-4 md:p-6 animate-fadeIn">
+      <div className="flex flex-col gap-6 p-4 md:p-6 ">
         <PageHero icon={UserCircle} title="Profil" description="Pengguna tidak ditemukan" />
       </div>
     );
@@ -141,7 +141,7 @@ export default function ProfileView({ userId }: Props) {
   };
 
   return (
-    <div className="flex flex-col gap-6 p-4 md:p-6 animate-fadeIn">
+    <div className="flex flex-col gap-6 p-4 md:p-6 ">
       <PageHero
         icon={UserCircle}
         title="Profil"

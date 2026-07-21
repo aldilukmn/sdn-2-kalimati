@@ -46,7 +46,7 @@ export default function PresensiTable({
     <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 md: border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5 overflow-hidden">
       <div
         key={loading ? "skeleton" : "data"}
-        className="overflow-x-auto animate-fadeIn rounded-xl border border-gray-200 dark:border-gray-700 bg-white/80 md:bg-white/60 dark:bg-gray-800/30 "
+        className="overflow-x-auto  rounded-xl border border-gray-200 dark:border-gray-700 bg-white/80 md:bg-white/60 dark:bg-gray-800/30 "
         style={{ transform: "translateZ(0)" }}
       >
         <table className="w-full">
@@ -82,7 +82,7 @@ export default function PresensiTable({
               : paginatedEntries.map((entry, i) => (
                   <tr
                     key={entry.studentId}
-                    className="hover:bg-indigo-50/50 dark:hover:bg-indigo-900/20 transition-colors animate-fadeIn"
+                    className="hover:bg-indigo-50/50 dark:hover:bg-indigo-900/20 transition-colors "
                   >
                     <td className="p-3 text-sm text-gray-800 dark:text-gray-300 text-center">
                       {startIndex + i + 1}

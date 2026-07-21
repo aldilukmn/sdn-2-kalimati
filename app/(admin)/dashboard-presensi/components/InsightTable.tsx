@@ -43,7 +43,7 @@ export function InsightTable({
           {title}
         </h3>
       </div>
-      <div className="overflow-x-auto animate-fadeIn rounded-xl border border-gray-200 dark:border-gray-700 bg-white/80 dark:bg-gray-800/30 ">
+      <div className="overflow-x-auto  rounded-xl border border-gray-200 dark:border-gray-700 bg-white/80 dark:bg-gray-800/30 ">
         <Table>
           <TableHeader>
             <TableRow className={`bg-gradient-to-r ${headerClass} text-white`}>

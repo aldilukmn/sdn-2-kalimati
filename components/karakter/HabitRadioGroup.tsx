@@ -79,7 +79,7 @@ export default function HabitRadioGroup({ value, onChange, disabled }: HabitRadi
   return (
     <div ref={containerRef} className="inline-flex items-center justify-center">
       {isExpanded ? (
-        <div className="flex gap-1 items-center animate-fadeIn" role="radiogroup" aria-label="Nilai kebiasaan">
+        <div className="flex gap-1 items-center " role="radiogroup" aria-label="Nilai kebiasaan">
           {OPTIONS.map((opt, idx) => {
             const selected = value === opt.value;
             return (

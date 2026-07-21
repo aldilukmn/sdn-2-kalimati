@@ -274,7 +274,7 @@ export default function RekapPresensi() {
           </div>
         ) : (
           <>
-            <div className="overflow-x-auto animate-fadeIn rounded-xl border border-gray-200 dark:border-gray-700 bg-white/80 md:bg-white/60 dark:bg-gray-800/30">
+            <div className="overflow-x-auto  rounded-xl border border-gray-200 dark:border-gray-700 bg-white/80 md:bg-white/60 dark:bg-gray-800/30">
               {siswaList.length === 0 ? (
                 <div className="px-5 py-6 text-center text-gray-500 dark:text-gray-400">
                   Tidak ada data murid
@@ -316,7 +316,7 @@ export default function RekapPresensi() {
                       return (
                         <tr
                           key={murid.studentId}
-                          className="hover:bg-indigo-50/50 dark:hover:bg-indigo-900/20 transition-colors animate-fadeIn"
+                          className="hover:bg-indigo-50/50 dark:hover:bg-indigo-900/20 transition-colors "
                         >
                           <td className="px-4 py-3 text-sm text-gray-500 dark:text-gray-400">
                             {startIndex + i + 1}

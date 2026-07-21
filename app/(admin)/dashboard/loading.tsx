@@ -1,6 +1,6 @@
 export default function DashboardLoading() {
   return (
-    <div className="p-4 md:p-6 space-y-6 animate-fadeIn">
+    <div className="p-4 md:p-6 space-y-6 ">
       {/* Hero Skeleton */}
       <div className="relative bg-gradient-to-br from-indigo-500/80 via-indigo-600/80 to-purple-600/70 rounded-2xl overflow-hidden shadow-xl animate-pulse h-[92px] md:h-[104px]">
         <div className="relative p-5 md:p-6 flex items-center gap-4">

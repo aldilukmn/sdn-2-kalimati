@@ -191,7 +191,7 @@ export default function DataMuridPage() {
         ) : students.length === 0 ? (
           <EmptyState icon={Users} title="Tidak ada murid di kelas ini" />
         ) : (
-          <div className="overflow-x-auto animate-fadeIn rounded-xl border border-gray-200 dark:border-gray-700 bg-white/80 md:bg-white/60 dark:bg-gray-800/30 shadow-lg">
+          <div className="overflow-x-auto  rounded-xl border border-gray-200 dark:border-gray-700 bg-white/80 md:bg-white/60 dark:bg-gray-800/30 shadow-lg">
             <table className="w-full">
               <thead>
                 <tr className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-xs md:text-sm">
@@ -203,7 +203,7 @@ export default function DataMuridPage() {
               </thead>
               <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
                 {students.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE).map(student => (
-                  <tr key={student._id} className="transition-colors animate-fadeIn hover:bg-indigo-50/50 dark:hover:bg-indigo-900/20">
+                  <tr key={student._id} className="transition-colors  hover:bg-indigo-50/50 dark:hover:bg-indigo-900/20">
                     <td className="px-4 py-3 md:px-6 md:py-4 text-center text-sm font-medium text-gray-900 dark:text-white whitespace-nowrap">{student.studentId}</td>
                     <td className="px-4 py-3 md:px-6 md:py-4 text-sm text-gray-600 dark:text-gray-300 whitespace-nowrap">{student.name}</td>
                     <td className="px-4 py-3 md:px-6 md:py-4 text-center text-sm text-gray-600 dark:text-gray-300 whitespace-nowrap">{student.gender}</td>

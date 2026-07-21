@@ -246,7 +246,7 @@ export default function DataGTK() {
         ) : (
           <div
             key="data"
-            className="overflow-x-auto animate-fadeIn rounded-xl border border-gray-200 dark:border-gray-700 bg-white/80 md:bg-white/60 dark:bg-gray-800/30"
+            className="overflow-x-auto  rounded-xl border border-gray-200 dark:border-gray-700 bg-white/80 md:bg-white/60 dark:bg-gray-800/30"
           >
             <table className="w-full">
               <thead>
@@ -283,7 +283,7 @@ export default function DataGTK() {
                 {teachers.map((guru) => (
                   <tr
                     key={guru._id}
-                    className={`transition-colors animate-fadeIn ${deletingId === guru._id ? "opacity-50 pointer-events-none" : "hover:bg-indigo-50/50 dark:hover:bg-indigo-900/20"}`}
+                    className={`transition-colors  ${deletingId === guru._id ? "opacity-50 pointer-events-none" : "hover:bg-indigo-50/50 dark:hover:bg-indigo-900/20"}`}
                   >
                     <td className="px-3 py-3 md:px-6 md:py-4 text-sm font-medium text-gray-900 dark:text-white whitespace-nowrap">
                       {guru.username}
@@ -381,7 +381,7 @@ export default function DataGTK() {
         ) : (
           <div
             key="data"
-            className="overflow-x-auto animate-fadeIn rounded-xl border border-gray-200 dark:border-gray-700 bg-white/80 md:bg-white/60 dark:bg-gray-800/30"
+            className="overflow-x-auto  rounded-xl border border-gray-200 dark:border-gray-700 bg-white/80 md:bg-white/60 dark:bg-gray-800/30"
           >
             <table className="w-full">
               <thead>
@@ -420,7 +420,7 @@ export default function DataGTK() {
                   return (
                     <tr
                       key={user._id}
-                      className={`transition-colors animate-fadeIn ${deletingId === user._id ? "opacity-50 pointer-events-none" : "hover:bg-indigo-50/50 dark:hover:bg-indigo-900/20"}`}
+                      className={`transition-colors  ${deletingId === user._id ? "opacity-50 pointer-events-none" : "hover:bg-indigo-50/50 dark:hover:bg-indigo-900/20"}`}
                     >
                       <td className="px-3 py-3 md:px-6 md:py-4 text-sm font-medium text-gray-900 dark:text-white whitespace-nowrap">
                         {user.username}

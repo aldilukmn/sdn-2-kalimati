@@ -18,7 +18,7 @@ export default function RekapNilaiAkhirSheet({ matrix, subjects, classAverages }
   const paginatedMatrix = matrix.slice(startIndex, startIndex + ITEMS_PER_PAGE);
   return (
     <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5 overflow-hidden">
-      <div className="overflow-x-auto animate-fadeIn rounded-xl border border-gray-200 dark:border-gray-700 bg-white/80 dark:bg-gray-800/30 ">
+      <div className="overflow-x-auto  rounded-xl border border-gray-200 dark:border-gray-700 bg-white/80 dark:bg-gray-800/30 ">
         <table className="w-full">
           <thead>
             <tr className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-xs md:text-sm">

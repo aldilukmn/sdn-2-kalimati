@@ -92,7 +92,7 @@ export default function ScoreTable({
   if (loading) {
     return (
       <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 md: border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5 overflow-hidden">
-        <div className="overflow-x-auto animate-fadeIn rounded-xl border border-gray-200 dark:border-gray-700 bg-white/80 md:bg-white/60 dark:bg-gray-800/30 ">
+        <div className="overflow-x-auto  rounded-xl border border-gray-200 dark:border-gray-700 bg-white/80 md:bg-white/60 dark:bg-gray-800/30 ">
           <table className="w-full">
             <thead>
               <tr className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-xs md:text-sm">
@@ -123,7 +123,7 @@ export default function ScoreTable({
   return (
     <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 md: border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5 overflow-hidden">
       {/* Desktop table */}
-      <div className="hidden md:block overflow-x-auto animate-fadeIn rounded-xl border border-gray-200 dark:border-gray-700 bg-white/80 md:bg-white/60 dark:bg-gray-800/30 ">
+      <div className="hidden md:block overflow-x-auto  rounded-xl border border-gray-200 dark:border-gray-700 bg-white/80 md:bg-white/60 dark:bg-gray-800/30 ">
         <table className="w-full">
           <thead>
             <tr className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-xs md:text-sm">
@@ -194,7 +194,7 @@ export default function ScoreTable({
       </div>
 
       {/* Mobile cards */}
-      <div className="md:hidden space-y-2 animate-fadeIn">
+      <div className="md:hidden space-y-2 ">
         {paginatedEntries.map((entry, i) => (
           <div
             key={entry.studentId}

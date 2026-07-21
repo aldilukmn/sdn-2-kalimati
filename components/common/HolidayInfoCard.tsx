@@ -13,7 +13,7 @@ export default function HolidayInfoCard({
   message,
 }: HolidayInfoCardProps) {
   return (
-    <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 md: border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-6 md:p-8 text-center animate-fadeIn">
+    <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 md: border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-6 md:p-8 text-center ">
       <div className="mx-auto w-16 h-16 flex items-center justify-center rounded-full bg-amber-100 dark:bg-amber-900/30 mb-4">
         <CalendarX
           size={32}

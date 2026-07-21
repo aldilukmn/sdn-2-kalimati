@@ -74,7 +74,7 @@ export default function StudentAttendanceTable({
   }
 
   return (
-    <div key={loading ? "skeleton" : "data"} className="overflow-x-auto animate-fadeIn rounded-xl border border-gray-200 dark:border-gray-700 bg-white/60 dark:bg-gray-800/30 md:">
+    <div key={loading ? "skeleton" : "data"} className="overflow-x-auto  rounded-xl border border-gray-200 dark:border-gray-700 bg-white/60 dark:bg-gray-800/30 md:">
       <table className="w-full text-sm">
           <thead>
             <tr className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-xs md:text-sm">
@@ -140,7 +140,7 @@ export default function StudentAttendanceTable({
                   return (
                     <tr
                       key={row._id}
-                      className="hover:bg-indigo-50/50 dark:hover:bg-indigo-900/20 transition-colors animate-fadeIn">
+                      className="hover:bg-indigo-50/50 dark:hover:bg-indigo-900/20 transition-colors ">
                       <td className="px-3 py-3 text-gray-800 dark:text-gray-300 text-center">
                         <span className="text font-mono">
                           {row.studentIndex + 1}

@@ -310,7 +310,7 @@ export default function TabunganMuridPage() {
         />
       ) : (
         <>
-          <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 md: border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5 animate-fadeIn relative z-10">
+          <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 md: border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5  relative z-10">
             <div className="flex w-full h-[42px] items-center gap-1 p-1 bg-slate-100 dark:bg-gray-800/80 rounded-xl border border-slate-300 dark:border-gray-700 shadow-inner md:w-fit">
               <button
                 onClick={() => setActiveTab("harian")}
