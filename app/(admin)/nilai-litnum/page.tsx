@@ -71,6 +71,11 @@ export default function NilaiLitnumPage() {
   );
   const totalPages = Math.ceil(students.length / ITEMS_PER_PAGE);
 
+  const [tasksPage, setTasksPage] = useState(1);
+  const tasksStartIndex = (tasksPage - 1) * ITEMS_PER_PAGE;
+  const paginatedTasks = tasks.slice(tasksStartIndex, tasksStartIndex + ITEMS_PER_PAGE);
+  const tasksTotalPages = Math.ceil(tasks.length / ITEMS_PER_PAGE);
+
   useEffect(() => {
     setCurrentPage(1);
   }, [selectedTaskId]);
@@ -177,7 +182,7 @@ export default function NilaiLitnumPage() {
                 description="Klik Tambah Penilaian untuk membuat sub-penilaian LitNum"
               />
             ) : (
-              tasks.map((t, index) => {
+              paginatedTasks.map((t, index) => {
                 const isActive = selectedTaskId === t._id;
                 return (
                   <button
@@ -197,7 +202,7 @@ export default function NilaiLitnumPage() {
                       <span
                         className={`text-sm font-medium truncate ${isActive ? "text-indigo-700 dark:text-indigo-300" : "text-slate-700 dark:text-slate-300"}`}
                       >
-                        {index + 1}. {t.name}
+                        {tasksStartIndex + index + 1}. {t.name}
                         {t.createdAt && (
                           <span className="text-xs font-normal opacity-70 ml-2">
                             ({new Date(t.createdAt).toLocaleDateString("id-ID", {
@@ -263,6 +268,15 @@ export default function NilaiLitnumPage() {
               })
             )}
           </div>
+          {tasksTotalPages > 1 && (
+            <div className="mt-4">
+              <Pagination
+                currentPage={tasksPage}
+                totalPages={tasksTotalPages}
+                onPageChange={setTasksPage}
+              />
+            </div>
+          )}
 
           {selectedTask && (
             <div className="bg-white/70 dark:bg-gray-800/40 border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">

@@ -160,7 +160,7 @@ export default function PenilaianPage() {
         <div className="flex w-full justify-start md:justify-end">
           <div className="w-full sm:w-56">
             <Select value={category} onValueChange={(v) => v && setCategory(v)}>
-              <SelectTrigger className="w-full h-auto rounded-xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm font-semibold focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100 shadow-sm">
+              <SelectTrigger className="w-full h-auto rounded-xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100 shadow-sm">
                 <SelectValue placeholder="Pilih Kategori">
                   {category === "tugas" ? "Nilai Tugas" : category === "keaktifan" ? "Nilai Keaktifan" : "Nilai Partisipasi"}
                 </SelectValue>
@@ -198,7 +198,7 @@ export default function PenilaianPage() {
         <>
           <div className="flex items-center justify-between mb-2">
             <h2 className="font-semibold text-slate-700 dark:text-slate-200">
-              Daftar {category === "tugas" ? "Tugas" : "Keaktifan"}
+              Daftar {category === "tugas" ? "Tugas" : category === "keaktifan" ? "Keaktifan" : "Partisipasi"}
             </h2>
             <button
               onClick={openAdd}
@@ -206,7 +206,7 @@ export default function PenilaianPage() {
               className="flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 text-white text-sm font-medium rounded-lg transition-colors cursor-pointer disabled:cursor-not-allowed"
             >
               <Plus size={16} />
-              Tambah {category === "tugas" ? "Tugas" : "Keaktifan"}
+              Tambah {category === "tugas" ? "Tugas" : category === "keaktifan" ? "Keaktifan" : "Partisipasi"}
             </button>
           </div>
           <div className="space-y-2">
@@ -214,7 +214,7 @@ export default function PenilaianPage() {
               <EmptyState
                 icon={ClipboardList}
                 title="Belum ada data"
-                description={`Klik Tambah ${category === "tugas" ? "Tugas" : "Keaktifan"} untuk membuat data baru`}
+                description={`Klik Tambah ${category === "tugas" ? "Tugas" : category === "keaktifan" ? "Keaktifan" : "Partisipasi"} untuk membuat data baru`}
               />
             ) : (
               tasks.map((t: any, index: number) => {
@@ -465,7 +465,7 @@ export default function PenilaianPage() {
           setTaskModal(null);
           setTaskName("");
         }}
-        title={taskModal?.mode === "add" ? `Tambah ${category === "tugas" ? "Tugas" : "Keaktifan"}` : "Edit Data"}
+        title={taskModal?.mode === "add" ? `Tambah ${category === "tugas" ? "Tugas" : category === "keaktifan" ? "Keaktifan" : "Partisipasi"}` : "Edit Data"}
       >
         <div className="space-y-3">
           <input
