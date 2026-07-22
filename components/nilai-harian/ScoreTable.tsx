@@ -95,24 +95,22 @@ export default function ScoreTable({
     return (
       <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 md: border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5 overflow-hidden">
         <div className="overflow-x-auto  rounded-xl border border-gray-200 dark:border-gray-700 bg-white/80 md:bg-white/60 dark:bg-gray-800/30 ">
-          <table className="w-full">
+          <table className="w-full text-sm">
             <thead>
-              <tr className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-xs md:text-sm">
-                <th className="px-3 py-3 text-center font-semibold w-12 whitespace-nowrap">No</th>
-                <th className="px-3 py-3 text-left font-semibold whitespace-nowrap">Nama</th>
-                <th className="px-3 py-3 text-center font-semibold w-24 whitespace-nowrap">Nilai</th>
-                <th className="px-3 py-3 text-center font-semibold w-20 whitespace-nowrap">Maks</th>
-                <th className="px-3 py-3 text-center font-semibold w-28 whitespace-nowrap">Status</th>
+              <tr className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-xs md:text-sm text-center">
+                <th className="px-4 py-3 font-semibold w-12 whitespace-nowrap">No</th>
+                <th className="text-left px-4 py-3 font-semibold whitespace-nowrap">Nama</th>
+                <th className="px-4 py-3 font-semibold w-24 whitespace-nowrap">Nilai</th>
+                <th className="px-4 py-3 font-semibold w-20 whitespace-nowrap">Maks</th>
+                <th className="px-4 py-3 font-semibold w-24 whitespace-nowrap">Status</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-300 dark:divide-gray-700">
+            <tbody>
               {Array.from({ length: 5 }).map((_, i) => (
-                <tr key={i} className="animate-pulse">
-                  <td className="px-3 py-3"><div className="h-4 w-4 bg-gray-200 dark:bg-gray-700 rounded mx-auto" /></td>
-                  <td className="px-3 py-3"><div className="h-4 w-40 bg-gray-200 dark:bg-gray-700 rounded" /></td>
-                  <td className="px-3 py-3"><div className="h-8 w-20 bg-gray-200 dark:bg-gray-700 rounded mx-auto" /></td>
-                  <td className="px-3 py-3"><div className="h-8 w-14 bg-gray-200 dark:bg-gray-700 rounded mx-auto" /></td>
-                  <td className="px-3 py-3"><div className="h-4 w-24 bg-gray-200 dark:bg-gray-700 rounded mx-auto" /></td>
+                <tr key={i} className="border-b border-slate-100 dark:border-slate-800">
+                  <td colSpan={5} className="p-3">
+                    <div className="h-10 w-full bg-slate-200 dark:bg-slate-700 rounded-lg animate-pulse" />
+                  </td>
                 </tr>
               ))}
             </tbody>
@@ -151,31 +149,29 @@ export default function ScoreTable({
       )}
       {/* Desktop table */}
       <div className="overflow-x-auto rounded-xl border border-gray-200 dark:border-gray-700 bg-white/80 md:bg-white/60 dark:bg-gray-800/30">
-        <table className="w-full">
+        <table className="w-full text-sm">
           <thead>
-            <tr className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-xs md:text-sm">
-              <th className="px-3 py-3 text-center font-semibold w-12">No</th>
-              <th className="px-3 py-3 text-left font-semibold">Nama</th>
-              <th className="px-3 py-3 text-center font-semibold w-24">Nilai</th>
-              <th className="px-3 py-3 text-center font-semibold w-20">Maks</th>
-              <th className="px-3 py-3 text-center font-semibold w-28">Status</th>
+            <tr className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-xs md:text-sm text-center">
+              <th className="px-4 py-3 font-semibold w-12 whitespace-nowrap">No</th>
+              <th className="text-left px-4 py-3 font-semibold whitespace-nowrap">Nama</th>
+              <th className="px-4 py-3 font-semibold w-24 whitespace-nowrap">Nilai</th>
+              <th className="px-4 py-3 font-semibold w-20 whitespace-nowrap">Maks</th>
+              <th className="px-4 py-3 font-semibold w-24 whitespace-nowrap">Status</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-300 dark:divide-gray-700">
+          <tbody>
             {paginatedEntries.map((entry, i) => (
               <tr
                 key={entry.studentId}
-                className="hover:bg-indigo-50/50 dark:hover:bg-indigo-900/20 transition-colors"
+                className="border-b border-slate-100 dark:border-slate-800/50 hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-colors"
               >
-                <td className="p-3 text-sm text-gray-800 dark:text-gray-300 text-center">
+                <td className="px-4 py-2.5 text-center text-slate-500 dark:text-slate-400">
                   {startIndex + i + 1}
                 </td>
-                <td className="p-3">
-                  <span className="text-sm text-gray-800 dark:text-gray-200 truncate">
-                    {entry.studentName}
-                  </span>
+                <td className="px-4 py-2.5 text-slate-700 dark:text-slate-200 font-medium whitespace-nowrap">
+                  {entry.studentName}
                 </td>
-                <td className="p-3">
+                <td className="px-4 py-2.5 text-center">
                   <input
                     ref={(el) => setScoreInputRef(entry.studentId, el)}
                     type="number"
@@ -185,34 +181,44 @@ export default function ScoreTable({
                     disabled={saving}
                     min={0}
                     max={Number(entry.maxScore)}
-                    className="w-fit px-1 py-1.5 text-sm text-center rounded-lg border border-slate-300 bg-slate-50 focus:outline-none focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:focus:border-blue-400 disabled:opacity-50 [&::-webkit-inner-spin-button]:appearance-none [&::-moz-appearance]:textfield"
+                    className="w-fit px-0 mx-auto block text-center rounded-lg border border-slate-300 bg-slate-50 py-1.5 text-sm focus:outline-none focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100 dark:focus:border-blue-400 disabled:opacity-50 disabled:cursor-not-allowed transition-colors [&::-webkit-inner-spin-button]:appearance-none [&::-moz-appearance]:textfield"
                   />
                 </td>
-                <td className="p-3">
+                <td className="px-4 py-2.5 text-center">
                   <input
                     ref={(el) => setMaxInputRef(entry.studentId, el)}
                     type="number"
                     value={entry.maxScore}
                     readOnly
-                    className="w-14 px-2 py-1.5 text-sm text-center rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-gray-700/50 cursor-not-allowed opacity-70 [&::-webkit-inner-spin-button]:appearance-none [&::-moz-appearance]:textfield"
+                    className="w-12 px-0 mx-auto block py-1.5 text-sm text-center rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-gray-700/50 cursor-not-allowed opacity-70 [&::-webkit-inner-spin-button]:appearance-none [&::-moz-appearance]:textfield"
                   />
                 </td>
-                <td className="p-3 text-center">
-                  {entry.status === "saved" && (
-                    <span title="Tersimpan" className="inline-flex items-center text-emerald-600 dark:text-emerald-400">
-                      <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
-                    </span>
-                  )}
-                  {entry.status === "unsaved" && (
-                    <span title="Belum simpan" className="inline-flex items-center text-amber-600 dark:text-amber-400">
-                      <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                    </span>
-                  )}
-                  {entry.status === "error" && (
-                    <span title="Gagal" className="inline-flex items-center text-red-600 dark:text-red-400">
-                      <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>
-                    </span>
-                  )}
+                <td className="px-4 py-2.5 text-center">
+                  <span
+                    className={`inline-flex items-center text-[11px] font-semibold p-1.5 rounded-full ${
+                      entry.status === "saved"
+                        ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300"
+                        : entry.status === "error"
+                        ? "bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-300"
+                        : "bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300"
+                    }`}
+                  >
+                    {entry.status === "saved" && (
+                      <span title="Tersimpan" className="inline-flex items-center">
+                        <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+                      </span>
+                    )}
+                    {entry.status === "unsaved" && (
+                      <span title="Belum simpan" className="inline-flex items-center">
+                        <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                      </span>
+                    )}
+                    {entry.status === "error" && (
+                      <span title="Gagal" className="inline-flex items-center">
+                        <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>
+                      </span>
+                    )}
+                  </span>
                 </td>
               </tr>
             ))}
