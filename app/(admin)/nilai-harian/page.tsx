@@ -188,7 +188,9 @@ export default function NilaiHarianPage() {
                     onValueChange={(v) => v && setSelectedMaterial(v)}
                   >
                     <SelectTrigger className="w-full sm:w-[280px] h-auto rounded-xl border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100">
-                      <SelectValue placeholder="Pilih Materi" />
+                      <SelectValue placeholder="Pilih Materi">
+                        {selectedMaterial ? materials.find((m) => m._id === selectedMaterial)?.name || "-" : null}
+                      </SelectValue>
                     </SelectTrigger>
                     <SelectContent>
                       <SelectGroup>
