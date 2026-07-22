@@ -100,15 +100,14 @@ export default function ScoreTable({
               <tr className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-xs md:text-sm text-center">
                 <th className="px-4 py-3 font-semibold w-12 whitespace-nowrap">No</th>
                 <th className="text-left px-4 py-3 font-semibold whitespace-nowrap">Nama</th>
-                <th className="px-4 py-3 font-semibold w-24 whitespace-nowrap">Nilai</th>
-                <th className="px-4 py-3 font-semibold w-20 whitespace-nowrap">Maks</th>
+                <th className="px-4 py-3 font-semibold w-32 whitespace-nowrap">Nilai (0-100)</th>
                 <th className="px-4 py-3 font-semibold w-24 whitespace-nowrap">Status</th>
               </tr>
             </thead>
             <tbody>
               {Array.from({ length: 5 }).map((_, i) => (
                 <tr key={i} className="border-b border-slate-100 dark:border-slate-800">
-                  <td colSpan={5} className="p-3">
+                  <td colSpan={4} className="p-3">
                     <div className="h-10 w-full bg-slate-200 dark:bg-slate-700 rounded-lg animate-pulse" />
                   </td>
                 </tr>
@@ -154,8 +153,7 @@ export default function ScoreTable({
             <tr className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-xs md:text-sm text-center">
               <th className="px-4 py-3 font-semibold w-12 whitespace-nowrap">No</th>
               <th className="text-left px-4 py-3 font-semibold whitespace-nowrap">Nama</th>
-              <th className="px-4 py-3 font-semibold w-24 whitespace-nowrap">Nilai</th>
-              <th className="px-4 py-3 font-semibold w-20 whitespace-nowrap">Maks</th>
+              <th className="px-4 py-3 font-semibold w-32 whitespace-nowrap">Nilai (0-100)</th>
               <th className="px-4 py-3 font-semibold w-24 whitespace-nowrap">Status</th>
             </tr>
           </thead>
@@ -182,15 +180,6 @@ export default function ScoreTable({
                     min={0}
                     max={Number(entry.maxScore)}
                     className="w-fit px-0 mx-auto block text-center rounded-lg border border-slate-300 bg-slate-50 py-1.5 text-sm focus:outline-none focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100 dark:focus:border-blue-400 disabled:opacity-50 disabled:cursor-not-allowed transition-colors [&::-webkit-inner-spin-button]:appearance-none [&::-moz-appearance]:textfield"
-                  />
-                </td>
-                <td className="px-4 py-2.5 text-center">
-                  <input
-                    ref={(el) => setMaxInputRef(entry.studentId, el)}
-                    type="number"
-                    value={entry.maxScore}
-                    readOnly
-                    className="w-12 px-0 mx-auto block py-1.5 text-sm text-center rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-gray-700/50 cursor-not-allowed opacity-70 [&::-webkit-inner-spin-button]:appearance-none [&::-moz-appearance]:textfield"
                   />
                 </td>
                 <td className="px-4 py-2.5 text-center">
