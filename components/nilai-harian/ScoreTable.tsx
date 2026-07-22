@@ -123,7 +123,7 @@ export default function ScoreTable({
   return (
     <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 md: border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5 overflow-hidden">
       {/* Desktop table */}
-      <div className="hidden md:block overflow-x-auto  rounded-xl border border-gray-200 dark:border-gray-700 bg-white/80 md:bg-white/60 dark:bg-gray-800/30 ">
+      <div className="overflow-x-auto rounded-xl border border-gray-200 dark:border-gray-700 bg-white/80 md:bg-white/60 dark:bg-gray-800/30">
         <table className="w-full">
           <thead>
             <tr className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-xs md:text-sm">
@@ -191,52 +191,6 @@ export default function ScoreTable({
             ))}
           </tbody>
         </table>
-      </div>
-
-      {/* Mobile cards */}
-      <div className="md:hidden space-y-2 ">
-        {paginatedEntries.map((entry, i) => (
-          <div
-            key={entry.studentId}
-            className="bg-white/80 dark:bg-gray-800/30 border border-gray-200 dark:border-gray-700 rounded-xl p-3"
-          >
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-xs text-gray-400 dark:text-gray-500 font-medium">
-                #{startIndex + i + 1}
-              </span>
-              {entry.status === "saved" && <span title="Tersimpan" className="inline-flex items-center text-emerald-600 dark:text-emerald-400"><svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg></span>}
-              {entry.status === "unsaved" && <span title="Belum simpan" className="inline-flex items-center text-amber-600 dark:text-amber-400"><svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span>}
-              {entry.status === "error" && <span title="Gagal" className="inline-flex items-center text-red-600 dark:text-red-400"><svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg></span>}
-            </div>
-            <p className="text-sm font-medium text-gray-800 dark:text-gray-200 mb-2">{entry.studentName}</p>
-            <div className="flex items-center gap-2">
-              <div className="flex-1">
-                <label className="block text-[10px] text-gray-400 dark:text-gray-500 mb-0.5">Nilai</label>
-                <input
-                  ref={(el) => setScoreInputRef(entry.studentId, el)}
-                  type="number"
-                  value={entry.score}
-                  onChange={(e) => onScoreChange(entry.studentId, e.target.value)}
-                  onKeyDown={(e) => handleKeyDown(entry.studentId, "score", e)}
-                  disabled={saving}
-                  min={0}
-                  max={Number(entry.maxScore)}
-                  className="w-full px-2 py-1.5 text-sm text-center rounded-lg border border-slate-300 bg-slate-50 focus:outline-none focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:focus:border-blue-400 disabled:opacity-50 [&::-webkit-inner-spin-button]:appearance-none [&::-moz-appearance]:textfield"
-                />
-              </div>
-              <div className="w-20">
-                <label className="block text-[10px] text-gray-400 dark:text-gray-500 mb-0.5">Maks</label>
-                <input
-                  ref={(el) => setMaxInputRef(entry.studentId, el)}
-                  type="number"
-                  value={entry.maxScore}
-                  readOnly
-                  className="w-full px-2 py-1.5 text-sm text-center rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-gray-700/50 cursor-not-allowed opacity-70 [&::-webkit-inner-spin-button]:appearance-none [&::-moz-appearance]:textfield"
-                />
-              </div>
-            </div>
-          </div>
-        ))}
       </div>
 
       {totalPages > 1 && (
