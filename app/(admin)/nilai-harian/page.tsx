@@ -90,6 +90,11 @@ export default function NilaiHarianPage() {
                       <span className={`text-sm font-medium truncate ${isActive ? "text-indigo-700 dark:text-indigo-300" : "text-slate-700 dark:text-slate-300"}`}>
                         {ch.name}
                       </span>
+                      {ch.createdAt && (
+                        <span className="text-xs font-normal opacity-70 shrink-0">
+                          ({new Date(ch.createdAt).toLocaleDateString("id-ID", { day: "numeric", month: "short", year: "numeric" })})
+                        </span>
+                      )}
                       <span className={`text-[11px] font-semibold px-2 py-0.5 rounded-full shrink-0 ${
                         ch.inputMode === "per_material"
                           ? "bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300"
@@ -137,6 +142,7 @@ export default function NilaiHarianPage() {
                     <button
                       key={mat._id}
                       onClick={() => setSelectedMaterial(mat._id)}
+                      title={mat.createdAt ? `Dibuat: ${new Date(mat.createdAt).toLocaleDateString("id-ID", { day: "numeric", month: "short", year: "numeric" })}` : undefined}
                       className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all cursor-pointer ${
                         selectedMaterial === mat._id
                           ? "bg-white dark:bg-gray-800 text-indigo-600 dark:text-indigo-300 shadow-sm"
@@ -144,6 +150,11 @@ export default function NilaiHarianPage() {
                       }`}
                     >
                       {mat.name}
+                      {mat.createdAt && (
+                        <span className="block text-[10px] opacity-60">
+                          {new Date(mat.createdAt).toLocaleDateString("id-ID", { day: "numeric", month: "short", year: "numeric" })}
+                        </span>
+                      )}
                     </button>
                   ))}
                 </div>

@@ -238,18 +238,18 @@ export default function PenilaianPage() {
                         className={`text-sm font-medium truncate ${isActive ? "text-indigo-700 dark:text-indigo-300" : "text-slate-700 dark:text-slate-300"}`}
                       >
                         {index + 1}. {t.name}
-                        {t.createdAt && (
-                          <span className="text-xs font-normal opacity-70 ml-2">
-                            (
-                            {new Date(t.createdAt).toLocaleDateString("id-ID", {
-                              day: "numeric",
-                              month: "short",
-                              year: "numeric",
-                            })}
-                            )
-                          </span>
-                        )}
                       </span>
+                      {t.createdAt && (
+                        <span className="text-xs font-normal opacity-70 shrink-0">
+                          (
+                          {new Date(t.createdAt).toLocaleDateString("id-ID", {
+                            day: "numeric",
+                            month: "short",
+                            year: "numeric",
+                          })}
+                          )
+                        </span>
+                      )}
                       <div className="ml-2 flex items-center">
                         {(t.inputtedCount ?? 0) >= students.length && students.length > 0 ? (
                           <span 
