@@ -217,32 +217,47 @@ export default function NilaiHarianPage() {
 
               {/* Score table */}
               {(selectedChapter.inputMode === "per_chapter" || (selectedChapter.inputMode === "per_material" && selectedMaterial && materials.length > 0)) && (
-                <ScoreTable
-                  entries={entries}
-                  paginatedEntries={paginatedEntries}
-                  startIndex={startIndex}
-                  currentPage={currentPage}
-                  totalPages={totalPages}
-                  saving={saving}
-                  loading={scoresLoading}
-                  onScoreChange={handleScoreChange}
-                  onMaxScoreChange={handleMaxScoreChange}
-                  onPageChange={setCurrentPage}
-                  saveButton={
-                    <button
-                      onClick={handleBulkSave}
-                      disabled={saving || scoresLoading}
-                      className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-xl text-sm font-medium transition-colors cursor-pointer"
-                    >
-                      {saving ? (
-                        <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                      ) : (
-                        <Save size={16} />
-                      )}
-                      {saving ? "Menyimpan..." : "Simpan Semua"}
-                    </button>
-                  }
-                />
+                <div className="space-y-4 animate-in fade-in-50 duration-300 mt-2">
+                  <div className="flex items-center justify-between bg-white/70 dark:bg-gray-800/40 border border-white/20 dark:border-gray-700/50 shadow-sm rounded-xl p-4">
+                    <h3 className="text-sm md:text-base font-semibold text-slate-800 dark:text-slate-100">
+                      {selectedChapter.inputMode === "per_material" 
+                        ? materials.find(m => m._id === selectedMaterial)?.name || "Sub Materi"
+                        : selectedChapter.name}
+                    </h3>
+                    <div className="flex items-center gap-2 text-xs md:text-sm font-medium text-slate-500 dark:text-slate-400">
+                      <span>Progres:</span>
+                      <span className="px-2.5 py-1 bg-indigo-100 text-indigo-700 dark:bg-indigo-900/40 dark:text-indigo-300 rounded-lg">
+                        {entries.filter(e => e.score !== "").length} / {entries.length} terisi
+                      </span>
+                    </div>
+                  </div>
+                  <ScoreTable
+                    entries={entries}
+                    paginatedEntries={paginatedEntries}
+                    startIndex={startIndex}
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    saving={saving}
+                    loading={scoresLoading}
+                    onScoreChange={handleScoreChange}
+                    onMaxScoreChange={handleMaxScoreChange}
+                    onPageChange={setCurrentPage}
+                    saveButton={
+                      <button
+                        onClick={handleBulkSave}
+                        disabled={saving || scoresLoading}
+                        className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-xl text-sm font-medium transition-colors cursor-pointer"
+                      >
+                        {saving ? (
+                          <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                        ) : (
+                          <Save size={16} />
+                        )}
+                        {saving ? "Menyimpan..." : "Simpan Semua"}
+                      </button>
+                    }
+                  />
+                </div>
               )}
             </>
           )}
