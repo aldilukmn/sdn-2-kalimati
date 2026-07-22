@@ -79,7 +79,7 @@ export default function NilaiHarianPage() {
                       setSelectedChapter(ch);
                       setSelectedMaterial("");
                     }}
-                    className={`w-full text-left flex flex-col sm:flex-row sm:items-center gap-2 px-4 py-3 rounded-xl border transition-all cursor-pointer ${
+                    className={`w-full text-left flex flex-row items-center justify-between gap-2 px-4 py-3 rounded-xl border transition-all cursor-pointer ${
                       isActive
                         ? "bg-indigo-50 dark:bg-indigo-900/30 border-indigo-300 dark:border-indigo-700 shadow-sm"
                         : "bg-white/70 dark:bg-gray-800/40 border-white/20 dark:border-gray-700/50 hover:border-indigo-200 dark:hover:border-indigo-700"
@@ -91,11 +91,11 @@ export default function NilaiHarianPage() {
                         {ch.name}
                       </span>
                       {ch.createdAt && (
-                        <span className="text-xs font-normal opacity-70 shrink-0">
+                        <span className="hidden sm:inline text-xs font-normal opacity-70 shrink-0">
                           ({new Date(ch.createdAt).toLocaleDateString("id-ID", { day: "numeric", month: "short", year: "numeric" })})
                         </span>
                       )}
-                      <span className={`text-[11px] font-semibold px-2 py-0.5 rounded-full shrink-0 ${
+                      <span className={`hidden sm:inline text-[11px] font-semibold px-2 py-0.5 rounded-full shrink-0 ${
                         ch.inputMode === "per_material"
                           ? "bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300"
                           : "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300"
