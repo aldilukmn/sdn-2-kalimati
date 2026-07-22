@@ -114,7 +114,7 @@ export default function NilaiHarianPage() {
                     </div>
                     <div className="flex items-center gap-3 sm:gap-4">
                       {/* Desktop: progress bar */}
-                      {prog && (
+                      {prog && ch.inputMode === "per_chapter" && (
                         <div className="hidden sm:flex items-center gap-2 flex-1 sm:flex-none">
                           <div className="w-24 sm:w-28 h-2 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden shrink-0">
                             <div
@@ -142,7 +142,7 @@ export default function NilaiHarianPage() {
                         </div>
                       )}
                       {/* Mobile: icon indicator */}
-                      {prog && (
+                      {prog && ch.inputMode === "per_chapter" && (
                         <div className="sm:hidden flex items-center">
                           {prog.percentage === 100 ? (
                             <span 
