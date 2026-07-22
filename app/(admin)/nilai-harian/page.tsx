@@ -194,7 +194,7 @@ export default function NilaiHarianPage() {
                     </SelectTrigger>
                     <SelectContent>
                       <SelectGroup>
-                        <SelectLabel>Materi</SelectLabel>
+                        <SelectLabel>Pilih Materi</SelectLabel>
                         {materials.sort((a, b) => a.order - b.order).map((mat) => (
                           <SelectItem key={mat._id} value={mat._id}>
                             {mat.name}
