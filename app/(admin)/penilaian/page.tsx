@@ -236,6 +236,7 @@ export default function PenilaianPage() {
                       </span>
                       <span
                         className={`text-sm font-medium truncate ${isActive ? "text-indigo-700 dark:text-indigo-300" : "text-slate-700 dark:text-slate-300"}`}
+                        title={t.name}
                       >
                         {index + 1}. {t.name}
                       </span>

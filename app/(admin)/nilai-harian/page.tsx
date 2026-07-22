@@ -87,7 +87,7 @@ export default function NilaiHarianPage() {
                   >
                     <div className="flex items-center gap-3 flex-1 min-w-0">
                       <span className="text-lg shrink-0">{isActive ? "📘" : "📕"}</span>
-                      <span className={`text-sm font-medium truncate ${isActive ? "text-indigo-700 dark:text-indigo-300" : "text-slate-700 dark:text-slate-300"}`}>
+                      <span className={`text-sm font-medium truncate ${isActive ? "text-indigo-700 dark:text-indigo-300" : "text-slate-700 dark:text-slate-300"}`} title={ch.name}>
                         {ch.name}
                       </span>
                       {ch.createdAt && (
