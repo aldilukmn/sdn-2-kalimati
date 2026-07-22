@@ -104,8 +104,9 @@ export default function NilaiHarianPage() {
                       </span>
                     </div>
                     <div className="flex items-center gap-3 sm:gap-4">
+                      {/* Desktop: progress bar */}
                       {prog && (
-                        <div className="flex items-center gap-2 flex-1 sm:flex-none">
+                        <div className="hidden sm:flex items-center gap-2 flex-1 sm:flex-none">
                           <div className="w-24 sm:w-28 h-2 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden shrink-0">
                             <div
                               className={`h-full rounded-full transition-all duration-500 ${
@@ -121,6 +122,41 @@ export default function NilaiHarianPage() {
                           <span className="text-[11px] font-medium text-slate-500 dark:text-slate-400 whitespace-nowrap">
                             {prog.gradedStudents}/{prog.totalStudents}
                           </span>
+                          {prog.percentage === 100 && (
+                            <span className="inline-flex items-center p-0.5 rounded-full text-emerald-700 bg-emerald-100 dark:bg-emerald-900/40 dark:text-emerald-300" title="Semua nilai tersimpan">
+                              <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                                <circle cx="12" cy="12" r="10" />
+                                <path d="m9 12 2 2 4-4" />
+                              </svg>
+                            </span>
+                          )}
+                        </div>
+                      )}
+                      {/* Mobile: icon indicator */}
+                      {prog && (
+                        <div className="sm:hidden flex items-center">
+                          {prog.percentage === 100 ? (
+                            <span 
+                              title="Semua nilai tersimpan"
+                              className="inline-flex items-center p-1 rounded-full text-emerald-700 bg-emerald-100 dark:bg-emerald-900/40 dark:text-emerald-300"
+                            >
+                              <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                                <circle cx="12" cy="12" r="10" />
+                                <path d="m9 12 2 2 4-4" />
+                              </svg>
+                            </span>
+                          ) : (
+                            <span 
+                              title={`${prog.gradedStudents} dari ${prog.totalStudents} nilai tersimpan`}
+                              className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-medium bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300"
+                            >
+                              <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                                <circle cx="12" cy="12" r="10" />
+                                <polyline points="12 6 12 12 16 14" />
+                              </svg>
+                              {prog.gradedStudents}/{prog.totalStudents}
+                            </span>
+                          )}
                         </div>
                       )}
                       {isActive && (
