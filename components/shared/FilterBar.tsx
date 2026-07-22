@@ -136,9 +136,9 @@ export default function FilterBar({
             <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 tracking-wider mb-2">Mata Pelajaran</label>
             <Select value={selectedGS} onValueChange={(v) => v && onSelectedGSChange(v)} disabled={gradeSubjects.length === 0}>
               <SelectTrigger className="w-full h-auto rounded-xl border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100">
-                <SelectValue placeholder={subjectPlaceholder || (gradeSubjects.length === 0 ? "Tidak Ada Mapel" : "Pilih Mapel")}>
-                  {selectedGS ? gradeSubjects.find(gs => gs._id === selectedGS)?.subjectName || "-" : null}
-                </SelectValue>
+                <span data-slot="select-value" className="flex flex-1 text-left truncate">
+                  {selectedGS ? gradeSubjects.find(gs => gs._id === selectedGS)?.subjectName || "-" : (subjectPlaceholder || (gradeSubjects.length === 0 ? "Tidak Ada Mapel" : "Pilih Mapel"))}
+                </span>
               </SelectTrigger>
               <SelectContent>
                 <SelectGroup>
