@@ -182,15 +182,13 @@ export default function NilaiHarianPage() {
             <>
               {/* Material tabs */}
               {selectedChapter.inputMode === "per_material" && materials.length > 0 && (
-                <div className="animate-in fade-in-50 duration-300">
+                <div className="animate-in fade-in-50 duration-300 mt-3">
                   <Select
                     value={selectedMaterial || ""}
                     onValueChange={(v) => v && setSelectedMaterial(v)}
                   >
                     <SelectTrigger className="w-full sm:w-[280px] h-auto rounded-xl border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100">
-                      <SelectValue placeholder="Pilih Materi">
-                        {selectedMaterial ? materials.find(m => m._id === selectedMaterial)?.name ?? "Pilih Materi" : "Pilih Materi"}
-                      </SelectValue>
+                      <SelectValue placeholder="Pilih Materi" />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectGroup>
