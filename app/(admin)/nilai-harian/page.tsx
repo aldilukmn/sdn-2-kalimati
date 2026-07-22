@@ -188,7 +188,9 @@ export default function NilaiHarianPage() {
                     onValueChange={(v) => v && setSelectedMaterial(v)}
                   >
                     <SelectTrigger className="w-full sm:w-[280px] h-auto rounded-xl border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100">
-                      <SelectValue placeholder="Pilih Materi" />
+                      <SelectValue placeholder="Pilih Materi">
+                        {selectedMaterial ? materials.find(m => m._id === selectedMaterial)?.name ?? "Pilih Materi" : "Pilih Materi"}
+                      </SelectValue>
                     </SelectTrigger>
                     <SelectContent>
                       <SelectGroup>
@@ -196,11 +198,6 @@ export default function NilaiHarianPage() {
                         {materials.sort((a, b) => a.order - b.order).map((mat) => (
                           <SelectItem key={mat._id} value={mat._id}>
                             {mat.name}
-                            {mat.createdAt && (
-                              <span className="text-[10px] opacity-50 ml-2">
-                                {new Date(mat.createdAt).toLocaleDateString("id-ID", { day: "numeric", month: "short", year: "numeric" })}
-                              </span>
-                            )}
                           </SelectItem>
                         ))}
                       </SelectGroup>
