@@ -17,6 +17,7 @@ interface Props {
   onMaxScoreChange: (studentId: string, value: string) => void;
   onPageChange: (page: number) => void;
   saveButton?: React.ReactNode;
+  title?: string;
 }
 
 export default function ScoreTable({
@@ -31,6 +32,7 @@ export default function ScoreTable({
   onMaxScoreChange,
   onPageChange,
   saveButton,
+  title,
 }: Props) {
   const scoreRefs = useRef<Map<string, { score: HTMLInputElement | null; max: HTMLInputElement | null }>>(new Map());
 
@@ -120,8 +122,33 @@ export default function ScoreTable({
     );
   }
 
+  const filledCount = entries.filter((e) => e.score !== "").length;
+  const isComplete = filledCount === entries.length && entries.length > 0;
+
   return (
-    <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 md: border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5 overflow-hidden">
+    <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 md:border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5 overflow-hidden flex flex-col gap-4">
+      {title && (
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white/50 dark:bg-gray-900/30 rounded-xl p-3 border border-slate-100 dark:border-slate-800/50">
+          <h3 className="text-sm md:text-base font-semibold text-slate-800 dark:text-slate-100">
+            {title}
+          </h3>
+          <div className="flex items-center gap-2 text-xs md:text-sm font-medium">
+            <span className="text-slate-500 dark:text-slate-400">Progres:</span>
+            <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg ${
+              isComplete 
+                ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300' 
+                : 'bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300'
+            }`}>
+              {isComplete ? (
+                <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+              ) : (
+                <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              )}
+              {filledCount} / {entries.length} terisi
+            </span>
+          </div>
+        </div>
+      )}
       {/* Desktop table */}
       <div className="overflow-x-auto rounded-xl border border-gray-200 dark:border-gray-700 bg-white/80 md:bg-white/60 dark:bg-gray-800/30">
         <table className="w-full">
