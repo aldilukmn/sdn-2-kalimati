@@ -60,7 +60,6 @@ export default function LoginPage() {
       }
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "Login gagal");
-    } finally {
       setSubmitting(false);
     }
   };
@@ -90,10 +89,11 @@ export default function LoginPage() {
                 <input
                   type="text"
                   required
+                  disabled={submitting || loggedIn}
                   value={identifier}
                   onChange={(event) => setIdentifier(event.target.value)}
                   placeholder="Masukkan Username"
-                  className="w-full rounded-xl border border-slate-300 bg-slate-50 pl-10 pr-4 py-2.5 text-sm text-gray-900 outline-none transition duration-200 focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100 dark:focus:border-blue-400"
+                  className="w-full rounded-xl border border-slate-300 bg-slate-50 pl-10 pr-4 py-2.5 text-sm text-gray-900 outline-none transition duration-200 focus:border-blue-500 disabled:opacity-60 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100 dark:focus:border-blue-400"
                 />
               </div>
             </div>
@@ -107,10 +107,11 @@ export default function LoginPage() {
                 <input
                   type={showPassword ? "text" : "password"}
                   required
+                  disabled={submitting || loggedIn}
                   value={password}
                   onChange={(event) => setPassword(event.target.value)}
                   placeholder="Masukkan Password"
-                  className="w-full rounded-xl border border-slate-300 bg-slate-50 pl-10 pr-10 py-2.5 text-sm text-slate-900 outline-none transition duration-200 focus:border-blue-500 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:focus:border-blue-400"
+                  className="w-full rounded-xl border border-slate-300 bg-slate-50 pl-10 pr-10 py-2.5 text-sm text-slate-900 outline-none transition duration-200 focus:border-blue-500 disabled:opacity-60 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:focus:border-blue-400"
                 />
                 <button
                   type="button"
@@ -131,12 +132,12 @@ export default function LoginPage() {
               }`}
               disabled={submitting || !identifier || !password || loggedIn}
             >
-              {submitting ? (
+              {submitting || loggedIn ? (
                 <Loader2 size={18} className="animate-spin" />
               ) : (
                 <ArrowRight size={18} className="transition-transform duration-300 group-hover:translate-x-0.5" />
               )}
-              <span>{submitting ? "Memproses..." : "Masuk"}</span>
+              <span>{submitting || loggedIn ? "Memproses..." : "Masuk"}</span>
             </button>
           </form>
         </AuthCard>
