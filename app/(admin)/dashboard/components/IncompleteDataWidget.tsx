@@ -178,8 +178,8 @@ export default function IncompleteDataWidget({ userGrade }: IncompleteDataWidget
         });
       }
 
-      // 4. Character Assessment
-      if (data.totalStudents > 0 && data.character.recorded < data.totalStudents) {
+      // 4. Character Assessment - hanya tampil jika sudah pernah diinput minimal 1 murid
+      if (data.totalStudents > 0 && data.character.recorded > 0 && data.character.recorded < data.totalStudents) {
         checkList.push({
           id: "karakter",
           title: "Penilaian Karakter & Habits",
