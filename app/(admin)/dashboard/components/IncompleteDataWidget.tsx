@@ -12,7 +12,6 @@ import {
   BookOpen,
   ArrowRight,
   RefreshCw,
-  BookMarked,
 } from "lucide-react";
 import StudentAttendanceService from "@/services/student-attendance.service";
 import GradeSubjectService from "@/services/grade-subject.service";
@@ -20,7 +19,8 @@ import TaskService from "@/services/task.service";
 import TaskScoreService from "@/services/task-score.service";
 import ChapterService from "@/services/chapter.service";
 import ScoreService from "@/services/score.service";
-import type { GradeSubject } from "@/types/nilai-harian";
+import type { GradeSubject, Chapter, Score } from "@/types/nilai-harian";
+import type { Task, TaskScore } from "@/types/tugas";
 
 interface IncompleteDataWidgetProps {
   userGrade: string | null;
@@ -34,6 +34,15 @@ interface ChecklistItem {
   detail: string;
   href: string;
   icon: typeof AlertCircle;
+}
+
+function extractArray<T>(res: any): T[] {
+  if (!res) return [];
+  if (Array.isArray(res)) return res;
+  if (Array.isArray(res.data)) return res.data;
+  if (Array.isArray(res.result)) return res.result;
+  if (res.data && Array.isArray(res.data.result)) return res.data.result;
+  return [];
 }
 
 export default function IncompleteDataWidget({ userGrade }: IncompleteDataWidgetProps) {
@@ -57,12 +66,9 @@ export default function IncompleteDataWidget({ userGrade }: IncompleteDataWidget
         GradeSubjectService.getAll({ grade: userGrade }).catch(() => null),
       ]);
 
-      const todayAttendance = Array.isArray(todayAttendanceRes?.data) ? todayAttendanceRes.data : [];
-      const students = Array.isArray(studentsRes?.data) ? studentsRes.data : [];
-      const rawSubjects: GradeSubject[] =
-        (gradeSubjectsRes as any)?.result ||
-        (gradeSubjectsRes as any)?.data ||
-        (Array.isArray(gradeSubjectsRes) ? gradeSubjectsRes : []);
+      const todayAttendance = extractArray(todayAttendanceRes);
+      const students = extractArray(studentsRes);
+      const rawSubjects: GradeSubject[] = extractArray(gradeSubjectsRes);
 
       const totalStudents = students.length;
       const recordedCount = todayAttendance.length;
@@ -95,7 +101,7 @@ export default function IncompleteDataWidget({ userGrade }: IncompleteDataWidget
         },
       ];
 
-      // Check subjects for tasks OR chapters (Nilai Harian / Tugas / Keaktifan)
+      // Check subjects in chapters DB & tasks DB for gradeSubjectId matches
       if (rawSubjects.length > 0) {
         const [taskResults, chapterResults] = await Promise.all([
           Promise.all(rawSubjects.map((s) => TaskService.getAll(s._id, "").catch(() => null))),
@@ -106,74 +112,73 @@ export default function IncompleteDataWidget({ userGrade }: IncompleteDataWidget
           const subj = rawSubjects[i];
           const name = subj.subjectName || "Mata Pelajaran";
 
-          const tRes = taskResults[i];
-          const taskList = (tRes as any)?.result || (tRes as any)?.data || (Array.isArray(tRes) ? tRes : []);
+          const taskList: Task[] = extractArray(taskResults[i]);
+          const chapterList: Chapter[] = extractArray(chapterResults[i]);
 
-          const cRes = chapterResults[i];
-          const chapterList = (cRes as any)?.result || (cRes as any)?.data || (Array.isArray(cRes) ? cRes : []);
-
-          // SKIP subject if no tasks AND no chapters were ever created
+          // SKIP subject if no chapters AND no tasks exist in DB for this gradeSubjectId
           if (taskList.length === 0 && chapterList.length === 0) continue;
 
-          // Check Task scores
-          let totalScoreEntries = 0;
-          let incompleteItemNames: string[] = [];
-          let hasIncomplete = false;
+          let isBeingGradedIncomplete = false;
+          let totalScoresFilled = 0;
+          let expectedMaxScores = 0;
+          let itemDetails: string[] = [];
 
-          if (taskList.length > 0) {
-            const taskScorePromises = taskList.map((t: any) =>
-              TaskScoreService.getAll(t._id).catch(() => null)
-            );
-            const scoreResults = await Promise.all(taskScorePromises);
-
-            taskList.forEach((t: any, sIdx: number) => {
-              const sRes = scoreResults[sIdx];
-              const scoreList = (sRes as any)?.result || (sRes as any)?.data || (Array.isArray(sRes) ? sRes : []);
-              totalScoreEntries += scoreList.length;
-
-              if (totalStudents > 0 && scoreList.length < totalStudents) {
-                hasIncomplete = true;
-                incompleteItemNames.push(t.name);
-              }
-            });
-          }
-
-          // Check Chapter scores
+          // 1. Check Chapters & Scores DB
           if (chapterList.length > 0) {
-            const chapterScorePromises = chapterList.map((c: any) =>
+            const chapterScorePromises = chapterList.map((c) =>
               ScoreService.getAll(c._id).catch(() => null)
             );
             const chapterScoreResults = await Promise.all(chapterScorePromises);
 
-            chapterList.forEach((c: any, cIdx: number) => {
-              const csRes = chapterScoreResults[cIdx];
-              const cScoreList = (csRes as any)?.result || (csRes as any)?.data || (Array.isArray(csRes) ? csRes : []);
-              totalScoreEntries += cScoreList.length;
+            chapterList.forEach((c, cIdx) => {
+              const scores: Score[] = extractArray(chapterScoreResults[cIdx]);
+              totalScoresFilled += scores.length;
+              expectedMaxScores += totalStudents;
 
-              if (totalStudents > 0 && cScoreList.length < totalStudents) {
-                hasIncomplete = true;
-                incompleteItemNames.push(c.name);
+              if (totalStudents > 0 && scores.length < totalStudents) {
+                isBeingGradedIncomplete = true;
+                itemDetails.push(`Bab "${c.name}" (${scores.length}/${totalStudents} nilai)`);
               }
             });
           }
 
-          const totalItems = taskList.length + chapterList.length;
-          const maxExpected = totalStudents * totalItems;
+          // 2. Check Tasks & TaskScores DB
+          if (taskList.length > 0) {
+            const taskScorePromises = taskList.map((t) =>
+              TaskScoreService.getAll(t._id).catch(() => null)
+            );
+            const taskScoreResults = await Promise.all(taskScorePromises);
 
-          if (hasIncomplete || (maxExpected > 0 && totalScoreEntries < maxExpected)) {
-            const itemStr = incompleteItemNames.slice(0, 2).join(", ");
-            const targetCategory = taskList.length > 0 ? "tugas" : "harian";
+            taskList.forEach((t, tIdx) => {
+              const taskScores: TaskScore[] = extractArray(taskScoreResults[tIdx]);
+              totalScoresFilled += taskScores.length;
+              expectedMaxScores += totalStudents;
+
+              if (totalStudents > 0 && taskScores.length < totalStudents) {
+                isBeingGradedIncomplete = true;
+                itemDetails.push(`Tugas "${t.name}" (${taskScores.length}/${totalStudents} nilai)`);
+              }
+            });
+          }
+
+          // Show in widget IF it has chapters/tasks AND is not 100% complete
+          if (isBeingGradedIncomplete || (expectedMaxScores > 0 && totalScoresFilled < expectedMaxScores)) {
+            const targetCategory = chapterList.length > 0 ? "harian" : "tugas";
             const targetHref =
-              targetCategory === "tugas"
-                ? `/penilaian?subjectId=${subj._id}&category=tugas`
-                : `/nilai-harian?subjectId=${subj._id}`;
+              targetCategory === "harian"
+                ? `/nilai-harian?subjectId=${subj._id}`
+                : `/penilaian?subjectId=${subj._id}&category=tugas`;
+
+            const detailStr = itemDetails.length > 0
+              ? itemDetails.slice(0, 2).join(", ")
+              : `${totalScoresFilled} dari ${expectedMaxScores} total nilai terisi`;
 
             checkList.push({
               id: `subj-${subj._id}`,
               title: `${name}`,
               category: "Nilai Akademik",
               status: "partial",
-              detail: `Terdapat ${totalItems} entri penilaian (${itemStr}), baru terisi ${totalScoreEntries} dari ${maxExpected} total nilai murid.`,
+              detail: `Sedang dinilai namun belum selesai: ${detailStr}.`,
               href: targetHref,
               icon: FileSpreadsheet,
             });
@@ -232,7 +237,7 @@ export default function IncompleteDataWidget({ userGrade }: IncompleteDataWidget
             )}
           </div>
           <p className="text-xs md:text-sm text-gray-500 dark:text-gray-400 mt-0.5">
-            Menampilkan data presensi dan mata pelajaran yang pernah diinput namun belum lengkap nilainya
+            Menampilkan data presensi dan mata pelajaran yang sedang dinilai namun belum selesai
           </p>
         </div>
 
@@ -307,7 +312,7 @@ export default function IncompleteDataWidget({ userGrade }: IncompleteDataWidget
                         </>
                       ) : isPartial ? (
                         <>
-                          <Clock size={12} /> Belum Lengkap
+                          <Clock size={12} /> Belum Selesai
                         </>
                       ) : (
                         <>
