@@ -319,7 +319,7 @@ export default function IncompleteDataWidget({ userGrade }: IncompleteDataWidget
             Pusat Kelengkapan Data
           </h3>
           <p className="text-xs md:text-sm text-gray-500 dark:text-gray-400 mt-0.5">
-            Menampilkan data presensi, nilai akademik, dan litnum yang sedang dinilai namun belum selesai
+            Menampilkan data presensi, nilai akademik, dan literasi & numerasi yang sedang dinilai namun belum selesai
           </p>
         </div>
 
