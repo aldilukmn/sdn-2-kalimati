@@ -79,7 +79,7 @@ export default function IncompleteDataWidget({ userGrade }: IncompleteDataWidget
     try {
       const formattedDisplayDate = formatDayDate(new Date());
       const res = await DashboardService.getIncompleteData(userGrade);
-      const data = res.data;
+      const data = res.result as any;
       
       const checkList: ChecklistItem[] = [];
 
