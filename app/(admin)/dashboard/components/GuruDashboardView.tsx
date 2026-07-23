@@ -9,6 +9,7 @@ import dynamic from "next/dynamic";
 const AttendanceDonutChart = dynamic(() => import("@/components/charts/AttendanceDonutChart"), { ssr: false });
 import PageHero from "@/components/layout/PageHero";
 import TabunganSection from "./TabunganSection";
+import IncompleteDataWidget from "./IncompleteDataWidget";
 import type { AttendanceRow } from "@/lib/merge-attendance";
 import MonthYearFilter from "@/components/shared/MonthYearFilter";
 
@@ -170,6 +171,7 @@ export default function GuruDashboardView({
           </div>
         ))}
       </div>
+      <IncompleteDataWidget userGrade={userGrade} />
       <TabunganSection grade={userGrade} userRole={userRole} isSavingsHolder={isSavingsHolder} />
       <div className="bg-white/70 dark:bg-gray-800/40 md: border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5 relative z-0">
         <div className="flex flex-col md:flex-row items-center md:justify-between gap-4 mb-4">
