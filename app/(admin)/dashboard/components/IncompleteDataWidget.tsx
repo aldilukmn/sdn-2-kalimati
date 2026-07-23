@@ -313,7 +313,7 @@ export default function IncompleteDataWidget({ userGrade }: IncompleteDataWidget
 
   return (
     <div className="bg-white/70 dark:bg-gray-800/40 border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5 relative">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4 pb-3 border-b border-gray-100 dark:border-gray-700/50">
+      <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 mb-4 pb-3 border-b border-gray-100 dark:border-gray-700/50">
         <div>
           <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200">
             Pusat Kelengkapan Data
@@ -323,21 +323,27 @@ export default function IncompleteDataWidget({ userGrade }: IncompleteDataWidget
           </p>
         </div>
 
-        <div className="flex items-center gap-2.5 self-start sm:self-center">
+        <div className="flex items-center gap-2.5 w-full sm:w-auto sm:self-center">
+          {loading ? (
+            <div className="w-1/2 sm:w-32 h-7 rounded-lg bg-amber-100/50 dark:bg-amber-900/30 animate-pulse" />
+          ) : incompleteCount > 0 ? (
+            <span className="w-1/2 sm:w-auto text-center px-2.5 py-1 text-xs font-bold rounded-lg bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300 border border-amber-300 dark:border-amber-700 whitespace-nowrap">
+              {incompleteCount} Perlu Perhatian
+            </span>
+          ) : (
+            <span className="w-1/2 sm:w-auto text-center px-2.5 py-1 text-xs font-bold rounded-lg bg-emerald-100 text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-700 whitespace-nowrap">
+              Data Lengkap
+            </span>
+          )}
+
           <button
             onClick={fetchChecklist}
             disabled={loading}
-            className="text-xs font-medium text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-200 dark:border-gray-700 bg-white/50 dark:bg-gray-800/50 hover:bg-slate-50 dark:hover:bg-gray-700 transition-colors cursor-pointer disabled:opacity-50"
+            className="w-1/2 sm:w-auto justify-center text-xs font-medium text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-200 dark:border-gray-700 bg-white/50 dark:bg-gray-800/50 hover:bg-slate-50 dark:hover:bg-gray-700 transition-colors cursor-pointer disabled:opacity-50"
           >
             <RefreshCw size={12} className={loading ? "animate-spin" : ""} />
             Refresh Status
           </button>
-
-          {incompleteCount > 0 && (
-            <span className="px-2.5 py-1 text-xs font-bold rounded-lg bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300 border border-amber-300 dark:border-amber-700 whitespace-nowrap">
-              {incompleteCount} Perlu Perhatian
-            </span>
-          )}
         </div>
       </div>
 
