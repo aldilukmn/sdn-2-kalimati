@@ -1,6 +1,7 @@
 export interface Task {
   _id: string;
   name: string;
+  category?: string;
   gradeSubjectId: string;
   semester: string;
   academicYear: string;

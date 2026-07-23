@@ -105,10 +105,10 @@ export default function IncompleteDataWidget({ userGrade }: IncompleteDataWidget
         },
       ];
 
-      // 1. Check subjects in chapters DB & tasks DB for gradeSubjectId matches
+      // 1. Check subjects across all categories (Tugas, Keaktifan, Partisipasi, Nilai Harian)
       if (rawSubjects.length > 0) {
         const [taskResults, chapterResults] = await Promise.all([
-          Promise.all(rawSubjects.map((s) => TaskService.getAll(s._id, "").catch(() => null))),
+          Promise.all(rawSubjects.map((s) => TaskService.getAll(s._id, "all").catch(() => null))),
           Promise.all(rawSubjects.map((s) => ChapterService.getAll(s._id).catch(() => null))),
         ]);
 
@@ -119,15 +119,16 @@ export default function IncompleteDataWidget({ userGrade }: IncompleteDataWidget
           const taskList: Task[] = extractArray(taskResults[i]);
           const chapterList: Chapter[] = extractArray(chapterResults[i]);
 
-          // SKIP subject if no chapters AND no tasks exist in DB for this gradeSubjectId
+          // SKIP subject if no tasks AND no chapters exist in DB for this gradeSubjectId
           if (taskList.length === 0 && chapterList.length === 0) continue;
 
           let isBeingGradedIncomplete = false;
           let totalScoresFilled = 0;
           let expectedMaxScores = 0;
           let itemDetails: string[] = [];
+          let activeCategory = "tugas";
 
-          // Check Chapters & Scores DB
+          // Check Chapters & Scores DB (Nilai Harian / Bab)
           if (chapterList.length > 0) {
             const chapterScorePromises = chapterList.map((c) =>
               ScoreService.getAll(c._id).catch(() => null)
@@ -146,7 +147,7 @@ export default function IncompleteDataWidget({ userGrade }: IncompleteDataWidget
             });
           }
 
-          // Check Tasks & TaskScores DB
+          // Check Tasks & TaskScores DB (Tugas, Keaktifan, Partisipasi)
           if (taskList.length > 0) {
             const taskScorePromises = taskList.map((t) =>
               TaskScoreService.getAll(t._id).catch(() => null)
@@ -155,23 +156,25 @@ export default function IncompleteDataWidget({ userGrade }: IncompleteDataWidget
 
             taskList.forEach((t, tIdx) => {
               const taskScores: TaskScore[] = extractArray(taskScoreResults[tIdx]);
-              totalScoresFilled += taskScores.length;
+              const filled = (t as any).inputtedCount ?? taskScores.length;
+              totalScoresFilled += filled;
               expectedMaxScores += totalStudents;
+              if (t.category) activeCategory = t.category;
 
-              if (totalStudents > 0 && taskScores.length < totalStudents) {
+              if (totalStudents > 0 && filled < totalStudents) {
                 isBeingGradedIncomplete = true;
-                itemDetails.push(`Tugas "${t.name}" (${taskScores.length}/${totalStudents} nilai)`);
+                const catLabel = t.category ? t.category.toUpperCase() : "TUGAS";
+                itemDetails.push(`${catLabel} "${t.name}" (${filled}/${totalStudents} nilai)`);
               }
             });
           }
 
           // Show in widget IF it has chapters/tasks AND is not 100% complete
           if (isBeingGradedIncomplete || (expectedMaxScores > 0 && totalScoresFilled < expectedMaxScores)) {
-            const targetCategory = chapterList.length > 0 ? "harian" : "tugas";
             const targetHref =
-              targetCategory === "harian"
+              chapterList.length > 0
                 ? `/nilai-harian?subjectId=${subj._id}`
-                : `/penilaian?subjectId=${subj._id}&category=tugas`;
+                : `/penilaian?subjectId=${subj._id}&category=${activeCategory}`;
 
             const detailStr = itemDetails.length > 0
               ? itemDetails.slice(0, 2).join(", ")
@@ -270,7 +273,7 @@ export default function IncompleteDataWidget({ userGrade }: IncompleteDataWidget
             )}
           </div>
           <p className="text-xs md:text-sm text-gray-500 dark:text-gray-400 mt-0.5">
-            Menampilkan data presensi, nilai akademik, dan litnum yang sedang dinilai namun belum selesai
+            Menampilkan data presensi, nilai akademik (tugas, keaktifan, partisipasi), dan litnum yang belum selesai
           </p>
         </div>
 
