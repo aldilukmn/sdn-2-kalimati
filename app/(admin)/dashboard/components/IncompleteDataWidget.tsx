@@ -12,10 +12,10 @@ import {
   BookOpen,
   ArrowRight,
   RefreshCw,
-  BookMarked,
 } from "lucide-react";
 import StudentAttendanceService from "@/services/student-attendance.service";
 import GradeSubjectService from "@/services/grade-subject.service";
+import TaskService from "@/services/task.service";
 import type { GradeSubject } from "@/types/nilai-harian";
 
 interface IncompleteDataWidgetProps {
@@ -55,7 +55,10 @@ export default function IncompleteDataWidget({ userGrade }: IncompleteDataWidget
 
       const todayAttendance = Array.isArray(todayAttendanceRes?.data) ? todayAttendanceRes.data : [];
       const students = Array.isArray(studentsRes?.data) ? studentsRes.data : [];
-      const rawSubjects: GradeSubject[] = (gradeSubjectsRes as any)?.result || (gradeSubjectsRes as any)?.data || (Array.isArray(gradeSubjectsRes) ? gradeSubjectsRes : []);
+      const rawSubjects: GradeSubject[] =
+        (gradeSubjectsRes as any)?.result ||
+        (gradeSubjectsRes as any)?.data ||
+        (Array.isArray(gradeSubjectsRes) ? gradeSubjectsRes : []);
 
       const totalStudents = students.length;
       const recordedCount = todayAttendance.length;
@@ -66,10 +69,10 @@ export default function IncompleteDataWidget({ userGrade }: IncompleteDataWidget
       if (recordedCount > 0 && totalStudents > 0) {
         if (recordedCount >= totalStudents) {
           presensiStatus = "complete";
-          presensiDetail = `Semua ${recordedCount} murid kelas ${userGrade} sudah diisi presensinya hari ini.`;
+          presensiDetail = `Presensi hari ini (${todayStr}) sudah 100% lengkap (${recordedCount}/${totalStudents} murid).`;
         } else {
           presensiStatus = "partial";
-          presensiDetail = `Baru ${recordedCount} dari ${totalStudents} murid yang diisi presensinya hari ini.`;
+          presensiDetail = `Baru ${recordedCount} dari ${totalStudents} murid yang terisi presensinya hari ini (${todayStr}).`;
         }
       } else if (totalStudents === 0) {
         presensiStatus = "complete";
@@ -88,16 +91,36 @@ export default function IncompleteDataWidget({ userGrade }: IncompleteDataWidget
         },
       ];
 
-      // Add subject-specific items
+      // Fetch task details for subjects in parallel to generate highly specific details
       if (rawSubjects.length > 0) {
-        rawSubjects.slice(0, 4).forEach((subj) => {
+        const topSubjects = rawSubjects.slice(0, 4);
+        const taskResults = await Promise.all(
+          topSubjects.map((s) => TaskService.getAll(s._id, "tugas").catch(() => null))
+        );
+
+        topSubjects.forEach((subj, idx) => {
           const name = subj.subjectName || "Mata Pelajaran";
+          const res = taskResults[idx];
+          const taskList = (res as any)?.result || (res as any)?.data || (Array.isArray(res) ? res : []);
+          const taskCount = taskList.length;
+
+          let status: "complete" | "partial" | "missing" = "partial";
+          let detail = `Mata pelajaran ${name} belum memiliki tugas atau nilainya belum diisi lengkap.`;
+
+          if (taskCount > 0) {
+            const taskNames = taskList.slice(0, 2).map((t: any) => t.name).join(", ");
+            detail = `Terdapat ${taskCount} tugas (${taskNames}${taskCount > 2 ? "..." : ""}) pada ${name} yang perlu dilengkapi nilainya.`;
+          } else {
+            status = "missing";
+            detail = `Belum ada tugas/penilaian yang dibuat untuk mata pelajaran ${name} (Kelas ${userGrade}).`;
+          }
+
           checkList.push({
             id: `subj-tugas-${subj._id}`,
-            title: `Tugas: ${name}`,
+            title: `Tugas ${name}`,
             category: "Nilai Tugas",
-            status: "partial",
-            detail: `Klik untuk langsung mengisi/melengkapi nilai Tugas ${name} (Kelas ${userGrade}).`,
+            status,
+            detail,
             href: `/penilaian?subjectId=${subj._id}&category=tugas`,
             icon: FileSpreadsheet,
           });
@@ -108,7 +131,7 @@ export default function IncompleteDataWidget({ userGrade }: IncompleteDataWidget
           title: "Penilaian Harian & Tugas",
           category: "Nilai Akademik",
           status: "partial",
-          detail: `Periksa daftar tugas & nilai harian kelas ${userGrade} yang belum lengkap.`,
+          detail: `Belum ada mata pelajaran terdaftar untuk Kelas ${userGrade}.`,
           href: "/penilaian?category=tugas",
           icon: FileSpreadsheet,
         });
@@ -121,7 +144,7 @@ export default function IncompleteDataWidget({ userGrade }: IncompleteDataWidget
           title: "Penilaian Karakter & Habits",
           category: "Karakter",
           status: "partial",
-          detail: `Lengkapi catatan kebiasaan positif dan pembiasaan murid kelas ${userGrade}.`,
+          detail: `Pencatatan 7 kebiasaan anak saleh & karakter murid Kelas ${userGrade} belum lengkap minggu ini.`,
           href: "/penilaian-karakter",
           icon: HeartHandshake,
         },
@@ -130,7 +153,7 @@ export default function IncompleteDataWidget({ userGrade }: IncompleteDataWidget
           title: "Literasi & Numerasi (TKA)",
           category: "Litnum",
           status: "partial",
-          detail: `Periksa & lengkapi capaian skor literasi/numerasi murid kelas ${userGrade}.`,
+          detail: `Periksa & lengkapi capaian skor Tes Kemampuan Akademik (TKA) murid Kelas ${userGrade}.`,
           href: "/nilai-litnum",
           icon: BookOpen,
         }
@@ -165,7 +188,7 @@ export default function IncompleteDataWidget({ userGrade }: IncompleteDataWidget
             )}
           </div>
           <p className="text-xs md:text-sm text-gray-500 dark:text-gray-400 mt-0.5">
-            Klik tombol aksi untuk langsung membuka halaman penilaian yang terfilter spesifik per mata pelajaran
+            Informasi spesifik per mata pelajaran dan presensi murid untuk langsung dilengkapi
           </p>
         </div>
 
@@ -184,7 +207,7 @@ export default function IncompleteDataWidget({ userGrade }: IncompleteDataWidget
           {[1, 2, 3, 4].map((n) => (
             <div
               key={n}
-              className="h-20 rounded-xl bg-slate-100 dark:bg-gray-700/40 animate-pulse p-4"
+              className="h-24 rounded-xl bg-slate-100 dark:bg-gray-700/40 animate-pulse p-4"
             />
           ))}
         </div>
@@ -244,7 +267,7 @@ export default function IncompleteDataWidget({ userGrade }: IncompleteDataWidget
                         </>
                       ) : (
                         <>
-                          <AlertCircle size={12} /> Belum Diisi
+                          <AlertCircle size={12} /> Belum Ada Tugas
                         </>
                       )}
                     </span>
