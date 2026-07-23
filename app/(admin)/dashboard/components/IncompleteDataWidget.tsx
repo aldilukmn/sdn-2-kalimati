@@ -313,7 +313,7 @@ export default function IncompleteDataWidget({ userGrade }: IncompleteDataWidget
 
   return (
     <div className="bg-white/70 dark:bg-gray-800/40 border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5 relative">
-      <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 mb-4 pb-3 border-b border-gray-100 dark:border-gray-700/50">
+      <div className="flex flex-col gap-3 mb-4 pb-3 border-b border-gray-100 dark:border-gray-700/50">
         <div>
           <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200">
             Pusat Kelengkapan Data
@@ -323,7 +323,7 @@ export default function IncompleteDataWidget({ userGrade }: IncompleteDataWidget
           </p>
         </div>
 
-        <div className="flex items-center gap-2.5 w-full sm:w-auto sm:self-center">
+        <div className="flex items-center gap-2.5 w-full sm:justify-end">
           {loading ? (
             <div className="w-1/2 sm:w-32 h-7 rounded-lg bg-amber-100/50 dark:bg-amber-900/30 animate-pulse" />
           ) : incompleteCount > 0 ? (
