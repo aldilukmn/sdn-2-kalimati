@@ -59,6 +59,15 @@ function formatCategoryLabel(cat?: string): string {
   return `Nilai ${cat.charAt(0).toUpperCase() + cat.slice(1).toLowerCase()}`;
 }
 
+function formatDayDate(dateObj: Date): string {
+  const days = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+  const dayName = days[dateObj.getDay()];
+  const dd = String(dateObj.getDate()).padStart(2, "0");
+  const mm = String(dateObj.getMonth() + 1).padStart(2, "0");
+  const yyyy = dateObj.getFullYear();
+  return `${dayName}, ${dd}-${mm}-${yyyy}`;
+}
+
 export default function IncompleteDataWidget({ userGrade }: IncompleteDataWidgetProps) {
   const [loading, setLoading] = useState(true);
   const [items, setItems] = useState<ChecklistItem[]>([]);
@@ -73,6 +82,7 @@ export default function IncompleteDataWidget({ userGrade }: IncompleteDataWidget
     try {
       const now = new Date();
       const todayStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
+      const formattedDisplayDate = formatDayDate(now);
 
       // Step 1: Initial parallel batch fetch
       const [todayAttendanceRes, studentsRes, gradeSubjectsRes, litnumTasksRes, characterRes] = await Promise.all([
@@ -93,15 +103,15 @@ export default function IncompleteDataWidget({ userGrade }: IncompleteDataWidget
       const recordedCount = todayAttendance.length;
 
       let presensiStatus: "complete" | "partial" | "missing" = "missing";
-      let presensiLine = `Presensi hari ini (${todayStr}) belum diinput.`;
+      let presensiLine = `Presensi hari ini (${formattedDisplayDate}) belum diinput.`;
 
       if (recordedCount > 0 && totalStudents > 0) {
         if (recordedCount >= totalStudents) {
           presensiStatus = "complete";
-          presensiLine = `Presensi hari ini (${todayStr}) sudah 100% lengkap (${recordedCount}/${totalStudents} murid).`;
+          presensiLine = `Presensi hari ini (${formattedDisplayDate}) sudah 100% lengkap (${recordedCount}/${totalStudents} murid).`;
         } else {
           presensiStatus = "partial";
-          presensiLine = `Baru ${recordedCount} dari ${totalStudents} murid yang terisi presensinya hari ini (${todayStr}).`;
+          presensiLine = `Baru ${recordedCount} dari ${totalStudents} murid yang terisi presensinya hari ini (${formattedDisplayDate}).`;
         }
       } else if (totalStudents === 0) {
         presensiStatus = "complete";
