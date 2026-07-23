@@ -32,7 +32,7 @@ interface ChecklistItem {
   title: string;
   category: string;
   status: "complete" | "partial" | "missing";
-  detail: string;
+  detailLines: string[];
   href: string;
   icon: typeof AlertCircle;
 }
@@ -44,6 +44,16 @@ function extractArray<T>(res: any): T[] {
   if (Array.isArray(res.result)) return res.result;
   if (res.data && Array.isArray(res.data.result)) return res.data.result;
   return [];
+}
+
+function formatCategoryLabel(cat?: string): string {
+  if (!cat) return "Nilai Tugas";
+  const lower = cat.toLowerCase();
+  if (lower === "tugas") return "Nilai Tugas";
+  if (lower === "keaktifan") return "Nilai Keaktifan";
+  if (lower === "partisipasi") return "Nilai Partisipasi";
+  if (lower === "harian") return "Nilai Bab";
+  return `Nilai ${cat.charAt(0).toUpperCase() + cat.slice(1).toLowerCase()}`;
 }
 
 export default function IncompleteDataWidget({ userGrade }: IncompleteDataWidgetProps) {
@@ -61,7 +71,7 @@ export default function IncompleteDataWidget({ userGrade }: IncompleteDataWidget
       const now = new Date();
       const todayStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
 
-      // Step 1: Initial parallel batch fetch (Attendance, Students, Subjects, Litnum Tasks)
+      // Step 1: Initial parallel batch fetch
       const [todayAttendanceRes, studentsRes, gradeSubjectsRes, litnumTasksRes] = await Promise.all([
         StudentAttendanceService.getByGradeAndDate(userGrade, todayStr).catch(() => null),
         StudentAttendanceService.getStudentsByGrade(userGrade).catch(() => null),
@@ -78,19 +88,19 @@ export default function IncompleteDataWidget({ userGrade }: IncompleteDataWidget
       const recordedCount = todayAttendance.length;
 
       let presensiStatus: "complete" | "partial" | "missing" = "missing";
-      let presensiDetail = `Presensi hari ini (${todayStr}) belum diinput.`;
+      let presensiLine = `Presensi hari ini (${todayStr}) belum diinput.`;
 
       if (recordedCount > 0 && totalStudents > 0) {
         if (recordedCount >= totalStudents) {
           presensiStatus = "complete";
-          presensiDetail = `Presensi hari ini (${todayStr}) sudah 100% lengkap (${recordedCount}/${totalStudents} murid).`;
+          presensiLine = `Presensi hari ini (${todayStr}) sudah 100% lengkap (${recordedCount}/${totalStudents} murid).`;
         } else {
           presensiStatus = "partial";
-          presensiDetail = `Baru ${recordedCount} dari ${totalStudents} murid yang terisi presensinya hari ini (${todayStr}).`;
+          presensiLine = `Baru ${recordedCount} dari ${totalStudents} murid yang terisi presensinya hari ini (${todayStr}).`;
         }
       } else if (totalStudents === 0) {
         presensiStatus = "complete";
-        presensiDetail = `Belum ada murid terdaftar di Kelas ${userGrade}.`;
+        presensiLine = `Belum ada murid terdaftar di Kelas ${userGrade}.`;
       }
 
       const checkList: ChecklistItem[] = [
@@ -99,20 +109,19 @@ export default function IncompleteDataWidget({ userGrade }: IncompleteDataWidget
           title: "Presensi Harian Kelas",
           category: "Absensi Murid",
           status: presensiStatus,
-          detail: presensiDetail,
+          detailLines: [presensiLine],
           href: "/presensi-murid",
           icon: CalendarCheck,
         },
       ];
 
-      // Step 2: Fetch all tasks & chapters across subjects completely in PARALLEL
+      // Step 2: Fetch all tasks & chapters across subjects in PARALLEL
       if (rawSubjects.length > 0) {
         const [taskResults, chapterResults] = await Promise.all([
           Promise.all(rawSubjects.map((s) => TaskService.getAll(s._id, "all").catch(() => null))),
           Promise.all(rawSubjects.map((s) => ChapterService.getAll(s._id).catch(() => null))),
         ]);
 
-        // Step 3: Collect all chapters to fetch scores in 1 single parallel batch
         const chaptersWithSubject: { chapter: Chapter; subjectId: string; subjectName: string }[] = [];
 
         rawSubjects.forEach((subj, idx) => {
@@ -126,7 +135,6 @@ export default function IncompleteDataWidget({ userGrade }: IncompleteDataWidget
           chaptersWithSubject.map((item) => ScoreService.getAll(item.chapter._id).catch(() => null))
         );
 
-        // Map chapter scores back by gradeSubjectId
         const chapterScoreMap = new Map<string, { totalScores: number; incompleteDetails: string[]; chapterCount: number }>();
 
         chaptersWithSubject.forEach((item, idx) => {
@@ -157,7 +165,6 @@ export default function IncompleteDataWidget({ userGrade }: IncompleteDataWidget
           let itemDetails: string[] = chapterInfo ? [...chapterInfo.incompleteDetails] : [];
           let activeCategory = chapterCount > 0 ? "harian" : "tugas";
 
-          // Process tasks using precomputed inputtedCount from backend (0 extra HTTP requests!)
           if (taskList.length > 0) {
             taskList.forEach((t) => {
               const filled = t.inputtedCount ?? 0;
@@ -167,8 +174,8 @@ export default function IncompleteDataWidget({ userGrade }: IncompleteDataWidget
 
               if (totalStudents > 0 && filled < totalStudents) {
                 isBeingGradedIncomplete = true;
-                const catLabel = t.category ? t.category.toUpperCase() : "TUGAS";
-                itemDetails.push(`${catLabel} "${t.name}" (${filled}/${totalStudents} nilai)`);
+                const catLabel = formatCategoryLabel(t.category);
+                itemDetails.push(`${catLabel}: "${t.name}" (${filled}/${totalStudents} nilai)`);
               }
             });
           }
@@ -183,16 +190,16 @@ export default function IncompleteDataWidget({ userGrade }: IncompleteDataWidget
                 ? `/nilai-harian?subjectId=${subj._id}`
                 : `/penilaian?subjectId=${subj._id}&category=${activeCategory}`;
 
-            const detailStr = itemDetails.length > 0
-              ? itemDetails.slice(0, 2).join(", ")
-              : `${totalScoresFilled} dari ${expectedMaxScores} total nilai terisi`;
+            const lines = itemDetails.length > 0
+              ? itemDetails
+              : [`${totalScoresFilled} dari ${expectedMaxScores} total nilai terisi`];
 
             checkList.push({
               id: `subj-${subj._id}`,
               title: `${name}`,
               category: "Nilai Akademik",
               status: "partial",
-              detail: `Sedang dinilai namun belum selesai: ${detailStr}.`,
+              detailLines: lines,
               href: targetHref,
               icon: FileSpreadsheet,
             });
@@ -200,7 +207,7 @@ export default function IncompleteDataWidget({ userGrade }: IncompleteDataWidget
         });
       }
 
-      // Step 4: Litnum scores in 1 single parallel batch
+      // Step 3: Litnum scores
       if (litnumTasks.length > 0) {
         const litnumScoreResults = await Promise.all(
           litnumTasks.map((t) => LitnumScoreService.getAll(t._id).catch(() => null))
@@ -223,29 +230,29 @@ export default function IncompleteDataWidget({ userGrade }: IncompleteDataWidget
         const expectedLitnumMax = totalStudents * litnumTasks.length;
 
         if (isLitnumIncomplete || (expectedLitnumMax > 0 && totalLitnumScores < expectedLitnumMax)) {
-          const litnumDetailStr = incompleteLitnumDetails.length > 0
-            ? incompleteLitnumDetails.slice(0, 2).join(", ")
-            : `${totalLitnumScores} dari ${expectedLitnumMax} total nilai terisi`;
+          const lines = incompleteLitnumDetails.length > 0
+            ? incompleteLitnumDetails
+            : [`${totalLitnumScores} dari ${expectedLitnumMax} total nilai terisi`];
 
           checkList.push({
             id: "litnum",
             title: "Literasi & Numerasi (TKA)",
             category: "Litnum",
             status: "partial",
-            detail: `Sedang dinilai namun belum selesai: ${litnumDetailStr}.`,
+            detailLines: lines,
             href: "/nilai-litnum",
             icon: BookOpen,
           });
         }
       }
 
-      // Step 5: Add Karakter item
+      // Step 4: Add Karakter item
       checkList.push({
         id: "karakter",
         title: "Penilaian Karakter & Habits",
         category: "Karakter",
         status: "partial",
-        detail: `Periksa & lengkapi pembiasaan 7 karakter anak saleh murid Kelas ${userGrade}.`,
+        detailLines: [`Periksa & lengkapi pembiasaan 7 karakter anak saleh murid Kelas ${userGrade}.`],
         href: "/penilaian-karakter",
         icon: HeartHandshake,
       });
@@ -298,7 +305,7 @@ export default function IncompleteDataWidget({ userGrade }: IncompleteDataWidget
           {[1, 2, 3, 4].map((n) => (
             <div
               key={n}
-              className="h-24 rounded-xl bg-slate-100 dark:bg-gray-700/40 animate-pulse p-4"
+              className="h-28 rounded-xl bg-slate-100 dark:bg-gray-700/40 animate-pulse p-4"
             />
           ))}
         </div>
@@ -321,7 +328,7 @@ export default function IncompleteDataWidget({ userGrade }: IncompleteDataWidget
                 }`}
               >
                 <div>
-                  <div className="flex items-center justify-between gap-2 mb-1.5">
+                  <div className="flex items-center justify-between gap-2 mb-2">
                     <div className="flex items-center gap-2">
                       <div
                         className={`p-1.5 rounded-lg ${
@@ -364,9 +371,14 @@ export default function IncompleteDataWidget({ userGrade }: IncompleteDataWidget
                     </span>
                   </div>
 
-                  <p className="text-xs text-gray-600 dark:text-gray-400 pl-8 leading-relaxed">
-                    {item.detail}
-                  </p>
+                  <div className="pl-8 space-y-1">
+                    {item.detailLines.map((line, lIdx) => (
+                      <div key={lIdx} className="text-xs text-gray-600 dark:text-gray-400 flex items-start gap-1.5">
+                        {item.detailLines.length > 1 && <span className="text-amber-500 font-bold select-none">•</span>}
+                        <span className="leading-relaxed">{line}</span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
 
                 <div className="mt-3 pl-8 flex justify-end">
