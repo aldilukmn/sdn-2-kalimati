@@ -19,8 +19,10 @@ import TaskService from "@/services/task.service";
 import TaskScoreService from "@/services/task-score.service";
 import ChapterService from "@/services/chapter.service";
 import ScoreService from "@/services/score.service";
+import { LitnumTaskService, LitnumScoreService } from "@/services/litnum.service";
 import type { GradeSubject, Chapter, Score } from "@/types/nilai-harian";
 import type { Task, TaskScore } from "@/types/tugas";
+import type { LitnumTask, LitnumScore } from "@/types/litnum";
 
 interface IncompleteDataWidgetProps {
   userGrade: string | null;
@@ -60,15 +62,17 @@ export default function IncompleteDataWidget({ userGrade }: IncompleteDataWidget
       const now = new Date();
       const todayStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
 
-      const [todayAttendanceRes, studentsRes, gradeSubjectsRes] = await Promise.all([
+      const [todayAttendanceRes, studentsRes, gradeSubjectsRes, litnumTasksRes] = await Promise.all([
         StudentAttendanceService.getByGradeAndDate(userGrade, todayStr).catch(() => null),
         StudentAttendanceService.getStudentsByGrade(userGrade).catch(() => null),
         GradeSubjectService.getAll({ grade: userGrade }).catch(() => null),
+        LitnumTaskService.getAll({ grade: userGrade, semester: "1", academicYear: "2026/2027" }).catch(() => null),
       ]);
 
       const todayAttendance = extractArray(todayAttendanceRes);
       const students = extractArray(studentsRes);
       const rawSubjects: GradeSubject[] = extractArray(gradeSubjectsRes);
+      const litnumTasks: LitnumTask[] = extractArray(litnumTasksRes);
 
       const totalStudents = students.length;
       const recordedCount = todayAttendance.length;
@@ -101,7 +105,7 @@ export default function IncompleteDataWidget({ userGrade }: IncompleteDataWidget
         },
       ];
 
-      // Check subjects in chapters DB & tasks DB for gradeSubjectId matches
+      // 1. Check subjects in chapters DB & tasks DB for gradeSubjectId matches
       if (rawSubjects.length > 0) {
         const [taskResults, chapterResults] = await Promise.all([
           Promise.all(rawSubjects.map((s) => TaskService.getAll(s._id, "").catch(() => null))),
@@ -123,7 +127,7 @@ export default function IncompleteDataWidget({ userGrade }: IncompleteDataWidget
           let expectedMaxScores = 0;
           let itemDetails: string[] = [];
 
-          // 1. Check Chapters & Scores DB
+          // Check Chapters & Scores DB
           if (chapterList.length > 0) {
             const chapterScorePromises = chapterList.map((c) =>
               ScoreService.getAll(c._id).catch(() => null)
@@ -142,7 +146,7 @@ export default function IncompleteDataWidget({ userGrade }: IncompleteDataWidget
             });
           }
 
-          // 2. Check Tasks & TaskScores DB
+          // Check Tasks & TaskScores DB
           if (taskList.length > 0) {
             const taskScorePromises = taskList.map((t) =>
               TaskScoreService.getAll(t._id).catch(() => null)
@@ -186,27 +190,56 @@ export default function IncompleteDataWidget({ userGrade }: IncompleteDataWidget
         }
       }
 
-      // Add Karakter & Litnum items
-      checkList.push(
-        {
-          id: "karakter",
-          title: "Penilaian Karakter & Habits",
-          category: "Karakter",
-          status: "partial",
-          detail: `Periksa & lengkapi pembiasaan 7 karakter anak saleh murid Kelas ${userGrade}.`,
-          href: "/penilaian-karakter",
-          icon: HeartHandshake,
-        },
-        {
-          id: "litnum",
-          title: "Literasi & Numerasi (TKA)",
-          category: "Litnum",
-          status: "partial",
-          detail: `Periksa & lengkapi capaian skor Tes Kemampuan Akademik (TKA) murid Kelas ${userGrade}.`,
-          href: "/nilai-litnum",
-          icon: BookOpen,
+      // 2. Check Litnum DB: match litnums with litnum_scores
+      if (litnumTasks.length > 0) {
+        const litnumScorePromises = litnumTasks.map((t) =>
+          LitnumScoreService.getAll(t._id).catch(() => null)
+        );
+        const litnumScoreResults = await Promise.all(litnumScorePromises);
+
+        let totalLitnumScores = 0;
+        let isLitnumIncomplete = false;
+        let incompleteLitnumDetails: string[] = [];
+
+        litnumTasks.forEach((t, idx) => {
+          const lScores: LitnumScore[] = extractArray(litnumScoreResults[idx]);
+          totalLitnumScores += lScores.length;
+
+          if (totalStudents > 0 && lScores.length < totalStudents) {
+            isLitnumIncomplete = true;
+            incompleteLitnumDetails.push(`Tugas "${t.name}" (${lScores.length}/${totalStudents} nilai)`);
+          }
+        });
+
+        const expectedLitnumMax = totalStudents * litnumTasks.length;
+
+        if (isLitnumIncomplete || (expectedLitnumMax > 0 && totalLitnumScores < expectedLitnumMax)) {
+          const litnumDetailStr = incompleteLitnumDetails.length > 0
+            ? incompleteLitnumDetails.slice(0, 2).join(", ")
+            : `${totalLitnumScores} dari ${expectedLitnumMax} total nilai terisi`;
+
+          checkList.push({
+            id: "litnum",
+            title: "Literasi & Numerasi (TKA)",
+            category: "Litnum",
+            status: "partial",
+            detail: `Sedang dinilai namun belum selesai: ${litnumDetailStr}.`,
+            href: "/nilai-litnum",
+            icon: BookOpen,
+          });
         }
-      );
+      }
+
+      // 3. Add Karakter item
+      checkList.push({
+        id: "karakter",
+        title: "Penilaian Karakter & Habits",
+        category: "Karakter",
+        status: "partial",
+        detail: `Periksa & lengkapi pembiasaan 7 karakter anak saleh murid Kelas ${userGrade}.`,
+        href: "/penilaian-karakter",
+        icon: HeartHandshake,
+      });
 
       setItems(checkList);
     } catch (err) {
@@ -237,7 +270,7 @@ export default function IncompleteDataWidget({ userGrade }: IncompleteDataWidget
             )}
           </div>
           <p className="text-xs md:text-sm text-gray-500 dark:text-gray-400 mt-0.5">
-            Menampilkan data presensi dan mata pelajaran yang sedang dinilai namun belum selesai
+            Menampilkan data presensi, nilai akademik, dan litnum yang sedang dinilai namun belum selesai
           </p>
         </div>
 
