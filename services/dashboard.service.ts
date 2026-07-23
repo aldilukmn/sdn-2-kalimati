@@ -22,4 +22,8 @@ export default class DashboardService {
     const query = params.toString();
     return await api<AttendanceTrendItem[]>(`/dashboard/attendance-trend${query ? `?${query}` : ""}`);
   }
+
+  static async getIncompleteData(grade: string) {
+    return await api<any>(`/dashboard/incomplete-data?grade=${grade}`);
+  }
 }

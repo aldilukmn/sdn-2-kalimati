@@ -13,14 +13,7 @@ import {
   ArrowRight,
   RefreshCw,
 } from "lucide-react";
-import StudentAttendanceService from "@/services/student-attendance.service";
-import GradeSubjectService from "@/services/grade-subject.service";
-import TaskService from "@/services/task.service";
-import TaskScoreService from "@/services/task-score.service";
-import ChapterService from "@/services/chapter.service";
-import ScoreService from "@/services/score.service";
-import { LitnumTaskService, LitnumScoreService } from "@/services/litnum.service";
-import CharacterAssessmentService from "@/services/character-assessment.service";
+import DashboardService from "@/services/dashboard.service";
 import type { GradeSubject, Chapter, Score } from "@/types/nilai-harian";
 import type { Task } from "@/types/tugas";
 import type { LitnumTask, LitnumScore } from "@/types/litnum";
@@ -84,217 +77,118 @@ export default function IncompleteDataWidget({ userGrade }: IncompleteDataWidget
 
     setLoading(true);
     try {
-      const now = new Date();
-      const todayStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
-      const formattedDisplayDate = formatDayDate(now);
+      const formattedDisplayDate = formatDayDate(new Date());
+      const res = await DashboardService.getIncompleteData(userGrade);
+      const data = res.data;
+      
+      const checkList: ChecklistItem[] = [];
 
-      // Step 1: Initial parallel batch fetch
-      const [todayAttendanceRes, studentsRes, gradeSubjectsRes, litnumTasksRes, characterRes] = await Promise.all([
-        StudentAttendanceService.getByGradeAndDate(userGrade, todayStr).catch(() => null),
-        StudentAttendanceService.getStudentsByGrade(userGrade).catch(() => null),
-        GradeSubjectService.getAll({ grade: userGrade }).catch(() => null),
-        LitnumTaskService.getAll({ grade: userGrade, semester: "1", academicYear: "2026/2027" }).catch(() => null),
-        CharacterAssessmentService.getAll({ grade: userGrade, semester: "1", academicYear: "2026/2027" }).catch(() => null),
-      ]);
-
-      const todayAttendance = extractArray(todayAttendanceRes);
-      const students = extractArray(studentsRes);
-      const rawSubjects: GradeSubject[] = extractArray(gradeSubjectsRes);
-      const litnumTasks: LitnumTask[] = extractArray(litnumTasksRes);
-      const characterRecords: AssessmentListItem[] = extractArray(characterRes);
-
-      const totalStudents = students.length;
-      const recordedCount = todayAttendance.length;
-
+      // 1. Presensi
       let presensiStatus: "complete" | "partial" | "missing" = "missing";
       let presensiLine = `Presensi hari ini (${formattedDisplayDate}) belum diinput.`;
 
-      if (recordedCount > 0 && totalStudents > 0) {
-        if (recordedCount >= totalStudents) {
+      if (data.attendance.recorded > 0 && data.totalStudents > 0) {
+        if (data.attendance.recorded >= data.totalStudents) {
           presensiStatus = "complete";
-          presensiLine = `Presensi hari ini (${formattedDisplayDate}) sudah 100% lengkap - (${recordedCount}/${totalStudents} murid).`;
+          presensiLine = `Presensi hari ini (${formattedDisplayDate}) sudah 100% lengkap - (${data.attendance.recorded}/${data.totalStudents} murid).`;
         } else {
           presensiStatus = "partial";
-          presensiLine = `Presensi hari ini (${formattedDisplayDate}) baru terisi sebagian - (${recordedCount}/${totalStudents} murid).`;
+          presensiLine = `Presensi hari ini (${formattedDisplayDate}) baru terisi sebagian - (${data.attendance.recorded}/${data.totalStudents} murid).`;
         }
-      } else if (totalStudents === 0) {
+      } else if (data.totalStudents === 0) {
         presensiStatus = "complete";
         presensiLine = `Belum ada murid terdaftar di Kelas ${userGrade}.`;
       }
 
-      const checkList: ChecklistItem[] = [
-        {
-          id: "presensi",
-          title: "Presensi Harian Kelas",
-          category: "Absensi Murid",
-          status: presensiStatus,
-          detailLines: [presensiLine],
-          href: "/presensi-murid",
-          icon: CalendarCheck,
-        },
-      ];
+      checkList.push({
+        id: "presensi",
+        title: "Presensi Harian Kelas",
+        category: "Absensi Murid",
+        status: presensiStatus,
+        detailLines: [presensiLine],
+        href: "/presensi-murid",
+        icon: CalendarCheck,
+      });
 
-      // Step 2: Fetch all tasks & chapters across subjects in PARALLEL
-      if (rawSubjects.length > 0) {
-        const [taskResults, chapterResults] = await Promise.all([
-          Promise.all(rawSubjects.map((s) => TaskService.getAll(s._id, "all").catch(() => null))),
-          Promise.all(rawSubjects.map((s) => ChapterService.getAll(s._id).catch(() => null))),
-        ]);
-
-        const chaptersWithSubject: { chapter: Chapter; subjectId: string; subjectName: string }[] = [];
-
-        rawSubjects.forEach((subj, idx) => {
-          const chapters: Chapter[] = extractArray(chapterResults[idx]);
-          chapters.forEach((c) => {
-            chaptersWithSubject.push({ chapter: c, subjectId: subj._id, subjectName: subj.subjectName || "Mata Pelajaran" });
-          });
-        });
-
-        const chapterScoreResults = await Promise.all(
-          chaptersWithSubject.map((item) => ScoreService.getAll(item.chapter._id).catch(() => null))
-        );
-
-        const chapterScoreMap = new Map<
-          string,
-          { totalScores: number; incompleteDetails: string[]; firstChapterId?: string; chapterCount: number }
-        >();
-
-        chaptersWithSubject.forEach((item, idx) => {
-          const scores: Score[] = extractArray(chapterScoreResults[idx]);
-          const existing = chapterScoreMap.get(item.subjectId) || {
-            totalScores: 0,
-            incompleteDetails: [],
-            chapterCount: 0,
-          };
-          existing.totalScores += scores.length;
-          existing.chapterCount += 1;
-
-          if (totalStudents > 0 && scores.length < totalStudents) {
-            if (!existing.firstChapterId) {
-              existing.firstChapterId = item.chapter._id;
-            }
-            existing.incompleteDetails.push(`Bab "${item.chapter.name}" - (${scores.length}/${totalStudents} nilai)`);
-          }
-          chapterScoreMap.set(item.subjectId, existing);
-        });
-
-        // Evaluate subjects
-        rawSubjects.forEach((subj, idx) => {
-          const name = subj.subjectName || "Mata Pelajaran";
-          const taskList: Task[] = extractArray(taskResults[idx]);
-          const chapterInfo = chapterScoreMap.get(subj._id);
-          const chapterCount = chapterInfo?.chapterCount || 0;
-
-          // SKIP subject if 0 tasks & 0 chapters exist
-          if (taskList.length === 0 && chapterCount === 0) return;
-
-          let isBeingGradedIncomplete = false;
-          let totalScoresFilled = chapterInfo?.totalScores || 0;
-          let expectedMaxScores = chapterCount * totalStudents;
-          let itemDetails: string[] = chapterInfo ? [...chapterInfo.incompleteDetails] : [];
-          let firstIncompleteHref = chapterInfo?.firstChapterId
-            ? `/nilai-harian?subjectId=${subj._id}&chapterId=${chapterInfo.firstChapterId}`
-            : "";
-
-          if (taskList.length > 0) {
-            taskList.forEach((t) => {
-              const filled = t.inputtedCount ?? 0;
-              totalScoresFilled += filled;
-              expectedMaxScores += totalStudents;
-
-              if (totalStudents > 0 && filled < totalStudents) {
-                isBeingGradedIncomplete = true;
-                const catLabel = formatCategoryLabel(t.category);
-                itemDetails.push(`${catLabel}: "${t.name}" - (${filled}/${totalStudents} nilai)`);
-
-                if (!firstIncompleteHref) {
-                  firstIncompleteHref = `/penilaian?subjectId=${subj._id}&category=${t.category || "tugas"}&taskId=${t._id}`;
-                }
+      // 2. Subjects (Tasks & Chapters)
+      if (data.subjects && data.subjects.length > 0) {
+        data.subjects.forEach((subj: any) => {
+          let itemDetails: string[] = [];
+          let firstIncompleteHref = "";
+          let totalScoresFilled = 0;
+          let expectedMaxScores = 0;
+          
+          if (subj.incompleteTasks && subj.incompleteTasks.length > 0) {
+            subj.incompleteTasks.forEach((t: any) => {
+              const catLabel = formatCategoryLabel(t.category);
+              itemDetails.push(`${catLabel}: "${t.name}" - (${t.filled}/${data.totalStudents} nilai)`);
+              if (!firstIncompleteHref) {
+                firstIncompleteHref = `/penilaian?subjectId=${subj.actualSubjectId}&category=${t.category || "tugas"}&taskId=${t.id}`;
               }
+              totalScoresFilled += t.filled;
+              expectedMaxScores += data.totalStudents;
             });
           }
 
-          if (chapterInfo && chapterInfo.incompleteDetails.length > 0) {
-            isBeingGradedIncomplete = true;
-          }
-
-          if (isBeingGradedIncomplete || (expectedMaxScores > 0 && totalScoresFilled < expectedMaxScores)) {
-            const fallbackHref =
-              chapterCount > 0
-                ? `/nilai-harian?subjectId=${subj._id}`
-                : `/penilaian?subjectId=${subj._id}&category=tugas`;
-
-            const targetHref = firstIncompleteHref || fallbackHref;
-
-            const lines = itemDetails.length > 0
-              ? itemDetails
-              : [`${totalScoresFilled} dari ${expectedMaxScores} total nilai terisi`];
-
-            checkList.push({
-              id: `subj-${subj._id}`,
-              title: `${name}`,
-              category: "Nilai Akademik",
-              status: "partial",
-              detailLines: lines,
-              href: targetHref,
-              icon: FileSpreadsheet,
+          if (subj.incompleteChapters && subj.incompleteChapters.length > 0) {
+            subj.incompleteChapters.forEach((c: any) => {
+              itemDetails.push(`Bab "${c.name}" - (${c.filled}/${data.totalStudents} nilai)`);
+              if (!firstIncompleteHref) {
+                firstIncompleteHref = `/nilai-harian?subjectId=${subj.actualSubjectId}&chapterId=${c.chapterId}`;
+              }
+              totalScoresFilled += c.filled;
+              expectedMaxScores += data.totalStudents;
             });
           }
-        });
-      }
 
-      // Step 3: Litnum scores
-      if (litnumTasks.length > 0) {
-        const litnumScoreResults = await Promise.all(
-          litnumTasks.map((t) => LitnumScoreService.getAll(t._id).catch(() => null))
-        );
+          const fallbackHref = `/nilai-harian?subjectId=${subj.actualSubjectId}`;
+          const targetHref = firstIncompleteHref || fallbackHref;
 
-        let totalLitnumScores = 0;
-        let isLitnumIncomplete = false;
-        let incompleteLitnumDetails: string[] = [];
-
-        litnumTasks.forEach((t, idx) => {
-          const lScores: LitnumScore[] = extractArray(litnumScoreResults[idx]);
-          totalLitnumScores += lScores.length;
-
-          if (totalStudents > 0 && lScores.length < totalStudents) {
-            isLitnumIncomplete = true;
-            incompleteLitnumDetails.push(`Tugas "${t.name}" - (${lScores.length}/${totalStudents} nilai)`);
-          }
-        });
-
-        const expectedLitnumMax = totalStudents * litnumTasks.length;
-
-        if (isLitnumIncomplete || (expectedLitnumMax > 0 && totalLitnumScores < expectedLitnumMax)) {
-          const lines = incompleteLitnumDetails.length > 0
-            ? incompleteLitnumDetails
-            : [`${totalLitnumScores} dari ${expectedLitnumMax} total nilai terisi`];
+          const lines = itemDetails.length > 0 
+            ? itemDetails 
+            : [`${totalScoresFilled} dari ${expectedMaxScores} total nilai terisi`];
 
           checkList.push({
-            id: "litnum",
-            title: "Literasi & Numerasi",
-            category: "Litnum",
+            id: `subj-${subj.subjectId}`,
+            title: subj.subjectName,
+            category: "Nilai Akademik",
             status: "partial",
             detailLines: lines,
-            href: "/nilai-litnum",
-            icon: BookOpen,
+            href: targetHref,
+            icon: FileSpreadsheet,
           });
-        }
+        });
       }
 
-      // Step 4: Character Assessment
-      if (characterRecords.length > 0) {
-        if (totalStudents > 0 && characterRecords.length < totalStudents) {
-          checkList.push({
-            id: "karakter",
-            title: "Penilaian Karakter & Habits",
-            category: "Karakter",
-            status: "partial",
-            detailLines: [`Penilaian karakter baru terisi - (${characterRecords.length}/${totalStudents} murid).`],
-            href: "/penilaian-karakter",
-            icon: HeartHandshake,
-          });
-        }
+      // 3. Litnum
+      if (data.litnum?.incompleteTasks && data.litnum.incompleteTasks.length > 0) {
+        let incompleteLitnumDetails: string[] = [];
+        data.litnum.incompleteTasks.forEach((t: any) => {
+          incompleteLitnumDetails.push(`Tugas "${t.name}" - (${t.filled}/${data.totalStudents} nilai)`);
+        });
+
+        checkList.push({
+          id: "litnum",
+          title: "Literasi & Numerasi",
+          category: "Litnum",
+          status: "partial",
+          detailLines: incompleteLitnumDetails,
+          href: "/nilai-litnum",
+          icon: BookOpen,
+        });
+      }
+
+      // 4. Character Assessment
+      if (data.totalStudents > 0 && data.character.recorded < data.totalStudents) {
+        checkList.push({
+          id: "karakter",
+          title: "Penilaian Karakter & Habits",
+          category: "Karakter",
+          status: "partial",
+          detailLines: [`Penilaian karakter baru terisi - (${data.character.recorded}/${data.totalStudents} murid).`],
+          href: "/penilaian-karakter",
+          icon: HeartHandshake,
+        });
       }
 
       setItems(checkList);
