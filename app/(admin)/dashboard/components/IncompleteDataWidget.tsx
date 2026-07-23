@@ -424,7 +424,7 @@ export default function IncompleteDataWidget({ userGrade }: IncompleteDataWidget
                 <div className="mt-3 pl-8 flex justify-end">
                   <Link
                     href={item.href}
-                    className={`inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.2 rounded-lg transition-colors shadow-sm ${
+                    className={`inline-flex items-center gap-1.5 text-xs font-semibold px-3.5 py-2 rounded-lg transition-colors shadow-sm ${
                       isComplete
                         ? "bg-emerald-600 hover:bg-emerald-700 text-white dark:bg-emerald-600 dark:hover:bg-emerald-500"
                         : isPartial
