@@ -12,8 +12,11 @@ import {
   BookOpen,
   ArrowRight,
   RefreshCw,
+  BookMarked,
 } from "lucide-react";
 import StudentAttendanceService from "@/services/student-attendance.service";
+import GradeSubjectService from "@/services/grade-subject.service";
+import type { GradeSubject } from "@/types/nilai-harian";
 
 interface IncompleteDataWidgetProps {
   userGrade: string | null;
@@ -41,17 +44,18 @@ export default function IncompleteDataWidget({ userGrade }: IncompleteDataWidget
 
     setLoading(true);
     try {
-      // Get today's date formatted as YYYY-MM-DD in local time
       const now = new Date();
       const todayStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
 
-      const [todayAttendanceRes, studentsRes] = await Promise.all([
+      const [todayAttendanceRes, studentsRes, gradeSubjectsRes] = await Promise.all([
         StudentAttendanceService.getByGradeAndDate(userGrade, todayStr).catch(() => null),
         StudentAttendanceService.getStudentsByGrade(userGrade).catch(() => null),
+        GradeSubjectService.getAll({ grade: userGrade }).catch(() => null),
       ]);
 
       const todayAttendance = Array.isArray(todayAttendanceRes?.data) ? todayAttendanceRes.data : [];
       const students = Array.isArray(studentsRes?.data) ? studentsRes.data : [];
+      const rawSubjects: GradeSubject[] = (gradeSubjectsRes as any)?.result || (gradeSubjectsRes as any)?.data || (Array.isArray(gradeSubjectsRes) ? gradeSubjectsRes : []);
 
       const totalStudents = students.length;
       const recordedCount = todayAttendance.length;
@@ -75,22 +79,43 @@ export default function IncompleteDataWidget({ userGrade }: IncompleteDataWidget
       const checkList: ChecklistItem[] = [
         {
           id: "presensi",
-          title: "Presensi Harian",
+          title: "Presensi Harian Kelas",
           category: "Absensi Murid",
           status: presensiStatus,
           detail: presensiDetail,
           href: "/presensi-murid",
           icon: CalendarCheck,
         },
-        {
+      ];
+
+      // Add subject-specific items
+      if (rawSubjects.length > 0) {
+        rawSubjects.slice(0, 4).forEach((subj) => {
+          const name = subj.subjectName || "Mata Pelajaran";
+          checkList.push({
+            id: `subj-tugas-${subj._id}`,
+            title: `Tugas: ${name}`,
+            category: "Nilai Tugas",
+            status: "partial",
+            detail: `Klik untuk langsung mengisi/melengkapi nilai Tugas ${name} (Kelas ${userGrade}).`,
+            href: `/penilaian?subjectId=${subj._id}&category=tugas`,
+            icon: FileSpreadsheet,
+          });
+        });
+      } else {
+        checkList.push({
           id: "nilai-harian",
           title: "Penilaian Harian & Tugas",
           category: "Nilai Akademik",
           status: "partial",
           detail: `Periksa daftar tugas & nilai harian kelas ${userGrade} yang belum lengkap.`,
-          href: "/penilaian",
+          href: "/penilaian?category=tugas",
           icon: FileSpreadsheet,
-        },
+        });
+      }
+
+      // Add Karakter & Litnum items
+      checkList.push(
         {
           id: "karakter",
           title: "Penilaian Karakter & Habits",
@@ -105,11 +130,11 @@ export default function IncompleteDataWidget({ userGrade }: IncompleteDataWidget
           title: "Literasi & Numerasi (TKA)",
           category: "Litnum",
           status: "partial",
-          detail: `Periksa & lengkapi capaian skor literasi/numerasi murid.`,
+          detail: `Periksa & lengkapi capaian skor literasi/numerasi murid kelas ${userGrade}.`,
           href: "/nilai-litnum",
           icon: BookOpen,
-        },
-      ];
+        }
+      );
 
       setItems(checkList);
     } catch (err) {
@@ -140,7 +165,7 @@ export default function IncompleteDataWidget({ userGrade }: IncompleteDataWidget
             )}
           </div>
           <p className="text-xs md:text-sm text-gray-500 dark:text-gray-400 mt-0.5">
-            Pantau status pengisian presensi dan nilai murid agar terisi 100%
+            Klik tombol aksi untuk langsung membuka halaman penilaian yang terfilter spesifik per mata pelajaran
           </p>
         </div>
 

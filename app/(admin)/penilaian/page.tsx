@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useMemo, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import {
   ClipboardEdit,
   Plus,
@@ -60,6 +61,21 @@ export default function PenilaianPage() {
     saveScores,
     updateScoreInput,
   } = usePenilaian(category);
+
+  const searchParams = useSearchParams();
+  const urlSubjectId = searchParams.get("subjectId");
+  const urlCategory = searchParams.get("category");
+
+  useEffect(() => {
+    if (urlCategory) setCategory(urlCategory);
+  }, [urlCategory]);
+
+  useEffect(() => {
+    if (urlSubjectId && subjects.length > 0) {
+      const found = subjects.find((s) => s._id === urlSubjectId || s.subjectId === urlSubjectId);
+      if (found) setSubjectId(found._id);
+    }
+  }, [urlSubjectId, subjects, setSubjectId]);
 
   const [taskModal, setTaskModal] = useState<{
     mode: "add" | "edit";
