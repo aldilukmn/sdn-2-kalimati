@@ -45,10 +45,13 @@ export default function IncompleteDataWidget({ userGrade }: IncompleteDataWidget
       const now = new Date();
       const todayStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
 
-      const [todayAttendance, students] = await Promise.all([
-        StudentAttendanceService.getByGradeAndDate(userGrade, todayStr).catch(() => []),
-        StudentAttendanceService.getStudentsByGrade(userGrade).catch(() => []),
+      const [todayAttendanceRes, studentsRes] = await Promise.all([
+        StudentAttendanceService.getByGradeAndDate(userGrade, todayStr).catch(() => null),
+        StudentAttendanceService.getStudentsByGrade(userGrade).catch(() => null),
       ]);
+
+      const todayAttendance = Array.isArray(todayAttendanceRes?.data) ? todayAttendanceRes.data : [];
+      const students = Array.isArray(studentsRes?.data) ? studentsRes.data : [];
 
       const totalStudents = students.length;
       const recordedCount = todayAttendance.length;
