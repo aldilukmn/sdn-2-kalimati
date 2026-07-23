@@ -61,11 +61,15 @@ function formatCategoryLabel(cat?: string): string {
 
 function formatDayDate(dateObj: Date): string {
   const days = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+  const months = [
+    "Januari", "Februari", "Maret", "April", "Mei", "Juni",
+    "Juli", "Agustus", "September", "Oktober", "November", "Desember"
+  ];
   const dayName = days[dateObj.getDay()];
-  const dd = String(dateObj.getDate()).padStart(2, "0");
-  const mm = String(dateObj.getMonth() + 1).padStart(2, "0");
+  const dd = dateObj.getDate();
+  const monthName = months[dateObj.getMonth()];
   const yyyy = dateObj.getFullYear();
-  return `${dayName}, ${dd}-${mm}-${yyyy}`;
+  return `${dayName}, ${dd} ${monthName} ${yyyy}`;
 }
 
 export default function IncompleteDataWidget({ userGrade }: IncompleteDataWidgetProps) {
