@@ -16,12 +16,15 @@ import {
 import StudentAttendanceService from "@/services/student-attendance.service";
 import GradeSubjectService from "@/services/grade-subject.service";
 import TaskService from "@/services/task.service";
+import TaskScoreService from "@/services/task-score.service";
 import ChapterService from "@/services/chapter.service";
 import ScoreService from "@/services/score.service";
 import { LitnumTaskService, LitnumScoreService } from "@/services/litnum.service";
+import CharacterAssessmentService from "@/services/character-assessment.service";
 import type { GradeSubject, Chapter, Score } from "@/types/nilai-harian";
 import type { Task } from "@/types/tugas";
 import type { LitnumTask, LitnumScore } from "@/types/litnum";
+import type { AssessmentListItem } from "@/types/character-assessment";
 
 interface IncompleteDataWidgetProps {
   userGrade: string | null;
@@ -71,18 +74,20 @@ export default function IncompleteDataWidget({ userGrade }: IncompleteDataWidget
       const now = new Date();
       const todayStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
 
-      // Step 1: Initial parallel batch fetch
-      const [todayAttendanceRes, studentsRes, gradeSubjectsRes, litnumTasksRes] = await Promise.all([
+      // Step 1: Initial parallel batch fetch (Attendance, Students, Subjects, Litnum Tasks, Character Assessments)
+      const [todayAttendanceRes, studentsRes, gradeSubjectsRes, litnumTasksRes, characterRes] = await Promise.all([
         StudentAttendanceService.getByGradeAndDate(userGrade, todayStr).catch(() => null),
         StudentAttendanceService.getStudentsByGrade(userGrade).catch(() => null),
         GradeSubjectService.getAll({ grade: userGrade }).catch(() => null),
         LitnumTaskService.getAll({ grade: userGrade, semester: "1", academicYear: "2026/2027" }).catch(() => null),
+        CharacterAssessmentService.getAll({ grade: userGrade, semester: "1", academicYear: "2026/2027" }).catch(() => null),
       ]);
 
       const todayAttendance = extractArray(todayAttendanceRes);
       const students = extractArray(studentsRes);
       const rawSubjects: GradeSubject[] = extractArray(gradeSubjectsRes);
       const litnumTasks: LitnumTask[] = extractArray(litnumTasksRes);
+      const characterRecords: AssessmentListItem[] = extractArray(characterRes);
 
       const totalStudents = students.length;
       const recordedCount = todayAttendance.length;
@@ -207,7 +212,7 @@ export default function IncompleteDataWidget({ userGrade }: IncompleteDataWidget
         });
       }
 
-      // Step 3: Litnum scores
+      // Step 3: Litnum scores: SKIP if no Litnum tasks exist
       if (litnumTasks.length > 0) {
         const litnumScoreResults = await Promise.all(
           litnumTasks.map((t) => LitnumScoreService.getAll(t._id).catch(() => null))
@@ -236,7 +241,7 @@ export default function IncompleteDataWidget({ userGrade }: IncompleteDataWidget
 
           checkList.push({
             id: "litnum",
-            title: "Literasi & Numerasi (TKA)",
+            title: "Literasi & Numerasi",
             category: "Litnum",
             status: "partial",
             detailLines: lines,
@@ -246,16 +251,20 @@ export default function IncompleteDataWidget({ userGrade }: IncompleteDataWidget
         }
       }
 
-      // Step 4: Add Karakter item
-      checkList.push({
-        id: "karakter",
-        title: "Penilaian Karakter & Habits",
-        category: "Karakter",
-        status: "partial",
-        detailLines: [`Periksa & lengkapi pembiasaan 7 karakter anak saleh murid Kelas ${userGrade}.`],
-        href: "/penilaian-karakter",
-        icon: HeartHandshake,
-      });
+      // Step 4: Character Assessment: SKIP if no character records exist (untouched by teacher)
+      if (characterRecords.length > 0) {
+        if (totalStudents > 0 && characterRecords.length < totalStudents) {
+          checkList.push({
+            id: "karakter",
+            title: "Penilaian Karakter & Habits",
+            category: "Karakter",
+            status: "partial",
+            detailLines: [`Penilaian karakter baru terisi untuk ${characterRecords.length} dari ${totalStudents} murid.`],
+            href: "/penilaian-karakter",
+            icon: HeartHandshake,
+          });
+        }
+      }
 
       setItems(checkList);
     } catch (err) {
@@ -305,7 +314,7 @@ export default function IncompleteDataWidget({ userGrade }: IncompleteDataWidget
           {[1, 2, 3, 4].map((n) => (
             <div
               key={n}
-              className="h-28 rounded-xl bg-slate-100 dark:bg-gray-700/40 animate-pulse p-4"
+              className="h-24 rounded-xl bg-slate-100 dark:bg-gray-700/40 animate-pulse p-4"
             />
           ))}
         </div>
