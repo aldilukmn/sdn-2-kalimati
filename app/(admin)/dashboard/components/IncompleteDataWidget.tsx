@@ -112,10 +112,10 @@ export default function IncompleteDataWidget({ userGrade }: IncompleteDataWidget
       if (recordedCount > 0 && totalStudents > 0) {
         if (recordedCount >= totalStudents) {
           presensiStatus = "complete";
-          presensiLine = `Presensi hari ini (${formattedDisplayDate}) sudah 100% lengkap (${recordedCount}/${totalStudents} murid).`;
+          presensiLine = `Presensi hari ini (${formattedDisplayDate}) sudah 100% lengkap - (${recordedCount}/${totalStudents} murid).`;
         } else {
           presensiStatus = "partial";
-          presensiLine = `Baru ${recordedCount} dari ${totalStudents} murid yang terisi presensinya hari ini (${formattedDisplayDate}).`;
+          presensiLine = `Presensi hari ini (${formattedDisplayDate}) baru terisi sebagian - (${recordedCount}/${totalStudents} murid).`;
         }
       } else if (totalStudents === 0) {
         presensiStatus = "complete";
