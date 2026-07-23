@@ -12,10 +12,12 @@ import {
   BookOpen,
   ArrowRight,
   RefreshCw,
+  Check,
 } from "lucide-react";
 import StudentAttendanceService from "@/services/student-attendance.service";
 import GradeSubjectService from "@/services/grade-subject.service";
 import TaskService from "@/services/task.service";
+import TaskScoreService from "@/services/task-score.service";
 import type { GradeSubject } from "@/types/nilai-harian";
 
 interface IncompleteDataWidgetProps {
@@ -91,50 +93,58 @@ export default function IncompleteDataWidget({ userGrade }: IncompleteDataWidget
         },
       ];
 
-      // Fetch task details for subjects in parallel to generate highly specific details
+      // Only check subjects where tasks HAVE BEEN CREATED (touched by teacher)
       if (rawSubjects.length > 0) {
-        const topSubjects = rawSubjects.slice(0, 4);
-        const taskResults = await Promise.all(
-          topSubjects.map((s) => TaskService.getAll(s._id, "tugas").catch(() => null))
+        const taskPromises = rawSubjects.map((s) =>
+          TaskService.getAll(s._id, "tugas").catch(() => null)
         );
+        const taskResults = await Promise.all(taskPromises);
 
-        topSubjects.forEach((subj, idx) => {
+        for (let i = 0; i < rawSubjects.length; i++) {
+          const subj = rawSubjects[i];
           const name = subj.subjectName || "Mata Pelajaran";
-          const res = taskResults[idx];
+          const res = taskResults[i];
           const taskList = (res as any)?.result || (res as any)?.data || (Array.isArray(res) ? res : []);
-          const taskCount = taskList.length;
 
-          let status: "complete" | "partial" | "missing" = "partial";
-          let detail = `Mata pelajaran ${name} belum memiliki tugas atau nilainya belum diisi lengkap.`;
+          // SKIP subjects that have 0 tasks (untouched by teacher)
+          if (taskList.length === 0) continue;
 
-          if (taskCount > 0) {
-            const taskNames = taskList.slice(0, 2).map((t: any) => t.name).join(", ");
-            detail = `Terdapat ${taskCount} tugas (${taskNames}${taskCount > 2 ? "..." : ""}) pada ${name} yang perlu dilengkapi nilainya.`;
-          } else {
-            status = "missing";
-            detail = `Belum ada tugas/penilaian yang dibuat untuk mata pelajaran ${name} (Kelas ${userGrade}).`;
-          }
+          // Fetch scores for tasks in this subject
+          const scorePromises = taskList.map((t: any) =>
+            TaskScoreService.getAll(t._id).catch(() => null)
+          );
+          const scoreResults = await Promise.all(scorePromises);
 
-          checkList.push({
-            id: `subj-tugas-${subj._id}`,
-            title: `Tugas ${name}`,
-            category: "Nilai Tugas",
-            status,
-            detail,
-            href: `/penilaian?subjectId=${subj._id}&category=tugas`,
-            icon: FileSpreadsheet,
+          let totalScoreEntries = 0;
+          let hasIncompleteTask = false;
+          let incompleteTaskNames: string[] = [];
+
+          taskList.forEach((t: any, sIdx: number) => {
+            const sRes = scoreResults[sIdx];
+            const scoreList = (sRes as any)?.result || (sRes as any)?.data || (Array.isArray(sRes) ? sRes : []);
+            totalScoreEntries += scoreList.length;
+
+            if (totalStudents > 0 && scoreList.length < totalStudents) {
+              hasIncompleteTask = true;
+              incompleteTaskNames.push(t.name);
+            }
           });
-        });
-      } else {
-        checkList.push({
-          id: "nilai-harian",
-          title: "Penilaian Harian & Tugas",
-          category: "Nilai Akademik",
-          status: "partial",
-          detail: `Belum ada mata pelajaran terdaftar untuk Kelas ${userGrade}.`,
-          href: "/penilaian?category=tugas",
-          icon: FileSpreadsheet,
-        });
+
+          const maxExpected = totalStudents * taskList.length;
+
+          if (hasIncompleteTask || (maxExpected > 0 && totalScoreEntries < maxExpected)) {
+            const taskStr = incompleteTaskNames.slice(0, 2).join(", ");
+            checkList.push({
+              id: `subj-tugas-${subj._id}`,
+              title: `Tugas ${name}`,
+              category: "Nilai Tugas",
+              status: "partial",
+              detail: `Sudah dibuat ${taskList.length} tugas (${taskStr}), namun nilai baru terisi ${totalScoreEntries} dari ${maxExpected} total entri murid.`,
+              href: `/penilaian?subjectId=${subj._id}&category=tugas`,
+              icon: FileSpreadsheet,
+            });
+          }
+        }
       }
 
       // Add Karakter & Litnum items
@@ -144,7 +154,7 @@ export default function IncompleteDataWidget({ userGrade }: IncompleteDataWidget
           title: "Penilaian Karakter & Habits",
           category: "Karakter",
           status: "partial",
-          detail: `Pencatatan 7 kebiasaan anak saleh & karakter murid Kelas ${userGrade} belum lengkap minggu ini.`,
+          detail: `Periksa & lengkapi pembiasaan 7 karakter anak saleh murid Kelas ${userGrade}.`,
           href: "/penilaian-karakter",
           icon: HeartHandshake,
         },
@@ -188,7 +198,7 @@ export default function IncompleteDataWidget({ userGrade }: IncompleteDataWidget
             )}
           </div>
           <p className="text-xs md:text-sm text-gray-500 dark:text-gray-400 mt-0.5">
-            Informasi spesifik per mata pelajaran dan presensi murid untuk langsung dilengkapi
+            Menampilkan data dan mata pelajaran yang pernah diinput namun belum lengkap nilainya
           </p>
         </div>
 
@@ -263,11 +273,11 @@ export default function IncompleteDataWidget({ userGrade }: IncompleteDataWidget
                         </>
                       ) : isPartial ? (
                         <>
-                          <Clock size={12} /> Perlu Dicek
+                          <Clock size={12} /> Belum Lengkap
                         </>
                       ) : (
                         <>
-                          <AlertCircle size={12} /> Belum Ada Tugas
+                          <AlertCircle size={12} /> Belum Diisi
                         </>
                       )}
                     </span>
