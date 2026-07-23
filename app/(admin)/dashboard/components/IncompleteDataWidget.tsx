@@ -173,7 +173,7 @@ export default function IncompleteDataWidget({ userGrade }: IncompleteDataWidget
             if (!existing.firstChapterId) {
               existing.firstChapterId = item.chapter._id;
             }
-            existing.incompleteDetails.push(`Bab "${item.chapter.name}" (${scores.length}/${totalStudents} nilai)`);
+            existing.incompleteDetails.push(`Bab "${item.chapter.name}" - (${scores.length}/${totalStudents} nilai)`);
           }
           chapterScoreMap.set(item.subjectId, existing);
         });
@@ -205,7 +205,7 @@ export default function IncompleteDataWidget({ userGrade }: IncompleteDataWidget
               if (totalStudents > 0 && filled < totalStudents) {
                 isBeingGradedIncomplete = true;
                 const catLabel = formatCategoryLabel(t.category);
-                itemDetails.push(`${catLabel}: "${t.name}" (${filled}/${totalStudents} nilai)`);
+                itemDetails.push(`${catLabel}: "${t.name}" - (${filled}/${totalStudents} nilai)`);
 
                 if (!firstIncompleteHref) {
                   firstIncompleteHref = `/penilaian?subjectId=${subj._id}&category=${t.category || "tugas"}&taskId=${t._id}`;
@@ -259,7 +259,7 @@ export default function IncompleteDataWidget({ userGrade }: IncompleteDataWidget
 
           if (totalStudents > 0 && lScores.length < totalStudents) {
             isLitnumIncomplete = true;
-            incompleteLitnumDetails.push(`Tugas "${t.name}" (${lScores.length}/${totalStudents} nilai)`);
+            incompleteLitnumDetails.push(`Tugas "${t.name}" - (${lScores.length}/${totalStudents} nilai)`);
           }
         });
 
@@ -290,7 +290,7 @@ export default function IncompleteDataWidget({ userGrade }: IncompleteDataWidget
             title: "Penilaian Karakter & Habits",
             category: "Karakter",
             status: "partial",
-            detailLines: [`Penilaian karakter baru terisi untuk ${characterRecords.length} dari ${totalStudents} murid.`],
+            detailLines: [`Penilaian karakter baru terisi - (${characterRecords.length}/${totalStudents} murid).`],
             href: "/penilaian-karakter",
             icon: HeartHandshake,
           });
