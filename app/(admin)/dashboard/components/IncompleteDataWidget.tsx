@@ -315,29 +315,30 @@ export default function IncompleteDataWidget({ userGrade }: IncompleteDataWidget
     <div className="bg-white/70 dark:bg-gray-800/40 border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5 relative">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4 pb-3 border-b border-gray-100 dark:border-gray-700/50">
         <div>
-          <div className="flex items-center gap-2">
-            <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200">
-              Pusat Kelengkapan Data
-            </h3>
-            {incompleteCount > 0 && (
-              <span className="px-2.5 py-0.5 text-xs font-bold rounded-full bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300 border border-amber-300 dark:border-amber-700">
-                {incompleteCount} Perlu Perhatian
-              </span>
-            )}
-          </div>
+          <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200">
+            Pusat Kelengkapan Data
+          </h3>
           <p className="text-xs md:text-sm text-gray-500 dark:text-gray-400 mt-0.5">
             Menampilkan data presensi, nilai akademik, dan litnum yang sedang dinilai namun belum selesai
           </p>
         </div>
 
-        <button
-          onClick={fetchChecklist}
-          disabled={loading}
-          className="self-start sm:self-center text-xs font-medium text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-200 dark:border-gray-700 bg-white/50 dark:bg-gray-800/50 hover:bg-slate-50 dark:hover:bg-gray-700 transition-colors cursor-pointer disabled:opacity-50"
-        >
-          <RefreshCw size={12} className={loading ? "animate-spin" : ""} />
-          Refresh Status
-        </button>
+        <div className="flex items-center gap-2.5 self-start sm:self-center">
+          <button
+            onClick={fetchChecklist}
+            disabled={loading}
+            className="text-xs font-medium text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-200 dark:border-gray-700 bg-white/50 dark:bg-gray-800/50 hover:bg-slate-50 dark:hover:bg-gray-700 transition-colors cursor-pointer disabled:opacity-50"
+          >
+            <RefreshCw size={12} className={loading ? "animate-spin" : ""} />
+            Refresh Status
+          </button>
+
+          {incompleteCount > 0 && (
+            <span className="px-2.5 py-1 text-xs font-bold rounded-lg bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300 border border-amber-300 dark:border-amber-700 whitespace-nowrap">
+              {incompleteCount} Perlu Perhatian
+            </span>
+          )}
+        </div>
       </div>
 
       {loading ? (
