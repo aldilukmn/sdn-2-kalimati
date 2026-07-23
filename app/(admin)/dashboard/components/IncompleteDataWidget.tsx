@@ -286,7 +286,7 @@ export default function IncompleteDataWidget({ userGrade }: IncompleteDataWidget
         <div>
           <div className="flex items-center gap-2">
             <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200">
-              Pusat Kelengkapan Data Kelas {userGrade || ""}
+              Pusat Kelengkapan Data
             </h3>
             {incompleteCount > 0 && (
               <span className="px-2.5 py-0.5 text-xs font-bold rounded-full bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300 border border-amber-300 dark:border-amber-700">
