@@ -16,12 +16,11 @@ import {
 import StudentAttendanceService from "@/services/student-attendance.service";
 import GradeSubjectService from "@/services/grade-subject.service";
 import TaskService from "@/services/task.service";
-import TaskScoreService from "@/services/task-score.service";
 import ChapterService from "@/services/chapter.service";
 import ScoreService from "@/services/score.service";
 import { LitnumTaskService, LitnumScoreService } from "@/services/litnum.service";
 import type { GradeSubject, Chapter, Score } from "@/types/nilai-harian";
-import type { Task, TaskScore } from "@/types/tugas";
+import type { Task } from "@/types/tugas";
 import type { LitnumTask, LitnumScore } from "@/types/litnum";
 
 interface IncompleteDataWidgetProps {
@@ -62,6 +61,7 @@ export default function IncompleteDataWidget({ userGrade }: IncompleteDataWidget
       const now = new Date();
       const todayStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
 
+      // Step 1: Initial parallel batch fetch (Attendance, Students, Subjects, Litnum Tasks)
       const [todayAttendanceRes, studentsRes, gradeSubjectsRes, litnumTasksRes] = await Promise.all([
         StudentAttendanceService.getByGradeAndDate(userGrade, todayStr).catch(() => null),
         StudentAttendanceService.getStudentsByGrade(userGrade).catch(() => null),
@@ -105,58 +105,62 @@ export default function IncompleteDataWidget({ userGrade }: IncompleteDataWidget
         },
       ];
 
-      // 1. Check subjects across all categories (Tugas, Keaktifan, Partisipasi, Nilai Harian)
+      // Step 2: Fetch all tasks & chapters across subjects completely in PARALLEL
       if (rawSubjects.length > 0) {
         const [taskResults, chapterResults] = await Promise.all([
           Promise.all(rawSubjects.map((s) => TaskService.getAll(s._id, "all").catch(() => null))),
           Promise.all(rawSubjects.map((s) => ChapterService.getAll(s._id).catch(() => null))),
         ]);
 
-        for (let i = 0; i < rawSubjects.length; i++) {
-          const subj = rawSubjects[i];
+        // Step 3: Collect all chapters to fetch scores in 1 single parallel batch
+        const chaptersWithSubject: { chapter: Chapter; subjectId: string; subjectName: string }[] = [];
+
+        rawSubjects.forEach((subj, idx) => {
+          const chapters: Chapter[] = extractArray(chapterResults[idx]);
+          chapters.forEach((c) => {
+            chaptersWithSubject.push({ chapter: c, subjectId: subj._id, subjectName: subj.subjectName || "Mata Pelajaran" });
+          });
+        });
+
+        const chapterScoreResults = await Promise.all(
+          chaptersWithSubject.map((item) => ScoreService.getAll(item.chapter._id).catch(() => null))
+        );
+
+        // Map chapter scores back by gradeSubjectId
+        const chapterScoreMap = new Map<string, { totalScores: number; incompleteDetails: string[]; chapterCount: number }>();
+
+        chaptersWithSubject.forEach((item, idx) => {
+          const scores: Score[] = extractArray(chapterScoreResults[idx]);
+          const existing = chapterScoreMap.get(item.subjectId) || { totalScores: 0, incompleteDetails: [], chapterCount: 0 };
+          existing.totalScores += scores.length;
+          existing.chapterCount += 1;
+
+          if (totalStudents > 0 && scores.length < totalStudents) {
+            existing.incompleteDetails.push(`Bab "${item.chapter.name}" (${scores.length}/${totalStudents} nilai)`);
+          }
+          chapterScoreMap.set(item.subjectId, existing);
+        });
+
+        // Evaluate subjects
+        rawSubjects.forEach((subj, idx) => {
           const name = subj.subjectName || "Mata Pelajaran";
+          const taskList: Task[] = extractArray(taskResults[idx]);
+          const chapterInfo = chapterScoreMap.get(subj._id);
+          const chapterCount = chapterInfo?.chapterCount || 0;
 
-          const taskList: Task[] = extractArray(taskResults[i]);
-          const chapterList: Chapter[] = extractArray(chapterResults[i]);
-
-          // SKIP subject if no tasks AND no chapters exist in DB for this gradeSubjectId
-          if (taskList.length === 0 && chapterList.length === 0) continue;
+          // SKIP subject if 0 tasks & 0 chapters exist
+          if (taskList.length === 0 && chapterCount === 0) return;
 
           let isBeingGradedIncomplete = false;
-          let totalScoresFilled = 0;
-          let expectedMaxScores = 0;
-          let itemDetails: string[] = [];
-          let activeCategory = "tugas";
+          let totalScoresFilled = chapterInfo?.totalScores || 0;
+          let expectedMaxScores = chapterCount * totalStudents;
+          let itemDetails: string[] = chapterInfo ? [...chapterInfo.incompleteDetails] : [];
+          let activeCategory = chapterCount > 0 ? "harian" : "tugas";
 
-          // Check Chapters & Scores DB (Nilai Harian / Bab)
-          if (chapterList.length > 0) {
-            const chapterScorePromises = chapterList.map((c) =>
-              ScoreService.getAll(c._id).catch(() => null)
-            );
-            const chapterScoreResults = await Promise.all(chapterScorePromises);
-
-            chapterList.forEach((c, cIdx) => {
-              const scores: Score[] = extractArray(chapterScoreResults[cIdx]);
-              totalScoresFilled += scores.length;
-              expectedMaxScores += totalStudents;
-
-              if (totalStudents > 0 && scores.length < totalStudents) {
-                isBeingGradedIncomplete = true;
-                itemDetails.push(`Bab "${c.name}" (${scores.length}/${totalStudents} nilai)`);
-              }
-            });
-          }
-
-          // Check Tasks & TaskScores DB (Tugas, Keaktifan, Partisipasi)
+          // Process tasks using precomputed inputtedCount from backend (0 extra HTTP requests!)
           if (taskList.length > 0) {
-            const taskScorePromises = taskList.map((t) =>
-              TaskScoreService.getAll(t._id).catch(() => null)
-            );
-            const taskScoreResults = await Promise.all(taskScorePromises);
-
-            taskList.forEach((t, tIdx) => {
-              const taskScores: TaskScore[] = extractArray(taskScoreResults[tIdx]);
-              const filled = (t as any).inputtedCount ?? taskScores.length;
+            taskList.forEach((t) => {
+              const filled = t.inputtedCount ?? 0;
               totalScoresFilled += filled;
               expectedMaxScores += totalStudents;
               if (t.category) activeCategory = t.category;
@@ -169,10 +173,13 @@ export default function IncompleteDataWidget({ userGrade }: IncompleteDataWidget
             });
           }
 
-          // Show in widget IF it has chapters/tasks AND is not 100% complete
+          if (chapterInfo && chapterInfo.incompleteDetails.length > 0) {
+            isBeingGradedIncomplete = true;
+          }
+
           if (isBeingGradedIncomplete || (expectedMaxScores > 0 && totalScoresFilled < expectedMaxScores)) {
             const targetHref =
-              chapterList.length > 0
+              chapterCount > 0
                 ? `/nilai-harian?subjectId=${subj._id}`
                 : `/penilaian?subjectId=${subj._id}&category=${activeCategory}`;
 
@@ -190,15 +197,14 @@ export default function IncompleteDataWidget({ userGrade }: IncompleteDataWidget
               icon: FileSpreadsheet,
             });
           }
-        }
+        });
       }
 
-      // 2. Check Litnum DB: match litnums with litnum_scores
+      // Step 4: Litnum scores in 1 single parallel batch
       if (litnumTasks.length > 0) {
-        const litnumScorePromises = litnumTasks.map((t) =>
-          LitnumScoreService.getAll(t._id).catch(() => null)
+        const litnumScoreResults = await Promise.all(
+          litnumTasks.map((t) => LitnumScoreService.getAll(t._id).catch(() => null))
         );
-        const litnumScoreResults = await Promise.all(litnumScorePromises);
 
         let totalLitnumScores = 0;
         let isLitnumIncomplete = false;
@@ -233,7 +239,7 @@ export default function IncompleteDataWidget({ userGrade }: IncompleteDataWidget
         }
       }
 
-      // 3. Add Karakter item
+      // Step 5: Add Karakter item
       checkList.push({
         id: "karakter",
         title: "Penilaian Karakter & Habits",
@@ -273,7 +279,7 @@ export default function IncompleteDataWidget({ userGrade }: IncompleteDataWidget
             )}
           </div>
           <p className="text-xs md:text-sm text-gray-500 dark:text-gray-400 mt-0.5">
-            Menampilkan data presensi, nilai akademik (tugas, keaktifan, partisipasi), dan litnum yang belum selesai
+            Menampilkan data presensi, nilai akademik, dan litnum yang sedang dinilai namun belum selesai
           </p>
         </div>
 
