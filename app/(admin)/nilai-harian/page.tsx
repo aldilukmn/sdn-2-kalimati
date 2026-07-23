@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import { ClipboardEdit, Save, ClipboardList } from "lucide-react";
 import ErrorState from "@/components/shared/ErrorState";
 import EmptyState from "@/components/shared/EmptyState";
@@ -38,6 +39,28 @@ export default function NilaiHarianPage() {
     handleMaxScoreChange,
     handleSave,
   } = useNilaiHarian();
+
+  const searchParams = useSearchParams();
+  const urlSubjectId = searchParams.get("subjectId");
+  const urlChapterId = searchParams.get("chapterId");
+
+  useEffect(() => {
+    if (urlSubjectId && gradeSubjects.length > 0) {
+      const found = gradeSubjects.find((gs) => gs._id === urlSubjectId || gs.subjectId === urlSubjectId);
+      if (found && selectedGS !== found._id) {
+        setSelectedGS(found._id);
+      }
+    }
+  }, [urlSubjectId, gradeSubjects, selectedGS, setSelectedGS]);
+
+  useEffect(() => {
+    if (urlChapterId && chapters.length > 0) {
+      const found = chapters.find((ch) => ch._id === urlChapterId);
+      if (found && selectedChapter?._id !== found._id) {
+        setSelectedChapter(found);
+      }
+    }
+  }, [urlChapterId, chapters, selectedChapter, setSelectedChapter]);
 
   useEffect(() => {
     if (selectedChapter) {

@@ -74,7 +74,7 @@ export default function IncompleteDataWidget({ userGrade }: IncompleteDataWidget
       const now = new Date();
       const todayStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
 
-      // Step 1: Initial parallel batch fetch (Attendance, Students, Subjects, Litnum Tasks, Character Assessments)
+      // Step 1: Initial parallel batch fetch
       const [todayAttendanceRes, studentsRes, gradeSubjectsRes, litnumTasksRes, characterRes] = await Promise.all([
         StudentAttendanceService.getByGradeAndDate(userGrade, todayStr).catch(() => null),
         StudentAttendanceService.getStudentsByGrade(userGrade).catch(() => null),
@@ -140,15 +140,25 @@ export default function IncompleteDataWidget({ userGrade }: IncompleteDataWidget
           chaptersWithSubject.map((item) => ScoreService.getAll(item.chapter._id).catch(() => null))
         );
 
-        const chapterScoreMap = new Map<string, { totalScores: number; incompleteDetails: string[]; chapterCount: number }>();
+        const chapterScoreMap = new Map<
+          string,
+          { totalScores: number; incompleteDetails: string[]; firstChapterId?: string; chapterCount: number }
+        >();
 
         chaptersWithSubject.forEach((item, idx) => {
           const scores: Score[] = extractArray(chapterScoreResults[idx]);
-          const existing = chapterScoreMap.get(item.subjectId) || { totalScores: 0, incompleteDetails: [], chapterCount: 0 };
+          const existing = chapterScoreMap.get(item.subjectId) || {
+            totalScores: 0,
+            incompleteDetails: [],
+            chapterCount: 0,
+          };
           existing.totalScores += scores.length;
           existing.chapterCount += 1;
 
           if (totalStudents > 0 && scores.length < totalStudents) {
+            if (!existing.firstChapterId) {
+              existing.firstChapterId = item.chapter._id;
+            }
             existing.incompleteDetails.push(`Bab "${item.chapter.name}" (${scores.length}/${totalStudents} nilai)`);
           }
           chapterScoreMap.set(item.subjectId, existing);
@@ -168,19 +178,24 @@ export default function IncompleteDataWidget({ userGrade }: IncompleteDataWidget
           let totalScoresFilled = chapterInfo?.totalScores || 0;
           let expectedMaxScores = chapterCount * totalStudents;
           let itemDetails: string[] = chapterInfo ? [...chapterInfo.incompleteDetails] : [];
-          let activeCategory = chapterCount > 0 ? "harian" : "tugas";
+          let firstIncompleteHref = chapterInfo?.firstChapterId
+            ? `/nilai-harian?subjectId=${subj._id}&chapterId=${chapterInfo.firstChapterId}`
+            : "";
 
           if (taskList.length > 0) {
             taskList.forEach((t) => {
               const filled = t.inputtedCount ?? 0;
               totalScoresFilled += filled;
               expectedMaxScores += totalStudents;
-              if (t.category) activeCategory = t.category;
 
               if (totalStudents > 0 && filled < totalStudents) {
                 isBeingGradedIncomplete = true;
                 const catLabel = formatCategoryLabel(t.category);
                 itemDetails.push(`${catLabel}: "${t.name}" (${filled}/${totalStudents} nilai)`);
+
+                if (!firstIncompleteHref) {
+                  firstIncompleteHref = `/penilaian?subjectId=${subj._id}&category=${t.category || "tugas"}&taskId=${t._id}`;
+                }
               }
             });
           }
@@ -190,10 +205,12 @@ export default function IncompleteDataWidget({ userGrade }: IncompleteDataWidget
           }
 
           if (isBeingGradedIncomplete || (expectedMaxScores > 0 && totalScoresFilled < expectedMaxScores)) {
-            const targetHref =
+            const fallbackHref =
               chapterCount > 0
                 ? `/nilai-harian?subjectId=${subj._id}`
-                : `/penilaian?subjectId=${subj._id}&category=${activeCategory}`;
+                : `/penilaian?subjectId=${subj._id}&category=tugas`;
+
+            const targetHref = firstIncompleteHref || fallbackHref;
 
             const lines = itemDetails.length > 0
               ? itemDetails
@@ -212,7 +229,7 @@ export default function IncompleteDataWidget({ userGrade }: IncompleteDataWidget
         });
       }
 
-      // Step 3: Litnum scores: SKIP if no Litnum tasks exist
+      // Step 3: Litnum scores
       if (litnumTasks.length > 0) {
         const litnumScoreResults = await Promise.all(
           litnumTasks.map((t) => LitnumScoreService.getAll(t._id).catch(() => null))
@@ -241,7 +258,7 @@ export default function IncompleteDataWidget({ userGrade }: IncompleteDataWidget
 
           checkList.push({
             id: "litnum",
-            title: "Literasi & Numerasi",
+            title: "Literasi & Numerasi (TKA)",
             category: "Litnum",
             status: "partial",
             detailLines: lines,
@@ -251,7 +268,7 @@ export default function IncompleteDataWidget({ userGrade }: IncompleteDataWidget
         }
       }
 
-      // Step 4: Character Assessment: SKIP if no character records exist (untouched by teacher)
+      // Step 4: Character Assessment
       if (characterRecords.length > 0) {
         if (totalStudents > 0 && characterRecords.length < totalStudents) {
           checkList.push({

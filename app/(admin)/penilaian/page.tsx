@@ -65,6 +65,7 @@ export default function PenilaianPage() {
   const searchParams = useSearchParams();
   const urlSubjectId = searchParams.get("subjectId");
   const urlCategory = searchParams.get("category");
+  const urlTaskId = searchParams.get("taskId");
 
   useEffect(() => {
     if (urlCategory) setCategory(urlCategory);
@@ -76,6 +77,15 @@ export default function PenilaianPage() {
       if (found) setSubjectId(found._id);
     }
   }, [urlSubjectId, subjects, setSubjectId]);
+
+  useEffect(() => {
+    if (urlTaskId && tasks.length > 0) {
+      const found = tasks.find((t: any) => t._id === urlTaskId);
+      if (found && selectedTaskId !== found._id) {
+        setSelectedTaskId(found._id);
+      }
+    }
+  }, [urlTaskId, tasks, selectedTaskId, setSelectedTaskId]);
 
   const [taskModal, setTaskModal] = useState<{
     mode: "add" | "edit";
