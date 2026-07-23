@@ -258,7 +258,7 @@ export default function IncompleteDataWidget({ userGrade }: IncompleteDataWidget
 
           checkList.push({
             id: "litnum",
-            title: "Literasi & Numerasi (TKA)",
+            title: "Literasi & Numerasi",
             category: "Litnum",
             status: "partial",
             detailLines: lines,
