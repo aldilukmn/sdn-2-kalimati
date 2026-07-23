@@ -374,7 +374,7 @@ export default function IncompleteDataWidget({ userGrade }: IncompleteDataWidget
                   <div className="pl-8 space-y-1">
                     {item.detailLines.map((line, lIdx) => (
                       <div key={lIdx} className="text-xs text-gray-600 dark:text-gray-400 flex items-start gap-1.5">
-                        {item.detailLines.length > 1 && <span className="text-amber-500 font-bold select-none">•</span>}
+                        <span className="text-amber-500 font-bold select-none">•</span>
                         <span className="leading-relaxed">{line}</span>
                       </div>
                     ))}
