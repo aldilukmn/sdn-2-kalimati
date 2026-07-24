@@ -131,7 +131,7 @@ export default function ScoreTable({
               Input Nilai: {title}
             </h2>
             <span className="text-xs font-semibold px-2.5 py-1 rounded-md bg-indigo-50 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800 w-fit">
-              {filledCount}/{entries.length} Nilai ({entries.length > 0 ? Math.round((filledCount / entries.length) * 100) : 0}%)
+              {filledCount}/{entries.length} murid ({entries.length > 0 ? Math.round((filledCount / entries.length) * 100) : 0}%)
             </span>
           </div>
           
