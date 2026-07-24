@@ -125,24 +125,27 @@ export default function ScoreTable({
   return (
     <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 md:border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5 overflow-hidden flex flex-col gap-4">
       {title && (
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white/50 dark:bg-gray-900/30 rounded-xl p-3 border border-slate-100 dark:border-slate-800/50">
-          <h3 className="text-sm md:text-base font-semibold text-slate-800 dark:text-slate-100">
-            {title}
-          </h3>
-          <div className="flex items-center gap-2 text-xs md:text-sm font-medium">
-            <span className="text-slate-500 dark:text-slate-400">Progres:</span>
-            <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg ${
-              isComplete 
-                ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300' 
-                : 'bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300'
-            }`}>
-              {isComplete ? (
-                <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
-              ) : (
-                <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-              )}
-              {filledCount} / {entries.length} terisi
+        <div className="flex flex-col gap-2 mb-1">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <h2 className="font-semibold text-slate-700 dark:text-slate-200">
+              Input Nilai: {title}
+            </h2>
+            <span className="text-xs font-semibold px-2.5 py-1 rounded-md bg-indigo-50 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800 w-fit">
+              {filledCount}/{entries.length} Nilai ({entries.length > 0 ? Math.round((filledCount / entries.length) * 100) : 0}%)
             </span>
+          </div>
+          
+          <div className="w-full h-2.5 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
+            <div
+              className={`h-full rounded-full transition-all duration-500 ${
+                isComplete
+                  ? "bg-emerald-500"
+                  : filledCount > 0
+                  ? "bg-amber-500"
+                  : "bg-slate-300 dark:bg-slate-600"
+              }`}
+              style={{ width: `${entries.length > 0 ? (filledCount / entries.length) * 100 : 0}%` }}
+            />
           </div>
         </div>
       )}
