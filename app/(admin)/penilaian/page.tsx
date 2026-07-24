@@ -150,6 +150,11 @@ export default function PenilaianPage() {
     }
   };
 
+  const activeInputtedCount = useMemo(() => {
+    if (!selectedTaskId) return 0;
+    return Object.values(scoreInputs).filter((val) => val !== undefined && val.trim() !== "").length;
+  }, [selectedTaskId, scoreInputs]);
+
   return (
     <div className="flex flex-col gap-6 p-4 md:p-6">
       <PageHero
@@ -245,6 +250,7 @@ export default function PenilaianPage() {
             ) : (
               tasks.map((t: any, index: number) => {
                 const isActive = selectedTaskId === t._id;
+                const currentInputted = isActive ? activeInputtedCount : (t.inputtedCount ?? 0);
                 return (
                   <button
                     key={t._id}
@@ -285,20 +291,20 @@ export default function PenilaianPage() {
                           <div className="w-24 sm:w-28 h-2 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden shrink-0">
                             <div
                               className={`h-full rounded-full transition-all duration-500 ${
-                                (t.inputtedCount ?? 0) >= students.length
+                                currentInputted >= students.length
                                   ? "bg-emerald-500"
-                                  : (t.inputtedCount ?? 0) > 0
+                                  : currentInputted > 0
                                   ? "bg-amber-500"
                                   : "bg-slate-300 dark:bg-slate-600"
                               }`}
-                              style={{ width: `${students.length > 0 ? ((t.inputtedCount ?? 0) / students.length) * 100 : 0}%` }}
+                              style={{ width: `${students.length > 0 ? (currentInputted / students.length) * 100 : 0}%` }}
                             />
                           </div>
                         )}
                         <span className="text-[11px] font-medium text-slate-500 dark:text-slate-400 whitespace-nowrap">
-                          {t.inputtedCount ?? 0}/{students.length}
+                          {currentInputted}/{students.length}
                         </span>
-                        {(t.inputtedCount ?? 0) >= students.length && students.length > 0 && (
+                        {currentInputted >= students.length && students.length > 0 && (
                           <span className="inline-flex items-center p-0.5 rounded-full text-emerald-700 bg-emerald-100 dark:bg-emerald-900/40 dark:text-emerald-300" title="Semua nilai tersimpan">
                             <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                               <circle cx="12" cy="12" r="10" />
@@ -309,7 +315,7 @@ export default function PenilaianPage() {
                       </div>
                       {/* Mobile: icon indicator */}
                       <div className="sm:hidden flex items-center">
-                        {(t.inputtedCount ?? 0) >= students.length && students.length > 0 ? (
+                        {currentInputted >= students.length && students.length > 0 ? (
                           <span 
                             title="Semua nilai tersimpan"
                             className="inline-flex items-center p-1 rounded-full text-emerald-700 bg-emerald-100 dark:bg-emerald-900/40 dark:text-emerald-300"
@@ -320,15 +326,8 @@ export default function PenilaianPage() {
                             </svg>
                           </span>
                         ) : (
-                          <span 
-                            title={`${t.inputtedCount ?? 0} dari ${students.length} nilai tersimpan`}
-                            className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-medium bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300"
-                          >
-                            <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                              <circle cx="12" cy="12" r="10" />
-                              <polyline points="12 6 12 12 16 14" />
-                            </svg>
-                            {t.inputtedCount ?? 0}/{students.length}
+                          <span className="text-xs font-semibold text-slate-500 dark:text-slate-400">
+                            {currentInputted}/{students.length}
                           </span>
                         )}
                       </div>

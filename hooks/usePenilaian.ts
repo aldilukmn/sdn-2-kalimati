@@ -113,6 +113,14 @@ export function usePenilaian(category: string) {
           inputs[s.studentId] = String(s.score);
         }
         setScoreInputs(inputs);
+
+        setTasks((prev) =>
+          prev.map((t) =>
+            t._id === selectedTaskId
+              ? { ...t, inputtedCount: scoreList.length }
+              : t
+          )
+        );
       } catch {
         toast.error("Gagal memuat nilai.");
       } finally {
