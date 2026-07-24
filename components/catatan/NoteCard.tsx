@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Note } from "@/types/models";
+import { Note } from "@/types/note";
 import { formatDateWithDayID } from "@/lib/format";
 import { Calendar, Edit2, Trash2, X, Check, Loader2 } from "lucide-react";
 import RichTextEditor from "./RichTextEditor";
