@@ -15,6 +15,7 @@ import {
   UserCog,
   PieChart,
   FileEdit,
+  NotebookPen,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
@@ -43,6 +44,7 @@ export const menuItems: SidebarItem[] = [
     ],
   },
   { label: "Tabungan Murid", icon: Wallet, href: "/tabungan-murid" },
+  { label: "Catatan", icon: NotebookPen, href: "/catatan" },
   { label: "Daftar Mapel", icon: BookOpen, href: "/daftar-mapel" },
   {
     label: "Nilai Akademik",
@@ -109,4 +111,5 @@ export const guruAllowedHrefs = new Set([
   "/tabungan-murid",
   "/data-murid",
   "/profil",
+  "/catatan",
 ]);

@@ -21,6 +21,18 @@ export function formatDateID(dateStr: string): string {
   return `${parseInt(d)} ${MONTHS_ID[parseInt(m) - 1]} ${y}`;
 }
 
+export const DAYS_ID = [
+  "Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"
+];
+
+export function formatDateWithDayID(dateStr: string): string {
+  if (!dateStr) return "-";
+  const [y, m, d] = dateStr.split("-");
+  const dateObj = new Date(parseInt(y), parseInt(m) - 1, parseInt(d));
+  const dayName = DAYS_ID[dateObj.getDay()];
+  return `${dayName}, ${parseInt(d)} ${MONTHS_ID[parseInt(m) - 1]} ${y}`;
+}
+
 export function formatDateShort(dateStr: string): string {
   if (!dateStr) return "-";
   const [y, m, d] = dateStr.split("-");
