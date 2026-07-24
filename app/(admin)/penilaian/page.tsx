@@ -363,10 +363,28 @@ export default function PenilaianPage() {
 
           {selectedTask && (
             <div className="bg-white/70 dark:bg-gray-800/40 border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
-              <div className="flex items-center justify-between mb-4">
-                <h2 className="font-semibold text-slate-700 dark:text-slate-200">
-                  Input Nilai: {selectedTask.name}
-                </h2>
+              <div className="flex flex-col gap-2 mb-4">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                  <h2 className="font-semibold text-slate-700 dark:text-slate-200">
+                    Input Nilai: {selectedTask.name}
+                  </h2>
+                  <span className="text-xs font-semibold px-2.5 py-1 rounded-md bg-indigo-50 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800 w-fit">
+                    {activeInputtedCount}/{students.length} Nilai ({students.length > 0 ? Math.round((activeInputtedCount / students.length) * 100) : 0}%)
+                  </span>
+                </div>
+                
+                <div className="w-full h-2.5 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
+                  <div
+                    className={`h-full rounded-full transition-all duration-500 ${
+                      activeInputtedCount >= students.length && students.length > 0
+                        ? "bg-emerald-500"
+                        : activeInputtedCount > 0
+                        ? "bg-amber-500"
+                        : "bg-slate-300 dark:bg-slate-600"
+                    }`}
+                    style={{ width: `${students.length > 0 ? (activeInputtedCount / students.length) * 100 : 0}%` }}
+                  />
+                </div>
               </div>
               <div className="overflow-x-auto rounded-xl border border-gray-200 dark:border-gray-700 bg-white/80 dark:bg-gray-800/30">
                 <table className="w-full text-sm">
