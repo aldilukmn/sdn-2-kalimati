@@ -384,3 +384,13 @@ html.dark input:-webkit-autofill:active,
 .dark .prose-catatan hr {
   border-top-color: #334155;
 }
+
+/* Remove arrows from number inputs */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type="number"] {
+  -moz-appearance: textfield;
+}

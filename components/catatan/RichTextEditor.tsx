@@ -37,13 +37,14 @@ export default function RichTextEditor({
       }),
     ],
     content,
+    immediatelyRender: false,
     onUpdate: ({ editor }) => {
       onChange(editor.getHTML());
     },
     editorProps: {
       attributes: {
         class:
-          "prose prose-sm sm:prose-base prose-indigo focus:outline-none min-h-[150px] p-4 text-slate-700 dark:text-slate-300",
+          "prose prose-sm sm:prose-base prose-indigo dark:prose-invert focus:outline-none min-h-[150px] p-4 text-slate-700 dark:text-slate-300",
       },
     },
   });

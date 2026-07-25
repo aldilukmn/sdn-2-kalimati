@@ -50,6 +50,7 @@ export const menuItems: SidebarItem[] = [
     label: "Nilai Akademik",
     icon: GraduationCap,
     children: [
+      { label: "Dashboard", icon: LayoutDashboard, href: "/dashboard-nilai" },
       { label: "Nilai Harian", icon: ClipboardEdit, href: "/nilai-harian" },
       {
         label: "Rekap Nilai Harian",
@@ -95,6 +96,7 @@ export const penjagaMenuItems = [
 
 export const guruAllowedHrefs = new Set([
   "/dashboard",
+  "/dashboard-nilai",
   "/dashboard-karakter",
   "/dashboard-presensi",
   "/penilaian-karakter",

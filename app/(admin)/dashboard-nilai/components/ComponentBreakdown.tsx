@@ -1,0 +1,83 @@
+import { ComponentStat } from "@/services/academic-dashboard.service";
+import { BarChart2 } from "lucide-react";
+
+interface ComponentBreakdownProps {
+  components: {
+    harian: ComponentStat;
+    tugas: ComponentStat;
+    keaktifan: ComponentStat;
+    partisipasi: ComponentStat;
+    litnum: ComponentStat;
+  } | undefined;
+  loading: boolean;
+}
+
+export function ComponentBreakdown({ components, loading }: ComponentBreakdownProps) {
+  if (loading) {
+    return (
+      <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 animate-pulse">
+        <div className="h-6 w-1/3 bg-slate-200 dark:bg-slate-700 rounded mb-6"></div>
+        <div className="space-y-4">
+          {[1, 2, 3, 4, 5].map((i) => (
+            <div key={i} className="h-12 bg-slate-100 dark:bg-slate-700/50 rounded-lg"></div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  const items = [
+    { key: "harian", label: "Nilai Harian", data: components?.harian, color: "bg-blue-500" },
+    { key: "tugas", label: "Tugas", data: components?.tugas, color: "bg-indigo-500" },
+    { key: "keaktifan", label: "Keaktifan", data: components?.keaktifan, color: "bg-emerald-500" },
+    { key: "partisipasi", label: "Partisipasi", data: components?.partisipasi, color: "bg-amber-500" },
+    { key: "litnum", label: "Literasi & Numerasi", data: components?.litnum, color: "bg-rose-500" },
+  ];
+
+  return (
+    <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden flex flex-col h-full">
+      <div className="p-4 border-b border-slate-100 dark:border-slate-700/50 flex items-center gap-2 bg-indigo-500">
+        <div className="p-2 bg-white/20 rounded-lg backdrop-blur-sm">
+          <BarChart2 className="w-5 h-5 text-white" />
+        </div>
+        <h3 className="font-bold text-white">Breakdown per Komponen</h3>
+      </div>
+      
+      <div className="p-6 space-y-6 flex-1">
+        {items.map((item) => {
+          const rateRaw = item.data && item.data.possible > 0 
+            ? (item.data.filled / item.data.possible) * 100 
+            : 0;
+          const rate = Math.floor(rateRaw * 100) / 100;
+            
+          return (
+            <div key={item.key} className="space-y-2">
+              <div className="flex justify-between items-end">
+                <div>
+                  <h4 className="text-sm font-semibold text-slate-700 dark:text-slate-200">
+                    {item.label}
+                  </h4>
+                  <p className="text-xs text-slate-500 dark:text-slate-400">
+                    {item.data?.items ?? 0} item penilaian • Rata-rata: <span className="font-medium text-slate-700 dark:text-slate-300">{Math.round((item.data?.avgScore ?? 0) * 100) / 100}</span>
+                  </p>
+                </div>
+                <div className="text-right">
+                  <span className="text-sm font-bold text-slate-800 dark:text-white">{rate}%</span>
+                  <p className="text-xs text-slate-500 dark:text-slate-400">
+                    {item.data?.filled ?? 0} / {item.data?.possible ?? 0}
+                  </p>
+                </div>
+              </div>
+              <div className="w-full bg-slate-100 dark:bg-slate-700 rounded-full h-2">
+                <div 
+                  className={`${item.color} h-2 rounded-full transition-all duration-500`}
+                  style={{ width: `${rate}%` }}
+                ></div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}

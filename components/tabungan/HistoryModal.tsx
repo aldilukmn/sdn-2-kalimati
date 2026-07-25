@@ -97,30 +97,9 @@ export default function HistoryModal({
             </button>
           </div>
             <p className="text-xs text-gray-500 mt-1">{student.name}</p>
-            <div className="flex items-center justify-between mt-2">
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2 mt-3 mb-1 md:mt-2 md:mb-0">
               {!historyAllTime && (
-              <div className="flex gap-1 bg-slate-100 dark:bg-gray-800 rounded-lg p-0.5">
-                {(["all", "simpan", "tarik"] as const).map((t) => (
-                  <button
-                    key={t}
-                    onClick={() => {
-                      const newType = t === "all" ? "all" : t;
-                      setHistoryType(t === "all" ? undefined : t);
-                      fetchHistoryPage(1, newType);
-                    }}
-                    className={`px-2.5 py-1 rounded-md text-xs font-semibold transition-colors cursor-pointer ${
-                      (t === "all" ? historyType === undefined : historyType === t)
-                        ? "bg-white dark:bg-gray-700 text-indigo-600 dark:text-indigo-300 shadow-sm"
-                        : "text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
-                    }`}
-                  >
-                    {t === "all" ? "Semua" : t === "simpan" ? "Simpan" : "Tarik"}
-                  </button>
-                ))}
-              </div>
-              )}
-              {!historyAllTime && (
-              <div className="flex items-center gap-1.5">
+              <div className="flex w-full md:w-auto gap-2 md:gap-1.5 md:items-center order-1 md:order-2">
                 <Select
                   value={String(historyMonth)}
                   onValueChange={(v) => {
@@ -131,7 +110,7 @@ export default function HistoryModal({
                     }
                   }}
                 >
-                  <SelectTrigger className="h-auto rounded-lg border border-slate-300 bg-slate-50 px-2 py-1 text-xs focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100 w-[50px] md:w-[90px]">
+                  <SelectTrigger className="flex-1 md:flex-none h-auto rounded-lg border border-slate-300 bg-slate-50 px-3 py-1.5 md:px-2 md:py-1 text-xs focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100 md:w-[60px] lg:w-[90px]">
                     <SelectValue placeholder="Bulan" className="sr-only" />
                     {MONTHS_ID[historyMonth - 1]}
                   </SelectTrigger>
@@ -144,14 +123,37 @@ export default function HistoryModal({
                     </SelectGroup>
                   </SelectContent>
                 </Select>
-                <YearSelect
-                  value={historyYear}
-                  onChange={(y) => {
-                    setHistoryYear(y);
-                    fetchHistoryPage(1, historyType, historyMonth, y);
-                  }}
-                  compact
-                />
+                <div className="flex-1 md:flex-none [&>button]:!w-full md:[&>button]:!w-[70px] [&>button]:!py-1.5 md:[&>button]:!py-1 [&>button]:!px-3 md:[&>button]:!px-2">
+                  <YearSelect
+                    value={historyYear}
+                    onChange={(y) => {
+                      setHistoryYear(y);
+                      fetchHistoryPage(1, historyType, historyMonth, y);
+                    }}
+                    compact
+                  />
+                </div>
+              </div>
+              )}
+              {!historyAllTime && (
+              <div className="flex w-full md:w-auto gap-1 bg-slate-100 dark:bg-gray-800 rounded-lg p-1 md:p-0.5 order-2 md:order-1">
+                {(["all", "simpan", "tarik"] as const).map((t) => (
+                  <button
+                    key={t}
+                    onClick={() => {
+                      const newType = t === "all" ? "all" : t;
+                      setHistoryType(t === "all" ? undefined : t);
+                      fetchHistoryPage(1, newType);
+                    }}
+                    className={`flex-1 md:flex-none px-2.5 py-1.5 md:py-1 rounded-md text-xs font-semibold transition-colors cursor-pointer ${
+                      (t === "all" ? historyType === undefined : historyType === t)
+                        ? "bg-white dark:bg-gray-700 text-indigo-600 dark:text-indigo-300 shadow-sm"
+                        : "text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
+                    }`}
+                  >
+                    {t === "all" ? "Semua" : t === "simpan" ? "Simpan" : "Tarik"}
+                  </button>
+                ))}
               </div>
               )}
             </div>

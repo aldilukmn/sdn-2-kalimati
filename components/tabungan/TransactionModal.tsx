@@ -60,18 +60,20 @@ export default function TransactionModal({
               </p>
             )}
           </div>
-          <div>
-            <label className="text-xs text-gray-500 mb-1 block">
-              {mode === "simpan" ? "Keterangan (opsional)" : "Catatan penarikan"}
-            </label>
-            <input
-              type="text"
-              value={txDescription}
-              onChange={(e) => setTxDescription(e.target.value)}
-              placeholder={mode === "simpan" ? "Misal: Tabungan hari Jumat" : "Alasan penarikan (misal: beli buku)"}
-              className="w-full rounded-xl border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm outline-none focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100"
-            />
-          </div>
+          {mode === "tarik" && (
+            <div>
+              <label className="text-xs text-gray-500 mb-1 block">
+                Catatan penarikan
+              </label>
+              <input
+                type="text"
+                value={txDescription}
+                onChange={(e) => setTxDescription(e.target.value)}
+                placeholder="Alasan penarikan (misal: beli buku)"
+                className="w-full rounded-xl border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm outline-none focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100"
+              />
+            </div>
+          )}
         </div>
 
         <div className="flex gap-3 mt-5">

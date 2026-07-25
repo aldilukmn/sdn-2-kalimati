@@ -152,7 +152,7 @@ export function MonthlyPresensiView({
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         {/* Tabel: Murid Alpa Terbanyak */}
         <InsightTable
-          title="Murid Alpa Terbanyak"
+          title="Murid Absen Terbanyak"
           icon={<UserX size={16} className="text-red-500 dark:text-red-400 shrink-0" />}
           headerClass="from-red-600 to-rose-600"
           hoverClass="hover:bg-red-50/50 dark:hover:bg-red-900/20"

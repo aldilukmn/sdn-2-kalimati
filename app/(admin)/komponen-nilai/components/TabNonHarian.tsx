@@ -45,7 +45,7 @@ export default function TabNonHarian({
       <th className="text-center px-4 py-3 font-semibold whitespace-nowrap w-12">No</th>
       <th className="text-left px-4 py-3 font-semibold whitespace-nowrap">Nama</th>
       <th className="text-center px-4 py-3 font-semibold whitespace-nowrap w-40">
-        {nonHarianComponents.find((c) => c.key === selectedComponentKey)?.name || selectedComponentKey}
+        Nilai {nonHarianComponents.find((c) => c.key === selectedComponentKey)?.name || selectedComponentKey}
       </th>
       <th className="text-center px-4 py-3 font-semibold whitespace-nowrap w-28">Status</th>
     </>

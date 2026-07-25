@@ -178,7 +178,7 @@ export default function StatCard({
         )}
       </div>
       {subtitle && !loading && (
-        <p className="text-[11px] text-gray-400 dark:text-gray-500 mt-0.5">
+        <p className="text-[11px] text-center md:text-left text-gray-400 dark:text-gray-500 mt-0.5">
           {subtitle}
         </p>
       )}

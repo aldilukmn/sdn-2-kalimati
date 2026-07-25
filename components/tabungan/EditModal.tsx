@@ -58,23 +58,20 @@ export default function EditModal({
               className="w-full rounded-xl border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm outline-none focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100"
             />
           </div>
-          <div>
-            <label className="text-xs text-gray-500 mb-1 block">
-              Catatan{" "}
-              {transaction.type === "tarik" ? (
-                <span className="text-rose-500">*</span>
-              ) : (
-                "(opsional)"
-              )}
-            </label>
-            <input
-              type="text"
-              value={editDescription}
-              onChange={(e) => setEditDescription(e.target.value)}
-              placeholder={transaction.type === "tarik" ? "Alasan penarikan (wajib)" : "Misal: Beli buku"}
-              className="w-full rounded-xl border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm outline-none focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100"
-            />
-          </div>
+          {transaction.type === "tarik" && (
+            <div>
+              <label className="text-xs text-gray-500 mb-1 block">
+                Catatan penarikan <span className="text-rose-500">*</span>
+              </label>
+              <input
+                type="text"
+                value={editDescription}
+                onChange={(e) => setEditDescription(e.target.value)}
+                placeholder="Alasan penarikan (wajib)"
+                className="w-full rounded-xl border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm outline-none focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100"
+              />
+            </div>
+          )}
         </div>
 
         <div className="flex gap-3 mt-5">
