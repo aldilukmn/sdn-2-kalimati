@@ -40,7 +40,7 @@ export default function Modal({ open, onClose, title, children, className = "" }
       aria-label={title}
     >
       <div
-        className={`bg-white dark:bg-gray-900 rounded-2xl shadow-xl w-full border border-white/20 dark:border-gray-700/50 p-5 ${className}`}
+        className={`bg-white dark:bg-gray-900 rounded-2xl shadow-xl w-full shrink-0 border border-white/20 dark:border-gray-700/50 p-5 ${className}`}
         onClick={(e) => e.stopPropagation()}
       >
         {title !== undefined && (
