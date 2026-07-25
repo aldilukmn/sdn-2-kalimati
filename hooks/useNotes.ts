@@ -25,9 +25,6 @@ export function useNotes(userGrade: string | null) {
         const res = await GradeSubjectService.getAll({ grade: userGrade });
         const subjects = res.result || [];
         setGradeSubjects(subjects);
-        if (subjects.length > 0 && !selectedGradeSubject) {
-          setSelectedGradeSubject(subjects[0]._id);
-        }
       } catch (e: unknown) {
         if (e instanceof Error) {
           toast.error(e.message || "Gagal memuat mata pelajaran");

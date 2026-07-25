@@ -187,7 +187,19 @@ export default function CatatanPage() {
           Daftar Catatan
         </h3>
         
-        {loading ? (
+        {!selectedGradeSubject ? (
+          <div className="bg-slate-50/50 dark:bg-slate-800/30 border border-slate-200/50 dark:border-slate-700/50 rounded-2xl p-10 flex flex-col items-center justify-center text-center">
+            <div className="w-16 h-16 bg-slate-100 dark:bg-slate-800 rounded-full flex items-center justify-center mb-4">
+              <NotebookPen size={32} className="text-slate-400 dark:text-slate-500" />
+            </div>
+            <p className="text-slate-600 dark:text-slate-400 font-medium">
+              Belum ada mata pelajaran yang dipilih
+            </p>
+            <p className="text-sm text-slate-500 dark:text-slate-500 mt-1 max-w-sm">
+              Pilih mata pelajaran terlebih dahulu untuk melihat atau membuat catatan mengajar.
+            </p>
+          </div>
+        ) : loading ? (
           <div className="flex justify-center py-12">
             <Loader2 className="w-8 h-8 text-indigo-500 animate-spin" />
           </div>
