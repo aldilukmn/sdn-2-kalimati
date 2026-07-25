@@ -126,26 +126,28 @@ export default function ScoreTable({
     <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 md:border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5 overflow-hidden flex flex-col gap-4">
       {title && (
         <div className="flex flex-col gap-2 mb-1">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-            <h2 className="font-semibold text-slate-700 dark:text-slate-200">
-              Input Nilai: {title}
-            </h2>
-            <span className="text-xs font-semibold px-2.5 py-1 rounded-md bg-indigo-50 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800 w-fit">
-              {filledCount}/{entries.length} murid ({entries.length > 0 ? Math.round((filledCount / entries.length) * 100) : 0}%)
-            </span>
-          </div>
+          <h2 className="font-semibold text-slate-700 dark:text-slate-200">
+            Input Nilai: {title}
+          </h2>
           
-          <div className="w-full h-2.5 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
-            <div
-              className={`h-full rounded-full transition-all duration-500 ${
-                isComplete
-                  ? "bg-emerald-500"
-                  : filledCount > 0
-                  ? "bg-amber-500"
-                  : "bg-slate-300 dark:bg-slate-600"
-              }`}
-              style={{ width: `${entries.length > 0 ? (filledCount / entries.length) * 100 : 0}%` }}
-            />
+          <div className="flex items-center gap-3 w-full">
+            <div className="w-2/3 h-2.5 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden shrink-0">
+              <div
+                className={`h-full rounded-full transition-all duration-500 ${
+                  isComplete
+                    ? "bg-emerald-500"
+                    : filledCount > 0
+                    ? "bg-amber-500"
+                    : "bg-slate-300 dark:bg-slate-600"
+                }`}
+                style={{ width: `${entries.length > 0 ? (filledCount / entries.length) * 100 : 0}%` }}
+              />
+            </div>
+            <div className="w-1/3 flex justify-end">
+              <span className="text-xs font-semibold px-2.5 py-1 rounded-md bg-indigo-50 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800 text-right whitespace-nowrap">
+                {filledCount}/{entries.length} murid ({entries.length > 0 ? Math.round((filledCount / entries.length) * 100) : 0}%)
+              </span>
+            </div>
           </div>
         </div>
       )}

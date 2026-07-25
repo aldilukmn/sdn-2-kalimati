@@ -117,6 +117,11 @@ export default function NilaiLitnumPage() {
     }
   };
 
+  const activeInputtedCount = useMemo(() => {
+    if (!selectedTaskId) return 0;
+    return Object.values(scoreInputs).filter((val) => val !== undefined && val.trim() !== "").length;
+  }, [selectedTaskId, scoreInputs]);
+
   return (
     <div className="flex flex-col gap-6 p-4 md:p-6">
       <PageHero
@@ -178,12 +183,13 @@ export default function NilaiLitnumPage() {
             {tasks.length === 0 ? (
               <EmptyState
                 icon={ClipboardList}
-                title="Belum ada penilaian"
-                description="Klik Tambah Penilaian untuk membuat sub-penilaian LitNum"
+                title="Belum ada data"
+                description="Klik Tambah Penilaian untuk membuat data baru"
               />
             ) : (
-              paginatedTasks.map((t, index) => {
+              paginatedTasks.map((t: any, index: number) => {
                 const isActive = selectedTaskId === t._id;
+                const currentInputted = isActive ? activeInputtedCount : (t.inputtedCount ?? 0);
                 return (
                   <button
                     key={t._id}
@@ -222,20 +228,20 @@ export default function NilaiLitnumPage() {
                           <div className="w-24 sm:w-28 h-2 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden shrink-0">
                             <div
                               className={`h-full rounded-full transition-all duration-500 ${
-                                (t.inputtedCount ?? 0) >= students.length
+                                currentInputted >= students.length
                                   ? "bg-emerald-500"
-                                  : (t.inputtedCount ?? 0) > 0
+                                  : currentInputted > 0
                                   ? "bg-amber-500"
                                   : "bg-slate-300 dark:bg-slate-600"
                               }`}
-                              style={{ width: `${students.length > 0 ? ((t.inputtedCount ?? 0) / students.length) * 100 : 0}%` }}
+                              style={{ width: `${students.length > 0 ? (currentInputted / students.length) * 100 : 0}%` }}
                             />
                           </div>
                         )}
                         <span className="text-[11px] font-medium text-slate-500 dark:text-slate-400 whitespace-nowrap">
-                          {t.inputtedCount ?? 0}/{students.length}
+                          {currentInputted}/{students.length}
                         </span>
-                        {(t.inputtedCount ?? 0) >= students.length && students.length > 0 && (
+                        {currentInputted >= students.length && students.length > 0 && (
                           <span className="inline-flex items-center p-0.5 rounded-full text-emerald-700 bg-emerald-100 dark:bg-emerald-900/40 dark:text-emerald-300" title="Semua nilai tersimpan">
                             <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                               <circle cx="12" cy="12" r="10" />
@@ -246,7 +252,7 @@ export default function NilaiLitnumPage() {
                       </div>
                       {/* Mobile: icon indicator */}
                       <div className="sm:hidden flex items-center">
-                        {(t.inputtedCount ?? 0) >= students.length && students.length > 0 ? (
+                        {currentInputted >= students.length && students.length > 0 ? (
                           <span 
                             title="Semua nilai tersimpan"
                             className="inline-flex items-center p-1 rounded-full text-emerald-700 bg-emerald-100 dark:bg-emerald-900/40 dark:text-emerald-300"
@@ -258,14 +264,14 @@ export default function NilaiLitnumPage() {
                           </span>
                         ) : (
                           <span 
-                            title={`${t.inputtedCount ?? 0} dari ${students.length} nilai tersimpan`}
+                            title={`${currentInputted} dari ${students.length} nilai tersimpan`}
                             className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-medium bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300"
                           >
                             <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                               <circle cx="12" cy="12" r="10" />
                               <polyline points="12 6 12 12 16 14" />
                             </svg>
-                            {t.inputtedCount ?? 0}/{students.length}
+                            {currentInputted}/{students.length}
                           </span>
                         )}
                       </div>
@@ -310,10 +316,30 @@ export default function NilaiLitnumPage() {
 
           {selectedTask && (
             <div className="bg-white/70 dark:bg-gray-800/40 border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
-              <div className="flex items-center justify-between mb-4">
+              <div className="flex flex-col gap-2 mb-4">
                 <h2 className="font-semibold text-slate-700 dark:text-slate-200">
                   Input Nilai: {selectedTask.name}
                 </h2>
+                
+                <div className="flex items-center gap-3 w-full">
+                  <div className="w-2/3 h-2.5 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden shrink-0">
+                    <div
+                      className={`h-full rounded-full transition-all duration-500 ${
+                        activeInputtedCount >= students.length && students.length > 0
+                          ? "bg-emerald-500"
+                          : activeInputtedCount > 0
+                          ? "bg-amber-500"
+                          : "bg-slate-300 dark:bg-slate-600"
+                      }`}
+                      style={{ width: `${students.length > 0 ? (activeInputtedCount / students.length) * 100 : 0}%` }}
+                    />
+                  </div>
+                  <div className="w-1/3 flex justify-end">
+                    <span className="text-xs font-semibold px-2.5 py-1 rounded-md bg-indigo-50 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800 text-right whitespace-nowrap">
+                      {activeInputtedCount}/{students.length} murid ({students.length > 0 ? Math.round((activeInputtedCount / students.length) * 100) : 0}%)
+                    </span>
+                  </div>
+                </div>
               </div>
               <div className="overflow-x-auto rounded-xl border border-gray-200 dark:border-gray-700 bg-white/80 dark:bg-gray-800/30">
                 <table className="w-full text-sm">
