@@ -1,0 +1,11 @@
+D:\Website\sdn-2-kalimati\.gemini\rules\git-workflow.md
+D:\Website\sdn-2-kalimati\AGENTS.md
+D:\Website\sdn-2-kalimati\README.md
+D:\Website\sdn-2-kalimati\docs\PAGINATION_DOCS.md
+D:\Website\sdn-2-kalimati\docs\SPRINT_PLAN.md
+D:\Website\sdn-2-kalimati\docs\UI_FLOW.md
+D:\Website\sdn-2-kalimati\docs\fe-refactor-plan.md
+D:\Website\sdn-2-kalimati\docs\git\commit-rules.md
+D:\Website\sdn-2-kalimati\problems.md
+D:\Website\sdn-2-kalimati\public\cop-sekolah.png
+D:\Website\sdn-2-kalimati\public\logo-2-kalimati.png
