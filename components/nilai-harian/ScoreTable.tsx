@@ -4,6 +4,7 @@ import { useCallback, useRef, type KeyboardEvent } from "react";
 import type { ScoreEntry } from "@/types/nilai-harian";
 import Pagination from "@/components/common/Pagination";
 import { ITEMS_PER_PAGE } from "@/lib/constants";
+import { ClipboardEdit } from "lucide-react";
 
 interface Props {
   entries: ScoreEntry[];
@@ -18,6 +19,7 @@ interface Props {
   onPageChange: (page: number) => void;
   saveButton?: React.ReactNode;
   title?: string;
+  isWaitingForSelection?: boolean;
 }
 
 export default function ScoreTable({
@@ -33,6 +35,7 @@ export default function ScoreTable({
   onPageChange,
   saveButton,
   title,
+  isWaitingForSelection,
 }: Props) {
   const scoreRefs = useRef<Map<string, { score: HTMLInputElement | null; max: HTMLInputElement | null }>>(new Map());
 
@@ -81,6 +84,24 @@ export default function ScoreTable({
     scoreRefs.current.set(studentId, refs);
   };
 
+
+
+  if (isWaitingForSelection) {
+    return (
+      <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 md:border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5 overflow-hidden flex flex-col gap-4 mt-2">
+        <div className="py-12 flex flex-col items-center justify-center text-center">
+          <div className="w-16 h-16 bg-slate-100 dark:bg-slate-800 rounded-full flex items-center justify-center mb-4 text-slate-400 dark:text-slate-500">
+            <ClipboardEdit size={32} />
+          </div>
+          <h3 className="text-lg font-semibold text-slate-700 dark:text-slate-200 mb-2">Pilih Bab atau Materi</h3>
+          <p className="text-sm text-slate-500 dark:text-slate-400 max-w-md mx-auto">
+            Silakan klik salah satu Bab atau Materi di atas untuk mulai melihat tabel dan menginput nilai murid.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   if (!loading && paginatedEntries.length === 0 && entries.length === 0) {
     return (
       <div className="bg-white/70 dark:bg-gray-800/40 md: border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl">
@@ -126,12 +147,32 @@ export default function ScoreTable({
     <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 md:border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5 overflow-hidden flex flex-col gap-4">
       {title && (
         <div className="flex flex-col gap-2 mb-1">
-          <h2 className="font-semibold text-slate-700 dark:text-slate-200">
-            Input Nilai: {title}
-          </h2>
+          <div className="flex items-center justify-between gap-4">
+            <h2 className="font-semibold text-slate-700 dark:text-slate-200 truncate">
+              Input Nilai: {title}
+            </h2>
+            
+            <div className="hidden sm:flex items-center gap-2 shrink-0">
+              <div className="w-28 md:w-40 h-2 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden shrink-0">
+                <div
+                  className={`h-full rounded-full transition-all duration-500 ${
+                    isComplete
+                      ? "bg-emerald-500"
+                      : filledCount > 0
+                      ? "bg-amber-500"
+                      : "bg-slate-300 dark:bg-slate-600"
+                  }`}
+                  style={{ width: `${entries.length > 0 ? (filledCount / entries.length) * 100 : 0}%` }}
+                />
+              </div>
+              <span className="text-xs font-semibold px-2.5 py-1 rounded-md bg-indigo-50 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800 whitespace-nowrap">
+                {filledCount}/{entries.length} murid ({entries.length > 0 ? Math.round((filledCount / entries.length) * 100) : 0}%)
+              </span>
+            </div>
+          </div>
           
-          <div className="flex items-center gap-3 w-full">
-            <div className="w-2/3 h-2.5 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden shrink-0">
+          <div className="flex sm:hidden items-center gap-3 w-full">
+            <div className="flex-1 h-2.5 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
               <div
                 className={`h-full rounded-full transition-all duration-500 ${
                   isComplete
@@ -143,7 +184,7 @@ export default function ScoreTable({
                 style={{ width: `${entries.length > 0 ? (filledCount / entries.length) * 100 : 0}%` }}
               />
             </div>
-            <div className="w-1/3 flex justify-end">
+            <div className="shrink-0 flex justify-end">
               <span className="text-xs font-semibold px-2.5 py-1 rounded-md bg-indigo-50 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800 text-right whitespace-nowrap">
                 {filledCount}/{entries.length} murid ({entries.length > 0 ? Math.round((filledCount / entries.length) * 100) : 0}%)
               </span>

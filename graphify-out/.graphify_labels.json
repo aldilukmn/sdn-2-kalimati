@@ -31,6 +31,7 @@
   "29": "proxy.ts",
   "30": "app/page.tsx",
   "31": "kelas-5/page.tsx",
+  "32": "clsx",
   "33": "package.json",
   "34": "AttendanceBarChart.tsx",
   "35": "StudentAttendanceTable.tsx",
@@ -80,6 +81,5 @@
   "90": "MasterStudentType",
   "92": "holiday.service.ts",
   "95": "README.md",
-  "100": "lucide-react",
   "101": "problems.md"
 }

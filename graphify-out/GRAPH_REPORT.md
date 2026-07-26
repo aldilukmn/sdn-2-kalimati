@@ -1,7 +1,7 @@
 # Graph Report - sdn-2-kalimati  (2026-07-26)
 
 ## Corpus Check
-- 274 files · ~123,762 words
+- 274 files · ~124,720 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
@@ -10,7 +10,7 @@
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `3f21b43a`
+- Built from commit: `831815ef`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -47,6 +47,7 @@
 - proxy.ts
 - app/page.tsx
 - kelas-5/page.tsx
+- clsx
 - package.json
 - AttendanceBarChart.tsx
 - StudentAttendanceTable.tsx
@@ -88,7 +89,6 @@
 - MasterStudentType
 - holiday.service.ts
 - README.md
-- lucide-react
 - problems.md
 
 ## God Nodes (most connected - your core abstractions)
@@ -208,7 +208,7 @@ Nodes (3): PaginationProps, Button(), buttonVariants
 
 ### Community 20 - "dependencies"
 Cohesion: 0.12
-Nodes (17): @base-ui/react, canvas-confetti, clsx, gsap, dependencies, @base-ui/react, canvas-confetti, clsx (+9 more)
+Nodes (17): @base-ui/react, canvas-confetti, gsap, lucide-react, dependencies, @base-ui/react, canvas-confetti, gsap (+9 more)
 
 ### Community 21 - "nilai-harian.ts"
 Cohesion: 0.05
@@ -304,7 +304,7 @@ _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `useAuth()` connect `DashboardSidebar.tsx` to `select.tsx`, `login/page.tsx`, `useRekapNilaiAkhir.ts`, `useAssessmentScore.ts`, `character-assessment.service.ts`, `IncompleteDataWidget.tsx`, `student-savings.service.ts`, `NoteCard.tsx`, `data-pendaftar/page.tsx`, `data-gtk/page.tsx`, `useAuth`, `nilai-harian.ts`, `UserService`, `MasterStudentType`, `table.tsx`?**
   _High betweenness centrality (0.147) - this node is a cross-community bridge._
-- **Why does `dependencies` connect `dependencies` to `package.json`, `react`, `react-hot-toast`, `lucide-react`, `recharts`, `shadcn`, `tailwind-merge`, `@tiptap/starter-kit`, `tw-animate-css`, `xlsx`, `kelas-5/page.tsx`, `date-fns`, `lib/api.ts`, `html-to-image`, `next`?**
+- **Why does `dependencies` connect `dependencies` to `clsx`, `package.json`, `react`, `react-hot-toast`, `recharts`, `shadcn`, `tailwind-merge`, `@tiptap/starter-kit`, `tw-animate-css`, `xlsx`, `kelas-5/page.tsx`, `date-fns`, `lib/api.ts`, `html-to-image`, `next`?**
   _High betweenness centrality (0.092) - this node is a cross-community bridge._
 - **Why does `xlsx` connect `xlsx` to `MasterStudentType`, `student-savings.service.ts`, `dependencies`?**
   _High betweenness centrality (0.090) - this node is a cross-community bridge._

@@ -1,6 +1,9 @@
-import { Trophy, AlertTriangle, ArrowRight } from "lucide-react";
+"use client";
+
+import { Trophy, AlertTriangle, ArrowRight, ChevronDown } from "lucide-react";
 import { StudentStat } from "@/services/academic-dashboard.service";
 import Link from "next/link";
+import { useState } from "react";
 
 interface StudentRankingProps {
   topRajin: StudentStat[];
@@ -9,6 +12,9 @@ interface StudentRankingProps {
 }
 
 export function StudentRanking({ topRajin, bottomPerhatian, loading }: StudentRankingProps) {
+  const [rajinExpanded, setRajinExpanded] = useState(false);
+  const [perhatianExpanded, setPerhatianExpanded] = useState(false);
+
   if (loading) {
     const skeleton = (
       <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 animate-pulse flex flex-col">
@@ -16,7 +22,7 @@ export function StudentRanking({ topRajin, bottomPerhatian, loading }: StudentRa
           <div className="w-10 h-10 rounded-lg bg-slate-200 dark:bg-slate-700 shrink-0"></div>
           <div className="h-6 w-1/2 bg-slate-200 dark:bg-slate-700 rounded"></div>
         </div>
-        <div className="space-y-4 flex-1 flex flex-col justify-center">
+        <div className="space-y-4 flex-1 flex flex-col justify-center hidden md:flex">
           {[1, 2, 3, 4, 5].map((i) => (
             <div key={i} className="flex gap-4 items-center">
               <div className="w-8 h-8 rounded-full bg-slate-200 dark:bg-slate-700 shrink-0"></div>
@@ -39,17 +45,31 @@ export function StudentRanking({ topRajin, bottomPerhatian, loading }: StudentRa
     students: StudentStat[], 
     Icon: React.ElementType, 
     colorClass: string,
-    emptyMessage: string
+    emptyMessage: string,
+    isExpanded: boolean,
+    toggleExpanded: () => void
   ) => (
-    <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden flex flex-col">
-      <div className={`p-4 border-b border-slate-100 dark:border-slate-700/50 flex items-center gap-2 ${colorClass}`}>
-        <div className="p-2 bg-white/20 rounded-lg backdrop-blur-sm">
-          <Icon className="w-5 h-5 text-white" />
+    <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden flex flex-col h-full">
+      <div 
+        onClick={toggleExpanded}
+        className={`p-3 md:p-4 flex items-center justify-between gap-2 cursor-pointer md:cursor-default ${colorClass} ${
+          isExpanded ? 'border-b border-slate-100 dark:border-slate-700/50' : 'md:border-b md:border-slate-100 md:dark:border-slate-700/50'
+        }`}
+      >
+        <div className="flex items-center gap-2">
+          <div className="p-1.5 md:p-2 bg-white/20 rounded-lg backdrop-blur-sm">
+            <Icon className="w-4 h-4 md:w-5 md:h-5 text-white" />
+          </div>
+          <h3 className="text-sm md:text-base font-bold text-white">{title}</h3>
         </div>
-        <h3 className="font-bold text-white">{title}</h3>
+        <div className="md:hidden">
+          <ChevronDown className={`w-4 h-4 md:w-5 md:h-5 text-white transition-transform ${isExpanded ? "rotate-180" : ""}`} />
+        </div>
       </div>
       
-      <div className="p-0 flex-1 flex flex-col justify-center">
+      <div className={`flex-1 grid transition-[grid-template-rows] duration-300 ease-in-out ${isExpanded ? "grid-rows-[1fr]" : "grid-rows-[0fr] md:grid-rows-[1fr]"}`}>
+        <div className="overflow-hidden min-h-0 flex flex-col h-full">
+          <div className="p-0 flex-1 flex flex-col justify-center">
         {students.length === 0 ? (
           <div className="p-8 text-center text-slate-500 dark:text-slate-400">
             {emptyMessage}
@@ -90,6 +110,8 @@ export function StudentRanking({ topRajin, bottomPerhatian, loading }: StudentRa
             ))}
           </ul>
         )}
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -101,7 +123,9 @@ export function StudentRanking({ topRajin, bottomPerhatian, loading }: StudentRa
         topRajin,
         Trophy,
         "bg-gradient-to-r from-emerald-500 to-teal-600",
-        "Belum ada data nilai yang diinput."
+        "Belum ada data nilai yang diinput.",
+        rajinExpanded,
+        () => setRajinExpanded(!rajinExpanded)
       )}
       
       {renderList(
@@ -109,7 +133,9 @@ export function StudentRanking({ topRajin, bottomPerhatian, loading }: StudentRa
         bottomPerhatian,
         AlertTriangle,
         "bg-gradient-to-r from-rose-500 to-orange-600",
-        "Belum ada data nilai yang diinput."
+        "Belum ada data nilai yang diinput.",
+        perhatianExpanded,
+        () => setPerhatianExpanded(!perhatianExpanded)
       )}
     </div>
   );

@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useState, useCallback, useRef } from "react";
 import {
   BookOpen, Plus, Pencil, Trash2, ChevronDown, ChevronRight,
-  GripVertical, ArrowUp, ArrowDown, AlertCircle, Settings,
+  GripVertical, ArrowUp, ArrowDown, AlertCircle, Settings, Info
 } from "lucide-react";
 import { useChapters } from "@/hooks/useChapters";
 import { GRADES } from "@/lib/constants";
@@ -309,21 +309,28 @@ export default function MasterStrukturPage() {
                       <div className="cursor-grab active:cursor-grabbing text-slate-400 hover:text-slate-600 dark:hover:text-slate-300">
                         <GripVertical size={18} />
                       </div>
-                      <button
-                        onClick={() => {
-                          toggleExpandChapter(chapter._id);
-                        }}
-                        className="p-0.5 rounded text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 cursor-pointer"
+                      <div 
+                        onClick={() => toggleExpandChapter(chapter._id)}
+                        className="flex-1 flex items-center gap-2 cursor-pointer group min-w-0"
                       >
-                        {expandedChapter === chapter._id ? (
-                          <ChevronDown size={16} />
-                        ) : (
-                          <ChevronRight size={16} />
+                        <button className="p-0.5 shrink-0 rounded text-slate-400 group-hover:text-slate-600 dark:group-hover:text-slate-300 transition-colors">
+                          <ChevronRight size={16} className={`transition-transform duration-300 ${expandedChapter === chapter._id ? 'rotate-90' : ''}`} />
+                        </button>
+                        <span className="text-sm font-medium text-slate-800 dark:text-slate-200 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors truncate">
+                          {chapter.name}
+                        </span>
+                        {chapter.name.length > 25 && (
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              toast(chapter.name, { icon: "ℹ️", duration: 4000 });
+                            }}
+                            className="md:hidden shrink-0 text-amber-500 hover:text-amber-600 cursor-pointer"
+                          >
+                            <Info size={16} />
+                          </button>
                         )}
-                      </button>
-                      <span className="flex-1 text-sm font-medium text-slate-800 dark:text-slate-200">
-                        {chapter.name}
-                      </span>
+                      </div>
                       <span
                         className={`text-[11px] font-semibold px-2 py-0.5 rounded-full ${
                           chapter.inputMode === "per_material"
@@ -360,8 +367,9 @@ export default function MasterStrukturPage() {
                     </div>
 
                     {/* Expanded: Materials */}
-                    {expandedChapter === chapter._id && (
-                      <div className="border-t border-slate-100 dark:border-slate-700/50 px-4 py-3 pl-14 bg-slate-50/50 dark:bg-gray-900/30 space-y-2">
+                    <div className={`grid transition-[grid-template-rows] duration-300 ease-in-out ${expandedChapter === chapter._id ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}`}>
+                      <div className="overflow-hidden min-h-0">
+                        <div className="border-t border-slate-100 dark:border-slate-700/50 px-4 py-3 pl-14 bg-slate-50/50 dark:bg-gray-900/30 space-y-2">
                         {chapter.inputMode === "per_material" ? (
                           <>
                             {materials === undefined ? (
@@ -384,9 +392,25 @@ export default function MasterStrukturPage() {
                                     key={mat._id}
                                     className="flex items-center gap-2 py-1.5 px-3 rounded-lg bg-white dark:bg-gray-800/60 border border-slate-100 dark:border-slate-700/50"
                                   >
-                                    <span className="flex-1 text-sm text-slate-700 dark:text-slate-300">
-                                      {mat.name}
-                                    </span>
+                                    <div className="w-6 h-6 flex shrink-0 items-center justify-center rounded-full bg-indigo-50 text-indigo-600 dark:bg-indigo-900/30 dark:text-indigo-400 text-xs font-bold border border-indigo-100 dark:border-indigo-800/50">
+                                      {midx + 1}
+                                    </div>
+                                    <div className="flex-1 flex items-center gap-1 min-w-0">
+                                      <span className="text-sm font-medium text-slate-700 dark:text-slate-300 truncate">
+                                        {mat.name}
+                                      </span>
+                                      {mat.name.length > 25 && (
+                                        <button
+                                          onClick={(e) => {
+                                            e.stopPropagation();
+                                            toast(mat.name, { icon: "ℹ️", duration: 4000 });
+                                          }}
+                                          className="md:hidden shrink-0 text-amber-500 hover:text-amber-600 cursor-pointer"
+                                        >
+                                          <Info size={14} />
+                                        </button>
+                                      )}
+                                    </div>
                                     <div className="flex items-center gap-0.5">
                                       <button
                                         onClick={() =>
@@ -463,8 +487,9 @@ export default function MasterStrukturPage() {
                           </p>
                         )}
                       </div>
-                    )}
+                    </div>
                   </div>
+                </div>
                 );
               })}
             </div>

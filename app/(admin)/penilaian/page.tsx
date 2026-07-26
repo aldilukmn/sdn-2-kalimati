@@ -10,7 +10,9 @@ import {
   Save,
   FileText,
   ClipboardList,
+  Info,
 } from "lucide-react";
+import toast from "react-hot-toast";
 import PageHero from "@/components/layout/PageHero";
 import FilterBar from "@/components/shared/FilterBar";
 import LoadingSkeleton from "@/components/shared/LoadingSkeleton";
@@ -186,26 +188,27 @@ export default function PenilaianPage() {
               subjectName: s.subjectName,
             }))}
             subjectPlaceholder="Pilih Mapel"
-          />
-        </div>
-        <div className="flex w-full justify-start md:justify-end">
-          <div className="w-full sm:w-56">
-            <Select value={category} onValueChange={(v) => v && setCategory(v)}>
-              <SelectTrigger className="w-full h-auto rounded-xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100 shadow-sm">
-                <SelectValue placeholder="Pilih Kategori">
-                  {category === "tugas" ? "Nilai Tugas" : category === "keaktifan" ? "Nilai Keaktifan" : "Nilai Partisipasi"}
-                </SelectValue>
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  <SelectLabel>Kategori Penilaian</SelectLabel>
-                  <SelectItem value="tugas">Nilai Tugas</SelectItem>
-                  <SelectItem value="keaktifan">Nilai Keaktifan</SelectItem>
-                  <SelectItem value="partisipasi">Nilai Partisipasi</SelectItem>
-                </SelectGroup>
-              </SelectContent>
-            </Select>
-          </div>
+            gridClassName="grid-cols-2 md:grid-cols-3 lg:grid-cols-5"
+          >
+            <div className="col-span-2 md:col-span-1">
+              <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 tracking-wider mb-2">Kategori</label>
+              <Select value={category} onValueChange={(v) => v && setCategory(v)}>
+                <SelectTrigger className="w-full h-auto rounded-xl border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100">
+                  <SelectValue placeholder="Pilih Kategori">
+                    {category === "tugas" ? "Nilai Tugas" : category === "keaktifan" ? "Nilai Keaktifan" : "Nilai Partisipasi"}
+                  </SelectValue>
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectLabel>Kategori Penilaian</SelectLabel>
+                    <SelectItem value="tugas">Nilai Tugas</SelectItem>
+                    <SelectItem value="keaktifan">Nilai Keaktifan</SelectItem>
+                    <SelectItem value="partisipasi">Nilai Partisipasi</SelectItem>
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            </div>
+          </FilterBar>
         </div>
       </div>
 
@@ -263,35 +266,46 @@ export default function PenilaianPage() {
                     }`}
                   >
                     <div className="flex items-center gap-3 flex-1 min-w-0">
-                      <span className="text-lg shrink-0">
-                        {isActive ? "📘" : "📕"}
-                      </span>
-                      <span
-                        className={`text-sm font-medium truncate ${isActive ? "text-indigo-700 dark:text-indigo-300" : "text-slate-700 dark:text-slate-300"}`}
-                        title={t.name}
-                      >
-                        {index + 1}. {t.name}
-                      </span>
-                      {t.createdAt && (
-                        <span className="text-xs font-normal opacity-70 shrink-0">
-                          (
-                          {new Date(t.createdAt).toLocaleDateString("id-ID", {
-                            day: "numeric",
-                            month: "short",
-                            year: "numeric",
-                          })}
-                          )
+                      <div className="w-6 h-6 flex shrink-0 items-center justify-center rounded-full bg-indigo-50 text-indigo-600 dark:bg-indigo-900/30 dark:text-indigo-400 text-xs font-bold border border-indigo-100 dark:border-indigo-800/50">
+                        {index + 1}
+                      </div>
+                      <div className="flex-1 flex items-center gap-1 min-w-0">
+                        <span
+                          className={`text-sm font-medium truncate ${isActive ? "text-indigo-700 dark:text-indigo-300" : "text-slate-700 dark:text-slate-300"}`}
+                          title={t.name}
+                        >
+                          {t.name}
                         </span>
-                      )}
+                        {!isActive && t.name.length > 25 && (
+                          <div
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              toast(t.name, { icon: "ℹ️", duration: 4000 });
+                            }}
+                            className="md:hidden shrink-0 text-amber-500 hover:text-amber-600 cursor-pointer p-1"
+                          >
+                            <Info size={14} />
+                          </div>
+                        )}
+                        {t.createdAt && (
+                          <span className="hidden sm:inline-block text-[11px] font-normal opacity-70 shrink-0 ml-1">
+                            ({new Date(t.createdAt).toLocaleDateString("id-ID", {
+                              day: "numeric",
+                              month: "short",
+                              year: "numeric",
+                            })})
+                          </span>
+                        )}
+                      </div>
                     </div>
                     <div className="flex items-center gap-3 sm:gap-4">
-                      {/* Desktop: progress bar */}
-                      <div className="hidden sm:flex items-center gap-2 flex-1 sm:flex-none">
-                        {students.length > 0 && (
-                          <div className="w-24 sm:w-28 h-2 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden shrink-0">
+                      {/* Desktop: bar indicator */}
+                      {selectedTaskId !== t._id && (
+                        <div className="hidden sm:flex flex-1 items-center gap-2 shrink-0 ml-2">
+                          <div className="w-16 md:w-24 h-1.5 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden shrink-0">
                             <div
                               className={`h-full rounded-full transition-all duration-500 ${
-                                currentInputted >= students.length
+                                currentInputted >= students.length && students.length > 0
                                   ? "bg-emerald-500"
                                   : currentInputted > 0
                                   ? "bg-amber-500"
@@ -300,37 +314,23 @@ export default function PenilaianPage() {
                               style={{ width: `${students.length > 0 ? (currentInputted / students.length) * 100 : 0}%` }}
                             />
                           </div>
-                        )}
-                        <span className="text-[11px] font-medium text-slate-500 dark:text-slate-400 whitespace-nowrap">
-                          {currentInputted}/{students.length}
-                        </span>
-                        {currentInputted >= students.length && students.length > 0 && (
-                          <span className="inline-flex items-center p-0.5 rounded-full text-emerald-700 bg-emerald-100 dark:bg-emerald-900/40 dark:text-emerald-300" title="Semua nilai tersimpan">
-                            <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                              <circle cx="12" cy="12" r="10" />
-                              <path d="m9 12 2 2 4-4" />
-                            </svg>
+                          <span className="text-[10px] font-medium text-slate-500 dark:text-slate-400 whitespace-nowrap text-right">
+                            {currentInputted}/{students.length} murid ({students.length > 0 ? Math.round((currentInputted / students.length) * 100) : 0}%)
                           </span>
-                        )}
-                      </div>
+                        </div>
+                      )}
                       {/* Mobile: icon indicator */}
-                      <div className="sm:hidden flex items-center">
-                        {currentInputted >= students.length && students.length > 0 ? (
-                          <span 
-                            title="Semua nilai tersimpan"
-                            className="inline-flex items-center p-1 rounded-full text-emerald-700 bg-emerald-100 dark:bg-emerald-900/40 dark:text-emerald-300"
-                          >
-                            <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                              <circle cx="12" cy="12" r="10" />
-                              <path d="m9 12 2 2 4-4" />
-                            </svg>
+                      {selectedTaskId !== t._id && (
+                        <div className="sm:hidden flex items-center shrink-0 ml-1">
+                          <span className={`inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded text-[9px] font-medium whitespace-nowrap ${
+                            currentInputted >= students.length && students.length > 0
+                              ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300"
+                              : "bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300"
+                          }`}>
+                            {currentInputted}/{students.length} murid ({students.length > 0 ? Math.round((currentInputted / students.length) * 100) : 0}%)
                           </span>
-                        ) : (
-                          <span className="text-xs font-semibold text-slate-500 dark:text-slate-400">
-                            {currentInputted}/{students.length}
-                          </span>
-                        )}
-                      </div>
+                        </div>
+                      )}
                       <div
                         onClick={(e) => {
                           e.stopPropagation();
@@ -362,14 +362,34 @@ export default function PenilaianPage() {
           </div>
 
           {selectedTask && (
-            <div className="bg-white/70 dark:bg-gray-800/40 border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
-              <div className="flex flex-col gap-2 mb-4">
-                <h2 className="font-semibold text-slate-700 dark:text-slate-200">
-                  Input Nilai: {selectedTask.name}
-                </h2>
+            <div className="bg-white/70 dark:bg-gray-800/40 border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5 overflow-hidden flex flex-col gap-4">
+              <div className="flex flex-col gap-2 mb-1">
+                <div className="flex items-center justify-between gap-4">
+                  <h2 className="font-semibold text-slate-700 dark:text-slate-200 truncate">
+                    Input Nilai: {selectedTask.name}
+                  </h2>
+                  
+                  <div className="hidden sm:flex items-center gap-2 shrink-0">
+                    <div className="w-28 md:w-40 h-2 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden shrink-0">
+                      <div
+                        className={`h-full rounded-full transition-all duration-500 ${
+                          activeInputtedCount >= students.length && students.length > 0
+                            ? "bg-emerald-500"
+                            : activeInputtedCount > 0
+                            ? "bg-amber-500"
+                            : "bg-slate-300 dark:bg-slate-600"
+                        }`}
+                        style={{ width: `${students.length > 0 ? (activeInputtedCount / students.length) * 100 : 0}%` }}
+                      />
+                    </div>
+                    <span className="text-xs font-semibold px-2.5 py-1 rounded-md bg-indigo-50 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800 whitespace-nowrap">
+                      {activeInputtedCount}/{students.length} murid ({students.length > 0 ? Math.round((activeInputtedCount / students.length) * 100) : 0}%)
+                    </span>
+                  </div>
+                </div>
                 
-                <div className="flex items-center gap-3 w-full">
-                  <div className="w-2/3 h-2.5 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden shrink-0">
+                <div className="flex sm:hidden items-center gap-3 w-full">
+                  <div className="flex-1 h-2.5 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
                     <div
                       className={`h-full rounded-full transition-all duration-500 ${
                         activeInputtedCount >= students.length && students.length > 0
@@ -381,7 +401,7 @@ export default function PenilaianPage() {
                       style={{ width: `${students.length > 0 ? (activeInputtedCount / students.length) * 100 : 0}%` }}
                     />
                   </div>
-                  <div className="w-1/3 flex justify-end">
+                  <div className="shrink-0 flex justify-end">
                     <span className="text-xs font-semibold px-2.5 py-1 rounded-md bg-indigo-50 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800 text-right whitespace-nowrap">
                       {activeInputtedCount}/{students.length} murid ({students.length > 0 ? Math.round((activeInputtedCount / students.length) * 100) : 0}%)
                     </span>

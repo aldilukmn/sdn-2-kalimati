@@ -1,5 +1,8 @@
+"use client";
+
 import { ComponentStat } from "@/services/academic-dashboard.service";
-import { BarChart2 } from "lucide-react";
+import { BarChart2, ChevronDown } from "lucide-react";
+import { useState } from "react";
 
 interface ComponentBreakdownProps {
   components:
@@ -18,6 +21,8 @@ export function ComponentBreakdown({
   components,
   loading,
 }: ComponentBreakdownProps) {
+  const [isExpanded, setIsExpanded] = useState(false);
+
   if (loading) {
     return (
       <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 animate-pulse flex flex-col h-full">
@@ -25,7 +30,7 @@ export function ComponentBreakdown({
           <div className="w-10 h-10 rounded-lg bg-slate-200 dark:bg-slate-700 shrink-0"></div>
           <div className="h-6 w-1/2 bg-slate-200 dark:bg-slate-700 rounded"></div>
         </div>
-        <div className="space-y-4 flex-1 flex flex-col justify-center">
+        <div className="space-y-4 flex-1 flex flex-col justify-center hidden md:flex">
           {[1, 2, 3, 4, 5].map((i) => (
             <div
               key={i}
@@ -72,14 +77,26 @@ export function ComponentBreakdown({
 
   return (
     <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden flex flex-col h-full">
-      <div className="p-4 border-b border-slate-100 dark:border-slate-700/50 flex items-center gap-2 bg-indigo-500">
-        <div className="p-2 bg-white/20 rounded-lg backdrop-blur-sm">
-          <BarChart2 className="w-5 h-5 text-white" />
+      <div 
+        onClick={() => setIsExpanded(!isExpanded)}
+        className={`p-3 md:p-4 flex items-center justify-between gap-2 bg-indigo-500 cursor-pointer md:cursor-default ${
+          isExpanded ? 'border-b border-slate-100 dark:border-slate-700/50' : 'md:border-b md:border-slate-100 md:dark:border-slate-700/50'
+        }`}
+      >
+        <div className="flex items-center gap-2">
+          <div className="p-1.5 md:p-2 bg-white/20 rounded-lg backdrop-blur-sm">
+            <BarChart2 className="w-4 h-4 md:w-5 md:h-5 text-white" />
+          </div>
+          <h3 className="text-sm md:text-base font-bold text-white">Breakdown per Komponen</h3>
         </div>
-        <h3 className="font-bold text-white">Breakdown per Komponen</h3>
+        <div className="md:hidden">
+          <ChevronDown className={`w-4 h-4 md:w-5 md:h-5 text-white transition-transform ${isExpanded ? "rotate-180" : ""}`} />
+        </div>
       </div>
 
-      <div className="p-6 space-y-6 flex-1">
+      <div className={`flex-1 grid transition-[grid-template-rows] duration-300 ease-in-out ${isExpanded ? "grid-rows-[1fr]" : "grid-rows-[0fr] md:grid-rows-[1fr]"}`}>
+        <div className="overflow-hidden min-h-0 flex flex-col h-full">
+          <div className="p-6 space-y-6 flex-1 flex flex-col justify-center">
         {items.map((item) => {
           const rateRaw =
             item.data && item.data.possible > 0
@@ -119,6 +136,8 @@ export function ComponentBreakdown({
             </div>
           );
         })}
+          </div>
+        </div>
       </div>
     </div>
   );

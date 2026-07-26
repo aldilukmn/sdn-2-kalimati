@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import { useSearchParams } from "next/navigation";
-import { ClipboardEdit, Save, ClipboardList } from "lucide-react";
+import { ClipboardEdit, Save, ClipboardList, ChevronRight, Info } from "lucide-react";
 import ErrorState from "@/components/shared/ErrorState";
 import EmptyState from "@/components/shared/EmptyState";
 import LoadingSkeleton from "@/components/shared/LoadingSkeleton";
@@ -28,11 +28,11 @@ export default function NilaiHarianPage() {
     grade, setGrade,
     userRole,
     gradeSubjects, selectedGS, setSelectedGS,
-    chapters, chapterProgress, chaptersLoading,
+    chapters, chapterProgress, materialProgress, chaptersLoading,
     selectedChapter, setSelectedChapter,
     materials, selectedMaterial, setSelectedMaterial,
     entries, paginatedEntries,
-    saving, error, retry, initialLoading, scoresLoading,
+    saving, error, retry, initialLoading, materialsLoading, scoresLoading,
     currentPage, setCurrentPage,
     totalPages, startIndex,
     handleScoreChange,
@@ -105,41 +105,70 @@ export default function NilaiHarianPage() {
                 const isActive = selectedChapter?._id === ch._id;
                 const prog = chapterProgress[ch._id];
                 return (
-                  <button
+                  <div
                     key={ch._id}
-                    onClick={() => {
-                      setSelectedChapter(ch);
-                      setSelectedMaterial("");
-                    }}
-                    className={`w-full text-left flex flex-row items-center justify-between gap-2 px-4 py-3 rounded-xl border transition-all cursor-pointer ${
+                    className={`w-full text-left flex flex-col rounded-xl border transition-all ${
                       isActive
                         ? "bg-indigo-50 dark:bg-indigo-900/30 border-indigo-300 dark:border-indigo-700 shadow-sm"
-                        : "bg-white/70 dark:bg-gray-800/40 border-white/20 dark:border-gray-700/50 hover:border-indigo-200 dark:hover:border-indigo-700"
+                        : "bg-white/90 dark:bg-gray-800/80 border-transparent shadow-sm hover:border-indigo-200 dark:hover:border-indigo-800/50 hover:shadow"
                     }`}
                   >
-                    <div className="flex items-center gap-3 flex-1 min-w-0">
-                      <span className="text-lg shrink-0">{isActive ? "📘" : "📕"}</span>
+                    <button
+                      onClick={() => {
+                        if (isActive) {
+                          setSelectedChapter(null);
+                        } else {
+                          setSelectedChapter(ch);
+                          setSelectedMaterial("");
+                        }
+                      }}
+                      className="w-full flex flex-row items-center justify-between gap-2 px-4 py-3 cursor-pointer"
+                    >
+                      <div className="flex items-center gap-3 flex-1 min-w-0">
+                        {ch.inputMode === "per_material" ? (
+                          <div className="p-0.5 shrink-0 rounded text-slate-400 transition-colors">
+                            <ChevronRight size={18} className={`transition-transform duration-300 ${isActive ? 'rotate-90' : ''}`} />
+                          </div>
+                        ) : (
+                          <span className="text-lg shrink-0">{isActive ? "📘" : "📕"}</span>
+                        )}
                       <span className={`text-sm font-medium truncate ${isActive ? "text-indigo-700 dark:text-indigo-300" : "text-slate-700 dark:text-slate-300"}`} title={ch.name}>
                         {ch.name}
                       </span>
-                      {ch.createdAt && (
-                        <span className="hidden sm:inline text-xs font-normal opacity-70 shrink-0">
-                          ({new Date(ch.createdAt).toLocaleDateString("id-ID", { day: "numeric", month: "short", year: "numeric" })})
-                        </span>
+                      {ch.name.length > 25 && (
+                        <div
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            toast(ch.name, { icon: "ℹ️", duration: 4000 });
+                          }}
+                          className="md:hidden shrink-0 text-amber-500 hover:text-amber-600 cursor-pointer p-1"
+                        >
+                          <Info size={14} />
+                        </div>
                       )}
-                      <span className={`hidden sm:inline text-[11px] font-semibold px-2 py-0.5 rounded-full shrink-0 ${
-                        ch.inputMode === "per_material"
-                          ? "bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300"
-                          : "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300"
-                      }`}>
-                        {ch.inputMode === "per_material" ? "Per Materi" : "Per Bab"}
-                      </span>
+
                     </div>
-                    <div className="flex items-center gap-3 sm:gap-4">
-                      {/* Desktop: progress bar */}
+                    <div className="flex items-center gap-2 sm:gap-4 shrink-0">
+                      {/* Date & Mode Badge */}
+                      <div className="flex items-center gap-1.5 sm:gap-2">
+                        {ch.createdAt && (
+                          <span className="text-[10px] sm:text-xs font-normal opacity-70 whitespace-nowrap">
+                            ({new Date(ch.createdAt).toLocaleDateString("id-ID", { day: "numeric", month: "short", year: "numeric" })})
+                          </span>
+                        )}
+                        <span className={`text-[9px] sm:text-[11px] font-semibold px-1.5 sm:px-2 py-0.5 rounded-full whitespace-nowrap ${
+                          ch.inputMode === "per_material"
+                            ? "bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300"
+                            : "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300"
+                        }`}>
+                          {ch.inputMode === "per_material" ? "Per Materi" : "Per Bab"}
+                        </span>
+                      </div>
+                      
+                      {/* Desktop: bar indicator */}
                       {prog && ch.inputMode === "per_chapter" && (
-                        <div className="hidden sm:flex items-center gap-2 flex-1 sm:flex-none">
-                          <div className="w-24 sm:w-28 h-2 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden shrink-0">
+                        <div className="hidden sm:flex flex-1 items-center gap-2">
+                          <div className="w-28 md:w-40 h-2 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden shrink-0">
                             <div
                               className={`h-full rounded-full transition-all duration-500 ${
                                 prog.percentage === 100
@@ -191,88 +220,146 @@ export default function NilaiHarianPage() {
                           )}
                         </div>
                       )}
-                      {isActive && (
+                      {isActive && ch.inputMode === "per_chapter" && (
                         <span className="text-[11px] text-indigo-500 dark:text-indigo-400 font-medium shrink-0">(Sedang aktif)</span>
                       )}
                     </div>
-                  </button>
+                    </button>
+                    <div
+                      className="grid transition-all duration-300 ease-in-out"
+                      style={{ gridTemplateRows: isActive && ch.inputMode === "per_material" ? "1fr" : "0fr" }}
+                    >
+                      <div className="overflow-hidden min-h-0">
+                        <div className="bg-white/60 dark:bg-gray-800/60 border-t border-indigo-100 dark:border-indigo-800/30 p-2 sm:p-3 flex flex-col gap-1 rounded-b-xl">
+                          {isActive && materialsLoading ? (
+                            <div className="space-y-1.5 p-1">
+                              {Array.from({ length: 3 }).map((_, i) => (
+                                <div key={i} className="h-11 w-full bg-slate-200 dark:bg-slate-700/50 rounded-lg animate-pulse" />
+                              ))}
+                            </div>
+                          ) : materials.length === 0 && isActive ? (
+                            <div className="text-center py-6">
+                              <p className="text-slate-500 dark:text-slate-400 font-medium text-sm">Bab ini belum memiliki Materi.</p>
+                              <p className="text-slate-400 dark:text-slate-500 text-xs mt-1">Silakan pilih bab lain atau hubungi Admin.</p>
+                            </div>
+                          ) : (
+                            materials.map((mat, idx) => {
+                              const mProg = materialProgress[mat._id];
+                              return (
+                                <button
+                                  key={mat._id}
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    setSelectedMaterial(mat._id);
+                                  }}
+                                  className={`flex items-center gap-2 p-2.5 rounded-lg text-left transition-colors cursor-pointer ${
+                                    selectedMaterial === mat._id
+                                      ? "bg-indigo-100 text-indigo-700 dark:bg-indigo-900/50 dark:text-indigo-300"
+                                      : "hover:bg-slate-100 dark:hover:bg-gray-750 text-slate-600 dark:text-slate-300"
+                                  }`}
+                                >
+                                  <div className="w-6 h-6 flex shrink-0 items-center justify-center rounded-full bg-indigo-50 text-indigo-600 dark:bg-indigo-900/30 dark:text-indigo-400 text-xs font-bold border border-indigo-100 dark:border-indigo-800/50">
+                                    {idx + 1}
+                                  </div>
+                                  <div className="flex-1 flex items-center gap-1 min-w-0">
+                                    <span className="text-sm font-medium truncate">
+                                      {mat.name}
+                                    </span>
+                                    {selectedMaterial !== mat._id && mat.name.length > 25 && (
+                                      <div
+                                        onClick={(e) => {
+                                          e.stopPropagation();
+                                          toast(mat.name, { icon: "ℹ️", duration: 4000 });
+                                        }}
+                                        className="md:hidden shrink-0 text-amber-500 hover:text-amber-600 cursor-pointer p-1"
+                                      >
+                                        <Info size={14} />
+                                      </div>
+                                    )}
+                                  </div>
+                                  
+                                  {mProg && selectedMaterial !== mat._id && (
+                                    <div className="hidden sm:flex items-center gap-2 shrink-0 ml-2">
+                                      <div className="w-16 md:w-24 h-1.5 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden shrink-0">
+                                        <div
+                                          className={`h-full rounded-full transition-all duration-500 ${
+                                            mProg.percentage === 100
+                                              ? "bg-emerald-500"
+                                              : mProg.percentage > 0
+                                              ? "bg-amber-500"
+                                              : "bg-slate-300 dark:bg-slate-600"
+                                          }`}
+                                          style={{ width: `${mProg.percentage}%` }}
+                                        />
+                                      </div>
+                                      <span className="text-[10px] font-medium text-slate-500 dark:text-slate-400 whitespace-nowrap text-right">
+                                        {mProg.gradedStudents}/{mProg.totalStudents} murid ({mProg.percentage}%)
+                                      </span>
+                                    </div>
+                                  )}
+                                  {mProg && selectedMaterial !== mat._id && (
+                                    <div className="sm:hidden flex items-center shrink-0 ml-1">
+                                      <span className={`inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded text-[9px] font-medium whitespace-nowrap ${
+                                        mProg.percentage === 100
+                                          ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300"
+                                          : "bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300"
+                                      }`}>
+                                        {mProg.gradedStudents}/{mProg.totalStudents} murid ({mProg.percentage}%)
+                                      </span>
+                                    </div>
+                                  )}
+
+                                  {selectedMaterial === mat._id && (
+                                    <span className="text-[10px] font-semibold text-indigo-500 dark:text-indigo-400 shrink-0 uppercase tracking-wider ml-2 hidden md:inline">Dipilih</span>
+                                  )}
+                                </button>
+                              );
+                            })
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 );
               })
             )}
           </div>
 
-          {selectedChapter && !chaptersLoading && (
-            <>
-              {/* Material tabs */}
-              {selectedChapter.inputMode === "per_material" && materials.length > 0 && (
-                <div className="animate-in fade-in-50 duration-300 mt-3">
-                  <Select
-                    value={selectedMaterial || ""}
-                    onValueChange={(v) => v && setSelectedMaterial(v)}
+          {!chaptersLoading && sortedChapters.length > 0 && (
+            <div className="animate-in fade-in-50 duration-300 mt-2">
+              <ScoreTable
+                isWaitingForSelection={!(selectedChapter && (selectedChapter.inputMode === "per_chapter" || (selectedChapter.inputMode === "per_material" && selectedMaterial && materials.length > 0)))}
+                title={selectedChapter 
+                  ? (selectedChapter.inputMode === "per_material" 
+                    ? materials.find(m => m._id === selectedMaterial)?.name || "Sub Materi"
+                    : selectedChapter.name)
+                  : ""}
+                entries={entries}
+                paginatedEntries={paginatedEntries}
+                startIndex={startIndex}
+                currentPage={currentPage}
+                totalPages={totalPages}
+                saving={saving}
+                loading={scoresLoading}
+                onScoreChange={handleScoreChange}
+                onMaxScoreChange={handleMaxScoreChange}
+                onPageChange={setCurrentPage}
+                saveButton={
+                  <button
+                    onClick={handleBulkSave}
+                    disabled={saving || scoresLoading}
+                    className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-xl text-sm font-medium transition-colors cursor-pointer"
                   >
-                    <SelectTrigger className="w-full sm:w-[280px] h-auto rounded-xl border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100">
-                      <span data-slot="select-value" className="flex flex-1 text-left truncate">
-                        {selectedMaterial ? materials.find((m) => m._id === selectedMaterial)?.name || "-" : "Pilih Materi"}
-                      </span>
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectGroup>
-                        <SelectLabel>Pilih Materi</SelectLabel>
-                        {materials.sort((a, b) => a.order - b.order).map((mat) => (
-                          <SelectItem key={mat._id} value={mat._id}>
-                            {mat.name}
-                          </SelectItem>
-                        ))}
-                      </SelectGroup>
-                    </SelectContent>
-                  </Select>
-                </div>
-              )}
-
-              {selectedChapter.inputMode === "per_material" && materials.length === 0 && (
-                <div className="bg-white/70 dark:bg-gray-800/40 border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
-                  <div className="text-center py-8">
-                    <p className="text-slate-500 dark:text-slate-400 font-medium">Bab ini belum memiliki Materi.</p>
-                    <p className="text-slate-400 dark:text-slate-500 text-sm mt-1">Silakan pilih bab lain atau hubungi Admin untuk menambahkan Materi.</p>
-                  </div>
-                </div>
-              )}
-
-              {/* Score table */}
-              {(selectedChapter.inputMode === "per_chapter" || (selectedChapter.inputMode === "per_material" && selectedMaterial && materials.length > 0)) && (
-                <div className="animate-in fade-in-50 duration-300 mt-2">
-                  <ScoreTable
-                    title={selectedChapter.inputMode === "per_material" 
-                      ? materials.find(m => m._id === selectedMaterial)?.name || "Sub Materi"
-                      : selectedChapter.name}
-                    entries={entries}
-                    paginatedEntries={paginatedEntries}
-                    startIndex={startIndex}
-                    currentPage={currentPage}
-                    totalPages={totalPages}
-                    saving={saving}
-                    loading={scoresLoading}
-                    onScoreChange={handleScoreChange}
-                    onMaxScoreChange={handleMaxScoreChange}
-                    onPageChange={setCurrentPage}
-                    saveButton={
-                      <button
-                        onClick={handleBulkSave}
-                        disabled={saving || scoresLoading}
-                        className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-xl text-sm font-medium transition-colors cursor-pointer"
-                      >
-                        {saving ? (
-                          <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                        ) : (
-                          <Save size={16} />
-                        )}
-                        {saving ? "Menyimpan..." : "Simpan Semua"}
-                      </button>
-                    }
-                  />
-                </div>
-              )}
-            </>
+                    {saving ? (
+                      <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                    ) : (
+                      <Save size={16} />
+                    )}
+                    {saving ? "Menyimpan..." : "Simpan Semua"}
+                  </button>
+                }
+              />
+            </div>
           )}
         </>
       )}

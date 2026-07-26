@@ -24,6 +24,7 @@ export function useNilaiHarian() {
   const [selectedGS, setSelectedGS] = useState("");
   const [chapters, setChapters] = useState<Chapter[]>([]);
   const [chapterProgress, setChapterProgress] = useState<Record<string, ChapterProgress>>({});
+  const [materialProgress, setMaterialProgress] = useState<Record<string, { totalStudents: number; gradedStudents: number; percentage: number }>>({});
   const [materials, setMaterials] = useState<Material[]>([]);
   const [selectedChapter, setSelectedChapter] = useState<Chapter | null>(null);
   const [selectedMaterial, setSelectedMaterial] = useState<string>("");
@@ -31,6 +32,7 @@ export function useNilaiHarian() {
   const [saving, setSaving] = useState(false);
   const [initialLoading, setInitialLoading] = useState(true);
   const [chaptersLoading, setChaptersLoading] = useState(false);
+  const [materialsLoading, setMaterialsLoading] = useState(false);
   const [scoresLoading, setScoresLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [error, setError] = useState<string | null>(null);
@@ -103,6 +105,8 @@ export function useNilaiHarian() {
           ]);
           const totalStudents = (studentsRes?.result || []).length;
           const progressMap: Record<string, ChapterProgress> = {};
+          const materialProgMap: Record<string, { totalStudents: number; gradedStudents: number; percentage: number }> = {};
+          
           chs.forEach((ch, idx) => {
             const chapterScores = (scoreResults[idx]?.result || []) as Score[];
             const uniqueStudents = new Set(chapterScores.map((s) => s.studentId)).size;
@@ -112,17 +116,36 @@ export function useNilaiHarian() {
               gradedStudents: uniqueStudents,
               percentage: totalStudents > 0 ? Math.round((uniqueStudents / totalStudents) * 100) : 0,
             };
+            
+            if (ch.inputMode === "per_material") {
+              const scoresByMaterial: Record<string, Set<string>> = {};
+              chapterScores.forEach(s => {
+                if (s.materialId) {
+                  if (!scoresByMaterial[s.materialId]) scoresByMaterial[s.materialId] = new Set();
+                  scoresByMaterial[s.materialId].add(s.studentId);
+                }
+              });
+              Object.keys(scoresByMaterial).forEach(matId => {
+                const graded = scoresByMaterial[matId].size;
+                materialProgMap[matId] = {
+                  totalStudents,
+                  gradedStudents: graded,
+                  percentage: totalStudents > 0 ? Math.round((graded / totalStudents) * 100) : 0,
+                };
+              });
+            }
           });
           setChapterProgress(progressMap);
+          setMaterialProgress(materialProgMap);
 
-          const firstIncomplete = chs.find((ch) => (progressMap[ch._id]?.gradedStudents || 0) < totalStudents);
-          setSelectedChapter(firstIncomplete || chs[0]);
         } else {
           setChapterProgress({});
+          setMaterialProgress({});
         }
       } catch {
         setChapters([]);
         setChapterProgress({});
+        setMaterialProgress({});
         setError("Gagal memuat data bab.");
       } finally {
         setChaptersLoading(false);
@@ -140,13 +163,15 @@ export function useNilaiHarian() {
     }
     const ctrl = new AbortController();
     (async () => {
+      setMaterialsLoading(true);
       try {
         const res = await MaterialService.getAll(selectedChapter._id);
         const mats = res?.result || [];
         setMaterials(mats);
-        if (mats.length > 0) setSelectedMaterial(mats[0]._id);
       } catch {
         setMaterials([]);
+      } finally {
+        setMaterialsLoading(false);
       }
     })();
     return () => ctrl.abort();
@@ -246,8 +271,10 @@ export function useNilaiHarian() {
         if (!selectedChapter) return prev;
         const current = prev[selectedChapter._id];
         if (!current) return prev;
+        
         const currentCount = entries.filter((e) => e.score !== "").length;
         const updatedGraded = Math.max(current.gradedStudents, currentCount);
+        
         return {
           ...prev,
           [selectedChapter._id]: {
@@ -282,11 +309,14 @@ export function useNilaiHarian() {
     grade, setGrade,
     userRole: role,
     gradeSubjects, selectedGS, setSelectedGS,
-    chapters, chapterProgress, chaptersLoading,
+    chapters,
+    chapterProgress,
+    materialProgress,
+    materials,
     selectedChapter, setSelectedChapter,
     materials, selectedMaterial, setSelectedMaterial,
     entries, paginatedEntries,
-    saving, error, retry, initialLoading, scoresLoading,
+    saving, error, retry, initialLoading, chaptersLoading, materialsLoading, scoresLoading,
     currentPage, setCurrentPage,
     totalPages, startIndex,
     ITEMS_PER_PAGE,
