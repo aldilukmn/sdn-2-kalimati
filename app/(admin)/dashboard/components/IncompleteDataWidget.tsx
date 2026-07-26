@@ -14,6 +14,7 @@ import {
   RefreshCw,
 } from "lucide-react";
 import DashboardService from "@/services/dashboard.service";
+import { useHolidays } from "@/hooks/useHolidays";
 import type { GradeSubject, Chapter, Score } from "@/types/nilai-harian";
 import type { Task } from "@/types/tugas";
 import type { LitnumTask, LitnumScore } from "@/types/litnum";
@@ -68,10 +69,11 @@ function formatDayDate(dateObj: Date): string {
 export default function IncompleteDataWidget({ userGrade }: IncompleteDataWidgetProps) {
   const [loading, setLoading] = useState(true);
   const [items, setItems] = useState<ChecklistItem[]>([]);
+  const { loaded: holidaysLoaded, getHoliday } = useHolidays();
 
   const fetchChecklist = async () => {
-    if (!userGrade) {
-      setLoading(false);
+    if (!userGrade || !holidaysLoaded) {
+      if (!userGrade) setLoading(false);
       return;
     }
 
@@ -86,6 +88,25 @@ export default function IncompleteDataWidget({ userGrade }: IncompleteDataWidget
       // 1. Presensi
       let presensiStatus: "complete" | "partial" | "missing" = "missing";
       let presensiLine = `Presensi hari ini (${formattedDisplayDate}) belum diinput.`;
+      
+      const today = new Date();
+      const isSunday = today.getDay() === 0;
+      
+      const mm = String(today.getMonth() + 1).padStart(2, '0');
+      const ddStr = String(today.getDate()).padStart(2, '0');
+      const yyyyStr = today.getFullYear();
+      const todayString = `${yyyyStr}-${mm}-${ddStr}`;
+      
+      const holidayToday = getHoliday(todayString);
+
+      if (isSunday || holidayToday) {
+        presensiStatus = "complete";
+        if (holidayToday) {
+          presensiLine = `Hari ini (${formattedDisplayDate}) libur: ${holidayToday.description}`;
+        } else {
+          presensiLine = `Hari ini (${formattedDisplayDate}) adalah hari libur (Minggu).`;
+        }
+      } else
 
       if (data.attendance.recorded > 0 && data.totalStudents > 0) {
         if (data.attendance.recorded >= data.totalStudents) {
@@ -201,7 +222,7 @@ export default function IncompleteDataWidget({ userGrade }: IncompleteDataWidget
 
   useEffect(() => {
     fetchChecklist();
-  }, [userGrade]);
+  }, [userGrade, holidaysLoaded]);
 
   const incompleteCount = items.filter((i) => i.status !== "complete").length;
 

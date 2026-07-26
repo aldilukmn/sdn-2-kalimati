@@ -15,10 +15,14 @@ export interface AuthResult {
 
 export function useAuth(): AuthResult {
   const ctx = useAuthContext();
-  const token =
-    typeof window !== "undefined"
-      ? sessionStorage.getItem("user_session")
-      : null;
+  let token = null;
+  if (typeof window !== "undefined") {
+    token = sessionStorage.getItem("user_session");
+    if (!token) {
+      const match = document.cookie.match(new RegExp(`(?:^|;\\s*)user_session=([^;]*)`));
+      token = match ? decodeURIComponent(match[1]) : null;
+    }
+  }
   const payload = token ? decodeJWT(token) : null;
 
   return {

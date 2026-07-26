@@ -9,47 +9,69 @@ export interface WeeklyRecapData {
   recap: GradeRecap | null;
 }
 
+export interface WeeklyRecapResult {
+  monthlyData: WeeklyRecapData[];
+  monthlySummary: { deposits: number; withdrawals: number };
+}
+
 export function useWeeklyRecap(endDate: string, grade: string, refreshKey?: number) {
-  const [data, setData] = useState<WeeklyRecapData[]>([]);
+  const [data, setData] = useState<WeeklyRecapResult>({ monthlyData: [], monthlySummary: { deposits: 0, withdrawals: 0 } });
   const [loading, setLoading] = useState(true);
 
-  const fetchData = useCallback(async () => {
-    const datesToFetch: string[] = [];
-    const end = new Date(endDate);
-    for (let i = 0; i < 6; i++) {
-      const d = new Date(end);
-      d.setDate(d.getDate() - i);
-      datesToFetch.push(d.toISOString().split("T")[0]);
-    }
+  const end = new Date(endDate);
+  const year = end.getFullYear();
+  const month = end.getMonth();
 
-    const results = await Promise.all(
-      datesToFetch.map(async (date) => {
-        try {
-          const res = await StudentSavingsService.getGradeRecap(date);
-          const recaps: GradeRecap[] = res?.result || [];
-          let recapData: GradeRecap | null = null;
-          if (grade) {
-            recapData = recaps.find((r) => r.grade === grade) || null;
-          } else if (recaps.length > 0) {
-            recapData = recaps.reduce(
-              (acc, curr) => {
-                acc.deposits += curr.deposits;
-                acc.withdrawals += curr.withdrawals;
-                acc.totalStudents += curr.totalStudents;
-                acc.totalBalance += curr.totalBalance;
-                return acc;
-              },
-              { grade: "", totalStudents: 0, deposits: 0, withdrawals: 0, totalBalance: 0 }
-            );
-          }
-          return { date, recap: recapData };
-        } catch {
-          return { date, recap: null };
+  const fetchData = useCallback(async () => {
+    try {
+      const numDays = new Date(year, month + 1, 0).getDate();
+      
+      const datesToFetch: string[] = [];
+      for (let i = 1; i <= numDays; i++) {
+        const y = year;
+        const m = String(month + 1).padStart(2, '0');
+        const day = String(i).padStart(2, '0');
+        datesToFetch.push(`${y}-${m}-${day}`);
+      }
+      
+      const startDate = datesToFetch[0];
+      const monthEndDate = datesToFetch[datesToFetch.length - 1];
+
+      const res = await StudentSavingsService.getWeeklyRecap(startDate, monthEndDate, grade);
+      const rawData = res.result || [];
+
+      const results: WeeklyRecapData[] = datesToFetch.map((date) => {
+        const found = rawData.find((r) => r.date === date);
+        if (found) {
+          return {
+            date,
+            recap: {
+              grade: found.grade || grade || "",
+              totalStudents: found.totalStudents,
+              deposits: found.deposits,
+              withdrawals: found.withdrawals,
+              totalBalance: 0, // Not needed for weekly trend
+            },
+          };
         }
-      })
-    );
-    return results.reverse(); // oldest to newest
-  }, [endDate, grade]);
+        return { date, recap: null };
+      });
+      const monthlySummary = results.reduce(
+        (acc, curr) => {
+          if (curr.recap) {
+            acc.deposits += curr.recap.deposits;
+            acc.withdrawals += curr.recap.withdrawals;
+          }
+          return acc;
+        },
+        { deposits: 0, withdrawals: 0 }
+      );
+      const monthlyData = results.reverse();
+      return { monthlyData, monthlySummary };
+    } catch {
+      return { monthlyData: [], monthlySummary: { deposits: 0, withdrawals: 0 } };
+    }
+  }, [year, month, grade]);
 
   const refresh = useCallback(async () => {
     try {
@@ -57,7 +79,7 @@ export function useWeeklyRecap(endDate: string, grade: string, refreshKey?: numb
       const result = await fetchData();
       setData(result);
     } catch {
-      setData([]);
+      setData({ monthlyData: [], monthlySummary: { deposits: 0, withdrawals: 0 } });
     } finally {
       setLoading(false);
     }
@@ -65,19 +87,25 @@ export function useWeeklyRecap(endDate: string, grade: string, refreshKey?: numb
 
   useEffect(() => {
     let cancelled = false;
+    
+    if (!grade) {
+      setLoading(true);
+      return () => { cancelled = true; };
+    }
+
     (async () => {
       setLoading(true);
       try {
         const result = await fetchData();
         if (!cancelled) setData(result);
       } catch {
-        if (!cancelled) setData([]);
+        if (!cancelled) setData({ monthlyData: [], monthlySummary: { deposits: 0, withdrawals: 0 } });
       } finally {
         if (!cancelled) setLoading(false);
       }
     })();
     return () => { cancelled = true; };
-  }, [fetchData]);
+  }, [fetchData, grade]);
 
   useEffect(() => {
     if (refreshKey === undefined) return;

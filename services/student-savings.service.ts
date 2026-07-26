@@ -88,6 +88,16 @@ export default class StudentSavingsService {
     return await api<GradeRecap[]>(url);
   }
 
+  static async getWeeklyRecap(startDate: string, endDate: string, grade?: string) {
+    const params = new URLSearchParams();
+    params.set("startDate", startDate);
+    params.set("endDate", endDate);
+    if (grade) params.set("grade", grade);
+    return await api<{ date: string; grade: string; totalStudents: number; deposits: number; withdrawals: number }[]>(
+      `/student-savings/weekly-recap?${params.toString()}`
+    );
+  }
+
   static async getMonthlyTrend(year: number, grade?: string) {
     const params = new URLSearchParams();
     params.set("year", String(year));

@@ -225,7 +225,7 @@ export default function TabunganMuridPage() {
               </h3>
             </div>
           </div>
-          <WeeklyRecapTable data={weeklyData} loading={weeklyLoading} />
+          <WeeklyRecapTable data={weeklyData.monthlyData} monthlySummary={weeklyData.monthlySummary} loading={weeklyLoading} />
         </div>
       )}
 

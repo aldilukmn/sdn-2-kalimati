@@ -46,7 +46,7 @@ export default function DashboardNilaiPage() {
       <PageHero
         icon={GraduationCap}
         title="Dashboard Akademik"
-        description="Ringkasan performa akademik murid mencakup seluruh komponen penilaian (Harian, Tugas, Keaktifan, Partisipasi, Litnum)."
+        description="Ringkasan performa akademik murid mencakup seluruh komponen penilaian (Harian, Tugas, Keaktifan, Partisipasi, Literasi & Numerasi)."
       />
 
       {/* ── Filter ─────────────────────────────────────────────────────── */}

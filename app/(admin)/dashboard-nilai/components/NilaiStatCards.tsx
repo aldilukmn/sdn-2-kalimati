@@ -50,7 +50,7 @@ export function NilaiStatCards({ summary, loading }: NilaiStatCardsProps) {
         subtitle={`${summary?.totalFilled ?? 0} dari ${summary?.totalPossible ?? 0}`}
       />
       <StatCard
-        label="Rata-rata Kelas"
+        label="Rerata Kelas"
         value={Math.round((summary?.averageScore ?? 0) * 100) / 100}
         icon={TrendingUp}
         color="amber"

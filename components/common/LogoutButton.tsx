@@ -23,6 +23,7 @@ export default function LogoutButton() {
   const { role, userName, payload, isLoading: authLoading } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [imageError, setImageError] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const user = {
@@ -97,8 +98,13 @@ export default function LogoutButton() {
         className="flex items-center gap-2 md:gap-3 group cursor-pointer"
       >
         <div className={`w-8 h-8 md:w-9 md:h-9 rounded-full flex items-center justify-center text-white text-xs md:text-sm font-bold shrink-0 overflow-hidden ${user.roleStyle.bg} ring-2 ring-transparent group-hover:ring-indigo-400 transition-all`}>
-          {user.image_url ? (
-            <img src={user.image_url} alt={user.fullName} className="w-full h-full object-cover" />
+          {user.image_url && !imageError ? (
+            <img 
+              src={user.image_url} 
+              alt={user.fullName} 
+              className="w-full h-full object-cover" 
+              onError={() => setImageError(true)}
+            />
           ) : (
             user.initial
           )}
