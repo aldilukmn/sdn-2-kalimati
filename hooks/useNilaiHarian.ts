@@ -314,7 +314,7 @@ export function useNilaiHarian() {
     materialProgress,
     materials,
     selectedChapter, setSelectedChapter,
-    materials, selectedMaterial, setSelectedMaterial,
+    selectedMaterial, setSelectedMaterial,
     entries, paginatedEntries,
     saving, error, retry, initialLoading, chaptersLoading, materialsLoading, scoresLoading,
     currentPage, setCurrentPage,
