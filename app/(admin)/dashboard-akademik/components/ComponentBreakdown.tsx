@@ -94,8 +94,8 @@ export function ComponentBreakdown({
         </div>
       </div>
 
-      <div className={`md:flex-1 grid transition-[grid-template-rows,opacity] duration-300 ease-in-out ${isExpanded ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0 md:grid-rows-[1fr] md:opacity-100"}`}>
-        <div className="overflow-hidden min-h-0 md:flex md:flex-col md:h-full">
+      <div className={`md:flex-1 transition-all duration-300 ease-in-out overflow-hidden ${isExpanded ? "max-h-[2000px] opacity-100" : "max-h-0 opacity-0 md:max-h-[2000px] md:opacity-100"}`}>
+        <div className="md:flex md:flex-col md:h-full">
           <div className="p-6 space-y-6 md:flex-1 flex flex-col justify-center">
         {items.map((item) => {
           const rateRaw =
