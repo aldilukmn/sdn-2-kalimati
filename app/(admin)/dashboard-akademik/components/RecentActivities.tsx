@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Activity, BookOpen, FileText, Users, PieChart, Clock } from "lucide-react";
+import { Activity, BookOpen, FileText, Users, PieChart, Clock, ChevronDown } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import { id } from "date-fns/locale";
 import Pagination from "@/components/common/Pagination";
@@ -21,6 +21,7 @@ interface RecentActivitiesProps {
 
 export function RecentActivities({ activities = [], loading }: RecentActivitiesProps) {
   const [currentPage, setCurrentPage] = useState(1);
+  const [isExpanded, setIsExpanded] = useState(false);
   const itemsPerPage = 5;
 
   const totalPages = Math.ceil(activities.length / itemsPerPage);
@@ -96,18 +97,33 @@ export function RecentActivities({ activities = [], loading }: RecentActivitiesP
   }
 
   return (
-    <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 p-4 flex flex-col">
-      <div className="flex items-center justify-between mb-4 shrink-0">
-        <h3 className="text-lg font-bold text-slate-800 dark:text-slate-100 flex items-center gap-2">
-          <Activity className="w-5 h-5 text-indigo-500" />
-          Aktivitas Terbaru
-        </h3>
-        <span className="text-xs font-medium bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 px-2.5 py-1 rounded-full">
-          {activities.length} aktivitas
-        </span>
+    <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden flex flex-col h-full">
+      <div 
+        onClick={() => setIsExpanded(!isExpanded)}
+        className={`p-3 md:p-4 flex items-center justify-between gap-2 bg-gradient-to-r from-blue-500 to-indigo-600 cursor-pointer md:cursor-default ${
+          isExpanded ? 'border-b border-slate-100 dark:border-slate-700/50' : 'md:border-b md:border-slate-100 md:dark:border-slate-700/50'
+        }`}
+      >
+        <div className="flex items-center gap-2">
+          <div className="p-1.5 md:p-2 bg-white/20 rounded-lg backdrop-blur-sm">
+            <Activity className="w-4 h-4 md:w-5 md:h-5 text-white" />
+          </div>
+          <h3 className="text-sm md:text-base font-bold text-white">Aktivitas Terbaru</h3>
+        </div>
+        <div className="flex items-center gap-3">
+          <span className="text-xs font-medium bg-white/20 text-white px-2.5 py-1 rounded-full backdrop-blur-sm">
+            {activities.length} aktivitas
+          </span>
+          <div className="md:hidden">
+            <ChevronDown className={`w-4 h-4 md:w-5 md:h-5 text-white transition-transform ${isExpanded ? "rotate-180" : ""}`} />
+          </div>
+        </div>
       </div>
 
-      <div className="flex-1 pr-2 -mr-2 mb-4">
+      <div className={`flex-1 grid transition-[grid-template-rows] duration-300 ease-in-out ${isExpanded ? "grid-rows-[1fr]" : "grid-rows-[0fr] md:grid-rows-[1fr]"}`}>
+        <div className="overflow-hidden min-h-0 flex flex-col h-full">
+          <div className="p-4 flex-1 flex flex-col">
+            <div className="flex-1 pr-2 -mr-2 mb-4">
         {activities.length === 0 ? (
           <div className="h-full flex flex-col items-center justify-center text-center p-6 space-y-3">
             <div className="w-16 h-16 rounded-full bg-slate-50 dark:bg-slate-800 flex items-center justify-center">
