@@ -1,8 +1,10 @@
 "use client";
 
+import { useState } from "react";
 import { Activity, BookOpen, FileText, Users, PieChart, Clock } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import { id } from "date-fns/locale";
+import Pagination from "@/components/common/Pagination";
 
 interface RecentActivity {
   id: string;
@@ -18,6 +20,14 @@ interface RecentActivitiesProps {
 }
 
 export function RecentActivities({ activities = [], loading }: RecentActivitiesProps) {
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
+
+  const totalPages = Math.ceil(activities.length / itemsPerPage);
+  const paginatedActivities = activities.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
   const getIcon = (category: string) => {
     switch (category.toLowerCase()) {
       case "nilai harian":
@@ -84,7 +94,7 @@ export function RecentActivities({ activities = [], loading }: RecentActivitiesP
         </span>
       </div>
 
-      <div className="flex-1 pr-2 -mr-2">
+      <div className="flex-1 pr-2 -mr-2 mb-4">
         {activities.length === 0 ? (
           <div className="h-full flex flex-col items-center justify-center text-center p-6 space-y-3">
             <div className="w-16 h-16 rounded-full bg-slate-50 dark:bg-slate-800 flex items-center justify-center">
@@ -98,8 +108,8 @@ export function RecentActivities({ activities = [], loading }: RecentActivitiesP
             </div>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 pb-2">
-            {activities.map((activity) => (
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-5 gap-4 pb-2">
+            {paginatedActivities.map((activity) => (
             <div
               key={activity.id}
               className="group flex gap-4 p-3.5 rounded-xl border border-transparent hover:border-slate-200 dark:hover:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-all cursor-default"
@@ -131,6 +141,18 @@ export function RecentActivities({ activities = [], loading }: RecentActivitiesP
           </div>
         )}
       </div>
+
+      {activities.length > 0 && (
+        <div className="pt-4 border-t border-slate-100 dark:border-slate-800">
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={setCurrentPage}
+            itemsPerPage={itemsPerPage}
+            totalItems={activities.length}
+          />
+        </div>
+      )}
     </div>
   );
 }
