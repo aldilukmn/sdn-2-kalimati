@@ -96,7 +96,7 @@ export const penjagaMenuItems = [
 
 export const guruAllowedHrefs = new Set([
   "/dashboard",
-  "/dashboard-nilai",
+  "/dashboard-akademik",
   "/dashboard-karakter",
   "/dashboard-presensi",
   "/penilaian-karakter",
