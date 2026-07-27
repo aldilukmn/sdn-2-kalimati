@@ -123,8 +123,8 @@ export function RecentActivities({ activities = [], loading }: RecentActivitiesP
                   <h4 className="font-semibold text-sm text-slate-800 dark:text-slate-200 truncate" title={activity.title}>
                     {activity.title}
                   </h4>
-                  <div className="flex items-center gap-2">
-                    <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full ${getBadgeColor(activity.category)}`}>
+                  <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 mt-1 sm:mt-0">
+                    <span className={`w-max text-[10px] font-semibold px-2 py-0.5 rounded-full ${getBadgeColor(activity.category)}`}>
                       {activity.category}
                     </span>
                     <span className="text-xs text-slate-500 dark:text-slate-400 truncate">
