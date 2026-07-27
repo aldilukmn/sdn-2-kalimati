@@ -11,6 +11,7 @@ import FilterBar from "@/components/shared/FilterBar";
 import { NilaiStatCards } from "./components/NilaiStatCards";
 import { ComponentBreakdown } from "./components/ComponentBreakdown";
 import { StudentRanking } from "./components/StudentRanking";
+import { RecentActivities } from "./components/RecentActivities";
 
 export default function DashboardNilaiPage() {
   const { role, grade: userGrade } = useAuth();
@@ -90,8 +91,9 @@ export default function DashboardNilaiPage() {
           <NilaiStatCards summary={data?.summary} loading={loading} />
           
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <div className="lg:col-span-1">
+            <div className="lg:col-span-1 flex flex-col gap-6">
               <ComponentBreakdown components={data?.summary.byComponent} loading={loading} />
+              <RecentActivities activities={data?.summary.recentActivities} loading={loading} />
             </div>
             
             <div className="lg:col-span-2">

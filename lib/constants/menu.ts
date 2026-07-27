@@ -50,7 +50,7 @@ export const menuItems: SidebarItem[] = [
     label: "Nilai Akademik",
     icon: GraduationCap,
     children: [
-      { label: "Dashboard", icon: LayoutDashboard, href: "/dashboard-nilai" },
+      { label: "Dashboard", icon: LayoutDashboard, href: "/dashboard-akademik" },
       { label: "Nilai Harian", icon: ClipboardEdit, href: "/nilai-harian" },
       {
         label: "Rekap Nilai Harian",

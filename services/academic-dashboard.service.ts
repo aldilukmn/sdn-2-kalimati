@@ -30,6 +30,13 @@ export interface AcademicSummaryResponse {
       partisipasi: ComponentStat;
       litnum: ComponentStat;
     };
+    recentActivities?: {
+      id: string;
+      title: string;
+      category: string;
+      date: string;
+      subject: string;
+    }[];
   };
   students: StudentStat[];
 }
