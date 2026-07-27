@@ -27,7 +27,6 @@ export function DailyPresensiView({
     <MobileWidgetWrapper
       title="Murid Tidak Hadir Hari Ini"
       icon={<UserMinus size={16} className="text-red-500 dark:text-red-400" />}
-      defaultExpanded={true}
     >
       <div className="overflow-x-auto rounded-xl border border-gray-200 dark:border-gray-700 bg-white/80 dark:bg-gray-800/30 mt-2">
         <Table>

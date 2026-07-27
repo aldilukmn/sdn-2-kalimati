@@ -48,7 +48,7 @@ export default function MobileWidgetWrapper({
         </div>
       </div>
       
-      <div className={`md:flex-1 grid transition-[grid-template-rows] duration-300 ease-in-out ${isExpanded ? "grid-rows-[1fr]" : "grid-rows-[0fr] md:grid-rows-[1fr]"}`}>
+      <div className={`md:flex-1 grid transition-[grid-template-rows,opacity] duration-300 ease-in-out ${isExpanded ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0 md:grid-rows-[1fr] md:opacity-100"}`}>
         <div className="overflow-hidden min-h-0 md:flex md:flex-col md:h-full">
           <div className={`px-4 pb-4 md:px-5 md:pb-5 md:pt-0 pt-0 flex-1 flex flex-col ${bodyClassName}`}>
             {actionRight && (

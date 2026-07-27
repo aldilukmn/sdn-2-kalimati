@@ -121,7 +121,7 @@ export function RecentActivities({ activities = [], loading }: RecentActivitiesP
         </div>
       </div>
 
-      <div className={`md:flex-1 grid transition-[grid-template-rows] duration-300 ease-in-out ${isExpanded ? "grid-rows-[1fr]" : "grid-rows-[0fr] md:grid-rows-[1fr]"}`}>
+      <div className={`md:flex-1 grid transition-[grid-template-rows,opacity] duration-300 ease-in-out ${isExpanded ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0 md:grid-rows-[1fr] md:opacity-100"}`}>
         <div className="overflow-hidden min-h-0 md:flex md:flex-col md:h-full">
           <div className="p-4 md:flex-1 flex flex-col">
             <div className="md:flex-1 pr-2 -mr-2 mb-4">
