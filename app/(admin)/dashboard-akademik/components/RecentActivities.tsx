@@ -108,7 +108,7 @@ export function RecentActivities({ activities = [], loading }: RecentActivitiesP
             </div>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-5 gap-4 pb-2">
+          <div className="space-y-3 pb-2">
             {paginatedActivities.map((activity) => (
             <div
               key={activity.id}
