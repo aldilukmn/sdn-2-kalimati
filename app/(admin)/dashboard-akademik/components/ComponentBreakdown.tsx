@@ -2,7 +2,7 @@
 
 import { ComponentStat } from "@/services/academic-dashboard.service";
 import { BarChart2, ChevronDown } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 interface ComponentBreakdownProps {
   components:
@@ -22,6 +22,17 @@ export function ComponentBreakdown({
   loading,
 }: ComponentBreakdownProps) {
   const [isExpanded, setIsExpanded] = useState(false);
+  const [renderContent, setRenderContent] = useState(false);
+
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+    if (isExpanded) {
+      timer = setTimeout(() => setRenderContent(true), 320);
+    } else {
+      setRenderContent(false);
+    }
+    return () => clearTimeout(timer);
+  }, [isExpanded]);
 
   if (loading) {
     return (
@@ -94,9 +105,18 @@ export function ComponentBreakdown({
         </div>
       </div>
 
-      <div className={`md:flex-1 transition-all duration-300 ease-in-out overflow-hidden ${isExpanded ? "max-h-[2000px] opacity-100" : "max-h-0 opacity-0 md:max-h-[2000px] md:opacity-100"}`}>
-        <div className="md:flex md:flex-col md:h-full">
-          <div className="p-6 space-y-6 md:flex-1 flex flex-col justify-center">
+      <div className={`md:flex-1 grid transition-[grid-template-rows,opacity] duration-300 ease-in-out ${isExpanded ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0 md:grid-rows-[1fr] md:opacity-100"}`}>
+        <div className="overflow-hidden min-h-0 md:flex md:flex-col md:h-full">
+          {/* Skeleton shown during animation on mobile */}
+          {!renderContent && (
+            <div className="md:hidden w-full flex flex-col gap-4 p-6 animate-pulse min-h-[200px]">
+              {[1, 2, 3, 4, 5].map((i) => (
+                <div key={i} className="h-12 bg-slate-100 dark:bg-slate-700/50 rounded-lg"></div>
+              ))}
+            </div>
+          )}
+
+          <div className={`p-6 space-y-6 flex-col justify-center ${!renderContent ? 'hidden md:flex' : 'flex'} md:flex-1`}>
         {items.map((item) => {
           const rateRaw =
             item.data && item.data.possible > 0
@@ -139,6 +159,5 @@ export function ComponentBreakdown({
           </div>
         </div>
       </div>
-    </div>
   );
 }

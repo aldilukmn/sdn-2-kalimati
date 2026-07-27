@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, ReactNode } from "react";
+import { useState, useEffect, ReactNode } from "react";
 import { ChevronDown } from "lucide-react";
 
 interface MobileWidgetWrapperProps {
@@ -23,6 +23,21 @@ export default function MobileWidgetWrapper({
   actionRight,
 }: MobileWidgetWrapperProps) {
   const [isExpanded, setIsExpanded] = useState(defaultExpanded);
+  const [renderContent, setRenderContent] = useState(defaultExpanded);
+
+
+
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+    if (isExpanded) {
+      // Tunggu animasi CSS Grid selesai (300ms) sebelum render data berat
+      timer = setTimeout(() => setRenderContent(true), 320);
+    } else {
+      // Saat ditutup, langsung sembunyikan data berat agar animasi menutup sangat mulus
+      setRenderContent(false);
+    }
+    return () => clearTimeout(timer);
+  }, [isExpanded]);
 
   return (
     <div className={`bg-white/90 md:bg-white/70 dark:bg-gray-800/40 border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl flex flex-col overflow-hidden h-full ${className}`}>
@@ -48,15 +63,29 @@ export default function MobileWidgetWrapper({
         </div>
       </div>
       
-      <div className={`md:flex-1 transition-all duration-300 ease-in-out overflow-hidden ${isExpanded ? "max-h-[2000px] opacity-100" : "max-h-0 opacity-0 md:max-h-[2000px] md:opacity-100"}`}>
-        <div className="md:flex md:flex-col md:h-full">
+      <div className={`md:flex-1 grid transition-[grid-template-rows,opacity] duration-300 ease-in-out ${isExpanded ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0 md:grid-rows-[1fr] md:opacity-100"}`}>
+        <div className="overflow-hidden min-h-0 md:flex md:flex-col md:h-full">
           <div className={`px-4 pb-4 md:px-5 md:pb-5 md:pt-0 pt-0 flex-1 flex flex-col ${bodyClassName}`}>
             {actionRight && (
               <div className="md:hidden mb-4">
                 {actionRight}
               </div>
             )}
-            {children}
+            
+            {/* Skeleton shown during animation on mobile */}
+            {!renderContent && (
+              <div className="md:hidden w-full flex flex-col gap-3 py-2 animate-pulse min-h-[250px]">
+                <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-1/3"></div>
+                <div className="h-8 bg-slate-100 dark:bg-slate-800 rounded w-full"></div>
+                <div className="h-32 bg-slate-100 dark:bg-slate-800 rounded w-full"></div>
+                <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-1/2 mt-auto"></div>
+              </div>
+            )}
+            
+            {/* Actual content */}
+            <div className={`flex-1 flex-col ${!renderContent ? 'hidden md:flex' : 'flex'}`}>
+              {children}
+            </div>
           </div>
         </div>
       </div>

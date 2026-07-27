@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Activity, BookOpen, FileText, Users, PieChart, Clock, ChevronDown, Info } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import { id } from "date-fns/locale";
@@ -23,6 +23,17 @@ interface RecentActivitiesProps {
 export function RecentActivities({ activities = [], loading }: RecentActivitiesProps) {
   const [currentPage, setCurrentPage] = useState(1);
   const [isExpanded, setIsExpanded] = useState(false);
+  const [renderContent, setRenderContent] = useState(false);
+
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+    if (isExpanded) {
+      timer = setTimeout(() => setRenderContent(true), 320);
+    } else {
+      setRenderContent(false);
+    }
+    return () => clearTimeout(timer);
+  }, [isExpanded]);
   const itemsPerPage = 5;
 
   const totalPages = Math.ceil(activities.length / itemsPerPage);
@@ -121,9 +132,24 @@ export function RecentActivities({ activities = [], loading }: RecentActivitiesP
         </div>
       </div>
 
-      <div className={`md:flex-1 transition-all duration-300 ease-in-out overflow-hidden ${isExpanded ? "max-h-[2000px] opacity-100" : "max-h-0 opacity-0 md:max-h-[2000px] md:opacity-100"}`}>
-        <div className="md:flex md:flex-col md:h-full">
-          <div className="p-4 md:flex-1 flex flex-col">
+      <div className={`md:flex-1 grid transition-[grid-template-rows,opacity] duration-300 ease-in-out ${isExpanded ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0 md:grid-rows-[1fr] md:opacity-100"}`}>
+        <div className="overflow-hidden min-h-0 md:flex md:flex-col md:h-full">
+          {/* Skeleton shown during animation on mobile */}
+          {!renderContent && (
+            <div className="md:hidden w-full flex flex-col gap-4 p-4 animate-pulse min-h-[200px]">
+              {[1, 2, 3].map((i) => (
+                <div key={i} className="flex gap-4">
+                  <div className="w-8 h-8 rounded-full bg-slate-200 dark:bg-slate-700 shrink-0"></div>
+                  <div className="flex-1 space-y-2 py-1">
+                    <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-3/4"></div>
+                    <div className="h-3 bg-slate-100 dark:bg-slate-800 rounded w-1/2"></div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+
+          <div className={`p-4 flex-col ${!renderContent ? 'hidden md:flex' : 'flex'} md:flex-1`}>
             <div className="md:flex-1 pr-2 -mr-2 mb-4">
         {activities.length === 0 ? (
           <div className="h-full flex flex-col items-center justify-center text-center p-6 space-y-3">
@@ -209,6 +235,5 @@ export function RecentActivities({ activities = [], loading }: RecentActivitiesP
           </div>
         </div>
       </div>
-    </div>
   );
 }

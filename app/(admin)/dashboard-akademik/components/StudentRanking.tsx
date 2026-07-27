@@ -3,7 +3,7 @@
 import { Trophy, AlertTriangle, ArrowRight, ChevronDown } from "lucide-react";
 import { StudentStat } from "@/services/academic-dashboard.service";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 interface StudentRankingProps {
   topRajin: StudentStat[];
@@ -13,7 +13,29 @@ interface StudentRankingProps {
 
 export function StudentRanking({ topRajin, bottomPerhatian, loading }: StudentRankingProps) {
   const [rajinExpanded, setRajinExpanded] = useState(false);
+  const [renderRajin, setRenderRajin] = useState(false);
   const [perhatianExpanded, setPerhatianExpanded] = useState(false);
+  const [renderPerhatian, setRenderPerhatian] = useState(false);
+
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+    if (rajinExpanded) {
+      timer = setTimeout(() => setRenderRajin(true), 320);
+    } else {
+      setRenderRajin(false);
+    }
+    return () => clearTimeout(timer);
+  }, [rajinExpanded]);
+
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+    if (perhatianExpanded) {
+      timer = setTimeout(() => setRenderPerhatian(true), 320);
+    } else {
+      setRenderPerhatian(false);
+    }
+    return () => clearTimeout(timer);
+  }, [perhatianExpanded]);
 
   if (loading) {
     const skeleton = (
@@ -47,6 +69,7 @@ export function StudentRanking({ topRajin, bottomPerhatian, loading }: StudentRa
     colorClass: string,
     emptyMessage: string,
     isExpanded: boolean,
+    renderContent: boolean,
     toggleExpanded: () => void
   ) => (
     <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden flex flex-col h-full">
@@ -67,9 +90,21 @@ export function StudentRanking({ topRajin, bottomPerhatian, loading }: StudentRa
         </div>
       </div>
       
-      <div className={`md:flex-1 transition-all duration-300 ease-in-out overflow-hidden ${isExpanded ? "max-h-[2000px] opacity-100" : "max-h-0 opacity-0 md:max-h-[2000px] md:opacity-100"}`}>
-        <div className="md:flex md:flex-col md:h-full">
-          <div className="p-0 md:flex-1 flex flex-col justify-center">
+      <div className={`md:flex-1 grid transition-[grid-template-rows,opacity] duration-300 ease-in-out ${isExpanded ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0 md:grid-rows-[1fr] md:opacity-100"}`}>
+        <div className="overflow-hidden min-h-0 md:flex md:flex-col md:h-full">
+          {/* Skeleton shown during animation on mobile */}
+          {!renderContent && (
+            <div className="md:hidden w-full flex flex-col gap-4 p-4 animate-pulse min-h-[200px]">
+              {[1, 2, 3].map((i) => (
+                <div key={i} className="flex gap-4 items-center">
+                  <div className="w-8 h-8 rounded-full bg-slate-200 dark:bg-slate-700 shrink-0"></div>
+                  <div className="h-10 flex-1 bg-slate-100 dark:bg-slate-700/50 rounded-lg"></div>
+                </div>
+              ))}
+            </div>
+          )}
+
+          <div className={`p-0 flex-col justify-center ${!renderContent ? 'hidden md:flex' : 'flex'} md:flex-1`}>
         {students.length === 0 ? (
           <div className="p-8 text-center text-slate-500 dark:text-slate-400">
             {emptyMessage}
@@ -113,7 +148,6 @@ export function StudentRanking({ topRajin, bottomPerhatian, loading }: StudentRa
           </div>
         </div>
       </div>
-    </div>
   );
 
   return (
@@ -125,6 +159,7 @@ export function StudentRanking({ topRajin, bottomPerhatian, loading }: StudentRa
         "bg-gradient-to-r from-emerald-500 to-teal-600",
         "Belum ada data nilai yang diinput.",
         rajinExpanded,
+        renderRajin,
         () => setRajinExpanded(!rajinExpanded)
       )}
       
@@ -135,6 +170,7 @@ export function StudentRanking({ topRajin, bottomPerhatian, loading }: StudentRa
         "bg-gradient-to-r from-rose-500 to-orange-600",
         "Belum ada data nilai yang diinput.",
         perhatianExpanded,
+        renderPerhatian,
         () => setPerhatianExpanded(!perhatianExpanded)
       )}
     </div>
