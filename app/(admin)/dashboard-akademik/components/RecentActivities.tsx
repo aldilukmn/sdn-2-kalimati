@@ -26,7 +26,7 @@ export function RecentActivities({ activities = [], loading }: RecentActivitiesP
   const [renderContent, setRenderContent] = useState(false);
 
   useEffect(() => {
-    let timer: NodeJS.Timeout;
+    let timer: ReturnType<typeof setTimeout>;
     if (isExpanded) {
       timer = setTimeout(() => setRenderContent(true), 320);
     } else {
@@ -235,5 +235,6 @@ export function RecentActivities({ activities = [], loading }: RecentActivitiesP
           </div>
         </div>
       </div>
+    </div>
   );
 }

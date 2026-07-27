@@ -18,7 +18,7 @@ export function StudentRanking({ topRajin, bottomPerhatian, loading }: StudentRa
   const [renderPerhatian, setRenderPerhatian] = useState(false);
 
   useEffect(() => {
-    let timer: NodeJS.Timeout;
+    let timer: ReturnType<typeof setTimeout>;
     if (rajinExpanded) {
       timer = setTimeout(() => setRenderRajin(true), 320);
     } else {
@@ -28,7 +28,7 @@ export function StudentRanking({ topRajin, bottomPerhatian, loading }: StudentRa
   }, [rajinExpanded]);
 
   useEffect(() => {
-    let timer: NodeJS.Timeout;
+    let timer: ReturnType<typeof setTimeout>;
     if (perhatianExpanded) {
       timer = setTimeout(() => setRenderPerhatian(true), 320);
     } else {
@@ -148,6 +148,7 @@ export function StudentRanking({ topRajin, bottomPerhatian, loading }: StudentRa
           </div>
         </div>
       </div>
+    </div>
   );
 
   return (
