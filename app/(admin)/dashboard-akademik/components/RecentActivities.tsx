@@ -148,11 +148,11 @@ export function RecentActivities({ activities = [], loading }: RecentActivitiesP
                   {getIcon(activity.category)}
                 </div>
                 
-                <div className="flex-1 min-w-0 flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3">
+                <div className="flex-1 min-w-0 flex flex-col justify-center">
                   <h4 className="font-semibold text-sm text-slate-800 dark:text-slate-200 truncate" title={activity.title}>
                     {activity.title}
                   </h4>
-                  <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 mt-1 sm:mt-0">
+                  <div className="flex items-center gap-2 mt-1">
                     <span className={`w-max text-[10px] font-semibold px-2 py-0.5 rounded-full ${getBadgeColor(activity.category)}`}>
                       {activity.category}
                     </span>
