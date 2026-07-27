@@ -1,7 +1,7 @@
 # Graph Report - sdn-2-kalimati  (2026-07-27)
 
 ## Corpus Check
-- 277 files · ~125,629 words
+- 277 files · ~125,438 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
@@ -10,7 +10,7 @@
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `4d71f7ee`
+- Built from commit: `3df198a7`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -165,8 +165,8 @@ Cohesion: 0.07
 Nodes (34): lib/api.ts API Client, ApiResponse T Type, DashboardSidebar Component, DateDayPicker Component, Dual Token Auth (sessionStorage + cookie), GRADES Constant, Holiday System, ITEMS_PER_PAGE Constant (+26 more)
 
 ### Community 8 - "komponen-nilai/page.tsx"
-Cohesion: 0.22
-Nodes (8): ChapterService, ScoreService, StudentAttendanceService, BulkScoreRequest, Chapter, ChapterCreateRequest, ChapterUpdateRequest, Score
+Cohesion: 0.19
+Nodes (10): Props, ChapterService, ScoreService, StudentAttendanceService, Chapter, ChapterCreateRequest, ChapterUpdateRequest, ClassAverageItem (+2 more)
 
 ### Community 9 - "Pagination.tsx"
 Cohesion: 0.09
@@ -214,11 +214,11 @@ Nodes (6): SubjectsTabProps, useSubjects(), SubjectService, Subject, SubjectCrea
 
 ### Community 20 - "dependencies"
 Cohesion: 0.12
-Nodes (17): @base-ui/react, canvas-confetti, date-fns, gsap, dependencies, @base-ui/react, canvas-confetti, date-fns (+9 more)
+Nodes (17): @base-ui/react, canvas-confetti, gsap, dependencies, @base-ui/react, canvas-confetti, gsap, react-day-picker (+9 more)
 
 ### Community 21 - "nilai-harian.ts"
-Cohesion: 0.14
-Nodes (14): TabNonHarianProps, Props, Props, ACADEMIC_YEARS, SEMESTERS, AssessmentConfigCreateRequest, AssessmentComponent, AssessmentConfig (+6 more)
+Cohesion: 0.18
+Nodes (11): TabNonHarianProps, Props, ACADEMIC_YEARS, SEMESTERS, AssessmentConfigCreateRequest, AssessmentComponent, AssessmentConfig, BulkScoreItem (+3 more)
 
 ### Community 22 - "Sprint 3: Input Nilai Harian"
 Cohesion: 0.23
@@ -237,8 +237,8 @@ Cohesion: 0.27
 Nodes (6): AssignTabProps, GradeSubjectService, BulkGradeSubjectCreateRequest, GradeSubject, GradeSubjectCreateRequest, GradeSubjectUpdateRequest
 
 ### Community 26 - "useRekapNilaiAkhir.ts"
-Cohesion: 0.32
-Nodes (7): NilaiAkhirPage(), useFinalScore(), useRekapNilaiAkhir(), FinalScoreService, CalculateResponse, ComponentScoreDto, FinalScoreEntry
+Cohesion: 0.27
+Nodes (8): NilaiAkhirPage(), useFinalScore(), useRekapNilaiAkhir(), FinalScoreService, CalculateResponse, ComponentScoreDto, FinalScoreEntry, GradeSubjectQueryParams
 
 ### Community 27 - "kelola-mapel/page.tsx"
 Cohesion: 0.20
@@ -285,8 +285,8 @@ Cohesion: 0.20
 Nodes (6): ProfileView(), Props, ROLE_COLORS, ROLE_LABELS, RekapNilaiAkhirPage(), useAuth()
 
 ### Community 43 - ".getAll"
-Cohesion: 0.29
-Nodes (6): NilaiHarianPage(), RekapNilaiPage(), useHarianData(), useNilaiHarian(), useRekapNilai(), GradeSubjectQueryParams
+Cohesion: 0.27
+Nodes (6): NilaiHarianPage(), RekapNilaiPage(), useHarianData(), useNilaiHarian(), useRekapNilai(), BulkScoreRequest
 
 ### Community 57 - "IncompleteDataWidget.tsx"
 Cohesion: 0.32
@@ -338,7 +338,7 @@ _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `useAuth()` connect `useAuth` to `select.tsx`, `student-attendance.service.ts`, `login/page.tsx`, `useAssessmentScore.ts`, `student-savings.service.ts`, `character-assessment.service.ts`, `IncompleteDataWidget.tsx`, `komponen-nilai/page.tsx`, `NoteCard.tsx`, `useNilaiHarian`, `pmb/page.tsx`, `StudentDataStep.tsx`, `DashboardSidebar.tsx`, `cn`, `app/layout.tsx`, `useRekapNilaiAkhir.ts`, `.getAll`, `date-fns`, `data-gtk/page.tsx`, `useAuth`, `UserService`, `MasterStudentType`?**
   _High betweenness centrality (0.140) - this node is a cross-community bridge._
-- **Why does `dependencies` connect `dependencies` to `clsx`, `package.json`, `react`, `react-hot-toast`, `recharts`, `shadcn`, `lucide-react`, `tailwind-merge`, `@tiptap/starter-kit`, `tw-animate-css`, `xlsx`, `kelas-5/page.tsx`, `lib/api.ts`, `html-to-image`, `next`?**
+- **Why does `dependencies` connect `dependencies` to `clsx`, `package.json`, `react`, `react-hot-toast`, `recharts`, `shadcn`, `lucide-react`, `tailwind-merge`, `@tiptap/starter-kit`, `tw-animate-css`, `xlsx`, `lib/api.ts`, `next`, `html-to-image`, `kelas-5/page.tsx`?**
   _High betweenness centrality (0.122) - this node is a cross-community bridge._
 - **Why does `xlsx` connect `xlsx` to `MasterStudentType`, `student-savings.service.ts`, `dependencies`?**
   _High betweenness centrality (0.119) - this node is a cross-community bridge._

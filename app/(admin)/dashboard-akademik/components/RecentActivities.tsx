@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { Activity, BookOpen, FileText, Users, PieChart, Clock, ChevronDown, Info } from "lucide-react";
+import { useState } from "react";
+import { Activity, BookOpen, FileText, Users, PieChart, Clock, Info } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import { id } from "date-fns/locale";
 import toast from "react-hot-toast";
@@ -22,18 +22,6 @@ interface RecentActivitiesProps {
 
 export function RecentActivities({ activities = [], loading }: RecentActivitiesProps) {
   const [currentPage, setCurrentPage] = useState(1);
-  const [isExpanded, setIsExpanded] = useState(false);
-  const [renderContent, setRenderContent] = useState(false);
-
-  useEffect(() => {
-    let timer: ReturnType<typeof setTimeout>;
-    if (isExpanded) {
-      timer = setTimeout(() => setRenderContent(true), 600);
-    } else {
-      setRenderContent(false);
-    }
-    return () => clearTimeout(timer);
-  }, [isExpanded]);
   const itemsPerPage = 5;
 
   const totalPages = Math.ceil(activities.length / itemsPerPage);
@@ -110,12 +98,7 @@ export function RecentActivities({ activities = [], loading }: RecentActivitiesP
 
   return (
     <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden flex flex-col h-full">
-      <div 
-        onClick={() => setIsExpanded(!isExpanded)}
-        className={`p-3 md:p-4 flex items-center justify-between gap-2 bg-gradient-to-r from-blue-500 to-indigo-600 cursor-pointer md:cursor-default ${
-          isExpanded ? 'border-b border-slate-100 dark:border-slate-700/50' : 'md:border-b md:border-slate-100 md:dark:border-slate-700/50'
-        }`}
-      >
+      <div className="p-3 md:p-4 flex items-center justify-between gap-2 bg-gradient-to-r from-blue-500 to-indigo-600 border-b border-slate-100 dark:border-slate-700/50 md:border-b md:border-slate-100 md:dark:border-slate-700/50">
         <div className="flex items-center gap-2">
           <div className="p-1.5 md:p-2 bg-white/20 rounded-lg backdrop-blur-sm">
             <Activity className="w-4 h-4 md:w-5 md:h-5 text-white" />
@@ -126,30 +109,12 @@ export function RecentActivities({ activities = [], loading }: RecentActivitiesP
           <span className="text-xs font-medium bg-white/20 text-white px-2.5 py-1 rounded-full backdrop-blur-sm">
             {activities.length} aktivitas
           </span>
-          <div className="md:hidden">
-            <ChevronDown className={`w-4 h-4 md:w-5 md:h-5 text-white transition-transform ${isExpanded ? "rotate-180" : ""}`} />
-          </div>
         </div>
       </div>
 
-      <div className={`md:flex-1 grid transition-[grid-template-rows] duration-300 ease-in-out ${isExpanded ? "grid-rows-[1fr]" : "grid-rows-[0fr] md:grid-rows-[1fr]"}`}>
-        <div className="overflow-hidden min-h-0 md:flex md:flex-col md:h-full">
-          {/* Skeleton shown during animation on mobile */}
-          {!renderContent && (
-            <div className="md:hidden w-full flex flex-col gap-4 p-4 animate-pulse min-h-[200px]">
-              {[1, 2, 3].map((i) => (
-                <div key={i} className="flex gap-4">
-                  <div className="w-8 h-8 rounded-full bg-slate-200 dark:bg-slate-700 shrink-0"></div>
-                  <div className="flex-1 space-y-2 py-1">
-                    <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-3/4"></div>
-                    <div className="h-3 bg-slate-100 dark:bg-slate-800 rounded w-1/2"></div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
-
-          <div className={`p-4 flex-col ${!renderContent ? 'hidden md:flex' : 'flex'} md:flex-1`}>
+      <div className="flex-1 flex flex-col h-full">
+        <div className="md:flex md:flex-col md:h-full flex-1">
+          <div className="p-4 flex-col flex md:flex-1">
             <div className="md:flex-1 pr-2 -mr-2 mb-4">
         {activities.length === 0 ? (
           <div className="h-full flex flex-col items-center justify-center text-center p-6 space-y-3">

@@ -1360,8 +1360,8 @@
     "semantic_hash": ""
   },
   "app/(admin)/dashboard-akademik/components/ComponentBreakdown.tsx": {
-    "mtime": 1785167199.0627809,
-    "ast_hash": "4a4affcb892bf1908fb005f07d193668",
+    "mtime": 1785167682.213773,
+    "ast_hash": "c17ec52846280c05252c0f2028dfd4ba",
     "semantic_hash": ""
   },
   "app/(admin)/dashboard-akademik/components/NilaiStatCards.tsx": {
@@ -1370,13 +1370,13 @@
     "semantic_hash": ""
   },
   "app/(admin)/dashboard-akademik/components/RecentActivities.tsx": {
-    "mtime": 1785167218.2261949,
-    "ast_hash": "4e62cd43e1058174dc911996c35f2aa3",
+    "mtime": 1785167665.4803553,
+    "ast_hash": "6ca19806fbeeaf3032f0990252a079fd",
     "semantic_hash": ""
   },
   "app/(admin)/dashboard-akademik/components/StudentRanking.tsx": {
-    "mtime": 1785167224.5805547,
-    "ast_hash": "92c674b7500393c3a4f13d3f3b129a2f",
+    "mtime": 1785167703.9449644,
+    "ast_hash": "b8873ffc2bd026c1d7f78cec5b62eb48",
     "semantic_hash": ""
   },
   "app/(admin)/dashboard-akademik/page.tsx": {
@@ -1390,8 +1390,8 @@
     "semantic_hash": ""
   },
   "components/common/MobileWidgetWrapper.tsx": {
-    "mtime": 1785167185.588567,
-    "ast_hash": "91ce762aed4a675c86f53569141ca84e",
+    "mtime": 1785167645.7361083,
+    "ast_hash": "e234f9b6f82e63390478e054dd4930ae",
     "semantic_hash": ""
   }
 }

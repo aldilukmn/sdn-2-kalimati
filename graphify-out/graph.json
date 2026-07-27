@@ -144,7 +144,7 @@
       "label": "ComponentBreakdownProps",
       "file_type": "code",
       "source_file": "app/(admin)/dashboard-akademik/components/ComponentBreakdown.tsx",
-      "source_location": "L7",
+      "source_location": "L6",
       "_origin": "ast",
       "id": "app_admin_dashboard_akademik_components_componentbreakdown_componentbreakdownprops",
       "community": 2,
@@ -155,7 +155,7 @@
       "label": "ComponentBreakdown()",
       "file_type": "code",
       "source_file": "app/(admin)/dashboard-akademik/components/ComponentBreakdown.tsx",
-      "source_location": "L20",
+      "source_location": "L19",
       "_origin": "ast",
       "id": "app_admin_dashboard_akademik_components_componentbreakdown_componentbreakdown",
       "community": 2,
@@ -254,7 +254,7 @@
       "label": "StudentRankingProps",
       "file_type": "code",
       "source_file": "app/(admin)/dashboard-akademik/components/StudentRanking.tsx",
-      "source_location": "L8",
+      "source_location": "L7",
       "_origin": "ast",
       "id": "app_admin_dashboard_akademik_components_studentranking_studentrankingprops",
       "community": 2,
@@ -265,7 +265,7 @@
       "label": "StudentRanking()",
       "file_type": "code",
       "source_file": "app/(admin)/dashboard-akademik/components/StudentRanking.tsx",
-      "source_location": "L14",
+      "source_location": "L13",
       "_origin": "ast",
       "id": "app_admin_dashboard_akademik_components_studentranking_studentranking",
       "community": 2,
@@ -4668,8 +4668,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "components_nilai_harian_rekaptable",
-      "community": 21,
-      "community_name": "nilai-harian.ts",
+      "community": 8,
+      "community_name": "komponen-nilai/page.tsx",
       "norm_label": "rekaptable.tsx"
     },
     {
@@ -4679,8 +4679,8 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "components_nilai_harian_rekaptable_props",
-      "community": 21,
-      "community_name": "nilai-harian.ts",
+      "community": 8,
+      "community_name": "komponen-nilai/page.tsx",
       "norm_label": "props"
     },
     {
@@ -4690,8 +4690,8 @@
       "source_location": "L17",
       "_origin": "ast",
       "id": "components_nilai_harian_rekaptable_rekaptable",
-      "community": 21,
-      "community_name": "nilai-harian.ts",
+      "community": 8,
+      "community_name": "komponen-nilai/page.tsx",
       "norm_label": "rekaptable()"
     },
     {
@@ -8078,8 +8078,8 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "package_dependencies_tailwindcss_typography",
-      "community": 31,
-      "community_name": "kelas-5/page.tsx",
+      "community": 20,
+      "community_name": "dependencies",
       "norm_label": "@tailwindcss/typography"
     },
     {
@@ -8089,8 +8089,8 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "tailwindcss_typography",
-      "community": 31,
-      "community_name": "kelas-5/page.tsx",
+      "community": 20,
+      "community_name": "dependencies",
       "norm_label": "@tailwindcss/typography"
     },
     {
@@ -8232,8 +8232,8 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "package_dependencies_date_fns",
-      "community": 20,
-      "community_name": "dependencies",
+      "community": 31,
+      "community_name": "kelas-5/page.tsx",
       "norm_label": "date-fns"
     },
     {
@@ -8243,8 +8243,8 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "date_fns",
-      "community": 20,
-      "community_name": "dependencies",
+      "community": 31,
+      "community_name": "kelas-5/page.tsx",
       "norm_label": "date-fns"
     },
     {
@@ -9497,8 +9497,8 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "services_grade_subject_service_gradesubjectservice_getall",
-      "community": 43,
-      "community_name": ".getAll",
+      "community": 26,
+      "community_name": "useRekapNilaiAkhir.ts",
       "norm_label": ".getall()"
     },
     {
@@ -10069,8 +10069,8 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "services_score_service_scoreservice_bulkcreate",
-      "community": 8,
-      "community_name": "komponen-nilai/page.tsx",
+      "community": 43,
+      "community_name": ".getAll",
       "norm_label": ".bulkcreate()"
     },
     {
@@ -11532,8 +11532,8 @@
       "source_location": "L47",
       "_origin": "ast",
       "id": "types_nilai_harian_gradesubjectqueryparams",
-      "community": 43,
-      "community_name": ".getAll",
+      "community": 26,
+      "community_name": "useRekapNilaiAkhir.ts",
       "norm_label": "gradesubjectqueryparams"
     },
     {
@@ -11642,8 +11642,8 @@
       "source_location": "L121",
       "_origin": "ast",
       "id": "types_nilai_harian_bulkscorerequest",
-      "community": 8,
-      "community_name": "komponen-nilai/page.tsx",
+      "community": 43,
+      "community_name": ".getAll",
       "norm_label": "bulkscorerequest"
     },
     {
@@ -11686,8 +11686,8 @@
       "source_location": "L149",
       "_origin": "ast",
       "id": "types_nilai_harian_rekapentry",
-      "community": 21,
-      "community_name": "nilai-harian.ts",
+      "community": 8,
+      "community_name": "komponen-nilai/page.tsx",
       "norm_label": "rekapentry"
     },
     {
@@ -11697,8 +11697,8 @@
       "source_location": "L158",
       "_origin": "ast",
       "id": "types_nilai_harian_classaverageitem",
-      "community": 21,
-      "community_name": "nilai-harian.ts",
+      "community": 8,
+      "community_name": "komponen-nilai/page.tsx",
       "norm_label": "classaverageitem"
     },
     {
@@ -13413,7 +13413,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "app/(admin)/dashboard-akademik/components/ComponentBreakdown.tsx",
-      "source_location": "L20",
+      "source_location": "L19",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_admin_dashboard_akademik_components_componentbreakdown",
@@ -13424,7 +13424,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "app/(admin)/dashboard-akademik/components/ComponentBreakdown.tsx",
-      "source_location": "L7",
+      "source_location": "L6",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_admin_dashboard_akademik_components_componentbreakdown",
@@ -13472,7 +13472,7 @@
       "context": "field",
       "confidence": "EXTRACTED",
       "source_file": "app/(admin)/dashboard-akademik/components/ComponentBreakdown.tsx",
-      "source_location": "L8",
+      "source_location": "L7",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_admin_dashboard_akademik_components_componentbreakdown_componentbreakdownprops",
@@ -13622,7 +13622,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "app/(admin)/dashboard-akademik/components/StudentRanking.tsx",
-      "source_location": "L14",
+      "source_location": "L13",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_admin_dashboard_akademik_components_studentranking",
@@ -13633,7 +13633,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "app/(admin)/dashboard-akademik/components/StudentRanking.tsx",
-      "source_location": "L8",
+      "source_location": "L7",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_admin_dashboard_akademik_components_studentranking",
@@ -13681,7 +13681,7 @@
       "context": "field",
       "confidence": "EXTRACTED",
       "source_file": "app/(admin)/dashboard-akademik/components/StudentRanking.tsx",
-      "source_location": "L9",
+      "source_location": "L8",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_admin_dashboard_akademik_components_studentranking_studentrankingprops",
@@ -45218,5 +45218,5 @@
       "source_file": "AGENTS.md"
     }
   ],
-  "built_at_commit": "4d71f7ee5bf0feee61e9e9027d2f20201da18b58"
+  "built_at_commit": "3df198a7fa275066a3548842b62b3d077917ce99"
 }
