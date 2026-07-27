@@ -1,9 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { Activity, BookOpen, FileText, Users, PieChart, Clock, ChevronDown } from "lucide-react";
+import { Activity, BookOpen, FileText, Users, PieChart, Clock, ChevronDown, Info } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import { id } from "date-fns/locale";
+import toast from "react-hot-toast";
 import Pagination from "@/components/common/Pagination";
 
 interface RecentActivity {
@@ -149,9 +150,23 @@ export function RecentActivities({ activities = [], loading }: RecentActivitiesP
                 </div>
                 
                 <div className="flex-1 min-w-0 flex flex-col justify-center">
-                  <h4 className="font-semibold text-sm text-slate-800 dark:text-slate-200 truncate" title={activity.title}>
-                    {activity.title}
-                  </h4>
+                  <div className="flex items-center gap-1.5 min-w-0">
+                    <h4 className="font-semibold text-sm text-slate-800 dark:text-slate-200 truncate" title={activity.title}>
+                      {activity.title}
+                    </h4>
+                    {activity.title.length > 35 && (
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          toast(activity.title, { icon: "ℹ️", duration: 4000 });
+                        }}
+                        className="md:hidden shrink-0 text-amber-500 hover:text-amber-600 cursor-pointer"
+                        title="Lihat teks lengkap"
+                      >
+                        <Info size={16} />
+                      </button>
+                    )}
+                  </div>
                   <div className="flex items-center gap-2 mt-1">
                     <span className={`w-max text-[10px] font-semibold px-2 py-0.5 rounded-full ${getBadgeColor(activity.category)}`}>
                       {activity.category}
