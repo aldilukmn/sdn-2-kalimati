@@ -28,10 +28,10 @@ export default function MobileWidgetWrapper({
 
 
   useEffect(() => {
-    let timer: NodeJS.Timeout;
+    let timer: ReturnType<typeof setTimeout>;
     if (isExpanded) {
-      // Tunggu animasi CSS Grid selesai (300ms) sebelum render data berat
-      timer = setTimeout(() => setRenderContent(true), 320);
+      // Tunggu animasi CSS Grid selesai (300ms), lalu beri jeda ekstra agar skeleton terlihat (total 600ms)
+      timer = setTimeout(() => setRenderContent(true), 600);
     } else {
       // Saat ditutup, langsung sembunyikan data berat agar animasi menutup sangat mulus
       setRenderContent(false);
@@ -63,7 +63,7 @@ export default function MobileWidgetWrapper({
         </div>
       </div>
       
-      <div className={`md:flex-1 grid transition-[grid-template-rows,opacity] duration-300 ease-in-out ${isExpanded ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0 md:grid-rows-[1fr] md:opacity-100"}`}>
+      <div className={`md:flex-1 grid transition-[grid-template-rows] duration-300 ease-in-out ${isExpanded ? "grid-rows-[1fr]" : "grid-rows-[0fr] md:grid-rows-[1fr]"}`}>
         <div className="overflow-hidden min-h-0 md:flex md:flex-col md:h-full">
           <div className={`px-4 pb-4 md:px-5 md:pb-5 md:pt-0 pt-0 flex-1 flex flex-col ${bodyClassName}`}>
             {actionRight && (
