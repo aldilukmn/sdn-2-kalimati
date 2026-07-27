@@ -60,6 +60,19 @@ export function RecentActivities({ activities = [], loading }: RecentActivitiesP
     }
   };
 
+  const getShortTime = (date: string) => {
+    const full = formatDistanceToNow(new Date(date), { addSuffix: true, locale: id });
+    return full
+      .replace("sekitar ", "")
+      .replace("kurang dari semenit yang lalu", "baru saja")
+      .replace(" yang lalu", " lalu")
+      .replace(" menit", "m")
+      .replace(" jam", "j")
+      .replace(" hari", "h")
+      .replace(" bulan", "bln")
+      .replace(" tahun", "thn");
+  };
+
   if (loading) {
     return (
       <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 p-6 flex flex-col min-h-[400px]">
@@ -136,7 +149,7 @@ export function RecentActivities({ activities = [], loading }: RecentActivitiesP
                 {/* Mobile Timestamp (visible only on small screens next to title) */}
                 <div className="sm:hidden shrink-0 flex items-center gap-1 text-[10px] text-slate-500 dark:text-slate-400">
                   <Clock className="w-3 h-3" />
-                  {formatDistanceToNow(new Date(activity.date), { addSuffix: true, locale: id })}
+                  {getShortTime(activity.date)}
                 </div>
               </div>
               
