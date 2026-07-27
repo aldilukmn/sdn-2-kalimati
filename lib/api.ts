@@ -24,6 +24,7 @@ export const api = async <T = any>(
   const response = await fetch(
     `${API_URL}${endpoint}`,
     {
+      cache: "no-store",
       ...options,
       headers: {
         Authorization: token

@@ -94,9 +94,9 @@ export function ComponentBreakdown({
         </div>
       </div>
 
-      <div className={`flex-1 grid transition-[grid-template-rows] duration-300 ease-in-out ${isExpanded ? "grid-rows-[1fr]" : "grid-rows-[0fr] md:grid-rows-[1fr]"}`}>
-        <div className="overflow-hidden min-h-0 flex flex-col h-full">
-          <div className="p-6 space-y-6 flex-1 flex flex-col justify-center">
+      <div className={`md:flex-1 grid transition-[grid-template-rows] duration-300 ease-in-out ${isExpanded ? "grid-rows-[1fr]" : "grid-rows-[0fr] md:grid-rows-[1fr]"}`}>
+        <div className="overflow-hidden min-h-0 md:flex md:flex-col md:h-full">
+          <div className="p-6 space-y-6 md:flex-1 flex flex-col justify-center">
         {items.map((item) => {
           const rateRaw =
             item.data && item.data.possible > 0

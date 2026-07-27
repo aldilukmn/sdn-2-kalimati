@@ -1,16 +1,16 @@
-# Graph Report - sdn-2-kalimati  (2026-07-27)
+# Graph Report - sdn-2-kalimati  (2026-07-26)
 
 ## Corpus Check
-- 277 files · ~125,629 words
+- 274 files · ~124,720 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 1152 nodes · 2763 edges · 89 communities (57 shown, 32 thin omitted)
+- 1141 nodes · 2744 edges · 83 communities (50 shown, 33 thin omitted)
 - Extraction: 99% EXTRACTED · 1% INFERRED · 0% AMBIGUOUS · INFERRED: 16 edges (avg confidence: 0.84)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `4d71f7ee`
+- Built from commit: `831815ef`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -51,21 +51,16 @@
 - package.json
 - AttendanceBarChart.tsx
 - StudentAttendanceTable.tsx
-- useDashboard.ts
 - siswa.ts
 - MonthYearPicker.tsx
 - PresensiStatusBadge.tsx
-- useAuth
 - AttendanceDonutChart.tsx
 - GraduationCountdownModal.tsx
-- .getAll
 - piket-kelas/page.tsx
 - rekap-presensi/layout.tsx
 - TextAreaField.tsx
 - type.ts
 - jadwal-pelajaran/page.tsx
-- IncompleteDataWidget.tsx
-- lib/api.ts
 - kelas.ts
 - date-fns
 - Conventional Commits Format
@@ -77,7 +72,6 @@
 - recharts
 - shadcn
 - tailwind-merge
-- lucide-react
 - @tiptap/starter-kit
 - tw-animate-css
 - xlsx
@@ -114,12 +108,12 @@
   docs/git/commit-rules.md → .gemini/rules/git-workflow.md
 - `MasterMapelPage()` --calls--> `useSubjects()`  [EXTRACTED]
   app/(admin)/kelola-mapel/page.tsx → hooks/useSubjects.ts
-- `CardDescription()` --calls--> `cn()`  [EXTRACTED]
-  components/ui/card.tsx → lib/utils.ts
-- `CardAction()` --calls--> `cn()`  [EXTRACTED]
-  components/ui/card.tsx → lib/utils.ts
-- `CardContent()` --calls--> `cn()`  [EXTRACTED]
-  components/ui/card.tsx → lib/utils.ts
+- `GradeRecapTable()` --calls--> `formatCompactRupiah()`  [EXTRACTED]
+  components/tabungan/GradeRecapTable.tsx → lib/format.ts
+- `MonthlyTab()` --calls--> `formatCompactRupiah()`  [EXTRACTED]
+  components/tabungan/MonthlyTab.tsx → lib/format.ts
+- `CatatanPage()` --calls--> `useAuth()`  [EXTRACTED]
+  app/(admin)/catatan/page.tsx → hooks/useAuth.ts
 
 ## Import Cycles
 - None detected.
@@ -130,15 +124,15 @@
 - **Refactor Phase Sequence** — docs_fe_refactor_plan_phase_1, docs_fe_refactor_plan_phase_2, docs_fe_refactor_plan_phase_3, docs_fe_refactor_plan_phase_4, docs_fe_refactor_plan_phase_5, docs_fe_refactor_plan_phase_6, docs_fe_refactor_plan_phase_7 [EXTRACTED 1.00]
 - **Refactoring Roadmap Cluster** — agents_refactoring_roadmap, agents_statcard, agents_pagehero, agents_modal, agents_grades_constant, agents_items_per_page, agents_type_cleanup, agents_tabungan_murid [EXTRACTED 1.00]
 
-## Communities (89 total, 32 thin omitted)
+## Communities (83 total, 33 thin omitted)
 
 ### Community 0 - "select.tsx"
-Cohesion: 0.05
-Nodes (68): Modal, NilaiStatCards(), NilaiStatCardsProps, SavingsTrendChart, AttendanceTrendChart, AttendanceTrendWidget(), AttendanceTrendWidgetProps, PresensiStatCards() (+60 more)
+Cohesion: 0.06
+Nodes (69): Modal, SavingsTrendChart, TabunganSection(), NilaiStatCards(), NilaiStatCardsProps, DailyPresensiView(), DistribusiStatus(), DistribusiStatusProps (+61 more)
 
 ### Community 1 - "student-attendance.service.ts"
-Cohesion: 0.16
-Nodes (12): Props, STATUS_LIST, AttendanceSummary, GradeAttendanceRow, StudentAbsenceRow, ViewMode, Entry, STATUS_BTN (+4 more)
+Cohesion: 0.29
+Nodes (8): AttendanceSummary, GradeAttendanceRow, StudentAbsenceRow, ViewMode, StudentAttendanceService, AttendanceReportItem, StudentAttendanceRequestType, StudentAttendanceType
 
 ### Community 2 - "login/page.tsx"
 Cohesion: 0.18
@@ -150,75 +144,75 @@ Nodes (28): NilaiLitnumPage(), PenilaianPage(), useAssessmentConfig(), useAssess
 
 ### Community 4 - "student-savings.service.ts"
 Cohesion: 0.05
-Nodes (45): TabunganSection(), TabunganMuridPage(), MONTHS_SHORT, Props, SavingsTrendChart(), LoadingDots(), ModalProps, ConfirmDeleteModalProps (+37 more)
+Nodes (40): TabunganMuridPage(), MONTHS_SHORT, Props, SavingsTrendChart(), LoadingDots(), ModalProps, ConfirmDeleteModalProps, DailyTabProps (+32 more)
 
 ### Community 5 - "character-assessment.service.ts"
-Cohesion: 0.07
-Nodes (32): DashboardKarakterPage(), KonfigurasiKaihPage(), Modal, KarakterDetailPage(), PenilaianKarakterPage(), HabitRadioGroup(), HabitRadioGroupProps, OPTIONS (+24 more)
+Cohesion: 0.06
+Nodes (39): KonfigurasiKaihPage(), Modal, HabitDisplay, KarakterDetailPage(), SCORE_COLORS, VALUE_COLORS, getScoreColor(), KarakterHistoryPage() (+31 more)
 
 ### Community 6 - "IncompleteDataWidget.tsx"
-Cohesion: 0.29
-Nodes (9): Props, AttendanceDonutChart, GuruDashboardView(), TeacherSummary, useTeacherDashboard(), useTeacherChart(), AttendanceMapValue, AttendanceRow (+1 more)
+Cohesion: 0.08
+Nodes (29): Props, AdminDashboardView(), AttendanceDonutChart, GuruDashboardView(), ChecklistItem, formatCategoryLabel(), formatDayDate(), IncompleteDataWidget() (+21 more)
 
 ### Community 7 - "Refactoring Roadmap (20 Items)"
 Cohesion: 0.07
 Nodes (34): lib/api.ts API Client, ApiResponse T Type, DashboardSidebar Component, DateDayPicker Component, Dual Token Auth (sessionStorage + cookie), GRADES Constant, Holiday System, ITEMS_PER_PAGE Constant (+26 more)
 
 ### Community 8 - "komponen-nilai/page.tsx"
-Cohesion: 0.22
-Nodes (8): ChapterService, ScoreService, StudentAttendanceService, BulkScoreRequest, Chapter, ChapterCreateRequest, ChapterUpdateRequest, Score
+Cohesion: 0.10
+Nodes (19): TabKarakter(), TabKarakterProps, TabKeaktifan(), TabKeaktifanProps, TabLitnum(), TabLitnumProps, TabNilaiHarian(), TabNilaiHarianProps (+11 more)
 
 ### Community 9 - "Pagination.tsx"
-Cohesion: 0.09
-Nodes (16): RecentActivities(), RecentActivitiesProps, RecentActivity, gameLinks, dataTKA, getGrade(), HasilTKA(), dataKelulusan (+8 more)
+Cohesion: 0.14
+Nodes (9): gameLinks, dataTKA, getGrade(), HasilTKA(), dataKelulusan, dataKelulusanType, tariLinks, TypeTariLinks (+1 more)
 
 ### Community 10 - "compilerOptions"
 Cohesion: 0.07
 Nodes (27): dom, dom.iterable, esnext, .next/dev/types/**/*.ts, next-env.d.ts, .next/types/**/*.ts, node_modules, **/*.ts (+19 more)
 
 ### Community 11 - "NoteCard.tsx"
-Cohesion: 0.17
+Cohesion: 0.18
 Nodes (10): CatatanPage(), NoteCard(), NoteCardProps, RichTextEditorProps, useNotes(), formatDateWithDayID(), NoteService, Note (+2 more)
 
 ### Community 12 - "useNilaiHarian"
-Cohesion: 0.18
-Nodes (9): BerandaPenjaga(), LoginPage(), LogoutButton(), ROLE_STYLES, AuthCard(), AuthCardProps, AuthService, JwtPayload (+1 more)
+Cohesion: 0.32
+Nodes (4): menuItems, JumlahMurid(), NamaMurid(), WaliKelas()
 
 ### Community 13 - "components.json"
 Cohesion: 0.09
 Nodes (21): aliases, components, hooks, lib, ui, utils, iconLibrary, menuAccent (+13 more)
 
 ### Community 14 - "pmb/page.tsx"
-Cohesion: 0.24
-Nodes (7): MasterStrukturPage(), useChapters(), MaterialService, Material, MaterialCreateRequest, MaterialUpdateRequest, ReorderItem
+Cohesion: 0.17
+Nodes (11): EditRegistration(), emptyForm, initialFormData, Pmb(), RegistrationCard(), RegistrationCounter(), LoadingModal(), LoadingModalProps (+3 more)
 
 ### Community 15 - "StudentDataStep.tsx"
-Cohesion: 0.05
-Nodes (50): EditRegistration(), emptyForm, DataPendaftar(), formatDateTime(), initialFormData, Pmb(), DatePickerFieldProps, HolidayInfoCard() (+42 more)
+Cohesion: 0.13
+Nodes (14): DatePickerFieldProps, InputField, InputFieldProps, SelectField, SelectFieldProps, GuardianDataStepProps, ParentDataStepProps, StudentDataStepProps (+6 more)
 
 ### Community 16 - "DashboardSidebar.tsx"
-Cohesion: 0.18
-Nodes (11): DashboardSidebar(), SidebarProps, useAssessmentConfig(), useSidebarData(), guruAllowedHrefs, MenuGroup, MenuItem, menuItems (+3 more)
+Cohesion: 0.06
+Nodes (38): DashboardClient(), DashboardKarakterPage(), DashboardPage(), AdminLayout(), metadata, ProfileView(), Props, ROLE_COLORS (+30 more)
 
 ### Community 17 - "cn"
-Cohesion: 0.06
-Nodes (43): DailyPresensiView(), DistribusiStatus(), DistribusiStatusProps, InsightTable(), ABSEN_COLOR(), AttendanceBarChart, MonthlyPresensiView(), MonthlyPresensiViewProps (+35 more)
+Cohesion: 0.15
+Nodes (17): geist, metadata, poppins, RootLayout(), ThemeProvider(), Card(), CardAction(), CardContent() (+9 more)
 
 ### Community 18 - "data-pendaftar/page.tsx"
-Cohesion: 0.21
-Nodes (8): AdminDashboardView(), CARDS, DashboardStatCards(), Props, StatCardKey, Props, DashboardSummary, useDashboard()
+Cohesion: 0.20
+Nodes (12): DataPendaftar(), formatDateTime(), HolidayInfoCard(), HolidayInfoCardProps, formatDateID(), printRegistrantForm(), Address, Guardian (+4 more)
 
 ### Community 19 - "grade-subject.service.ts"
-Cohesion: 0.26
-Nodes (6): SubjectsTabProps, useSubjects(), SubjectService, Subject, SubjectCreateRequest, SubjectUpdateRequest
+Cohesion: 0.47
+Nodes (3): PaginationProps, Button(), buttonVariants
 
 ### Community 20 - "dependencies"
 Cohesion: 0.12
-Nodes (17): @base-ui/react, canvas-confetti, date-fns, gsap, dependencies, @base-ui/react, canvas-confetti, date-fns (+9 more)
+Nodes (17): @base-ui/react, canvas-confetti, gsap, lucide-react, dependencies, @base-ui/react, canvas-confetti, gsap (+9 more)
 
 ### Community 21 - "nilai-harian.ts"
-Cohesion: 0.14
-Nodes (14): TabNonHarianProps, Props, Props, ACADEMIC_YEARS, SEMESTERS, AssessmentConfigCreateRequest, AssessmentComponent, AssessmentConfig (+6 more)
+Cohesion: 0.05
+Nodes (50): MasterStrukturPage(), AssignTabProps, SubjectsTabProps, TabNonHarianProps, NilaiHarianPage(), RekapNilaiPage(), Props, Props (+42 more)
 
 ### Community 22 - "Sprint 3: Input Nilai Harian"
 Cohesion: 0.23
@@ -229,16 +223,16 @@ Cohesion: 0.13
 Nodes (15): devDependencies, tailwindcss, @tailwindcss/postcss, @types/canvas-confetti, @types/node, @types/react, @types/react-dom, typescript (+7 more)
 
 ### Community 24 - "app/layout.tsx"
-Cohesion: 0.27
-Nodes (7): DashboardClient(), DashboardPage(), AdminLayout(), metadata, AuthResult, ProfileState, decodeJWT()
+Cohesion: 0.38
+Nodes (6): AuthContext, AuthContextType, AuthProvider(), AuthState, getCookie(), readAuthState()
 
 ### Community 25 - "table.tsx"
-Cohesion: 0.27
-Nodes (6): AssignTabProps, GradeSubjectService, BulkGradeSubjectCreateRequest, GradeSubject, GradeSubjectCreateRequest, GradeSubjectUpdateRequest
+Cohesion: 0.39
+Nodes (5): Props, STATUS_LIST, Entry, STATUS_BTN, STATUS_LABEL
 
 ### Community 26 - "useRekapNilaiAkhir.ts"
-Cohesion: 0.32
-Nodes (7): NilaiAkhirPage(), useFinalScore(), useRekapNilaiAkhir(), FinalScoreService, CalculateResponse, ComponentScoreDto, FinalScoreEntry
+Cohesion: 0.20
+Nodes (11): NilaiAkhirPage(), RekapNilaiAkhirPage(), Props, useFinalScore(), MatrixRow, SubjectColumn, useRekapNilaiAkhir(), FinalScoreService (+3 more)
 
 ### Community 27 - "kelola-mapel/page.tsx"
 Cohesion: 0.20
@@ -264,10 +258,6 @@ Nodes (6): AttendanceBarChart(), GRADE_COLORS, Props, RECHARTS_PROPS, sanitizeDO
 Cohesion: 0.38
 Nodes (6): getRateColor(), Props, RATE_COLORS, STATUS_COLUMNS, StudentAttendanceTable(), StudentRow
 
-### Community 36 - "useDashboard.ts"
-Cohesion: 0.33
-Nodes (7): AttendanceTrendChart(), MONTHS_SHORT, Props, DashboardService, AttendanceTrendItem, DashboardSummary, TeacherDashboardSummary
-
 ### Community 37 - "siswa.ts"
 Cohesion: 0.33
 Nodes (3): daftarKelas, dataSiswa, Siswa
@@ -280,48 +270,24 @@ Nodes (3): CURRENT_YEAR, MONTHS, MonthYearPickerProps
 Cohesion: 0.40
 Nodes (3): ITEMS, Props, StatusCardItem
 
-### Community 40 - "useAuth"
-Cohesion: 0.20
-Nodes (6): ProfileView(), Props, ROLE_COLORS, ROLE_LABELS, RekapNilaiAkhirPage(), useAuth()
-
-### Community 43 - ".getAll"
-Cohesion: 0.29
-Nodes (6): NilaiHarianPage(), RekapNilaiPage(), useHarianData(), useNilaiHarian(), useRekapNilai(), GradeSubjectQueryParams
-
-### Community 57 - "IncompleteDataWidget.tsx"
-Cohesion: 0.32
-Nodes (5): ChecklistItem, formatCategoryLabel(), formatDayDate(), IncompleteDataWidget(), IncompleteDataWidgetProps
-
-### Community 58 - "lib/api.ts"
-Cohesion: 0.36
-Nodes (4): api(), getCookie(), ApiResponse, ApiStatus
-
-### Community 60 - "date-fns"
-Cohesion: 0.40
-Nodes (4): DashboardShell(), Props, DashboardNavbar(), NavbarProps
-
 ### Community 83 - "data-gtk/page.tsx"
-Cohesion: 0.18
-Nodes (10): emptyForm, FormData, Modal, ROLE_OPTIONS, ConfirmDialog(), Modal, ExportWordButton(), exportPresensiMatriksToWord() (+2 more)
+Cohesion: 0.21
+Nodes (8): emptyForm, FormData, Modal, ROLE_OPTIONS, ConfirmDialog(), Modal, TeacherType, User
 
 ### Community 84 - "useAuth"
-Cohesion: 0.33
-Nodes (5): DashboardPresensiPage(), RekapPresensi(), useDashboardPresensi(), useHolidays(), usePresensi()
+Cohesion: 0.24
+Nodes (7): DashboardPresensiPage(), RekapPresensi(), ExportWordButton(), useDashboardPresensi(), useHolidays(), usePresensi(), exportPresensiMatriksToWord()
 
 ### Community 85 - "export-presensi-csv.ts"
 Cohesion: 0.26
 Nodes (13): RekapKarapkterPage(), downloadCSV(), wrap(), exportRegistrantsToCSV(), formatDate(), HEADERS, AttendanceRecapRow, AttendanceRow (+5 more)
-
-### Community 89 - "UserService"
-Cohesion: 0.22
-Nodes (3): DataGTK(), useProfile(), UserService
 
 ### Community 90 - "MasterStudentType"
 Cohesion: 0.42
 Nodes (3): DataMuridPage(), MasterStudentService, MasterStudentType
 
 ### Community 92 - "holiday.service.ts"
-Cohesion: 0.25
+Cohesion: 0.29
 Nodes (5): PresensiMuridPage(), HolidayItem, HolidayService, Holiday, HolidayCheckResult
 
 ### Community 95 - "README.md"
@@ -329,24 +295,24 @@ Cohesion: 0.33
 Nodes (5): Dashboard Admin (`/dashboard`), Deploy on Vercel, Fitur Utama, Getting Started, Learn More
 
 ## Knowledge Gaps
-- **265 isolated node(s):** `Modal`, `NilaiStatCardsProps`, `RecentActivity`, `RecentActivitiesProps`, `AttendanceTrendChart` (+260 more)
+- **260 isolated node(s):** `Modal`, `NilaiStatCardsProps`, `DistribusiStatusProps`, `AttendanceTrendChart`, `AttendanceBarChart` (+255 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **32 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **33 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `useAuth()` connect `useAuth` to `select.tsx`, `student-attendance.service.ts`, `login/page.tsx`, `useAssessmentScore.ts`, `student-savings.service.ts`, `character-assessment.service.ts`, `IncompleteDataWidget.tsx`, `komponen-nilai/page.tsx`, `NoteCard.tsx`, `useNilaiHarian`, `pmb/page.tsx`, `StudentDataStep.tsx`, `DashboardSidebar.tsx`, `cn`, `app/layout.tsx`, `useRekapNilaiAkhir.ts`, `.getAll`, `date-fns`, `data-gtk/page.tsx`, `useAuth`, `UserService`, `MasterStudentType`?**
-  _High betweenness centrality (0.140) - this node is a cross-community bridge._
-- **Why does `dependencies` connect `dependencies` to `clsx`, `package.json`, `react`, `react-hot-toast`, `recharts`, `shadcn`, `lucide-react`, `tailwind-merge`, `@tiptap/starter-kit`, `tw-animate-css`, `xlsx`, `kelas-5/page.tsx`, `lib/api.ts`, `html-to-image`, `next`?**
-  _High betweenness centrality (0.122) - this node is a cross-community bridge._
+- **Why does `useAuth()` connect `DashboardSidebar.tsx` to `select.tsx`, `login/page.tsx`, `useRekapNilaiAkhir.ts`, `useAssessmentScore.ts`, `character-assessment.service.ts`, `IncompleteDataWidget.tsx`, `student-savings.service.ts`, `NoteCard.tsx`, `data-pendaftar/page.tsx`, `data-gtk/page.tsx`, `useAuth`, `nilai-harian.ts`, `UserService`, `MasterStudentType`, `table.tsx`?**
+  _High betweenness centrality (0.147) - this node is a cross-community bridge._
+- **Why does `dependencies` connect `dependencies` to `clsx`, `package.json`, `react`, `react-hot-toast`, `recharts`, `shadcn`, `tailwind-merge`, `@tiptap/starter-kit`, `tw-animate-css`, `xlsx`, `kelas-5/page.tsx`, `date-fns`, `lib/api.ts`, `html-to-image`, `next`?**
+  _High betweenness centrality (0.092) - this node is a cross-community bridge._
 - **Why does `xlsx` connect `xlsx` to `MasterStudentType`, `student-savings.service.ts`, `dependencies`?**
-  _High betweenness centrality (0.119) - this node is a cross-community bridge._
-- **What connects `Modal`, `NilaiStatCardsProps`, `RecentActivity` to the rest of the system?**
-  _265 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _High betweenness centrality (0.090) - this node is a cross-community bridge._
+- **What connects `Modal`, `NilaiStatCardsProps`, `DistribusiStatusProps` to the rest of the system?**
+  _260 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `select.tsx` be split into smaller, more focused modules?**
-  _Cohesion score 0.050747442958300554 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.05573326771653543 - nodes in this community are weakly interconnected._
 - **Should `useAssessmentScore.ts` be split into smaller, more focused modules?**
   _Cohesion score 0.06923076923076923 - nodes in this community are weakly interconnected._
 - **Should `student-savings.service.ts` be split into smaller, more focused modules?**
-  _Cohesion score 0.050957481337228175 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.05213089802130898 - nodes in this community are weakly interconnected._

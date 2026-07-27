@@ -1,5 +1,6 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import {
   CalendarCheck,
@@ -7,6 +8,7 @@ import {
   ArrowRight,
   CalendarDays,
   Calendar,
+  TrendingUp,
 } from "lucide-react";
 import {
   Select,
@@ -22,15 +24,20 @@ import { useDashboardPresensi, type ViewMode } from "@/hooks/useDashboardPresens
 import { GRADES, AVAILABLE_YEARS } from "@/lib/constants";
 import { MONTHS_ID } from "@/lib/format";
 import PageHero from "@/components/layout/PageHero";
+import MobileWidgetWrapper from "@/components/common/MobileWidgetWrapper";
 import LoadingSkeleton from "@/components/shared/LoadingSkeleton";
 import DateDayPicker from "@/components/common/DateDayPicker";
 import FilterBar from "@/components/shared/FilterBar";
 import ExportWordButton from "@/components/common/ExportWordButton";
 
+const AttendanceDonutChart = dynamic(() => import("@/components/charts/AttendanceDonutChart"), { ssr: false });
+
 import { MonthlyPresensiView } from "./components/MonthlyPresensiView";
 import { DailyPresensiView } from "./components/DailyPresensiView";
 import { DistribusiStatus } from "./components/DistribusiStatus";
 import { PresensiStatCards } from "./components/PresensiStatCards";
+import { AttendanceTrendWidget } from "./components/AttendanceTrendWidget";
+
 
 function ViewToggle({
   mode,
@@ -78,6 +85,7 @@ export default function DashboardPresensiPage() {
     trendYear,
     setTrendYear,
     summary,
+    studentRows,
     gradeRows,
     topAbsen,
     topLowHadir,
@@ -190,17 +198,53 @@ export default function DashboardPresensiPage() {
             avgHadirPerSiswa={avgHadirPerSiswa}
           />
 
-          <DistribusiStatus
-            isHarian={isHarian}
-            totalStudents={totalStudents}
-            loading={loading}
-            summary={summary}
-          />
+          <div className={`grid grid-cols-1 ${!isHarian ? 'lg:grid-cols-2' : ''} gap-6`}>
+            <DistribusiStatus
+              isHarian={isHarian}
+              totalStudents={totalStudents}
+              loading={loading}
+              summary={summary}
+            />
+            
+            {!isHarian && (
+              <MobileWidgetWrapper
+                title="Ringkasan Kehadiran"
+                icon={<CalendarCheck size={16} className="text-indigo-500 dark:text-indigo-400" />}
+              >
+                <p className="text-[11px] text-slate-400 dark:text-slate-500 mb-3 pt-2">
+                  Distribusi kehadiran murid per bulan
+                </p>
+                <div className="flex-1 min-h-[220px] flex items-center justify-center mt-2">
+                  <div className="w-full max-w-[300px]">
+                    <AttendanceDonutChart
+                      data={summary && summary.total > 0 ? [
+                        { name: "hadir", value: summary.hadir, color: "#10b981" },
+                        { name: "sakit", value: summary.sakit, color: "#f59e0b" },
+                        { name: "izin", value: summary.izin, color: "#3b82f6" },
+                        { name: "absen", value: summary.absen, color: "#ef4444" },
+                      ] : []}
+                      loading={loading}
+                      totalDays={studentRows && studentRows.length > 0 ? Math.max(...studentRows.map(s => s.hadir + s.sakit + s.izin + s.absen)) : 0}
+                      hideLegend={true}
+                      height={220}
+                    />
+                  </div>
+                </div>
+              </MobileWidgetWrapper>
+            )}
+          </div>
+
+          <div>
+            <AttendanceTrendWidget
+              isHarian={isHarian}
+              grade={grade}
+              initialDate={selectedDate}
+              initialYear={year}
+            />
+          </div>
 
           {!isHarian ? (
             <MonthlyPresensiView
-              trendYear={trendYear}
-              setTrendYear={setTrendYear}
               grade={grade}
               isAdminOrKepala={isAdminOrKepala}
               gradeRows={gradeRows}

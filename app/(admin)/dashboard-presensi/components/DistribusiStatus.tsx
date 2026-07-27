@@ -1,4 +1,5 @@
 import { Users } from "lucide-react";
+import MobileWidgetWrapper from "@/components/common/MobileWidgetWrapper";
 
 function DistBar({
   label,
@@ -58,63 +59,62 @@ export function DistribusiStatus({
   summary,
 }: DistribusiStatusProps) {
   return (
-    <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
-      <div className="flex items-center gap-2 mb-1">
-        <Users size={16} className="text-indigo-500 dark:text-indigo-400 shrink-0" />
-        <h3 className="text-sm font-semibold text-slate-600 dark:text-slate-400">
-          Distribusi Status Kehadiran
-        </h3>
-      </div>
-      <p className="text-[11px] text-slate-400 dark:text-slate-500 mb-3">
+    <MobileWidgetWrapper
+      title="Distribusi Status Kehadiran"
+      icon={<Users size={16} className="text-indigo-500 dark:text-indigo-400" />}
+    >
+      <p className="text-[11px] text-slate-400 dark:text-slate-500 mb-3 pt-2">
         {isHarian
           ? `Total ${totalStudents} murid terdaftar di kelas ini`
           : `Total entri per murid selama bulan yang dipilih — % dihitung dari keseluruhan`}
       </p>
-      {loading ? (
-        <div className="space-y-3">
-          {[1, 2, 3, 4].map((i) => (
-            <div
-              key={i}
-              className="h-4 rounded-full bg-slate-200 dark:bg-slate-700 animate-pulse"
+      <div className="flex-1 flex flex-col justify-center">
+        {loading ? (
+          <div className="space-y-3">
+            {[1, 2, 3, 4].map((i) => (
+              <div
+                key={i}
+                className="h-4 rounded-full bg-slate-200 dark:bg-slate-700 animate-pulse"
+              />
+            ))}
+          </div>
+        ) : (
+          <div className="space-y-3">
+            <DistBar
+              label="Hadir"
+              count={summary?.hadir ?? 0}
+              total={summary?.total ?? 0}
+              colorBar="bg-emerald-500"
+              colorText="text-emerald-600 dark:text-emerald-400"
+              subtitle={isHarian ? "murid" : "entri"}
             />
-          ))}
-        </div>
-      ) : (
-        <div className="space-y-3">
-          <DistBar
-            label="Hadir"
-            count={summary?.hadir ?? 0}
-            total={summary?.total ?? 0}
-            colorBar="bg-emerald-500"
-            colorText="text-emerald-600 dark:text-emerald-400"
-            subtitle={isHarian ? "murid" : "entri"}
-          />
-          <DistBar
-            label="Sakit"
-            count={summary?.sakit ?? 0}
-            total={summary?.total ?? 0}
-            colorBar="bg-amber-400"
-            colorText="text-amber-600 dark:text-amber-400"
-            subtitle={isHarian ? "murid" : "entri"}
-          />
-          <DistBar
-            label="Izin"
-            count={summary?.izin ?? 0}
-            total={summary?.total ?? 0}
-            colorBar="bg-blue-500"
-            colorText="text-blue-600 dark:text-blue-400"
-            subtitle={isHarian ? "murid" : "entri"}
-          />
-          <DistBar
-            label="Alpa"
-            count={summary?.absen ?? 0}
-            total={summary?.total ?? 0}
-            colorBar="bg-red-500"
-            colorText="text-red-600 dark:text-red-400"
-            subtitle={isHarian ? "murid" : "entri"}
-          />
-        </div>
-      )}
-    </div>
+            <DistBar
+              label="Sakit"
+              count={summary?.sakit ?? 0}
+              total={summary?.total ?? 0}
+              colorBar="bg-amber-400"
+              colorText="text-amber-600 dark:text-amber-400"
+              subtitle={isHarian ? "murid" : "entri"}
+            />
+            <DistBar
+              label="Izin"
+              count={summary?.izin ?? 0}
+              total={summary?.total ?? 0}
+              colorBar="bg-blue-500"
+              colorText="text-blue-600 dark:text-blue-400"
+              subtitle={isHarian ? "murid" : "entri"}
+            />
+            <DistBar
+              label="Absen"
+              count={summary?.absen ?? 0}
+              total={summary?.total ?? 0}
+              colorBar="bg-red-500"
+              colorText="text-red-600 dark:text-red-400"
+              subtitle={isHarian ? "murid" : "entri"}
+            />
+          </div>
+        )}
+      </div>
+    </MobileWidgetWrapper>
   );
 }

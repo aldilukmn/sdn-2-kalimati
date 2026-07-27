@@ -1,4 +1,5 @@
 import { UserMinus } from "lucide-react";
+import MobileWidgetWrapper from "@/components/common/MobileWidgetWrapper";
 import {
   Table,
   TableBody,
@@ -23,14 +24,12 @@ export function DailyPresensiView({
   }[];
 }) {
   return (
-    <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5 overflow-hidden">
-      <div className="flex items-center gap-2 mb-3">
-        <UserMinus size={16} className="text-red-500 dark:text-red-400 shrink-0" />
-        <h3 className="text-sm font-semibold text-slate-600 dark:text-slate-400">
-          Murid Tidak Hadir Hari Ini
-        </h3>
-      </div>
-      <div className="overflow-x-auto  rounded-xl border border-gray-200 dark:border-gray-700 bg-white/80 dark:bg-gray-800/30">
+    <MobileWidgetWrapper
+      title="Murid Tidak Hadir Hari Ini"
+      icon={<UserMinus size={16} className="text-red-500 dark:text-red-400" />}
+      defaultExpanded={true}
+    >
+      <div className="overflow-x-auto rounded-xl border border-gray-200 dark:border-gray-700 bg-white/80 dark:bg-gray-800/30 mt-2">
         <Table>
           <TableHeader>
             <TableRow className="bg-gradient-to-r from-amber-500 to-orange-500 text-white">
@@ -60,7 +59,7 @@ export function DailyPresensiView({
                   </TableCell>
                   <TableCell className="text-center">
                     {(() => {
-                      const label = row.absen > 0 ? "Alpa" : row.sakit > 0 ? "Sakit" : "Izin";
+                      const label = row.absen > 0 ? "Absen" : row.sakit > 0 ? "Sakit" : "Izin";
                       const colors = row.absen > 0
                         ? "bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-300"
                         : row.sakit > 0
@@ -79,6 +78,6 @@ export function DailyPresensiView({
           </TableBody>
         </Table>
       </div>
-    </div>
+    </MobileWidgetWrapper>
   );
 }

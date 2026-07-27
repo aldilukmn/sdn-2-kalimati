@@ -61,7 +61,7 @@ export function PresensiStatCards({
         subtitle={isHarian ? `murid` : undefined}
       />
       <StatCard
-        label="Alpa"
+        label="Absen"
         value={summary?.absen ?? 0}
         icon={XCircle}
         color="red"

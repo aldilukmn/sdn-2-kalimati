@@ -1,3 +1,4 @@
+import MobileWidgetWrapper from "@/components/common/MobileWidgetWrapper";
 import {
   Table,
   TableBody,
@@ -36,14 +37,11 @@ export function InsightTable({
   col4Value: (r: (typeof rows)[0]) => { val: string | number; cls: string };
 }) {
   return (
-    <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5 overflow-hidden">
-      <div className="flex items-center gap-2 mb-3">
-        {icon}
-        <h3 className="text-sm font-semibold text-slate-600 dark:text-slate-400">
-          {title}
-        </h3>
-      </div>
-      <div className="overflow-x-auto  rounded-xl border border-gray-200 dark:border-gray-700 bg-white/80 dark:bg-gray-800/30 ">
+    <MobileWidgetWrapper
+      title={title}
+      icon={icon}
+    >
+      <div className="overflow-x-auto rounded-xl border border-gray-200 dark:border-gray-700 bg-white/80 dark:bg-gray-800/30 mt-2">
         <Table>
           <TableHeader>
             <TableRow className={`bg-gradient-to-r ${headerClass} text-white`}>
@@ -83,6 +81,6 @@ export function InsightTable({
           </TableBody>
         </Table>
       </div>
-    </div>
+    </MobileWidgetWrapper>
   );
 }

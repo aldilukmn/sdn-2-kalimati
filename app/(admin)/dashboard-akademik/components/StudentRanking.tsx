@@ -67,9 +67,9 @@ export function StudentRanking({ topRajin, bottomPerhatian, loading }: StudentRa
         </div>
       </div>
       
-      <div className={`flex-1 grid transition-[grid-template-rows] duration-300 ease-in-out ${isExpanded ? "grid-rows-[1fr]" : "grid-rows-[0fr] md:grid-rows-[1fr]"}`}>
-        <div className="overflow-hidden min-h-0 flex flex-col h-full">
-          <div className="p-0 flex-1 flex flex-col justify-center">
+      <div className={`md:flex-1 grid transition-[grid-template-rows] duration-300 ease-in-out ${isExpanded ? "grid-rows-[1fr]" : "grid-rows-[0fr] md:grid-rows-[1fr]"}`}>
+        <div className="overflow-hidden min-h-0 md:flex md:flex-col md:h-full">
+          <div className="p-0 md:flex-1 flex flex-col justify-center">
         {students.length === 0 ? (
           <div className="p-8 text-center text-slate-500 dark:text-slate-400">
             {emptyMessage}

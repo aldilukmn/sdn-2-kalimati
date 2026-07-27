@@ -121,10 +121,10 @@ export function RecentActivities({ activities = [], loading }: RecentActivitiesP
         </div>
       </div>
 
-      <div className={`flex-1 grid transition-[grid-template-rows] duration-300 ease-in-out ${isExpanded ? "grid-rows-[1fr]" : "grid-rows-[0fr] md:grid-rows-[1fr]"}`}>
-        <div className="overflow-hidden min-h-0 flex flex-col h-full">
-          <div className="p-4 flex-1 flex flex-col">
-            <div className="flex-1 pr-2 -mr-2 mb-4">
+      <div className={`md:flex-1 grid transition-[grid-template-rows] duration-300 ease-in-out ${isExpanded ? "grid-rows-[1fr]" : "grid-rows-[0fr] md:grid-rows-[1fr]"}`}>
+        <div className="overflow-hidden min-h-0 md:flex md:flex-col md:h-full">
+          <div className="p-4 md:flex-1 flex flex-col">
+            <div className="md:flex-1 pr-2 -mr-2 mb-4">
         {activities.length === 0 ? (
           <div className="h-full flex flex-col items-center justify-center text-center p-6 space-y-3">
             <div className="w-16 h-16 rounded-full bg-slate-50 dark:bg-slate-800 flex items-center justify-center">

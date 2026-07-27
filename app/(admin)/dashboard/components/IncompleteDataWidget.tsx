@@ -337,8 +337,8 @@ export default function IncompleteDataWidget({ userGrade }: IncompleteDataWidget
                     {item.detailLines.map((line, lIdx) => {
                       const match = line.match(/(.*?)( - \(\d+\/\d+\s+[^)]+\)\.?)/);
                       return (
-                        <div key={lIdx} className="text-xs text-gray-600 dark:text-gray-400 flex items-start gap-1.5">
-                          <span className="text-amber-500 font-bold select-none">•</span>
+                        <div key={lIdx} className="text-xs text-gray-600 dark:text-gray-400 flex items-start gap-2">
+                          <div className="w-1.5 h-1.5 rounded-full bg-amber-500/80 shrink-0 mt-[7px]" />
                           {match ? (
                             <span className="leading-relaxed">
                               {match[1]}

@@ -90,6 +90,10 @@ export default function DashboardNilaiPage() {
         <div className="space-y-6">
           <NilaiStatCards summary={data?.summary} loading={loading} />
           
+          <div className="w-full">
+            <RecentActivities activities={data?.summary.recentActivities} loading={loading} />
+          </div>
+          
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <div className="lg:col-span-1">
               <ComponentBreakdown components={data?.summary.byComponent} loading={loading} />
@@ -98,10 +102,6 @@ export default function DashboardNilaiPage() {
             <div className="lg:col-span-2">
               <StudentRanking topRajin={topRajin} bottomPerhatian={bottomPerhatian} loading={loading} />
             </div>
-          </div>
-
-          <div className="w-full">
-            <RecentActivities activities={data?.summary.recentActivities} loading={loading} />
           </div>
         </div>
       )}

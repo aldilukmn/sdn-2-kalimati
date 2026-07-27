@@ -7,6 +7,8 @@ interface Props {
   data: { name: string; value: number; color: string }[];
   loading?: boolean;
   totalDays?: number;
+  hideLegend?: boolean;
+  height?: number;
 }
 
 const LABELS: Record<string, string> = {
@@ -16,12 +18,12 @@ const LABELS: Record<string, string> = {
   absen: "Absen",
 };
 
-export default function AttendanceDonutChart({ data, loading, totalDays }: Props) {
+export default function AttendanceDonutChart({ data, loading, totalDays, hideLegend, height = 300 }: Props) {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
   if (loading) {
     return (
-      <div className="h-[300px] flex items-center justify-center">
+      <div className="flex items-center justify-center" style={{ height }}>
         <div className="w-48 h-48 rounded-full bg-gray-200 dark:bg-gray-700 animate-pulse" />
       </div>
     );
@@ -29,7 +31,7 @@ export default function AttendanceDonutChart({ data, loading, totalDays }: Props
 
   if (!data || data.every((d) => d.value === 0)) {
     return (
-      <div className="h-[300px] flex items-center justify-center text-gray-400 dark:text-gray-500 text-sm">
+      <div className="flex items-center justify-center text-gray-400 dark:text-gray-500 text-sm" style={{ height }}>
         Belum ada data presensi bulan ini
       </div>
     );
@@ -62,8 +64,8 @@ export default function AttendanceDonutChart({ data, loading, totalDays }: Props
           outline: none !important;
         }
       `}</style>
-      <div className="relative flex items-center justify-center" style={{ height: 300 }}>
-        <ResponsiveContainer width="100%" height={300} className='z-10'>
+      <div className="relative flex items-center justify-center" style={{ height }}>
+        <ResponsiveContainer width="100%" height={height} className='z-10'>
           <PieChart>
             <Pie
               data={data}
@@ -111,23 +113,25 @@ export default function AttendanceDonutChart({ data, loading, totalDays }: Props
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-2.5 mt-4">
-        {data.map((entry) => {
-          const pct = total > 0 ? Math.round((entry.value / total) * 100) : 0;
-          const tint = entry.color + "1a";
-          return (
-            <span
-              key={entry.name}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium"
-              style={{ backgroundColor: tint, color: entry.color }}
-            >
-              <span className="w-2 h-2 rounded-full" style={{ backgroundColor: entry.color }} />
-              {LABELS[entry.name] || entry.name}
-              <span className="font-bold ml-auto">{pct}%</span>
-            </span>
-          );
-        })}
-      </div>
+      {!hideLegend && (
+        <div className="grid grid-cols-2 gap-2.5 mt-4">
+          {data.map((entry) => {
+            const pct = total > 0 ? Math.round((entry.value / total) * 100) : 0;
+            const tint = entry.color + "1a";
+            return (
+              <span
+                key={entry.name}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium"
+                style={{ backgroundColor: tint, color: entry.color }}
+              >
+                <span className="w-2 h-2 rounded-full" style={{ backgroundColor: entry.color }} />
+                {LABELS[entry.name] || entry.name}
+                <span className="font-bold ml-auto">{pct}%</span>
+              </span>
+            );
+          })}
+        </div>
+      )}
     </>
   );
 }
