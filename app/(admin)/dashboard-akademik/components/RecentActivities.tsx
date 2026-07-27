@@ -73,7 +73,7 @@ export function RecentActivities({ activities = [], loading }: RecentActivitiesP
   }
 
   return (
-    <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 p-6 flex flex-col h-full min-h-[400px]">
+    <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 p-6 flex flex-col">
       <div className="flex items-center justify-between mb-6 shrink-0">
         <h3 className="text-lg font-bold text-slate-800 dark:text-slate-100 flex items-center gap-2">
           <Activity className="w-5 h-5 text-indigo-500" />
@@ -84,7 +84,7 @@ export function RecentActivities({ activities = [], loading }: RecentActivitiesP
         </span>
       </div>
 
-      <div className="flex-1 overflow-y-auto pr-2 -mr-2 space-y-3 scrollbar-thin scrollbar-thumb-slate-200 dark:scrollbar-thumb-slate-700">
+      <div className="flex-1 pr-2 -mr-2">
         {activities.length === 0 ? (
           <div className="h-full flex flex-col items-center justify-center text-center p-6 space-y-3">
             <div className="w-16 h-16 rounded-full bg-slate-50 dark:bg-slate-800 flex items-center justify-center">
@@ -98,7 +98,8 @@ export function RecentActivities({ activities = [], loading }: RecentActivitiesP
             </div>
           </div>
         ) : (
-          activities.map((activity) => (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 pb-2">
+            {activities.map((activity) => (
             <div
               key={activity.id}
               className="group flex gap-4 p-3.5 rounded-xl border border-transparent hover:border-slate-200 dark:hover:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-all cursor-default"
@@ -126,7 +127,8 @@ export function RecentActivities({ activities = [], loading }: RecentActivitiesP
                 </div>
               </div>
             </div>
-          ))
+          ))}
+          </div>
         )}
       </div>
     </div>
