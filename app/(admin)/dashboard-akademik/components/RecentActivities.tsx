@@ -191,6 +191,9 @@ export function RecentActivities({ activities = [], loading }: RecentActivitiesP
           />
         </div>
       )}
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
