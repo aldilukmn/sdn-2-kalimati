@@ -43,7 +43,7 @@ export function ComponentBreakdown({
   const items = [
     {
       key: "harian",
-      label: "Nilai Harian",
+      label: "Harian",
       data: components?.harian,
       color: "bg-blue-500",
     },

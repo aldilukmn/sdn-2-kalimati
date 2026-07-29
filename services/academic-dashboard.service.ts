@@ -37,6 +37,13 @@ export interface AcademicSummaryResponse {
       date: string;
       subject: string;
     }[];
+    recentGradeActivities?: {
+      id: string;
+      title: string;
+      category: string;
+      date: string;
+      subject: string;
+    }[];
   };
   students: StudentStat[];
 }

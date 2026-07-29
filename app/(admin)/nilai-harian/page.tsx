@@ -11,6 +11,7 @@ import toast from "react-hot-toast";
 import PageHero from "@/components/layout/PageHero";
 import ScoreTable from "@/components/nilai-harian/ScoreTable";
 import FilterBar from "@/components/shared/FilterBar";
+import TruncatedTextWithInfo from "@/components/shared/TruncatedTextWithInfo";
 import {
   Select,
   SelectContent,
@@ -132,27 +133,18 @@ export default function NilaiHarianPage() {
                         ) : (
                           <span className="text-lg shrink-0">{isActive ? "📘" : "📕"}</span>
                         )}
-                      <span className={`text-sm font-medium truncate ${isActive ? "text-indigo-700 dark:text-indigo-300" : "text-slate-700 dark:text-slate-300"}`} title={ch.name}>
-                        {ch.name}
-                      </span>
-                      {ch.name.length > 25 && (
-                        <div
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            toast(ch.name, { icon: "ℹ️", duration: 4000 });
-                          }}
-                          className="md:hidden shrink-0 text-amber-500 hover:text-amber-600 cursor-pointer p-1"
-                        >
-                          <Info size={14} />
-                        </div>
-                      )}
+                      <TruncatedTextWithInfo 
+                        text={ch.name}
+                        className={`text-sm font-medium ${isActive ? "text-indigo-700 dark:text-indigo-300" : "text-slate-700 dark:text-slate-300"}`}
+                        iconSize={14}
+                      />
 
                     </div>
                     <div className="flex items-center gap-2 sm:gap-4 shrink-0">
                       {/* Date & Mode Badge */}
                       <div className="flex items-center gap-1.5 sm:gap-2">
                         {ch.createdAt && (
-                          <span className="text-[10px] sm:text-xs font-normal opacity-70 whitespace-nowrap">
+                          <span className="text-[10px] sm:text-xs font-normal text-slate-400 dark:text-slate-500 whitespace-nowrap">
                             ({new Date(ch.createdAt).toLocaleDateString("id-ID", { day: "numeric", month: "short", year: "numeric" })})
                           </span>
                         )}
@@ -255,28 +247,24 @@ export default function NilaiHarianPage() {
                                   className={`flex items-center gap-2 p-2.5 rounded-lg text-left transition-colors cursor-pointer ${
                                     selectedMaterial === mat._id
                                       ? "bg-indigo-100 text-indigo-700 dark:bg-indigo-900/50 dark:text-indigo-300"
-                                      : "hover:bg-slate-100 dark:hover:bg-gray-750 text-slate-600 dark:text-slate-300"
+                                      : "hover:bg-slate-100 dark:hover:bg-gray-700 text-slate-600 dark:text-slate-300"
                                   }`}
                                 >
                                   <div className="w-6 h-6 flex shrink-0 items-center justify-center rounded-full bg-indigo-50 text-indigo-600 dark:bg-indigo-900/30 dark:text-indigo-400 text-xs font-bold border border-indigo-100 dark:border-indigo-800/50">
                                     {idx + 1}
                                   </div>
                                   <div className="flex-1 flex items-center gap-1 min-w-0">
-                                    <span className="text-sm font-medium truncate">
-                                      {mat.name}
-                                    </span>
-                                    {selectedMaterial !== mat._id && mat.name.length > 25 && (
-                                      <div
-                                        onClick={(e) => {
-                                          e.stopPropagation();
-                                          toast(mat.name, { icon: "ℹ️", duration: 4000 });
-                                        }}
-                                        className="md:hidden shrink-0 text-amber-500 hover:text-amber-600 cursor-pointer p-1"
-                                      >
-                                        <Info size={14} />
-                                      </div>
-                                    )}
+                                    <TruncatedTextWithInfo 
+                                      text={mat.name}
+                                      className="text-sm font-medium"
+                                      iconSize={14}
+                                    />
                                   </div>
+                                  {mat.createdAt && (
+                                    <span className="text-[10px] font-normal text-slate-400 dark:text-slate-500 whitespace-nowrap ml-2 shrink-0">
+                                      ({new Date(mat.createdAt).toLocaleDateString("id-ID", { day: "numeric", month: "short", year: "numeric" })})
+                                    </span>
+                                  )}
                                   
                                   {mProg && selectedMaterial !== mat._id && (
                                     <div className="hidden sm:flex items-center gap-2 shrink-0 ml-2">

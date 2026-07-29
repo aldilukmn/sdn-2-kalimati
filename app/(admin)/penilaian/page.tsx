@@ -18,6 +18,7 @@ import FilterBar from "@/components/shared/FilterBar";
 import LoadingSkeleton from "@/components/shared/LoadingSkeleton";
 import ErrorState from "@/components/shared/ErrorState";
 import EmptyState from "@/components/shared/EmptyState";
+import TruncatedTextWithInfo from "@/components/shared/TruncatedTextWithInfo";
 import {
   Select,
   SelectContent,
@@ -270,23 +271,11 @@ export default function PenilaianPage() {
                         {index + 1}
                       </div>
                       <div className="flex-1 flex items-center gap-1 min-w-0">
-                        <span
-                          className={`text-sm font-medium truncate ${isActive ? "text-indigo-700 dark:text-indigo-300" : "text-slate-700 dark:text-slate-300"}`}
-                          title={t.name}
-                        >
-                          {t.name}
-                        </span>
-                        {!isActive && t.name.length > 25 && (
-                          <div
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              toast(t.name, { icon: "ℹ️", duration: 4000 });
-                            }}
-                            className="md:hidden shrink-0 text-amber-500 hover:text-amber-600 cursor-pointer p-1"
-                          >
-                            <Info size={14} />
-                          </div>
-                        )}
+                        <TruncatedTextWithInfo
+                          text={t.name}
+                          className={`text-sm font-medium ${isActive ? "text-indigo-700 dark:text-indigo-300" : "text-slate-700 dark:text-slate-300"}`}
+                          iconSize={14}
+                        />
                         {t.createdAt && (
                           <span className="hidden sm:inline-block text-[11px] font-normal opacity-70 shrink-0 ml-1">
                             ({new Date(t.createdAt).toLocaleDateString("id-ID", {

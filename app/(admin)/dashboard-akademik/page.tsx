@@ -90,8 +90,13 @@ export default function DashboardNilaiPage() {
         <div className="space-y-6">
           <NilaiStatCards summary={data?.summary} loading={loading} />
           
-          <div className="w-full">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <RecentActivities activities={data?.summary.recentActivities} loading={loading} />
+            <RecentActivities 
+              title="Input Nilai Terbaru" 
+              activities={data?.summary.recentGradeActivities} 
+              loading={loading} 
+            />
           </div>
           
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">

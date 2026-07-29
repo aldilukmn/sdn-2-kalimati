@@ -6,6 +6,7 @@ import { formatDistanceToNow } from "date-fns";
 import { id } from "date-fns/locale";
 import toast from "react-hot-toast";
 import Pagination from "@/components/common/Pagination";
+import TruncatedTextWithInfo from "@/components/shared/TruncatedTextWithInfo";
 
 interface RecentActivity {
   id: string;
@@ -32,6 +33,7 @@ export function RecentActivities({ activities = [], loading }: RecentActivitiesP
   const getIcon = (category: string) => {
     switch (category.toLowerCase()) {
       case "nilai harian":
+      case "harian":
         return <BookOpen className="w-4 h-4 text-indigo-500" />;
       case "tugas":
         return <FileText className="w-4 h-4 text-blue-500" />;
@@ -48,6 +50,7 @@ export function RecentActivities({ activities = [], loading }: RecentActivitiesP
   const getBadgeColor = (category: string) => {
     switch (category.toLowerCase()) {
       case "nilai harian":
+      case "harian":
         return "bg-indigo-100 text-indigo-700 dark:bg-indigo-900/40 dark:text-indigo-300";
       case "tugas":
         return "bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300";
@@ -142,29 +145,22 @@ export function RecentActivities({ activities = [], loading }: RecentActivitiesP
                 
                 <div className="flex-1 min-w-0 flex flex-col justify-center">
                   <div className="flex items-center gap-1.5 min-w-0">
-                    <h4 className="font-semibold text-sm text-slate-800 dark:text-slate-200 truncate" title={activity.title}>
-                      {activity.title}
-                    </h4>
-                    {activity.title.length > 35 && (
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          toast(activity.title, { icon: "ℹ️", duration: 4000 });
-                        }}
-                        className="md:hidden shrink-0 text-amber-500 hover:text-amber-600 cursor-pointer"
-                        title="Lihat teks lengkap"
-                      >
-                        <Info size={16} />
-                      </button>
-                    )}
+                    <TruncatedTextWithInfo 
+                      text={activity.title} 
+                      className="font-semibold text-sm text-slate-800 dark:text-slate-200"
+                      iconSize={16}
+                      as="h4"
+                    />
                   </div>
                   <div className="flex items-center gap-2 mt-1">
                     <span className={`w-max text-[10px] font-semibold px-2 py-0.5 rounded-full ${getBadgeColor(activity.category)}`}>
                       {activity.category}
                     </span>
-                    <span className="text-xs text-slate-500 dark:text-slate-400 truncate">
-                      {activity.subject}
-                    </span>
+                    <TruncatedTextWithInfo 
+                      text={activity.subject} 
+                      className="text-xs text-slate-500 dark:text-slate-400"
+                      iconSize={14}
+                    />
                   </div>
                 </div>
                 
@@ -203,3 +199,4 @@ export function RecentActivities({ activities = [], loading }: RecentActivitiesP
     </div>
   );
 }
+ 

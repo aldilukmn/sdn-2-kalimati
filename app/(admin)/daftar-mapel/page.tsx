@@ -1,9 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { useState, useCallback, useRef } from "react";
+import { useState, useCallback, useRef, useEffect } from "react";
 import {
   BookOpen, Plus, Pencil, Trash2, ChevronDown, ChevronRight,
+
   GripVertical, ArrowUp, ArrowDown, AlertCircle, Settings, Info
 } from "lucide-react";
 import { useChapters } from "@/hooks/useChapters";
@@ -12,6 +13,7 @@ import toast from "react-hot-toast";
 import dynamic from "next/dynamic";
 const Modal = dynamic(() => import("@/components/modals/Modal"), { ssr: false });
 import PageHero from "@/components/layout/PageHero";
+import TruncatedTextWithInfo from "@/components/shared/TruncatedTextWithInfo";
 import {
   Select,
   SelectContent,
@@ -316,21 +318,17 @@ export default function MasterStrukturPage() {
                         <button className="p-0.5 shrink-0 rounded text-slate-400 group-hover:text-slate-600 dark:group-hover:text-slate-300 transition-colors">
                           <ChevronRight size={16} className={`transition-transform duration-300 ${expandedChapter === chapter._id ? 'rotate-90' : ''}`} />
                         </button>
-                        <span className="text-sm font-medium text-slate-800 dark:text-slate-200 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors truncate">
-                          {chapter.name}
-                        </span>
-                        {chapter.name.length > 25 && (
-                          <button
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              toast(chapter.name, { icon: "ℹ️", duration: 4000 });
-                            }}
-                            className="md:hidden shrink-0 text-amber-500 hover:text-amber-600 cursor-pointer"
-                          >
-                            <Info size={16} />
-                          </button>
-                        )}
+                        <TruncatedTextWithInfo 
+                          text={chapter.name} 
+                          className="text-sm font-medium text-slate-800 dark:text-slate-200 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors"
+                          iconSize={16}
+                        />
                       </div>
+                      {chapter.createdAt && (
+                        <span className="text-[10px] sm:text-xs font-normal text-slate-400 dark:text-slate-500 whitespace-nowrap">
+                          ({new Date(chapter.createdAt).toLocaleDateString("id-ID", { day: "numeric", month: "short", year: "numeric" })})
+                        </span>
+                      )}
                       <span
                         className={`text-[11px] font-semibold px-2 py-0.5 rounded-full ${
                           chapter.inputMode === "per_material"
@@ -396,21 +394,17 @@ export default function MasterStrukturPage() {
                                       {midx + 1}
                                     </div>
                                     <div className="flex-1 flex items-center gap-1 min-w-0">
-                                      <span className="text-sm font-medium text-slate-700 dark:text-slate-300 truncate">
-                                        {mat.name}
-                                      </span>
-                                      {mat.name.length > 25 && (
-                                        <button
-                                          onClick={(e) => {
-                                            e.stopPropagation();
-                                            toast(mat.name, { icon: "ℹ️", duration: 4000 });
-                                          }}
-                                          className="md:hidden shrink-0 text-amber-500 hover:text-amber-600 cursor-pointer"
-                                        >
-                                          <Info size={14} />
-                                        </button>
-                                      )}
+                                      <TruncatedTextWithInfo 
+                                        text={mat.name} 
+                                        className="text-sm font-medium text-slate-700 dark:text-slate-300"
+                                        iconSize={14}
+                                      />
                                     </div>
+                                    {mat.createdAt && (
+                                      <span className="text-[10px] font-normal text-slate-400 dark:text-slate-500 whitespace-nowrap mr-2">
+                                        ({new Date(mat.createdAt).toLocaleDateString("id-ID", { day: "numeric", month: "short", year: "numeric" })})
+                                      </span>
+                                    )}
                                     <div className="flex items-center gap-0.5">
                                       <button
                                         onClick={() =>
