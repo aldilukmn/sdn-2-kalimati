@@ -17,11 +17,12 @@ interface RecentActivity {
 }
 
 interface RecentActivitiesProps {
+  title?: string;
   activities?: RecentActivity[];
   loading: boolean;
 }
 
-export function RecentActivities({ activities = [], loading }: RecentActivitiesProps) {
+export function RecentActivities({ title = "Aktivitas Terbaru", activities = [], loading }: RecentActivitiesProps) {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
 
@@ -82,7 +83,7 @@ export function RecentActivities({ activities = [], loading }: RecentActivitiesP
       <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 p-6 flex flex-col min-h-[400px]">
         <h3 className="text-lg font-bold text-slate-800 dark:text-slate-100 mb-6 flex items-center gap-2">
           <Activity className="w-5 h-5 text-indigo-500" />
-          Aktivitas Terbaru
+          {title}
         </h3>
         <div className="space-y-4">
           {[1, 2, 3, 4, 5].map((i) => (

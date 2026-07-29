@@ -15,8 +15,8 @@
     "semantic_hash": ""
   },
   "app/(admin)/daftar-mapel/page.tsx": {
-    "mtime": 1785337370.8965776,
-    "ast_hash": "a8382b2e757d6091c96c6c7c585c7740",
+    "mtime": 1785050890.3954709,
+    "ast_hash": "da2fb0b6f86ea07be92f66289b150ff3",
     "semantic_hash": ""
   },
   "app/(admin)/dashboard-karakter/page.tsx": {
@@ -220,8 +220,8 @@
     "semantic_hash": "716435378f96b3d0f2a2cc8af11d3951"
   },
   "app/(admin)/nilai-harian/page.tsx": {
-    "mtime": 1785338237.6694157,
-    "ast_hash": "35d1de5972228a0f088ad964604aada5",
+    "mtime": 1785059204.7069025,
+    "ast_hash": "3511df4ea586968ea25d7b5aa61f4705",
     "semantic_hash": ""
   },
   "app/(admin)/nilai-litnum/page.tsx": {
@@ -245,8 +245,8 @@
     "semantic_hash": "8d4ea8c14cdd6a14bf5e7e2e4475649e"
   },
   "app/(admin)/penilaian/page.tsx": {
-    "mtime": 1785333565.0286229,
-    "ast_hash": "a8cda3a116277539a613dc8da4aeefe8",
+    "mtime": 1785058920.9490144,
+    "ast_hash": "1431eeb76458ddd3383a1898f00446ef",
     "semantic_hash": ""
   },
   "app/(admin)/presensi-murid/page.tsx": {
@@ -1355,13 +1355,13 @@
     "semantic_hash": ""
   },
   "services/academic-dashboard.service.ts": {
-    "mtime": 1785301309.5155492,
-    "ast_hash": "59290f15ba0692269a4f57a97deee711",
+    "mtime": 1785132377.946007,
+    "ast_hash": "06256800aef04388ae486f9d8d1f0307",
     "semantic_hash": ""
   },
   "app/(admin)/dashboard-akademik/components/ComponentBreakdown.tsx": {
-    "mtime": 1785336010.8689685,
-    "ast_hash": "de8fcc805d08d52d09da7d0c2cf8e29d",
+    "mtime": 1785167682.213773,
+    "ast_hash": "c17ec52846280c05252c0f2028dfd4ba",
     "semantic_hash": ""
   },
   "app/(admin)/dashboard-akademik/components/NilaiStatCards.tsx": {
@@ -1370,8 +1370,8 @@
     "semantic_hash": ""
   },
   "app/(admin)/dashboard-akademik/components/RecentActivities.tsx": {
-    "mtime": 1785336207.6132758,
-    "ast_hash": "e3e84f5a8c23fc0028ab506e23f62695",
+    "mtime": 1785167665.4803553,
+    "ast_hash": "6ca19806fbeeaf3032f0990252a079fd",
     "semantic_hash": ""
   },
   "app/(admin)/dashboard-akademik/components/StudentRanking.tsx": {
@@ -1380,8 +1380,8 @@
     "semantic_hash": ""
   },
   "app/(admin)/dashboard-akademik/page.tsx": {
-    "mtime": 1785301331.6661146,
-    "ast_hash": "e3fafbbeb2405972d3067e8286187ab4",
+    "mtime": 1785159838.063154,
+    "ast_hash": "8066c87524dbb0476174b605a6778446",
     "semantic_hash": ""
   },
   "app/(admin)/dashboard-presensi/components/AttendanceTrendWidget.tsx": {
@@ -1392,11 +1392,6 @@
   "components/common/MobileWidgetWrapper.tsx": {
     "mtime": 1785167645.7361083,
     "ast_hash": "e234f9b6f82e63390478e054dd4930ae",
-    "semantic_hash": ""
-  },
-  "components/shared/TruncatedTextWithInfo.tsx": {
-    "mtime": 1785333494.6491022,
-    "ast_hash": "7b381720c5001348d030489920b170f9",
     "semantic_hash": ""
   }
 }
