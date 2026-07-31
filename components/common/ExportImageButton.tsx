@@ -8,7 +8,7 @@ import { MONTHS_ID } from "@/lib/format";
 interface Props {
   month: number;
   year: number;
-  grade: number;
+  grade: string;
   posterRef: React.RefObject<HTMLElement | null>;
 }
 

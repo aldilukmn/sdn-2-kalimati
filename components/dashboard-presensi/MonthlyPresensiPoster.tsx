@@ -6,7 +6,7 @@ import type { StudentAbsenceRow, AttendanceSummary } from '@/hooks/useDashboardP
 interface Props {
   month: number;
   year: number;
-  grade: number;
+  grade: string;
   studentRows: StudentAbsenceRow[];
   summary: AttendanceSummary;
 }
