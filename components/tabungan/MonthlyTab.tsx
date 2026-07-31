@@ -1,5 +1,7 @@
 "use client";
 
+import { useMemo } from "react";
+
 import Pagination from "@/components/common/Pagination";
 import YearSelect from "@/components/common/YearSelect";
 import LoadingDots from "@/components/common/LoadingDots";
@@ -34,6 +36,27 @@ export default function MonthlyTab({
   openHistoryModal,
   closeHistoryModal,
 }: MonthlyTabProps) {
+  const totals = useMemo(() => {
+    if (!monthlyData || monthlyData.length === 0) return null;
+    const result = {
+      months: Array(12).fill(0),
+      balance: 0,
+      withdrawn: 0
+    };
+    
+    monthlyData.forEach(student => {
+      Array.from({ length: 12 }).forEach((_, i) => {
+        const monthKey = String(i + 1).padStart(2, "0");
+        const val = student.months[monthKey] || 0;
+        result.months[i] += val;
+      });
+      result.balance += student.balance;
+      result.withdrawn += student.totalWithdrawn;
+    });
+    
+    return result;
+  }, [monthlyData]);
+
   return (
     <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 md: border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
       <div className="flex items-center justify-between mb-4">
@@ -136,6 +159,26 @@ export default function MonthlyTab({
               })
             )}
           </tbody>
+          {totals && (
+            <tfoot className="bg-indigo-50 dark:bg-indigo-900/30 font-bold border-t-2 border-indigo-200 dark:border-indigo-800">
+              <tr>
+                <td colSpan={2} className="px-2 py-3 text-center text-indigo-900 dark:text-indigo-100">
+                  Jumlah
+                </td>
+                {totals.months.map((val, idx) => (
+                  <td key={idx} className="px-2 py-3 text-center text-xs md:text-sm text-indigo-900 dark:text-indigo-100 whitespace-nowrap">
+                    {val > 0 ? formatCompactRupiah(val) : "-"}
+                  </td>
+                ))}
+                <td className="px-2 py-3 text-center text-xs md:text-sm text-indigo-900 dark:text-indigo-100 whitespace-nowrap">
+                  {formatCompactRupiah(totals.balance)}
+                </td>
+                <td className="px-2 py-3 text-center text-xs md:text-sm text-indigo-900 dark:text-indigo-100 whitespace-nowrap">
+                  {totals.withdrawn > 0 ? formatCompactRupiah(totals.withdrawn) : "-"}
+                </td>
+              </tr>
+            </tfoot>
+          )}
         </table>
       </div>
 

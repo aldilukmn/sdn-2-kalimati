@@ -1,7 +1,7 @@
 # Graph Report - sdn-2-kalimati  (2026-07-31)
 
 ## Corpus Check
-- 280 files · ~126,383 words
+- 280 files · ~126,531 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
@@ -10,7 +10,7 @@
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `09a5545d`
+- Built from commit: `b7527456`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -31,6 +31,7 @@
 - components.json
 - pmb/page.tsx
 - StudentDataStep.tsx
+- class-variance-authority
 - cn
 - grade-subject.service.ts
 - dependencies
@@ -72,7 +73,6 @@
 - recharts
 - shadcn
 - tailwind-merge
-- lucide-react
 - @tiptap/starter-kit
 - tw-animate-css
 - xlsx
@@ -201,7 +201,7 @@ Nodes (10): useSubjects(), GradeSubjectService, SubjectService, BulkGradeSubject
 
 ### Community 20 - "dependencies"
 Cohesion: 0.12
-Nodes (17): @base-ui/react, canvas-confetti, class-variance-authority, gsap, dependencies, @base-ui/react, canvas-confetti, class-variance-authority (+9 more)
+Nodes (17): @base-ui/react, canvas-confetti, gsap, lucide-react, dependencies, @base-ui/react, canvas-confetti, gsap (+9 more)
 
 ### Community 21 - "nilai-harian.ts"
 Cohesion: 0.27
@@ -323,7 +323,7 @@ _Questions this graph is uniquely positioned to answer:_
   _High betweenness centrality (0.131) - this node is a cross-community bridge._
 - **Why does `xlsx` connect `xlsx` to `student-savings.service.ts`, `dependencies`, `IncompleteDataWidget.tsx`?**
   _High betweenness centrality (0.128) - this node is a cross-community bridge._
-- **Why does `dependencies` connect `dependencies` to `clsx`, `package.json`, `react`, `react-hot-toast`, `recharts`, `shadcn`, `lucide-react`, `tailwind-merge`, `@tiptap/starter-kit`, `tw-animate-css`, `xlsx`, `useNilaiHarian`, `next`, `html-to-image`, `kelas-5/page.tsx`?**
+- **Why does `dependencies` connect `dependencies` to `clsx`, `package.json`, `react`, `react-hot-toast`, `recharts`, `shadcn`, `tailwind-merge`, `@tiptap/starter-kit`, `tw-animate-css`, `xlsx`, `useNilaiHarian`, `class-variance-authority`, `next`, `html-to-image`, `kelas-5/page.tsx`?**
   _High betweenness centrality (0.124) - this node is a cross-community bridge._
 - **What connects `Modal`, `NilaiStatCardsProps`, `RecentActivity` to the rest of the system?**
   _266 weakly-connected nodes found - possible documentation gaps or missing edges._

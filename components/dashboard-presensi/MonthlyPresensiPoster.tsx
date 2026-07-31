@@ -92,11 +92,11 @@ export const MonthlyPresensiPoster = forwardRef<HTMLDivElement, Props>(({
 
           <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
             {perfectStudents.length > 0 ? (
-              <div className="grid grid-cols-3 gap-y-4 gap-x-8">
+              <div className="grid grid-cols-3 gap-y-4 gap-x-6">
                 {perfectStudents.map(s => (
-                  <div key={s.studentId} className="flex justify-between items-center">
-                    <span className="text-slate-700 font-medium">{s.name}</span>
-                    <CheckCircle2 size={18} className="text-emerald-500 shrink-0" />
+                  <div key={s.studentId} className="flex justify-between items-center min-w-0">
+                    <span className="text-slate-700 font-medium text-[15px] leading-tight tracking-tight">{s.name}</span>
+                    <CheckCircle2 size={16} className="text-emerald-500 shrink-0 ml-2" />
                   </div>
                 ))}
               </div>
