@@ -29,6 +29,9 @@ import LoadingSkeleton from "@/components/shared/LoadingSkeleton";
 import DateDayPicker from "@/components/common/DateDayPicker";
 import FilterBar from "@/components/shared/FilterBar";
 import ExportWordButton from "@/components/common/ExportWordButton";
+import ExportImageButton from "@/components/common/ExportImageButton";
+import MonthlyPresensiPoster from "@/components/dashboard-presensi/MonthlyPresensiPoster";
+import { useRef } from "react";
 
 const AttendanceDonutChart = dynamic(() => import("@/components/charts/AttendanceDonutChart"), { ssr: false });
 
@@ -70,6 +73,7 @@ function ViewToggle({
 
 export default function DashboardPresensiPage() {
   const { role: userRole, grade: userGrade } = useAuth();
+  const posterRef = useRef<HTMLDivElement>(null);
 
   const {
     viewMode,
@@ -267,10 +271,25 @@ export default function DashboardPresensiPage() {
             </Link>
             
             {!isHarian && userRole === "guru" && (
-              <ExportWordButton grade={grade} month={month} year={year} />
+              <>
+                <ExportImageButton grade={grade} month={month} year={year} posterRef={posterRef} />
+                <ExportWordButton grade={grade} month={month} year={year} />
+              </>
             )}
           </div>
         </>
+      )}
+      
+      {/* Hidden Poster for Image Export */}
+      {!isHarian && summary && studentRows.length > 0 && (
+        <MonthlyPresensiPoster 
+          ref={posterRef}
+          month={month}
+          year={year}
+          grade={grade}
+          studentRows={studentRows}
+          summary={summary}
+        />
       )}
     </div>
   );

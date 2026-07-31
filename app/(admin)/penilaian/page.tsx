@@ -231,7 +231,8 @@ export default function PenilaianPage() {
         <LoadingSkeleton rows={1} />
       ) : (
         <>
-          <div className="flex items-center justify-between mb-2">
+          <div className="bg-white/70 dark:bg-gray-800/40 border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5 mb-6">
+            <div className="flex items-center justify-between mb-4">
             <h2 className="font-semibold text-slate-700 dark:text-slate-200">
               Daftar {category === "tugas" ? "Tugas" : category === "keaktifan" ? "Keaktifan" : "Partisipasi"}
             </h2>
@@ -252,9 +253,13 @@ export default function PenilaianPage() {
                 description={`Klik Tambah ${category === "tugas" ? "Tugas" : category === "keaktifan" ? "Keaktifan" : "Partisipasi"} untuk membuat data baru`}
               />
             ) : (
-              tasks.map((t: any, index: number) => {
+              [...tasks].sort((a: any, b: any) => {
+                const timeA = a.createdAt ? new Date(a.createdAt).getTime() : 0;
+                const timeB = b.createdAt ? new Date(b.createdAt).getTime() : 0;
+                return timeB - timeA;
+              }).map((t: any, index: number) => {
                 const isActive = selectedTaskId === t._id;
-                const currentInputted = isActive ? activeInputtedCount : (t.inputtedCount ?? 0);
+                const currentInputted = isActive ? (scoresLoading ? (t.inputtedCount ?? 0) : activeInputtedCount) : (t.inputtedCount ?? 0);
                 return (
                   <button
                     key={t._id}
@@ -349,51 +354,32 @@ export default function PenilaianPage() {
               })
             )}
           </div>
+          </div>
 
           {selectedTask && (
-            <div className="bg-white/70 dark:bg-gray-800/40 border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5 overflow-hidden flex flex-col gap-4">
-              <div className="flex flex-col gap-2 mb-1">
-                <div className="flex items-center justify-between gap-4">
-                  <h2 className="font-semibold text-slate-700 dark:text-slate-200 truncate">
-                    Input Nilai: {selectedTask.name}
-                  </h2>
-                  
-                  <div className="hidden sm:flex items-center gap-2 shrink-0">
-                    <div className="w-28 md:w-40 h-2 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden shrink-0">
-                      <div
-                        className={`h-full rounded-full transition-all duration-500 ${
+            <div className="bg-white/70 dark:bg-gray-800/40 border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
+              <div className="flex flex-row items-center justify-between gap-4 mb-4 w-full">
+                <h2 className="font-semibold text-slate-700 dark:text-slate-200 truncate flex-1 min-w-0" title={selectedTask.name}>
+                  {selectedTask.name}
+                </h2>
+                
+                <div className="shrink-0 flex justify-end">
+                  <div className="flex flex-col bg-white dark:bg-slate-800/80 border border-indigo-200 dark:border-indigo-800/60 rounded-md overflow-hidden shadow-sm w-[130px] sm:w-[150px]">
+                    {/* Text Content */}
+                    <div className="px-2 sm:px-3 py-1 text-[10px] sm:text-xs font-semibold text-indigo-700 dark:text-indigo-300 flex items-center justify-center whitespace-nowrap">
+                      {activeInputtedCount}/{students.length} murid <span className="ml-1 opacity-80">({students.length > 0 ? Math.round((activeInputtedCount / students.length) * 100) : 0}%)</span>
+                    </div>
+                    {/* Tiny Progress Bar Inside Badge */}
+                    <div className="h-1 w-full bg-slate-100 dark:bg-slate-700/50">
+                      <div 
+                        className={`h-full transition-all duration-500 ${
                           activeInputtedCount >= students.length && students.length > 0
                             ? "bg-emerald-500"
-                            : activeInputtedCount > 0
-                            ? "bg-amber-500"
-                            : "bg-slate-300 dark:bg-slate-600"
+                            : "bg-indigo-500 dark:bg-indigo-400"
                         }`}
                         style={{ width: `${students.length > 0 ? (activeInputtedCount / students.length) * 100 : 0}%` }}
                       />
                     </div>
-                    <span className="text-xs font-semibold px-2.5 py-1 rounded-md bg-indigo-50 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800 whitespace-nowrap">
-                      {activeInputtedCount}/{students.length} murid ({students.length > 0 ? Math.round((activeInputtedCount / students.length) * 100) : 0}%)
-                    </span>
-                  </div>
-                </div>
-                
-                <div className="flex sm:hidden items-center gap-3 w-full">
-                  <div className="flex-1 h-2.5 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
-                    <div
-                      className={`h-full rounded-full transition-all duration-500 ${
-                        activeInputtedCount >= students.length && students.length > 0
-                          ? "bg-emerald-500"
-                          : activeInputtedCount > 0
-                          ? "bg-amber-500"
-                          : "bg-slate-300 dark:bg-slate-600"
-                      }`}
-                      style={{ width: `${students.length > 0 ? (activeInputtedCount / students.length) * 100 : 0}%` }}
-                    />
-                  </div>
-                  <div className="shrink-0 flex justify-end">
-                    <span className="text-xs font-semibold px-2.5 py-1 rounded-md bg-indigo-50 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800 text-right whitespace-nowrap">
-                      {activeInputtedCount}/{students.length} murid ({students.length > 0 ? Math.round((activeInputtedCount / students.length) * 100) : 0}%)
-                    </span>
                   </div>
                 </div>
               </div>

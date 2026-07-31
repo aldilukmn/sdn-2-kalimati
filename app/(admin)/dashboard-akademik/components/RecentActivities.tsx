@@ -101,7 +101,7 @@ export function RecentActivities({ title = "Aktivitas Terbaru", activities = [],
   }
 
   return (
-    <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden flex flex-col h-full">
+    <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden flex flex-col h-fit">
       <div className="p-3 md:p-4 flex items-center justify-between gap-2 bg-gradient-to-r from-blue-500 to-indigo-600 border-b border-slate-100 dark:border-slate-700/50 md:border-b md:border-slate-100 md:dark:border-slate-700/50">
         <div className="flex items-center gap-2">
           <div className="p-1.5 md:p-2 bg-white/20 rounded-lg backdrop-blur-sm">
@@ -116,10 +116,10 @@ export function RecentActivities({ title = "Aktivitas Terbaru", activities = [],
         </div>
       </div>
 
-      <div className="flex-1 flex flex-col h-full">
-        <div className="md:flex md:flex-col md:h-full flex-1">
-          <div className="p-4 flex-col flex md:flex-1">
-            <div className="md:flex-1 pr-2 -mr-2 mb-4">
+      <div className="flex flex-col">
+        <div className="flex flex-col">
+          <div className="px-4 pt-4 pb-1 flex flex-col">
+            <div className="pr-2 -mr-2 mb-1">
         {activities.length === 0 ? (
           <div className="h-full flex flex-col items-center justify-center text-center p-6 space-y-3">
             <div className="w-16 h-16 rounded-full bg-slate-50 dark:bg-slate-800 flex items-center justify-center">
@@ -184,7 +184,8 @@ export function RecentActivities({ title = "Aktivitas Terbaru", activities = [],
       </div>
 
       {activities.length > 0 && (
-        <div className="pt-4 border-t border-slate-100 dark:border-slate-800">
+        <div className="pt-1 pb-4 px-4 border-t border-slate-100 dark:border-slate-800">
+          <div className="-mt-3">
           <Pagination
             currentPage={currentPage}
             totalPages={totalPages}
@@ -192,6 +193,7 @@ export function RecentActivities({ title = "Aktivitas Terbaru", activities = [],
             itemsPerPage={itemsPerPage}
             totalItems={activities.length}
           />
+          </div>
         </div>
       )}
           </div>

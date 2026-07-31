@@ -144,50 +144,30 @@ export default function ScoreTable({
   const isComplete = filledCount === entries.length && entries.length > 0;
 
   return (
-    <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 md:border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5 overflow-hidden flex flex-col gap-4">
+    <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 md:border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
       {title && (
-        <div className="flex flex-col gap-2 mb-1">
-          <div className="flex items-center justify-between gap-4">
-            <h2 className="font-semibold text-slate-700 dark:text-slate-200 truncate">
-              Input Nilai: {title}
-            </h2>
-            
-            <div className="hidden sm:flex items-center gap-2 shrink-0">
-              <div className="w-28 md:w-40 h-2 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden shrink-0">
-                <div
-                  className={`h-full rounded-full transition-all duration-500 ${
+        <div className="flex flex-row items-center justify-between gap-4 mb-4 w-full">
+          <h2 className="font-semibold text-slate-700 dark:text-slate-200 truncate flex-1 min-w-0" title={title}>
+            {title}
+          </h2>
+          
+          <div className="shrink-0 flex justify-end">
+            <div className="flex flex-col bg-white dark:bg-slate-800/80 border border-indigo-200 dark:border-indigo-800/60 rounded-md overflow-hidden shadow-sm w-[130px] sm:w-[150px]">
+              {/* Text Content */}
+              <div className="px-2 sm:px-3 py-1 text-[10px] sm:text-xs font-semibold text-indigo-700 dark:text-indigo-300 flex items-center justify-center whitespace-nowrap">
+                {filledCount}/{entries.length} murid <span className="ml-1 opacity-80">({entries.length > 0 ? Math.round((filledCount / entries.length) * 100) : 0}%)</span>
+              </div>
+              {/* Tiny Progress Bar Inside Badge */}
+              <div className="h-1 w-full bg-slate-100 dark:bg-slate-700/50">
+                <div 
+                  className={`h-full transition-all duration-500 ${
                     isComplete
                       ? "bg-emerald-500"
-                      : filledCount > 0
-                      ? "bg-amber-500"
-                      : "bg-slate-300 dark:bg-slate-600"
+                      : "bg-indigo-500 dark:bg-indigo-400"
                   }`}
                   style={{ width: `${entries.length > 0 ? (filledCount / entries.length) * 100 : 0}%` }}
                 />
               </div>
-              <span className="text-xs font-semibold px-2.5 py-1 rounded-md bg-indigo-50 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800 whitespace-nowrap">
-                {filledCount}/{entries.length} murid ({entries.length > 0 ? Math.round((filledCount / entries.length) * 100) : 0}%)
-              </span>
-            </div>
-          </div>
-          
-          <div className="flex sm:hidden items-center gap-3 w-full">
-            <div className="flex-1 h-2.5 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
-              <div
-                className={`h-full rounded-full transition-all duration-500 ${
-                  isComplete
-                    ? "bg-emerald-500"
-                    : filledCount > 0
-                    ? "bg-amber-500"
-                    : "bg-slate-300 dark:bg-slate-600"
-                }`}
-                style={{ width: `${entries.length > 0 ? (filledCount / entries.length) * 100 : 0}%` }}
-              />
-            </div>
-            <div className="shrink-0 flex justify-end">
-              <span className="text-xs font-semibold px-2.5 py-1 rounded-md bg-indigo-50 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800 text-right whitespace-nowrap">
-                {filledCount}/{entries.length} murid ({entries.length > 0 ? Math.round((filledCount / entries.length) * 100) : 0}%)
-              </span>
             </div>
           </div>
         </div>
@@ -261,17 +241,19 @@ export default function ScoreTable({
         </table>
       </div>
 
-      {totalPages > 1 && (
-        <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onPageChange={onPageChange}
-          itemsPerPage={ITEMS_PER_PAGE}
-          totalItems={entries.length}
-        />
+      {entries.length > 0 && (
+        <div className="mt-4">
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={onPageChange}
+            itemsPerPage={ITEMS_PER_PAGE}
+            totalItems={entries.length}
+          />
+        </div>
       )}
 
-      {saveButton && <div className="mt-4">{saveButton}</div>}
+      {saveButton && <div className="mt-6">{saveButton}</div>}
     </div>
   );
 }

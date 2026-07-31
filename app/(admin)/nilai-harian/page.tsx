@@ -343,7 +343,7 @@ export default function NilaiHarianPage() {
                     ) : (
                       <Save size={16} />
                     )}
-                    {saving ? "Menyimpan..." : "Simpan Semua"}
+                    {saving ? "Menyimpan..." : "Simpan Semua Nilai"}
                   </button>
                 }
               />

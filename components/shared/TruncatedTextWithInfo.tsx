@@ -47,7 +47,7 @@ export default function TruncatedTextWithInfo({
             e.stopPropagation();
             toast(text, { icon: "ℹ️", duration: 4000 });
           }}
-          className="md:hidden shrink-0 text-amber-500 hover:text-amber-600 cursor-pointer"
+          className="shrink-0 text-amber-500 hover:text-amber-600 cursor-pointer"
           title="Lihat teks lengkap"
         >
           <Info size={iconSize} />
