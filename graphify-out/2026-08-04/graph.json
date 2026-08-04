@@ -125,8 +125,8 @@
       "source_location": "L27",
       "_origin": "ast",
       "id": "app_admin_daftar_mapel_page_masterstrukturpage",
-      "community": 19,
-      "community_name": "grade-subject.service.ts",
+      "community": 14,
+      "community_name": "pmb/page.tsx",
       "norm_label": "masterstrukturpage()"
     },
     {
@@ -202,8 +202,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_admin_dashboard_akademik_components_recentactivities",
-      "community": 36,
-      "community_name": "Pagination.tsx",
+      "community": 86,
+      "community_name": "dashboard-akademik/page.tsx",
       "norm_label": "recentactivities.tsx"
     },
     {
@@ -213,8 +213,8 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "app_admin_dashboard_akademik_components_recentactivities_recentactivity",
-      "community": 36,
-      "community_name": "Pagination.tsx",
+      "community": 86,
+      "community_name": "dashboard-akademik/page.tsx",
       "norm_label": "recentactivity"
     },
     {
@@ -224,8 +224,8 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "app_admin_dashboard_akademik_components_recentactivities_recentactivitiesprops",
-      "community": 36,
-      "community_name": "Pagination.tsx",
+      "community": 86,
+      "community_name": "dashboard-akademik/page.tsx",
       "norm_label": "recentactivitiesprops"
     },
     {
@@ -235,8 +235,8 @@
       "source_location": "L25",
       "_origin": "ast",
       "id": "app_admin_dashboard_akademik_components_recentactivities_recentactivities",
-      "community": 36,
-      "community_name": "Pagination.tsx",
+      "community": 86,
+      "community_name": "dashboard-akademik/page.tsx",
       "norm_label": "recentactivities()"
     },
     {
@@ -306,25 +306,14 @@
       "norm_label": "dashboard-karakter/page.tsx"
     },
     {
-      "label": "getScoreColor()",
-      "file_type": "code",
-      "source_file": "app/(admin)/dashboard-karakter/page.tsx",
-      "source_location": "L36",
-      "_origin": "ast",
-      "id": "app_admin_dashboard_karakter_page_getscorecolor",
-      "community": 58,
-      "community_name": "lib/api.ts",
-      "norm_label": "getscorecolor()"
-    },
-    {
       "label": "DashboardKarakterPage()",
       "file_type": "code",
       "source_file": "app/(admin)/dashboard-karakter/page.tsx",
-      "source_location": "L43",
+      "source_location": "L35",
       "_origin": "ast",
       "id": "app_admin_dashboard_karakter_page_dashboardkarakterpage",
-      "community": 58,
-      "community_name": "lib/api.ts",
+      "community": 5,
+      "community_name": "character-assessment.service.ts",
       "norm_label": "dashboardkarakterpage()"
     },
     {
@@ -598,8 +587,8 @@
       "source_location": "L74",
       "_origin": "ast",
       "id": "app_admin_dashboard_presensi_page_dashboardpresensipage",
-      "community": 24,
-      "community_name": "app/layout.tsx",
+      "community": 85,
+      "community_name": "export-presensi-csv.ts",
       "norm_label": "dashboardpresensipage()"
     },
     {
@@ -609,8 +598,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_admin_dashboard_client",
-      "community": 26,
-      "community_name": "useRekapNilaiAkhir.ts",
+      "community": 6,
+      "community_name": "IncompleteDataWidget.tsx",
       "norm_label": "client.tsx"
     },
     {
@@ -620,8 +609,8 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "app_admin_dashboard_client_props",
-      "community": 26,
-      "community_name": "useRekapNilaiAkhir.ts",
+      "community": 6,
+      "community_name": "IncompleteDataWidget.tsx",
       "norm_label": "props"
     },
     {
@@ -631,8 +620,8 @@
       "source_location": "L23",
       "_origin": "ast",
       "id": "app_admin_dashboard_client_dashboardclient",
-      "community": 26,
-      "community_name": "useRekapNilaiAkhir.ts",
+      "community": 24,
+      "community_name": "app/layout.tsx",
       "norm_label": "dashboardclient()"
     },
     {
@@ -642,8 +631,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_admin_dashboard_components_admindashboardview",
-      "community": 28,
-      "community_name": "AdminDashboardView.tsx",
+      "community": 6,
+      "community_name": "IncompleteDataWidget.tsx",
       "norm_label": "admindashboardview.tsx"
     },
     {
@@ -653,8 +642,8 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "app_admin_dashboard_components_admindashboardview_admindashboardview",
-      "community": 28,
-      "community_name": "AdminDashboardView.tsx",
+      "community": 6,
+      "community_name": "IncompleteDataWidget.tsx",
       "norm_label": "admindashboardview()"
     },
     {
@@ -664,8 +653,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_admin_dashboard_components_gurudashboardview",
-      "community": 26,
-      "community_name": "useRekapNilaiAkhir.ts",
+      "community": 6,
+      "community_name": "IncompleteDataWidget.tsx",
       "norm_label": "gurudashboardview.tsx"
     },
     {
@@ -675,8 +664,8 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "app_admin_dashboard_components_gurudashboardview_attendancedonutchart",
-      "community": 26,
-      "community_name": "useRekapNilaiAkhir.ts",
+      "community": 6,
+      "community_name": "IncompleteDataWidget.tsx",
       "norm_label": "attendancedonutchart"
     },
     {
@@ -686,8 +675,8 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "app_admin_dashboard_components_gurudashboardview_gurudashboardview",
-      "community": 26,
-      "community_name": "useRekapNilaiAkhir.ts",
+      "community": 6,
+      "community_name": "IncompleteDataWidget.tsx",
       "norm_label": "gurudashboardview()"
     },
     {
@@ -851,8 +840,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_admin_data_gtk_components_addeditmodal",
-      "community": 24,
-      "community_name": "app/layout.tsx",
+      "community": 85,
+      "community_name": "export-presensi-csv.ts",
       "norm_label": "addeditmodal.tsx"
     },
     {
@@ -862,8 +851,8 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "app_admin_data_gtk_components_addeditmodal_modal",
-      "community": 24,
-      "community_name": "app/layout.tsx",
+      "community": 85,
+      "community_name": "export-presensi-csv.ts",
       "norm_label": "modal"
     },
     {
@@ -873,8 +862,8 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "app_admin_data_gtk_components_addeditmodal_formdata",
-      "community": 24,
-      "community_name": "app/layout.tsx",
+      "community": 85,
+      "community_name": "export-presensi-csv.ts",
       "norm_label": "formdata"
     },
     {
@@ -884,8 +873,8 @@
       "source_location": "L18",
       "_origin": "ast",
       "id": "app_admin_data_gtk_components_addeditmodal_emptyform",
-      "community": 24,
-      "community_name": "app/layout.tsx",
+      "community": 85,
+      "community_name": "export-presensi-csv.ts",
       "norm_label": "emptyform"
     },
     {
@@ -895,8 +884,8 @@
       "source_location": "L28",
       "_origin": "ast",
       "id": "app_admin_data_gtk_components_addeditmodal_role_options",
-      "community": 24,
-      "community_name": "app/layout.tsx",
+      "community": 85,
+      "community_name": "export-presensi-csv.ts",
       "norm_label": "role_options"
     },
     {
@@ -906,8 +895,8 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "app_admin_data_gtk_components_addeditmodal_addeditmodal",
-      "community": 24,
-      "community_name": "app/layout.tsx",
+      "community": 85,
+      "community_name": "export-presensi-csv.ts",
       "norm_label": "addeditmodal()"
     },
     {
@@ -917,8 +906,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_admin_data_gtk_components_confirmdialog",
-      "community": 24,
-      "community_name": "app/layout.tsx",
+      "community": 85,
+      "community_name": "export-presensi-csv.ts",
       "norm_label": "confirmdialog.tsx"
     },
     {
@@ -928,8 +917,8 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "app_admin_data_gtk_components_confirmdialog_modal",
-      "community": 24,
-      "community_name": "app/layout.tsx",
+      "community": 85,
+      "community_name": "export-presensi-csv.ts",
       "norm_label": "modal"
     },
     {
@@ -939,8 +928,8 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "app_admin_data_gtk_components_confirmdialog_confirmdialog",
-      "community": 24,
-      "community_name": "app/layout.tsx",
+      "community": 85,
+      "community_name": "export-presensi-csv.ts",
       "norm_label": "confirmdialog()"
     },
     {
@@ -950,8 +939,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_admin_data_gtk_page",
-      "community": 24,
-      "community_name": "app/layout.tsx",
+      "community": 85,
+      "community_name": "export-presensi-csv.ts",
       "norm_label": "data-gtk/page.tsx"
     },
     {
@@ -961,8 +950,8 @@
       "source_location": "L26",
       "_origin": "ast",
       "id": "app_admin_data_gtk_page_datagtk",
-      "community": 24,
-      "community_name": "app/layout.tsx",
+      "community": 85,
+      "community_name": "export-presensi-csv.ts",
       "norm_label": "datagtk()"
     },
     {
@@ -994,8 +983,8 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "app_admin_data_murid_page_datamuridpage",
-      "community": 3,
-      "community_name": "useAssessmentScore.ts",
+      "community": 6,
+      "community_name": "IncompleteDataWidget.tsx",
       "norm_label": "datamuridpage()"
     },
     {
@@ -1005,8 +994,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_admin_data_pendaftar_edit_id_page",
-      "community": 1,
-      "community_name": "student-attendance.service.ts",
+      "community": 15,
+      "community_name": "StudentDataStep.tsx",
       "norm_label": "edit/[id]/page.tsx"
     },
     {
@@ -1016,8 +1005,8 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "app_admin_data_pendaftar_edit_id_page_emptyform",
-      "community": 1,
-      "community_name": "student-attendance.service.ts",
+      "community": 15,
+      "community_name": "StudentDataStep.tsx",
       "norm_label": "emptyform"
     },
     {
@@ -1027,8 +1016,8 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "app_admin_data_pendaftar_edit_id_page_editregistration",
-      "community": 1,
-      "community_name": "student-attendance.service.ts",
+      "community": 15,
+      "community_name": "StudentDataStep.tsx",
       "norm_label": "editregistration()"
     },
     {
@@ -1038,8 +1027,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_admin_data_pendaftar_page",
-      "community": 14,
-      "community_name": "pmb/page.tsx",
+      "community": 15,
+      "community_name": "StudentDataStep.tsx",
       "norm_label": "data-pendaftar/page.tsx"
     },
     {
@@ -1049,8 +1038,8 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "app_admin_data_pendaftar_page_formatdatetime",
-      "community": 14,
-      "community_name": "pmb/page.tsx",
+      "community": 15,
+      "community_name": "StudentDataStep.tsx",
       "norm_label": "formatdatetime()"
     },
     {
@@ -1060,8 +1049,8 @@
       "source_location": "L39",
       "_origin": "ast",
       "id": "app_admin_data_pendaftar_page_datapendaftar",
-      "community": 14,
-      "community_name": "pmb/page.tsx",
+      "community": 15,
+      "community_name": "StudentDataStep.tsx",
       "norm_label": "datapendaftar()"
     },
     {
@@ -1423,8 +1412,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_admin_komponen_nilai_components_tabnonharian",
-      "community": 19,
-      "community_name": "grade-subject.service.ts",
+      "community": 21,
+      "community_name": "nilai-harian.ts",
       "norm_label": "tabnonharian.tsx"
     },
     {
@@ -1434,8 +1423,8 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "app_admin_komponen_nilai_components_tabnonharian_tabnonharianprops",
-      "community": 19,
-      "community_name": "grade-subject.service.ts",
+      "community": 21,
+      "community_name": "nilai-harian.ts",
       "norm_label": "tabnonharianprops"
     },
     {
@@ -1445,8 +1434,8 @@
       "source_location": "L26",
       "_origin": "ast",
       "id": "app_admin_komponen_nilai_components_tabnonharian_tabnonharian",
-      "community": 19,
-      "community_name": "grade-subject.service.ts",
+      "community": 21,
+      "community_name": "nilai-harian.ts",
       "norm_label": "tabnonharian()"
     },
     {
@@ -1621,8 +1610,8 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "app_admin_konfigurasi_nilai_page_masterkonfigurasinilaipage",
-      "community": 57,
-      "community_name": "IncompleteDataWidget.tsx",
+      "community": 99,
+      "community_name": "constants.ts",
       "norm_label": "masterkonfigurasinilaipage()"
     },
     {
@@ -1698,8 +1687,8 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "app_admin_nilai_akhir_page_nilaiakhirpage",
-      "community": 19,
-      "community_name": "grade-subject.service.ts",
+      "community": 26,
+      "community_name": "useRekapNilaiAkhir.ts",
       "norm_label": "nilaiakhirpage()"
     },
     {
@@ -1717,11 +1706,11 @@
       "label": "NilaiHarianPage()",
       "file_type": "code",
       "source_file": "app/(admin)/nilai-harian/page.tsx",
-      "source_location": "L26",
+      "source_location": "L25",
       "_origin": "ast",
       "id": "app_admin_nilai_harian_page_nilaiharianpage",
-      "community": 19,
-      "community_name": "grade-subject.service.ts",
+      "community": 43,
+      "community_name": ".getAll",
       "norm_label": "nilaiharianpage()"
     },
     {
@@ -1764,63 +1753,63 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_admin_penilaian_karakter_detail_page",
-      "community": 18,
-      "community_name": "detail/page.tsx",
+      "community": 9,
+      "community_name": "Pagination.tsx",
       "norm_label": "detail/page.tsx"
     },
     {
       "label": "HabitDisplay",
       "file_type": "code",
       "source_file": "app/(admin)/penilaian-karakter/detail/page.tsx",
-      "source_location": "L19",
+      "source_location": "L17",
       "_origin": "ast",
       "id": "app_admin_penilaian_karakter_detail_page_habitdisplay",
-      "community": 18,
-      "community_name": "detail/page.tsx",
+      "community": 9,
+      "community_name": "Pagination.tsx",
       "norm_label": "habitdisplay"
     },
     {
       "label": "SCORE_COLORS",
       "file_type": "code",
       "source_file": "app/(admin)/penilaian-karakter/detail/page.tsx",
-      "source_location": "L25",
+      "source_location": "L23",
       "_origin": "ast",
       "id": "app_admin_penilaian_karakter_detail_page_score_colors",
-      "community": 18,
-      "community_name": "detail/page.tsx",
+      "community": 9,
+      "community_name": "Pagination.tsx",
       "norm_label": "score_colors"
     },
     {
       "label": "getScoreColor()",
       "file_type": "code",
       "source_file": "app/(admin)/penilaian-karakter/detail/page.tsx",
-      "source_location": "L32",
+      "source_location": "L30",
       "_origin": "ast",
       "id": "app_admin_penilaian_karakter_detail_page_getscorecolor",
-      "community": 18,
-      "community_name": "detail/page.tsx",
+      "community": 9,
+      "community_name": "Pagination.tsx",
       "norm_label": "getscorecolor()"
     },
     {
       "label": "VALUE_COLORS",
       "file_type": "code",
       "source_file": "app/(admin)/penilaian-karakter/detail/page.tsx",
-      "source_location": "L41",
+      "source_location": "L37",
       "_origin": "ast",
       "id": "app_admin_penilaian_karakter_detail_page_value_colors",
-      "community": 18,
-      "community_name": "detail/page.tsx",
+      "community": 9,
+      "community_name": "Pagination.tsx",
       "norm_label": "value_colors"
     },
     {
       "label": "KarakterDetailPage()",
       "file_type": "code",
       "source_file": "app/(admin)/penilaian-karakter/detail/page.tsx",
-      "source_location": "L48",
+      "source_location": "L44",
       "_origin": "ast",
       "id": "app_admin_penilaian_karakter_detail_page_karakterdetailpage",
-      "community": 24,
-      "community_name": "app/layout.tsx",
+      "community": 5,
+      "community_name": "character-assessment.service.ts",
       "norm_label": "karakterdetailpage()"
     },
     {
@@ -1830,41 +1819,41 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_admin_penilaian_karakter_history_page",
-      "community": 9,
-      "community_name": "Pagination.tsx",
+      "community": 17,
+      "community_name": "cn",
       "norm_label": "history/page.tsx"
     },
     {
       "label": "SCORE_COLORS",
       "file_type": "code",
       "source_file": "app/(admin)/penilaian-karakter/history/page.tsx",
-      "source_location": "L16",
+      "source_location": "L15",
       "_origin": "ast",
       "id": "app_admin_penilaian_karakter_history_page_score_colors",
-      "community": 9,
-      "community_name": "Pagination.tsx",
+      "community": 17,
+      "community_name": "cn",
       "norm_label": "score_colors"
     },
     {
       "label": "getScoreColor()",
       "file_type": "code",
       "source_file": "app/(admin)/penilaian-karakter/history/page.tsx",
-      "source_location": "L23",
+      "source_location": "L22",
       "_origin": "ast",
       "id": "app_admin_penilaian_karakter_history_page_getscorecolor",
-      "community": 9,
-      "community_name": "Pagination.tsx",
+      "community": 100,
+      "community_name": "history/page.tsx",
       "norm_label": "getscorecolor()"
     },
     {
       "label": "KarakterHistoryPage()",
       "file_type": "code",
       "source_file": "app/(admin)/penilaian-karakter/history/page.tsx",
-      "source_location": "L30",
+      "source_location": "L29",
       "_origin": "ast",
       "id": "app_admin_penilaian_karakter_history_page_karakterhistorypage",
-      "community": 9,
-      "community_name": "Pagination.tsx",
+      "community": 100,
+      "community_name": "history/page.tsx",
       "norm_label": "karakterhistorypage()"
     },
     {
@@ -1893,11 +1882,11 @@
       "label": "PenilaianKarakterPage()",
       "file_type": "code",
       "source_file": "app/(admin)/penilaian-karakter/page.tsx",
-      "source_location": "L18",
+      "source_location": "L17",
       "_origin": "ast",
       "id": "app_admin_penilaian_karakter_page_penilaiankarakterpage",
-      "community": 58,
-      "community_name": "lib/api.ts",
+      "community": 5,
+      "community_name": "character-assessment.service.ts",
       "norm_label": "penilaiankarakterpage()"
     },
     {
@@ -1907,8 +1896,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_admin_penilaian_page",
-      "community": 36,
-      "community_name": "Pagination.tsx",
+      "community": 40,
+      "community_name": "useAuth",
       "norm_label": "penilaian/page.tsx"
     },
     {
@@ -1918,8 +1907,8 @@
       "source_location": "L32",
       "_origin": "ast",
       "id": "app_admin_penilaian_page_modal",
-      "community": 36,
-      "community_name": "Pagination.tsx",
+      "community": 40,
+      "community_name": "useAuth",
       "norm_label": "modal"
     },
     {
@@ -1962,8 +1951,8 @@
       "source_location": "L43",
       "_origin": "ast",
       "id": "app_admin_presensi_murid_page_presensimuridpage",
-      "community": 60,
-      "community_name": "holiday.service.ts",
+      "community": 85,
+      "community_name": "export-presensi-csv.ts",
       "norm_label": "presensimuridpage()"
     },
     {
@@ -2072,15 +2061,15 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_admin_rekap_karakter_page",
-      "community": 85,
-      "community_name": "export-presensi-csv.ts",
+      "community": 0,
+      "community_name": "select.tsx",
       "norm_label": "rekap-karakter/page.tsx"
     },
     {
       "label": "RekapKarapkterPage()",
       "file_type": "code",
       "source_file": "app/(admin)/rekap-karakter/page.tsx",
-      "source_location": "L16",
+      "source_location": "L25",
       "_origin": "ast",
       "id": "app_admin_rekap_karakter_page_rekapkarapkterpage",
       "community": 85,
@@ -2105,8 +2094,8 @@
       "source_location": "L14",
       "_origin": "ast",
       "id": "app_admin_rekap_nilai_akhir_page_rekapnilaiakhirpage",
-      "community": 24,
-      "community_name": "app/layout.tsx",
+      "community": 26,
+      "community_name": "useRekapNilaiAkhir.ts",
       "norm_label": "rekapnilaiakhirpage()"
     },
     {
@@ -2127,8 +2116,8 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "app_admin_rekap_nilai_harian_page_rekapnilaipage",
-      "community": 19,
-      "community_name": "grade-subject.service.ts",
+      "community": 43,
+      "community_name": ".getAll",
       "norm_label": "rekapnilaipage()"
     },
     {
@@ -2138,8 +2127,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_admin_tabungan_murid_page",
-      "community": 0,
-      "community_name": "select.tsx",
+      "community": 4,
+      "community_name": "student-savings.service.ts",
       "norm_label": "tabungan-murid/page.tsx"
     },
     {
@@ -2589,8 +2578,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_kelulusan_data_index",
-      "community": 87,
-      "community_name": "cn",
+      "community": 1,
+      "community_name": "student-attendance.service.ts",
       "norm_label": "kelulusan/data/index.ts"
     },
     {
@@ -2600,8 +2589,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_kelulusan_data_index_datakelulusantype",
-      "community": 87,
-      "community_name": "cn",
+      "community": 1,
+      "community_name": "student-attendance.service.ts",
       "norm_label": "datakelulusantype"
     },
     {
@@ -2611,8 +2600,8 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "app_kelulusan_data_index_datakelulusan",
-      "community": 87,
-      "community_name": "cn",
+      "community": 1,
+      "community_name": "student-attendance.service.ts",
       "norm_label": "datakelulusan"
     },
     {
@@ -2644,8 +2633,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_kelulusan_page",
-      "community": 87,
-      "community_name": "cn",
+      "community": 1,
+      "community_name": "student-attendance.service.ts",
       "norm_label": "kelulusan/page.tsx"
     },
     {
@@ -2655,8 +2644,8 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "app_kelulusan_page_kelulusan",
-      "community": 87,
-      "community_name": "cn",
+      "community": 1,
+      "community_name": "student-attendance.service.ts",
       "norm_label": "kelulusan()"
     },
     {
@@ -2666,8 +2655,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_layout",
-      "community": 21,
-      "community_name": "nilai-harian.ts",
+      "community": 87,
+      "community_name": "cn",
       "norm_label": "app/layout.tsx"
     },
     {
@@ -2677,8 +2666,8 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "app_layout_geist",
-      "community": 21,
-      "community_name": "nilai-harian.ts",
+      "community": 87,
+      "community_name": "cn",
       "norm_label": "geist"
     },
     {
@@ -2688,8 +2677,8 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "app_layout_poppins",
-      "community": 21,
-      "community_name": "nilai-harian.ts",
+      "community": 87,
+      "community_name": "cn",
       "norm_label": "poppins"
     },
     {
@@ -2699,8 +2688,8 @@
       "source_location": "L17",
       "_origin": "ast",
       "id": "app_layout_metadata",
-      "community": 21,
-      "community_name": "nilai-harian.ts",
+      "community": 87,
+      "community_name": "cn",
       "norm_label": "metadata"
     },
     {
@@ -2710,8 +2699,8 @@
       "source_location": "L42",
       "_origin": "ast",
       "id": "app_layout_rootlayout",
-      "community": 21,
-      "community_name": "nilai-harian.ts",
+      "community": 87,
+      "community_name": "cn",
       "norm_label": "rootlayout()"
     },
     {
@@ -2831,8 +2820,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_pmb_page",
-      "community": 1,
-      "community_name": "student-attendance.service.ts",
+      "community": 15,
+      "community_name": "StudentDataStep.tsx",
       "norm_label": "pmb/page.tsx"
     },
     {
@@ -2842,8 +2831,8 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "app_pmb_page_initialformdata",
-      "community": 1,
-      "community_name": "student-attendance.service.ts",
+      "community": 15,
+      "community_name": "StudentDataStep.tsx",
       "norm_label": "initialformdata"
     },
     {
@@ -2853,8 +2842,8 @@
       "source_location": "L63",
       "_origin": "ast",
       "id": "app_pmb_page_pmb",
-      "community": 1,
-      "community_name": "student-attendance.service.ts",
+      "community": 15,
+      "community_name": "StudentDataStep.tsx",
       "norm_label": "pmb()"
     },
     {
@@ -2897,8 +2886,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_rekap_presensi_page",
-      "community": 8,
-      "community_name": "komponen-nilai/page.tsx",
+      "community": 0,
+      "community_name": "select.tsx",
       "norm_label": "rekap-presensi/page.tsx"
     },
     {
@@ -2908,8 +2897,8 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "app_rekap_presensi_page_rekappresensi",
-      "community": 43,
-      "community_name": ".getAll",
+      "community": 85,
+      "community_name": "export-presensi-csv.ts",
       "norm_label": "rekappresensi()"
     },
     {
@@ -2974,8 +2963,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_theme_provider",
-      "community": 21,
-      "community_name": "nilai-harian.ts",
+      "community": 87,
+      "community_name": "cn",
       "norm_label": "theme-provider.tsx"
     },
     {
@@ -2985,8 +2974,8 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "app_theme_provider_themeprovider",
-      "community": 21,
-      "community_name": "nilai-harian.ts",
+      "community": 87,
+      "community_name": "cn",
       "norm_label": "themeprovider()"
     },
     {
@@ -3535,8 +3524,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "components_common_dashboardstatcards",
-      "community": 28,
-      "community_name": "AdminDashboardView.tsx",
+      "community": 6,
+      "community_name": "IncompleteDataWidget.tsx",
       "norm_label": "dashboardstatcards.tsx"
     },
     {
@@ -3546,8 +3535,8 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "components_common_dashboardstatcards_statcardkey",
-      "community": 28,
-      "community_name": "AdminDashboardView.tsx",
+      "community": 6,
+      "community_name": "IncompleteDataWidget.tsx",
       "norm_label": "statcardkey"
     },
     {
@@ -3557,8 +3546,8 @@
       "source_location": "L23",
       "_origin": "ast",
       "id": "components_common_dashboardstatcards_cards",
-      "community": 28,
-      "community_name": "AdminDashboardView.tsx",
+      "community": 6,
+      "community_name": "IncompleteDataWidget.tsx",
       "norm_label": "cards"
     },
     {
@@ -3568,8 +3557,8 @@
       "source_location": "L32",
       "_origin": "ast",
       "id": "components_common_dashboardstatcards_props",
-      "community": 28,
-      "community_name": "AdminDashboardView.tsx",
+      "community": 6,
+      "community_name": "IncompleteDataWidget.tsx",
       "norm_label": "props"
     },
     {
@@ -3579,8 +3568,8 @@
       "source_location": "L37",
       "_origin": "ast",
       "id": "components_common_dashboardstatcards_dashboardstatcards",
-      "community": 28,
-      "community_name": "AdminDashboardView.tsx",
+      "community": 6,
+      "community_name": "IncompleteDataWidget.tsx",
       "norm_label": "dashboardstatcards()"
     },
     {
@@ -3634,8 +3623,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "components_common_datedaypicker",
-      "community": 0,
-      "community_name": "select.tsx",
+      "community": 57,
+      "community_name": "IncompleteDataWidget.tsx",
       "norm_label": "datedaypicker.tsx"
     },
     {
@@ -3645,8 +3634,8 @@
       "source_location": "L21",
       "_origin": "ast",
       "id": "components_common_datedaypicker_datedaypickerprops",
-      "community": 0,
-      "community_name": "select.tsx",
+      "community": 57,
+      "community_name": "IncompleteDataWidget.tsx",
       "norm_label": "datedaypickerprops"
     },
     {
@@ -3656,8 +3645,8 @@
       "source_location": "L28",
       "_origin": "ast",
       "id": "components_common_datedaypicker_days",
-      "community": 0,
-      "community_name": "select.tsx",
+      "community": 57,
+      "community_name": "IncompleteDataWidget.tsx",
       "norm_label": "days"
     },
     {
@@ -3667,8 +3656,8 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "components_common_datedaypicker_datedaypicker",
-      "community": 0,
-      "community_name": "select.tsx",
+      "community": 57,
+      "community_name": "IncompleteDataWidget.tsx",
       "norm_label": "datedaypicker()"
     },
     {
@@ -3711,8 +3700,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "components_common_exportimagebutton",
-      "community": 85,
-      "community_name": "export-presensi-csv.ts",
+      "community": 57,
+      "community_name": "IncompleteDataWidget.tsx",
       "norm_label": "exportimagebutton.tsx"
     },
     {
@@ -3722,8 +3711,8 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "components_common_exportimagebutton_props",
-      "community": 85,
-      "community_name": "export-presensi-csv.ts",
+      "community": 57,
+      "community_name": "IncompleteDataWidget.tsx",
       "norm_label": "props"
     },
     {
@@ -3733,8 +3722,8 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "components_common_exportimagebutton_exportimagebutton",
-      "community": 85,
-      "community_name": "export-presensi-csv.ts",
+      "community": 57,
+      "community_name": "IncompleteDataWidget.tsx",
       "norm_label": "exportimagebutton()"
     },
     {
@@ -3744,8 +3733,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "components_common_exportwordbutton",
-      "community": 8,
-      "community_name": "komponen-nilai/page.tsx",
+      "community": 85,
+      "community_name": "export-presensi-csv.ts",
       "norm_label": "exportwordbutton.tsx"
     },
     {
@@ -3755,8 +3744,8 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "components_common_exportwordbutton_exportwordbutton",
-      "community": 43,
-      "community_name": ".getAll",
+      "community": 85,
+      "community_name": "export-presensi-csv.ts",
       "norm_label": "exportwordbutton()"
     },
     {
@@ -3766,8 +3755,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "components_common_holidayinfocard",
-      "community": 14,
-      "community_name": "pmb/page.tsx",
+      "community": 15,
+      "community_name": "StudentDataStep.tsx",
       "norm_label": "holidayinfocard.tsx"
     },
     {
@@ -3777,8 +3766,8 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "components_common_holidayinfocard_holidayinfocardprops",
-      "community": 14,
-      "community_name": "pmb/page.tsx",
+      "community": 15,
+      "community_name": "StudentDataStep.tsx",
       "norm_label": "holidayinfocardprops"
     },
     {
@@ -3788,8 +3777,8 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "components_common_holidayinfocard_holidayinfocard",
-      "community": 14,
-      "community_name": "pmb/page.tsx",
+      "community": 15,
+      "community_name": "StudentDataStep.tsx",
       "norm_label": "holidayinfocard()"
     },
     {
@@ -3799,8 +3788,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "components_common_insightcards",
-      "community": 28,
-      "community_name": "AdminDashboardView.tsx",
+      "community": 6,
+      "community_name": "IncompleteDataWidget.tsx",
       "norm_label": "insightcards.tsx"
     },
     {
@@ -3810,8 +3799,8 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "components_common_insightcards_props",
-      "community": 28,
-      "community_name": "AdminDashboardView.tsx",
+      "community": 6,
+      "community_name": "IncompleteDataWidget.tsx",
       "norm_label": "props"
     },
     {
@@ -3821,8 +3810,8 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "components_common_insightcards_insightcards",
-      "community": 28,
-      "community_name": "AdminDashboardView.tsx",
+      "community": 6,
+      "community_name": "IncompleteDataWidget.tsx",
       "norm_label": "insightcards()"
     },
     {
@@ -3975,8 +3964,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "components_common_pagination",
-      "community": 36,
-      "community_name": "Pagination.tsx",
+      "community": 40,
+      "community_name": "useAuth",
       "norm_label": "pagination.tsx"
     },
     {
@@ -3986,8 +3975,8 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "components_common_pagination_paginationprops",
-      "community": 36,
-      "community_name": "Pagination.tsx",
+      "community": 40,
+      "community_name": "useAuth",
       "norm_label": "paginationprops"
     },
     {
@@ -3997,8 +3986,8 @@
       "source_location": "L14",
       "_origin": "ast",
       "id": "components_common_pagination_pagination",
-      "community": 36,
-      "community_name": "Pagination.tsx",
+      "community": 40,
+      "community_name": "useAuth",
       "norm_label": "pagination()"
     },
     {
@@ -4057,47 +4046,14 @@
       "norm_label": "presensistatusbadge()"
     },
     {
-      "label": "ProgressBadge.tsx",
-      "file_type": "code",
-      "source_file": "components/common/ProgressBadge.tsx",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "components_common_progressbadge",
-      "community": 40,
-      "community_name": "useAuth",
-      "norm_label": "progressbadge.tsx"
-    },
-    {
-      "label": "ProgressBadgeProps",
-      "file_type": "code",
-      "source_file": "components/common/ProgressBadge.tsx",
-      "source_location": "L3",
-      "_origin": "ast",
-      "id": "components_common_progressbadge_progressbadgeprops",
-      "community": 40,
-      "community_name": "useAuth",
-      "norm_label": "progressbadgeprops"
-    },
-    {
-      "label": "ProgressBadge()",
-      "file_type": "code",
-      "source_file": "components/common/ProgressBadge.tsx",
-      "source_location": "L10",
-      "_origin": "ast",
-      "id": "components_common_progressbadge_progressbadge",
-      "community": 40,
-      "community_name": "useAuth",
-      "norm_label": "progressbadge()"
-    },
-    {
       "label": "RegistrationCard.tsx",
       "file_type": "code",
       "source_file": "components/common/RegistrationCard.tsx",
       "source_location": "L1",
       "_origin": "ast",
       "id": "components_common_registrationcard",
-      "community": 1,
-      "community_name": "student-attendance.service.ts",
+      "community": 15,
+      "community_name": "StudentDataStep.tsx",
       "norm_label": "registrationcard.tsx"
     },
     {
@@ -4107,8 +4063,8 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "components_common_registrationcard_registrationcard",
-      "community": 1,
-      "community_name": "student-attendance.service.ts",
+      "community": 15,
+      "community_name": "StudentDataStep.tsx",
       "norm_label": "registrationcard()"
     },
     {
@@ -4118,8 +4074,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "components_common_registrationcounter",
-      "community": 1,
-      "community_name": "student-attendance.service.ts",
+      "community": 15,
+      "community_name": "StudentDataStep.tsx",
       "norm_label": "registrationcounter.tsx"
     },
     {
@@ -4129,8 +4085,8 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "components_common_registrationcounter_registrationcounter",
-      "community": 1,
-      "community_name": "student-attendance.service.ts",
+      "community": 15,
+      "community_name": "StudentDataStep.tsx",
       "norm_label": "registrationcounter()"
     },
     {
@@ -4228,8 +4184,8 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "components_common_yearselect_yearselect",
-      "community": 0,
-      "community_name": "select.tsx",
+      "community": 4,
+      "community_name": "student-savings.service.ts",
       "norm_label": "yearselect()"
     },
     {
@@ -4239,8 +4195,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "components_dashboard_presensi_monthlypresensiposter",
-      "community": 70,
-      "community_name": "useDashboardPresensi.ts",
+      "community": 6,
+      "community_name": "IncompleteDataWidget.tsx",
       "norm_label": "monthlypresensiposter.tsx"
     },
     {
@@ -4250,8 +4206,8 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "components_dashboard_presensi_monthlypresensiposter_props",
-      "community": 70,
-      "community_name": "useDashboardPresensi.ts",
+      "community": 6,
+      "community_name": "IncompleteDataWidget.tsx",
       "norm_label": "props"
     },
     {
@@ -4261,8 +4217,8 @@
       "source_location": "L14",
       "_origin": "ast",
       "id": "components_dashboard_presensi_monthlypresensiposter_monthlypresensiposter",
-      "community": 70,
-      "community_name": "useDashboardPresensi.ts",
+      "community": 6,
+      "community_name": "IncompleteDataWidget.tsx",
       "norm_label": "monthlypresensiposter"
     },
     {
@@ -4415,30 +4371,30 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "components_karakter_rekapkaraktertable",
-      "community": 85,
-      "community_name": "export-presensi-csv.ts",
+      "community": 5,
+      "community_name": "character-assessment.service.ts",
       "norm_label": "rekapkaraktertable.tsx"
     },
     {
       "label": "Props",
       "file_type": "code",
       "source_file": "components/karakter/RekapKarakterTable.tsx",
-      "source_location": "L11",
+      "source_location": "L10",
       "_origin": "ast",
       "id": "components_karakter_rekapkaraktertable_props",
-      "community": 85,
-      "community_name": "export-presensi-csv.ts",
+      "community": 5,
+      "community_name": "character-assessment.service.ts",
       "norm_label": "props"
     },
     {
       "label": "RekapKarakterTable()",
       "file_type": "code",
       "source_file": "components/karakter/RekapKarakterTable.tsx",
-      "source_location": "L18",
+      "source_location": "L17",
       "_origin": "ast",
       "id": "components_karakter_rekapkaraktertable_rekapkaraktertable",
-      "community": 85,
-      "community_name": "export-presensi-csv.ts",
+      "community": 5,
+      "community_name": "character-assessment.service.ts",
       "norm_label": "rekapkaraktertable()"
     },
     {
@@ -4489,7 +4445,7 @@
       "label": "StudentAssessmentTable()",
       "file_type": "code",
       "source_file": "components/karakter/StudentAssessmentTable.tsx",
-      "source_location": "L36",
+      "source_location": "L33",
       "_origin": "ast",
       "id": "components_karakter_studentassessmenttable_studentassessmenttable",
       "community": 5,
@@ -4569,8 +4525,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "components_layout_dashboardsidebar",
-      "community": 12,
-      "community_name": "useNilaiHarian",
+      "community": 24,
+      "community_name": "app/layout.tsx",
       "norm_label": "dashboardsidebar.tsx"
     },
     {
@@ -4580,8 +4536,8 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "components_layout_dashboardsidebar_sidebarprops",
-      "community": 12,
-      "community_name": "useNilaiHarian",
+      "community": 24,
+      "community_name": "app/layout.tsx",
       "norm_label": "sidebarprops"
     },
     {
@@ -4591,8 +4547,8 @@
       "source_location": "L17",
       "_origin": "ast",
       "id": "components_layout_dashboardsidebar_dashboardsidebar",
-      "community": 12,
-      "community_name": "useNilaiHarian",
+      "community": 24,
+      "community_name": "app/layout.tsx",
       "norm_label": "dashboardsidebar()"
     },
     {
@@ -4679,8 +4635,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "components_modals_loadingmodal",
-      "community": 1,
-      "community_name": "student-attendance.service.ts",
+      "community": 15,
+      "community_name": "StudentDataStep.tsx",
       "norm_label": "loadingmodal.tsx"
     },
     {
@@ -4690,8 +4646,8 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "components_modals_loadingmodal_loadingmodalprops",
-      "community": 1,
-      "community_name": "student-attendance.service.ts",
+      "community": 15,
+      "community_name": "StudentDataStep.tsx",
       "norm_label": "loadingmodalprops"
     },
     {
@@ -4701,8 +4657,8 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "components_modals_loadingmodal_loadingmodal",
-      "community": 1,
-      "community_name": "student-attendance.service.ts",
+      "community": 15,
+      "community_name": "StudentDataStep.tsx",
       "norm_label": "loadingmodal()"
     },
     {
@@ -4745,8 +4701,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "components_nilai_harian_rekapnilaiakhirsheet",
-      "community": 19,
-      "community_name": "grade-subject.service.ts",
+      "community": 26,
+      "community_name": "useRekapNilaiAkhir.ts",
       "norm_label": "rekapnilaiakhirsheet.tsx"
     },
     {
@@ -4756,8 +4712,8 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "components_nilai_harian_rekapnilaiakhirsheet_props",
-      "community": 19,
-      "community_name": "grade-subject.service.ts",
+      "community": 26,
+      "community_name": "useRekapNilaiAkhir.ts",
       "norm_label": "props"
     },
     {
@@ -4767,8 +4723,8 @@
       "source_location": "L14",
       "_origin": "ast",
       "id": "components_nilai_harian_rekapnilaiakhirsheet_rekapnilaiakhirsheet",
-      "community": 19,
-      "community_name": "grade-subject.service.ts",
+      "community": 26,
+      "community_name": "useRekapNilaiAkhir.ts",
       "norm_label": "rekapnilaiakhirsheet()"
     },
     {
@@ -4778,8 +4734,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "components_nilai_harian_rekaptable",
-      "community": 19,
-      "community_name": "grade-subject.service.ts",
+      "community": 8,
+      "community_name": "komponen-nilai/page.tsx",
       "norm_label": "rekaptable.tsx"
     },
     {
@@ -4789,8 +4745,8 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "components_nilai_harian_rekaptable_props",
-      "community": 19,
-      "community_name": "grade-subject.service.ts",
+      "community": 8,
+      "community_name": "komponen-nilai/page.tsx",
       "norm_label": "props"
     },
     {
@@ -4800,8 +4756,8 @@
       "source_location": "L17",
       "_origin": "ast",
       "id": "components_nilai_harian_rekaptable_rekaptable",
-      "community": 19,
-      "community_name": "grade-subject.service.ts",
+      "community": 8,
+      "community_name": "komponen-nilai/page.tsx",
       "norm_label": "rekaptable()"
     },
     {
@@ -4811,30 +4767,30 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "components_nilai_harian_scoretable",
-      "community": 40,
-      "community_name": "useAuth",
+      "community": 8,
+      "community_name": "komponen-nilai/page.tsx",
       "norm_label": "scoretable.tsx"
     },
     {
       "label": "Props",
       "file_type": "code",
       "source_file": "components/nilai-harian/ScoreTable.tsx",
-      "source_location": "L10",
+      "source_location": "L9",
       "_origin": "ast",
       "id": "components_nilai_harian_scoretable_props",
-      "community": 40,
-      "community_name": "useAuth",
+      "community": 8,
+      "community_name": "komponen-nilai/page.tsx",
       "norm_label": "props"
     },
     {
       "label": "ScoreTable()",
       "file_type": "code",
       "source_file": "components/nilai-harian/ScoreTable.tsx",
-      "source_location": "L26",
+      "source_location": "L25",
       "_origin": "ast",
       "id": "components_nilai_harian_scoretable_scoretable",
-      "community": 40,
-      "community_name": "useAuth",
+      "community": 8,
+      "community_name": "komponen-nilai/page.tsx",
       "norm_label": "scoretable()"
     },
     {
@@ -4932,8 +4888,8 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "components_pmb_studentdatastep_studentdatastep",
-      "community": 1,
-      "community_name": "student-attendance.service.ts",
+      "community": 15,
+      "community_name": "StudentDataStep.tsx",
       "norm_label": "studentdatastep()"
     },
     {
@@ -5152,8 +5108,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "components_shared_truncatedtextwithinfo",
-      "community": 36,
-      "community_name": "Pagination.tsx",
+      "community": 40,
+      "community_name": "useAuth",
       "norm_label": "truncatedtextwithinfo.tsx"
     },
     {
@@ -5163,8 +5119,8 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "components_shared_truncatedtextwithinfo_truncatedtextwithinfoprops",
-      "community": 36,
-      "community_name": "Pagination.tsx",
+      "community": 40,
+      "community_name": "useAuth",
       "norm_label": "truncatedtextwithinfoprops"
     },
     {
@@ -5174,8 +5130,8 @@
       "source_location": "L14",
       "_origin": "ast",
       "id": "components_shared_truncatedtextwithinfo_truncatedtextwithinfo",
-      "community": 36,
-      "community_name": "Pagination.tsx",
+      "community": 40,
+      "community_name": "useAuth",
       "norm_label": "truncatedtextwithinfo()"
     },
     {
@@ -5185,8 +5141,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "components_tables_presensitable",
-      "community": 81,
-      "community_name": "PresensiTable.tsx",
+      "community": 85,
+      "community_name": "export-presensi-csv.ts",
       "norm_label": "presensitable.tsx"
     },
     {
@@ -5196,8 +5152,8 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "components_tables_presensitable_props",
-      "community": 81,
-      "community_name": "PresensiTable.tsx",
+      "community": 85,
+      "community_name": "export-presensi-csv.ts",
       "norm_label": "props"
     },
     {
@@ -5207,8 +5163,8 @@
       "source_location": "L21",
       "_origin": "ast",
       "id": "components_tables_presensitable_status_list",
-      "community": 81,
-      "community_name": "PresensiTable.tsx",
+      "community": 85,
+      "community_name": "export-presensi-csv.ts",
       "norm_label": "status_list"
     },
     {
@@ -5218,8 +5174,8 @@
       "source_location": "L23",
       "_origin": "ast",
       "id": "components_tables_presensitable_presensitable",
-      "community": 81,
-      "community_name": "PresensiTable.tsx",
+      "community": 85,
+      "community_name": "export-presensi-csv.ts",
       "norm_label": "presensitable()"
     },
     {
@@ -5471,8 +5427,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "components_tabungan_historymodal",
-      "community": 0,
-      "community_name": "select.tsx",
+      "community": 4,
+      "community_name": "student-savings.service.ts",
       "norm_label": "historymodal.tsx"
     },
     {
@@ -5493,8 +5449,8 @@
       "source_location": "L51",
       "_origin": "ast",
       "id": "components_tabungan_historymodal_historymodal",
-      "community": 0,
-      "community_name": "select.tsx",
+      "community": 4,
+      "community_name": "student-savings.service.ts",
       "norm_label": "historymodal()"
     },
     {
@@ -5581,8 +5537,8 @@
       "source_location": "L18",
       "_origin": "ast",
       "id": "components_tabungan_weeklyrecaptable_weeklyrecaptableprops",
-      "community": 4,
-      "community_name": "student-savings.service.ts",
+      "community": 17,
+      "community_name": "cn",
       "norm_label": "weeklyrecaptableprops"
     },
     {
@@ -5592,8 +5548,8 @@
       "source_location": "L24",
       "_origin": "ast",
       "id": "components_tabungan_weeklyrecaptable_weeklyrecaptable",
-      "community": 4,
-      "community_name": "student-savings.service.ts",
+      "community": 17,
+      "community_name": "cn",
       "norm_label": "weeklyrecaptable()"
     },
     {
@@ -5647,8 +5603,8 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "components_ui_card_card",
-      "community": 87,
-      "community_name": "cn",
+      "community": 1,
+      "community_name": "student-attendance.service.ts",
       "norm_label": "card()"
     },
     {
@@ -5933,8 +5889,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "contexts_authcontext",
-      "community": 21,
-      "community_name": "nilai-harian.ts",
+      "community": 15,
+      "community_name": "StudentDataStep.tsx",
       "norm_label": "authcontext.tsx"
     },
     {
@@ -5944,8 +5900,8 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "contexts_authcontext_authcontexttype",
-      "community": 21,
-      "community_name": "nilai-harian.ts",
+      "community": 15,
+      "community_name": "StudentDataStep.tsx",
       "norm_label": "authcontexttype"
     },
     {
@@ -5955,8 +5911,8 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "contexts_authcontext_authstate",
-      "community": 21,
-      "community_name": "nilai-harian.ts",
+      "community": 15,
+      "community_name": "StudentDataStep.tsx",
       "norm_label": "authstate"
     },
     {
@@ -5966,8 +5922,8 @@
       "source_location": "L20",
       "_origin": "ast",
       "id": "contexts_authcontext_authcontext",
-      "community": 21,
-      "community_name": "nilai-harian.ts",
+      "community": 15,
+      "community_name": "StudentDataStep.tsx",
       "norm_label": "authcontext"
     },
     {
@@ -5977,8 +5933,8 @@
       "source_location": "L28",
       "_origin": "ast",
       "id": "contexts_authcontext_getcookie",
-      "community": 21,
-      "community_name": "nilai-harian.ts",
+      "community": 15,
+      "community_name": "StudentDataStep.tsx",
       "norm_label": "getcookie()"
     },
     {
@@ -5988,8 +5944,8 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "contexts_authcontext_readauthstate",
-      "community": 21,
-      "community_name": "nilai-harian.ts",
+      "community": 15,
+      "community_name": "StudentDataStep.tsx",
       "norm_label": "readauthstate()"
     },
     {
@@ -5999,8 +5955,8 @@
       "source_location": "L55",
       "_origin": "ast",
       "id": "contexts_authcontext_authprovider",
-      "community": 21,
-      "community_name": "nilai-harian.ts",
+      "community": 15,
+      "community_name": "StudentDataStep.tsx",
       "norm_label": "authprovider()"
     },
     {
@@ -6010,8 +5966,8 @@
       "source_location": "L86",
       "_origin": "ast",
       "id": "contexts_authcontext_useauth",
-      "community": 1,
-      "community_name": "student-attendance.service.ts",
+      "community": 15,
+      "community_name": "StudentDataStep.tsx",
       "norm_label": "useauth()"
     },
     {
@@ -6197,8 +6153,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "hooks_assessment_useassessmentconfig",
-      "community": 19,
-      "community_name": "grade-subject.service.ts",
+      "community": 21,
+      "community_name": "nilai-harian.ts",
       "norm_label": "assessment/useassessmentconfig.ts"
     },
     {
@@ -6241,8 +6197,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "hooks_assessment_usehariandata",
-      "community": 19,
-      "community_name": "grade-subject.service.ts",
+      "community": 8,
+      "community_name": "komponen-nilai/page.tsx",
       "norm_label": "usehariandata.ts"
     },
     {
@@ -6252,8 +6208,8 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "hooks_assessment_usehariandata_usehariandata",
-      "community": 19,
-      "community_name": "grade-subject.service.ts",
+      "community": 43,
+      "community_name": ".getAll",
       "norm_label": "usehariandata()"
     },
     {
@@ -6428,8 +6384,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "hooks_useassessmentconfig",
-      "community": 19,
-      "community_name": "grade-subject.service.ts",
+      "community": 21,
+      "community_name": "nilai-harian.ts",
       "norm_label": "hooks/useassessmentconfig.ts"
     },
     {
@@ -6439,8 +6395,8 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "hooks_useassessmentconfig_semesters",
-      "community": 19,
-      "community_name": "grade-subject.service.ts",
+      "community": 21,
+      "community_name": "nilai-harian.ts",
       "norm_label": "semesters"
     },
     {
@@ -6450,8 +6406,8 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "hooks_useassessmentconfig_academic_years",
-      "community": 19,
-      "community_name": "grade-subject.service.ts",
+      "community": 21,
+      "community_name": "nilai-harian.ts",
       "norm_label": "academic_years"
     },
     {
@@ -6461,8 +6417,8 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "hooks_useassessmentconfig_useassessmentconfig",
-      "community": 12,
-      "community_name": "useNilaiHarian",
+      "community": 24,
+      "community_name": "app/layout.tsx",
       "norm_label": "useassessmentconfig()"
     },
     {
@@ -6527,8 +6483,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "hooks_usechapters",
-      "community": 19,
-      "community_name": "grade-subject.service.ts",
+      "community": 14,
+      "community_name": "pmb/page.tsx",
       "norm_label": "usechapters.ts"
     },
     {
@@ -6538,8 +6494,8 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "hooks_usechapters_usechapters",
-      "community": 19,
-      "community_name": "grade-subject.service.ts",
+      "community": 14,
+      "community_name": "pmb/page.tsx",
       "norm_label": "usechapters()"
     },
     {
@@ -6582,8 +6538,8 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "hooks_usecharacterassessment_usecharacterassessment",
-      "community": 58,
-      "community_name": "lib/api.ts",
+      "community": 5,
+      "community_name": "character-assessment.service.ts",
       "norm_label": "usecharacterassessment()"
     },
     {
@@ -6604,8 +6560,8 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "hooks_usedashboard_dashboardsummary",
-      "community": 28,
-      "community_name": "AdminDashboardView.tsx",
+      "community": 6,
+      "community_name": "IncompleteDataWidget.tsx",
       "norm_label": "dashboardsummary"
     },
     {
@@ -6615,8 +6571,8 @@
       "source_location": "L31",
       "_origin": "ast",
       "id": "hooks_usedashboard_teachersummary",
-      "community": 26,
-      "community_name": "useRekapNilaiAkhir.ts",
+      "community": 6,
+      "community_name": "IncompleteDataWidget.tsx",
       "norm_label": "teachersummary"
     },
     {
@@ -6626,8 +6582,8 @@
       "source_location": "L37",
       "_origin": "ast",
       "id": "hooks_usedashboard_usedashboard",
-      "community": 28,
-      "community_name": "AdminDashboardView.tsx",
+      "community": 6,
+      "community_name": "IncompleteDataWidget.tsx",
       "norm_label": "usedashboard()"
     },
     {
@@ -6648,30 +6604,30 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "hooks_usedashboardkarakter",
-      "community": 18,
-      "community_name": "detail/page.tsx",
+      "community": 5,
+      "community_name": "character-assessment.service.ts",
       "norm_label": "usedashboardkarakter.ts"
     },
     {
       "label": "RecentAssessment",
       "file_type": "code",
       "source_file": "hooks/useDashboardKarakter.ts",
-      "source_location": "L9",
+      "source_location": "L8",
       "_origin": "ast",
       "id": "hooks_usedashboardkarakter_recentassessment",
-      "community": 18,
-      "community_name": "detail/page.tsx",
+      "community": 5,
+      "community_name": "character-assessment.service.ts",
       "norm_label": "recentassessment"
     },
     {
       "label": "useDashboardKarakter()",
       "file_type": "code",
       "source_file": "hooks/useDashboardKarakter.ts",
-      "source_location": "L19",
+      "source_location": "L18",
       "_origin": "ast",
       "id": "hooks_usedashboardkarakter_usedashboardkarakter",
-      "community": 58,
-      "community_name": "lib/api.ts",
+      "community": 5,
+      "community_name": "character-assessment.service.ts",
       "norm_label": "usedashboardkarakter()"
     },
     {
@@ -6725,8 +6681,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "hooks_usedashboardpresensi",
-      "community": 70,
-      "community_name": "useDashboardPresensi.ts",
+      "community": 6,
+      "community_name": "IncompleteDataWidget.tsx",
       "norm_label": "usedashboardpresensi.ts"
     },
     {
@@ -6736,8 +6692,8 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "hooks_usedashboardpresensi_viewmode",
-      "community": 70,
-      "community_name": "useDashboardPresensi.ts",
+      "community": 6,
+      "community_name": "IncompleteDataWidget.tsx",
       "norm_label": "viewmode"
     },
     {
@@ -6747,8 +6703,8 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "hooks_usedashboardpresensi_attendancesummary",
-      "community": 70,
-      "community_name": "useDashboardPresensi.ts",
+      "community": 6,
+      "community_name": "IncompleteDataWidget.tsx",
       "norm_label": "attendancesummary"
     },
     {
@@ -6758,8 +6714,8 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "hooks_usedashboardpresensi_studentabsencerow",
-      "community": 70,
-      "community_name": "useDashboardPresensi.ts",
+      "community": 6,
+      "community_name": "IncompleteDataWidget.tsx",
       "norm_label": "studentabsencerow"
     },
     {
@@ -6769,8 +6725,8 @@
       "source_location": "L33",
       "_origin": "ast",
       "id": "hooks_usedashboardpresensi_gradeattendancerow",
-      "community": 70,
-      "community_name": "useDashboardPresensi.ts",
+      "community": 6,
+      "community_name": "IncompleteDataWidget.tsx",
       "norm_label": "gradeattendancerow"
     },
     {
@@ -6780,8 +6736,8 @@
       "source_location": "L39",
       "_origin": "ast",
       "id": "hooks_usedashboardpresensi_usedashboardpresensi",
-      "community": 43,
-      "community_name": ".getAll",
+      "community": 85,
+      "community_name": "export-presensi-csv.ts",
       "norm_label": "usedashboardpresensi()"
     },
     {
@@ -6835,8 +6791,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "hooks_usefinalscore",
-      "community": 19,
-      "community_name": "grade-subject.service.ts",
+      "community": 26,
+      "community_name": "useRekapNilaiAkhir.ts",
       "norm_label": "usefinalscore.ts"
     },
     {
@@ -6846,8 +6802,8 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "hooks_usefinalscore_usefinalscore",
-      "community": 19,
-      "community_name": "grade-subject.service.ts",
+      "community": 26,
+      "community_name": "useRekapNilaiAkhir.ts",
       "norm_label": "usefinalscore()"
     },
     {
@@ -6901,8 +6857,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "hooks_useholidays",
-      "community": 60,
-      "community_name": "holiday.service.ts",
+      "community": 4,
+      "community_name": "student-savings.service.ts",
       "norm_label": "useholidays.ts"
     },
     {
@@ -6912,8 +6868,8 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "hooks_useholidays_holidayitem",
-      "community": 60,
-      "community_name": "holiday.service.ts",
+      "community": 4,
+      "community_name": "student-savings.service.ts",
       "norm_label": "holidayitem"
     },
     {
@@ -6923,8 +6879,8 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "hooks_useholidays_useholidays",
-      "community": 43,
-      "community_name": ".getAll",
+      "community": 4,
+      "community_name": "student-savings.service.ts",
       "norm_label": "useholidays()"
     },
     {
@@ -6956,8 +6912,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "hooks_usenilaiharian",
-      "community": 19,
-      "community_name": "grade-subject.service.ts",
+      "community": 8,
+      "community_name": "komponen-nilai/page.tsx",
       "norm_label": "usenilaiharian.ts"
     },
     {
@@ -6967,8 +6923,8 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "hooks_usenilaiharian_usenilaiharian",
-      "community": 19,
-      "community_name": "grade-subject.service.ts",
+      "community": 43,
+      "community_name": ".getAll",
       "norm_label": "usenilaiharian()"
     },
     {
@@ -7044,8 +7000,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "hooks_usepresensi",
-      "community": 8,
-      "community_name": "komponen-nilai/page.tsx",
+      "community": 85,
+      "community_name": "export-presensi-csv.ts",
       "norm_label": "usepresensi.ts"
     },
     {
@@ -7055,8 +7011,8 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "hooks_usepresensi_entry",
-      "community": 81,
-      "community_name": "PresensiTable.tsx",
+      "community": 85,
+      "community_name": "export-presensi-csv.ts",
       "norm_label": "entry"
     },
     {
@@ -7066,8 +7022,8 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "hooks_usepresensi_status_label",
-      "community": 81,
-      "community_name": "PresensiTable.tsx",
+      "community": 85,
+      "community_name": "export-presensi-csv.ts",
       "norm_label": "status_label"
     },
     {
@@ -7077,8 +7033,8 @@
       "source_location": "L26",
       "_origin": "ast",
       "id": "hooks_usepresensi_status_btn",
-      "community": 81,
-      "community_name": "PresensiTable.tsx",
+      "community": 85,
+      "community_name": "export-presensi-csv.ts",
       "norm_label": "status_btn"
     },
     {
@@ -7088,8 +7044,8 @@
       "source_location": "L38",
       "_origin": "ast",
       "id": "hooks_usepresensi_usepresensi",
-      "community": 43,
-      "community_name": ".getAll",
+      "community": 85,
+      "community_name": "export-presensi-csv.ts",
       "norm_label": "usepresensi()"
     },
     {
@@ -7132,30 +7088,30 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "hooks_userekapkarakter",
-      "community": 85,
-      "community_name": "export-presensi-csv.ts",
+      "community": 5,
+      "community_name": "character-assessment.service.ts",
       "norm_label": "userekapkarakter.ts"
     },
     {
       "label": "RecapRow",
       "file_type": "code",
       "source_file": "hooks/useRekapKarakter.ts",
-      "source_location": "L11",
+      "source_location": "L8",
       "_origin": "ast",
       "id": "hooks_userekapkarakter_recaprow",
-      "community": 85,
-      "community_name": "export-presensi-csv.ts",
+      "community": 5,
+      "community_name": "character-assessment.service.ts",
       "norm_label": "recaprow"
     },
     {
       "label": "useRekapKarakter()",
       "file_type": "code",
       "source_file": "hooks/useRekapKarakter.ts",
-      "source_location": "L18",
+      "source_location": "L15",
       "_origin": "ast",
       "id": "hooks_userekapkarakter_userekapkarakter",
-      "community": 85,
-      "community_name": "export-presensi-csv.ts",
+      "community": 5,
+      "community_name": "character-assessment.service.ts",
       "norm_label": "userekapkarakter()"
     },
     {
@@ -7165,8 +7121,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "hooks_userekapnilai",
-      "community": 19,
-      "community_name": "grade-subject.service.ts",
+      "community": 8,
+      "community_name": "komponen-nilai/page.tsx",
       "norm_label": "userekapnilai.ts"
     },
     {
@@ -7176,8 +7132,8 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "hooks_userekapnilai_userekapnilai",
-      "community": 19,
-      "community_name": "grade-subject.service.ts",
+      "community": 43,
+      "community_name": ".getAll",
       "norm_label": "userekapnilai()"
     },
     {
@@ -7187,8 +7143,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "hooks_userekapnilaiakhir",
-      "community": 19,
-      "community_name": "grade-subject.service.ts",
+      "community": 26,
+      "community_name": "useRekapNilaiAkhir.ts",
       "norm_label": "userekapnilaiakhir.ts"
     },
     {
@@ -7198,8 +7154,8 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "hooks_userekapnilaiakhir_subjectcolumn",
-      "community": 19,
-      "community_name": "grade-subject.service.ts",
+      "community": 26,
+      "community_name": "useRekapNilaiAkhir.ts",
       "norm_label": "subjectcolumn"
     },
     {
@@ -7209,8 +7165,8 @@
       "source_location": "L17",
       "_origin": "ast",
       "id": "hooks_userekapnilaiakhir_matrixrow",
-      "community": 19,
-      "community_name": "grade-subject.service.ts",
+      "community": 26,
+      "community_name": "useRekapNilaiAkhir.ts",
       "norm_label": "matrixrow"
     },
     {
@@ -7220,8 +7176,8 @@
       "source_location": "L24",
       "_origin": "ast",
       "id": "hooks_userekapnilaiakhir_userekapnilaiakhir",
-      "community": 19,
-      "community_name": "grade-subject.service.ts",
+      "community": 26,
+      "community_name": "useRekapNilaiAkhir.ts",
       "norm_label": "userekapnilaiakhir()"
     },
     {
@@ -7264,8 +7220,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "hooks_usesidebardata",
-      "community": 12,
-      "community_name": "useNilaiHarian",
+      "community": 24,
+      "community_name": "app/layout.tsx",
       "norm_label": "usesidebardata.ts"
     },
     {
@@ -7275,8 +7231,8 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "hooks_usesidebardata_usesidebardata",
-      "community": 12,
-      "community_name": "useNilaiHarian",
+      "community": 24,
+      "community_name": "app/layout.tsx",
       "norm_label": "usesidebardata()"
     },
     {
@@ -7385,8 +7341,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "hooks_useteacherchart",
-      "community": 26,
-      "community_name": "useRekapNilaiAkhir.ts",
+      "community": 6,
+      "community_name": "IncompleteDataWidget.tsx",
       "norm_label": "useteacherchart.ts"
     },
     {
@@ -7396,8 +7352,8 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "hooks_useteacherchart_useteacherchart",
-      "community": 26,
-      "community_name": "useRekapNilaiAkhir.ts",
+      "community": 6,
+      "community_name": "IncompleteDataWidget.tsx",
       "norm_label": "useteacherchart()"
     },
     {
@@ -7440,8 +7396,8 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "hooks_useweeklyrecap_weeklyrecapdata",
-      "community": 4,
-      "community_name": "student-savings.service.ts",
+      "community": 17,
+      "community_name": "cn",
       "norm_label": "weeklyrecapdata"
     },
     {
@@ -7473,8 +7429,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "lib_api_server",
-      "community": 3,
-      "community_name": "useAssessmentScore.ts",
+      "community": 58,
+      "community_name": "lib/api.ts",
       "norm_label": "api-server.ts"
     },
     {
@@ -7484,8 +7440,8 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "lib_api_server_apiserver",
-      "community": 3,
-      "community_name": "useAssessmentScore.ts",
+      "community": 58,
+      "community_name": "lib/api.ts",
       "norm_label": "apiserver()"
     },
     {
@@ -7495,8 +7451,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "lib_api",
-      "community": 3,
-      "community_name": "useAssessmentScore.ts",
+      "community": 14,
+      "community_name": "pmb/page.tsx",
       "norm_label": "lib/api.ts"
     },
     {
@@ -7506,8 +7462,8 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "lib_api_getcookie",
-      "community": 3,
-      "community_name": "useAssessmentScore.ts",
+      "community": 14,
+      "community_name": "pmb/page.tsx",
       "norm_label": "getcookie()"
     },
     {
@@ -7517,8 +7473,8 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "lib_api_api",
-      "community": 3,
-      "community_name": "useAssessmentScore.ts",
+      "community": 14,
+      "community_name": "pmb/page.tsx",
       "norm_label": "api()"
     },
     {
@@ -7528,8 +7484,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "lib_constants",
-      "community": 57,
-      "community_name": "IncompleteDataWidget.tsx",
+      "community": 99,
+      "community_name": "constants.ts",
       "norm_label": "constants.ts"
     },
     {
@@ -7550,8 +7506,8 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "lib_constants_semesters",
-      "community": 19,
-      "community_name": "grade-subject.service.ts",
+      "community": 26,
+      "community_name": "useRekapNilaiAkhir.ts",
       "norm_label": "semesters"
     },
     {
@@ -7561,8 +7517,8 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "lib_constants_academic_years",
-      "community": 19,
-      "community_name": "grade-subject.service.ts",
+      "community": 26,
+      "community_name": "useRekapNilaiAkhir.ts",
       "norm_label": "academic_years"
     },
     {
@@ -7583,8 +7539,8 @@
       "source_location": "L14",
       "_origin": "ast",
       "id": "lib_constants_configpreset",
-      "community": 57,
-      "community_name": "IncompleteDataWidget.tsx",
+      "community": 99,
+      "community_name": "constants.ts",
       "norm_label": "configpreset"
     },
     {
@@ -7594,8 +7550,8 @@
       "source_location": "L20",
       "_origin": "ast",
       "id": "lib_constants_config_presets",
-      "community": 57,
-      "community_name": "IncompleteDataWidget.tsx",
+      "community": 99,
+      "community_name": "constants.ts",
       "norm_label": "config_presets"
     },
     {
@@ -7605,8 +7561,8 @@
       "source_location": "L32",
       "_origin": "ast",
       "id": "lib_constants_component_colors",
-      "community": 57,
-      "community_name": "IncompleteDataWidget.tsx",
+      "community": 99,
+      "community_name": "constants.ts",
       "norm_label": "component_colors"
     },
     {
@@ -7616,8 +7572,8 @@
       "source_location": "L43",
       "_origin": "ast",
       "id": "lib_constants_component_bgs",
-      "community": 57,
-      "community_name": "IncompleteDataWidget.tsx",
+      "community": 99,
+      "community_name": "constants.ts",
       "norm_label": "component_bgs"
     },
     {
@@ -7627,8 +7583,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "lib_constants_menu",
-      "community": 12,
-      "community_name": "useNilaiHarian",
+      "community": 24,
+      "community_name": "app/layout.tsx",
       "norm_label": "menu.ts"
     },
     {
@@ -7638,8 +7594,8 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "lib_constants_menu_menuitem",
-      "community": 12,
-      "community_name": "useNilaiHarian",
+      "community": 24,
+      "community_name": "app/layout.tsx",
       "norm_label": "menuitem"
     },
     {
@@ -7649,8 +7605,8 @@
       "source_location": "L28",
       "_origin": "ast",
       "id": "lib_constants_menu_menugroup",
-      "community": 12,
-      "community_name": "useNilaiHarian",
+      "community": 24,
+      "community_name": "app/layout.tsx",
       "norm_label": "menugroup"
     },
     {
@@ -7660,8 +7616,8 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "lib_constants_menu_sidebaritem",
-      "community": 12,
-      "community_name": "useNilaiHarian",
+      "community": 24,
+      "community_name": "app/layout.tsx",
       "norm_label": "sidebaritem"
     },
     {
@@ -7671,8 +7627,8 @@
       "source_location": "L36",
       "_origin": "ast",
       "id": "lib_constants_menu_menuitems",
-      "community": 12,
-      "community_name": "useNilaiHarian",
+      "community": 24,
+      "community_name": "app/layout.tsx",
       "norm_label": "menuitems"
     },
     {
@@ -7682,8 +7638,8 @@
       "source_location": "L93",
       "_origin": "ast",
       "id": "lib_constants_menu_penjagamenuitems",
-      "community": 12,
-      "community_name": "useNilaiHarian",
+      "community": 24,
+      "community_name": "app/layout.tsx",
       "norm_label": "penjagamenuitems"
     },
     {
@@ -7693,8 +7649,8 @@
       "source_location": "L97",
       "_origin": "ast",
       "id": "lib_constants_menu_guruallowedhrefs",
-      "community": 12,
-      "community_name": "useNilaiHarian",
+      "community": 24,
+      "community_name": "app/layout.tsx",
       "norm_label": "guruallowedhrefs"
     },
     {
@@ -7858,8 +7814,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "lib_export_presensi_word",
-      "community": 8,
-      "community_name": "komponen-nilai/page.tsx",
+      "community": 85,
+      "community_name": "export-presensi-csv.ts",
       "norm_label": "export-presensi-word.ts"
     },
     {
@@ -7869,8 +7825,8 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "lib_export_presensi_word_exportpresensimatrikstoword",
-      "community": 8,
-      "community_name": "komponen-nilai/page.tsx",
+      "community": 85,
+      "community_name": "export-presensi-csv.ts",
       "norm_label": "exportpresensimatrikstoword()"
     },
     {
@@ -7880,8 +7836,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "lib_format",
-      "community": 85,
-      "community_name": "export-presensi-csv.ts",
+      "community": 4,
+      "community_name": "student-savings.service.ts",
       "norm_label": "format.ts"
     },
     {
@@ -7902,8 +7858,8 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "lib_format_months_id",
-      "community": 85,
-      "community_name": "export-presensi-csv.ts",
+      "community": 57,
+      "community_name": "IncompleteDataWidget.tsx",
       "norm_label": "months_id"
     },
     {
@@ -7913,8 +7869,8 @@
       "source_location": "L18",
       "_origin": "ast",
       "id": "lib_format_formatdateid",
-      "community": 14,
-      "community_name": "pmb/page.tsx",
+      "community": 15,
+      "community_name": "StudentDataStep.tsx",
       "norm_label": "formatdateid()"
     },
     {
@@ -7924,8 +7880,8 @@
       "source_location": "L24",
       "_origin": "ast",
       "id": "lib_format_days_id",
-      "community": 85,
-      "community_name": "export-presensi-csv.ts",
+      "community": 4,
+      "community_name": "student-savings.service.ts",
       "norm_label": "days_id"
     },
     {
@@ -7946,8 +7902,8 @@
       "source_location": "L36",
       "_origin": "ast",
       "id": "lib_format_formatdateshort",
-      "community": 0,
-      "community_name": "select.tsx",
+      "community": 4,
+      "community_name": "student-savings.service.ts",
       "norm_label": "formatdateshort()"
     },
     {
@@ -7960,17 +7916,6 @@
       "community": 85,
       "community_name": "export-presensi-csv.ts",
       "norm_label": "gettodaylocal()"
-    },
-    {
-      "label": "formatScore()",
-      "file_type": "code",
-      "source_file": "lib/format.ts",
-      "source_location": "L50",
-      "_origin": "ast",
-      "id": "lib_format_formatscore",
-      "community": 85,
-      "community_name": "export-presensi-csv.ts",
-      "norm_label": "formatscore()"
     },
     {
       "label": "jwt.ts",
@@ -8001,8 +7946,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "lib_merge_attendance",
-      "community": 26,
-      "community_name": "useRekapNilaiAkhir.ts",
+      "community": 6,
+      "community_name": "IncompleteDataWidget.tsx",
       "norm_label": "merge-attendance.ts"
     },
     {
@@ -8012,8 +7957,8 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "lib_merge_attendance_attendancerow",
-      "community": 26,
-      "community_name": "useRekapNilaiAkhir.ts",
+      "community": 6,
+      "community_name": "IncompleteDataWidget.tsx",
       "norm_label": "attendancerow"
     },
     {
@@ -8023,8 +7968,8 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "lib_merge_attendance_attendancemapvalue",
-      "community": 26,
-      "community_name": "useRekapNilaiAkhir.ts",
+      "community": 6,
+      "community_name": "IncompleteDataWidget.tsx",
       "norm_label": "attendancemapvalue"
     },
     {
@@ -8034,8 +7979,8 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "lib_merge_attendance_mergeattendance",
-      "community": 26,
-      "community_name": "useRekapNilaiAkhir.ts",
+      "community": 6,
+      "community_name": "IncompleteDataWidget.tsx",
       "norm_label": "mergeattendance()"
     },
     {
@@ -8045,8 +7990,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "lib_print_form",
-      "community": 14,
-      "community_name": "pmb/page.tsx",
+      "community": 15,
+      "community_name": "StudentDataStep.tsx",
       "norm_label": "print-form.ts"
     },
     {
@@ -8056,8 +8001,8 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "lib_print_form_printregistrantform",
-      "community": 14,
-      "community_name": "pmb/page.tsx",
+      "community": 15,
+      "community_name": "StudentDataStep.tsx",
       "norm_label": "printregistrantform()"
     },
     {
@@ -8232,8 +8177,8 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "package_dependencies_tailwindcss_typography",
-      "community": 20,
-      "community_name": "dependencies",
+      "community": 12,
+      "community_name": "useNilaiHarian",
       "norm_label": "@tailwindcss/typography"
     },
     {
@@ -8243,8 +8188,8 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "tailwindcss_typography",
-      "community": 20,
-      "community_name": "dependencies",
+      "community": 12,
+      "community_name": "useNilaiHarian",
       "norm_label": "@tailwindcss/typography"
     },
     {
@@ -8452,8 +8397,8 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "package_dependencies_lucide_react",
-      "community": 82,
-      "community_name": "lucide-react",
+      "community": 20,
+      "community_name": "dependencies",
       "norm_label": "lucide-react"
     },
     {
@@ -8463,8 +8408,8 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "lucide_react",
-      "community": 82,
-      "community_name": "lucide-react",
+      "community": 20,
+      "community_name": "dependencies",
       "norm_label": "lucide-react"
     },
     {
@@ -9090,8 +9035,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "services_assessment_config_service",
-      "community": 19,
-      "community_name": "grade-subject.service.ts",
+      "community": 21,
+      "community_name": "nilai-harian.ts",
       "norm_label": "assessment-config.service.ts"
     },
     {
@@ -9101,8 +9046,8 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "services_assessment_config_service_assessmentconfigcreaterequest",
-      "community": 19,
-      "community_name": "grade-subject.service.ts",
+      "community": 21,
+      "community_name": "nilai-harian.ts",
       "norm_label": "assessmentconfigcreaterequest"
     },
     {
@@ -9112,8 +9057,8 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "services_assessment_config_service_assessmentconfigservice",
-      "community": 12,
-      "community_name": "useNilaiHarian",
+      "community": 24,
+      "community_name": "app/layout.tsx",
       "norm_label": "assessmentconfigservice"
     },
     {
@@ -9123,8 +9068,8 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "services_assessment_config_service_assessmentconfigservice_getall",
-      "community": 12,
-      "community_name": "useNilaiHarian",
+      "community": 24,
+      "community_name": "app/layout.tsx",
       "norm_label": ".getall()"
     },
     {
@@ -9134,8 +9079,8 @@
       "source_location": "L21",
       "_origin": "ast",
       "id": "services_assessment_config_service_assessmentconfigservice_getactive",
-      "community": 12,
-      "community_name": "useNilaiHarian",
+      "community": 24,
+      "community_name": "app/layout.tsx",
       "norm_label": ".getactive()"
     },
     {
@@ -9145,8 +9090,8 @@
       "source_location": "L26",
       "_origin": "ast",
       "id": "services_assessment_config_service_assessmentconfigservice_create",
-      "community": 12,
-      "community_name": "useNilaiHarian",
+      "community": 24,
+      "community_name": "app/layout.tsx",
       "norm_label": ".create()"
     },
     {
@@ -9156,8 +9101,8 @@
       "source_location": "L33",
       "_origin": "ast",
       "id": "services_assessment_config_service_assessmentconfigservice_update",
-      "community": 12,
-      "community_name": "useNilaiHarian",
+      "community": 24,
+      "community_name": "app/layout.tsx",
       "norm_label": ".update()"
     },
     {
@@ -9167,8 +9112,8 @@
       "source_location": "L40",
       "_origin": "ast",
       "id": "services_assessment_config_service_assessmentconfigservice_remove",
-      "community": 12,
-      "community_name": "useNilaiHarian",
+      "community": 24,
+      "community_name": "app/layout.tsx",
       "norm_label": ".remove()"
     },
     {
@@ -9277,8 +9222,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "services_chapter_service",
-      "community": 19,
-      "community_name": "grade-subject.service.ts",
+      "community": 14,
+      "community_name": "pmb/page.tsx",
       "norm_label": "chapter.service.ts"
     },
     {
@@ -9288,8 +9233,8 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "services_chapter_service_chapterservice",
-      "community": 19,
-      "community_name": "grade-subject.service.ts",
+      "community": 14,
+      "community_name": "pmb/page.tsx",
       "norm_label": "chapterservice"
     },
     {
@@ -9299,8 +9244,8 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "services_chapter_service_chapterservice_getall",
-      "community": 19,
-      "community_name": "grade-subject.service.ts",
+      "community": 43,
+      "community_name": ".getAll",
       "norm_label": ".getall()"
     },
     {
@@ -9310,8 +9255,8 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "services_chapter_service_chapterservice_create",
-      "community": 19,
-      "community_name": "grade-subject.service.ts",
+      "community": 14,
+      "community_name": "pmb/page.tsx",
       "norm_label": ".create()"
     },
     {
@@ -9321,8 +9266,8 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "services_chapter_service_chapterservice_update",
-      "community": 19,
-      "community_name": "grade-subject.service.ts",
+      "community": 14,
+      "community_name": "pmb/page.tsx",
       "norm_label": ".update()"
     },
     {
@@ -9332,8 +9277,8 @@
       "source_location": "L23",
       "_origin": "ast",
       "id": "services_chapter_service_chapterservice_reorder",
-      "community": 19,
-      "community_name": "grade-subject.service.ts",
+      "community": 14,
+      "community_name": "pmb/page.tsx",
       "norm_label": ".reorder()"
     },
     {
@@ -9343,8 +9288,8 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "services_chapter_service_chapterservice_remove",
-      "community": 19,
-      "community_name": "grade-subject.service.ts",
+      "community": 14,
+      "community_name": "pmb/page.tsx",
       "norm_label": ".remove()"
     },
     {
@@ -9354,8 +9299,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "services_character_assessment_service",
-      "community": 18,
-      "community_name": "detail/page.tsx",
+      "community": 5,
+      "community_name": "character-assessment.service.ts",
       "norm_label": "character-assessment.service.ts"
     },
     {
@@ -9365,8 +9310,8 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "services_character_assessment_service_characterassessmentservice",
-      "community": 58,
-      "community_name": "lib/api.ts",
+      "community": 5,
+      "community_name": "character-assessment.service.ts",
       "norm_label": "characterassessmentservice"
     },
     {
@@ -9376,8 +9321,8 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "services_character_assessment_service_characterassessmentservice_getall",
-      "community": 58,
-      "community_name": "lib/api.ts",
+      "community": 5,
+      "community_name": "character-assessment.service.ts",
       "norm_label": ".getall()"
     },
     {
@@ -9387,8 +9332,8 @@
       "source_location": "L14",
       "_origin": "ast",
       "id": "services_character_assessment_service_characterassessmentservice_getbyid",
-      "community": 58,
-      "community_name": "lib/api.ts",
+      "community": 5,
+      "community_name": "character-assessment.service.ts",
       "norm_label": ".getbyid()"
     },
     {
@@ -9398,8 +9343,8 @@
       "source_location": "L18",
       "_origin": "ast",
       "id": "services_character_assessment_service_characterassessmentservice_gethistory",
-      "community": 9,
-      "community_name": "Pagination.tsx",
+      "community": 100,
+      "community_name": "history/page.tsx",
       "norm_label": ".gethistory()"
     },
     {
@@ -9409,8 +9354,8 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "services_character_assessment_service_characterassessmentservice_create",
-      "community": 58,
-      "community_name": "lib/api.ts",
+      "community": 5,
+      "community_name": "character-assessment.service.ts",
       "norm_label": ".create()"
     },
     {
@@ -9420,8 +9365,8 @@
       "source_location": "L29",
       "_origin": "ast",
       "id": "services_character_assessment_service_characterassessmentservice_update",
-      "community": 58,
-      "community_name": "lib/api.ts",
+      "community": 5,
+      "community_name": "character-assessment.service.ts",
       "norm_label": ".update()"
     },
     {
@@ -9431,8 +9376,8 @@
       "source_location": "L36",
       "_origin": "ast",
       "id": "services_character_assessment_service_characterassessmentservice_remove",
-      "community": 58,
-      "community_name": "lib/api.ts",
+      "community": 5,
+      "community_name": "character-assessment.service.ts",
       "norm_label": ".remove()"
     },
     {
@@ -9541,8 +9486,8 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "services_dashboard_service_dashboardservice_getsummary",
-      "community": 43,
-      "community_name": ".getAll",
+      "community": 6,
+      "community_name": "IncompleteDataWidget.tsx",
       "norm_label": ".getsummary()"
     },
     {
@@ -9585,8 +9530,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "services_final_score_service",
-      "community": 19,
-      "community_name": "grade-subject.service.ts",
+      "community": 26,
+      "community_name": "useRekapNilaiAkhir.ts",
       "norm_label": "final-score.service.ts"
     },
     {
@@ -9596,8 +9541,8 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "services_final_score_service_finalscoreservice",
-      "community": 19,
-      "community_name": "grade-subject.service.ts",
+      "community": 26,
+      "community_name": "useRekapNilaiAkhir.ts",
       "norm_label": "finalscoreservice"
     },
     {
@@ -9607,8 +9552,8 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "services_final_score_service_finalscoreservice_getall",
-      "community": 19,
-      "community_name": "grade-subject.service.ts",
+      "community": 26,
+      "community_name": "useRekapNilaiAkhir.ts",
       "norm_label": ".getall()"
     },
     {
@@ -9618,8 +9563,8 @@
       "source_location": "L14",
       "_origin": "ast",
       "id": "services_final_score_service_finalscoreservice_calculate",
-      "community": 19,
-      "community_name": "grade-subject.service.ts",
+      "community": 26,
+      "community_name": "useRekapNilaiAkhir.ts",
       "norm_label": ".calculate()"
     },
     {
@@ -9706,8 +9651,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "services_holiday_service",
-      "community": 60,
-      "community_name": "holiday.service.ts",
+      "community": 85,
+      "community_name": "export-presensi-csv.ts",
       "norm_label": "holiday.service.ts"
     },
     {
@@ -9717,8 +9662,8 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "services_holiday_service_holidayservice",
-      "community": 60,
-      "community_name": "holiday.service.ts",
+      "community": 85,
+      "community_name": "export-presensi-csv.ts",
       "norm_label": "holidayservice"
     },
     {
@@ -9728,8 +9673,8 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "services_holiday_service_holidayservice_getall",
-      "community": 43,
-      "community_name": ".getAll",
+      "community": 85,
+      "community_name": "export-presensi-csv.ts",
       "norm_label": ".getall()"
     },
     {
@@ -9750,8 +9695,8 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "services_holiday_service_holidayservice_add",
-      "community": 60,
-      "community_name": "holiday.service.ts",
+      "community": 85,
+      "community_name": "export-presensi-csv.ts",
       "norm_label": ".add()"
     },
     {
@@ -9761,8 +9706,8 @@
       "source_location": "L20",
       "_origin": "ast",
       "id": "services_holiday_service_holidayservice_remove",
-      "community": 60,
-      "community_name": "holiday.service.ts",
+      "community": 85,
+      "community_name": "export-presensi-csv.ts",
       "norm_label": ".remove()"
     },
     {
@@ -9893,8 +9838,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "services_master_student_service",
-      "community": 3,
-      "community_name": "useAssessmentScore.ts",
+      "community": 6,
+      "community_name": "IncompleteDataWidget.tsx",
       "norm_label": "master-student.service.ts"
     },
     {
@@ -9904,8 +9849,8 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "services_master_student_service_masterstudentservice",
-      "community": 3,
-      "community_name": "useAssessmentScore.ts",
+      "community": 6,
+      "community_name": "IncompleteDataWidget.tsx",
       "norm_label": "masterstudentservice"
     },
     {
@@ -9915,8 +9860,8 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "services_master_student_service_masterstudentservice_getbygrade",
-      "community": 3,
-      "community_name": "useAssessmentScore.ts",
+      "community": 6,
+      "community_name": "IncompleteDataWidget.tsx",
       "norm_label": ".getbygrade()"
     },
     {
@@ -9926,8 +9871,8 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "services_master_student_service_masterstudentservice_create",
-      "community": 3,
-      "community_name": "useAssessmentScore.ts",
+      "community": 6,
+      "community_name": "IncompleteDataWidget.tsx",
       "norm_label": ".create()"
     },
     {
@@ -9937,8 +9882,8 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "services_master_student_service_masterstudentservice_update",
-      "community": 3,
-      "community_name": "useAssessmentScore.ts",
+      "community": 6,
+      "community_name": "IncompleteDataWidget.tsx",
       "norm_label": ".update()"
     },
     {
@@ -9948,8 +9893,8 @@
       "source_location": "L23",
       "_origin": "ast",
       "id": "services_master_student_service_masterstudentservice_remove",
-      "community": 3,
-      "community_name": "useAssessmentScore.ts",
+      "community": 6,
+      "community_name": "IncompleteDataWidget.tsx",
       "norm_label": ".remove()"
     },
     {
@@ -9959,8 +9904,8 @@
       "source_location": "L29",
       "_origin": "ast",
       "id": "services_master_student_service_masterstudentservice_importdata",
-      "community": 3,
-      "community_name": "useAssessmentScore.ts",
+      "community": 6,
+      "community_name": "IncompleteDataWidget.tsx",
       "norm_label": ".importdata()"
     },
     {
@@ -9970,8 +9915,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "services_material_service",
-      "community": 19,
-      "community_name": "grade-subject.service.ts",
+      "community": 14,
+      "community_name": "pmb/page.tsx",
       "norm_label": "material.service.ts"
     },
     {
@@ -9981,8 +9926,8 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "services_material_service_materialservice",
-      "community": 19,
-      "community_name": "grade-subject.service.ts",
+      "community": 14,
+      "community_name": "pmb/page.tsx",
       "norm_label": "materialservice"
     },
     {
@@ -9992,8 +9937,8 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "services_material_service_materialservice_getall",
-      "community": 19,
-      "community_name": "grade-subject.service.ts",
+      "community": 43,
+      "community_name": ".getAll",
       "norm_label": ".getall()"
     },
     {
@@ -10003,8 +9948,8 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "services_material_service_materialservice_create",
-      "community": 19,
-      "community_name": "grade-subject.service.ts",
+      "community": 14,
+      "community_name": "pmb/page.tsx",
       "norm_label": ".create()"
     },
     {
@@ -10014,8 +9959,8 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "services_material_service_materialservice_update",
-      "community": 19,
-      "community_name": "grade-subject.service.ts",
+      "community": 14,
+      "community_name": "pmb/page.tsx",
       "norm_label": ".update()"
     },
     {
@@ -10025,8 +9970,8 @@
       "source_location": "L23",
       "_origin": "ast",
       "id": "services_material_service_materialservice_reorder",
-      "community": 19,
-      "community_name": "grade-subject.service.ts",
+      "community": 14,
+      "community_name": "pmb/page.tsx",
       "norm_label": ".reorder()"
     },
     {
@@ -10036,8 +9981,8 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "services_material_service_materialservice_remove",
-      "community": 19,
-      "community_name": "grade-subject.service.ts",
+      "community": 14,
+      "community_name": "pmb/page.tsx",
       "norm_label": ".remove()"
     },
     {
@@ -10113,8 +10058,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "services_registration_service",
-      "community": 1,
-      "community_name": "student-attendance.service.ts",
+      "community": 15,
+      "community_name": "StudentDataStep.tsx",
       "norm_label": "registration.service.ts"
     },
     {
@@ -10124,8 +10069,8 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "services_registration_service_registrationservice",
-      "community": 1,
-      "community_name": "student-attendance.service.ts",
+      "community": 15,
+      "community_name": "StudentDataStep.tsx",
       "norm_label": "registrationservice"
     },
     {
@@ -10135,8 +10080,8 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "services_registration_service_registrationservice_getall",
-      "community": 14,
-      "community_name": "pmb/page.tsx",
+      "community": 15,
+      "community_name": "StudentDataStep.tsx",
       "norm_label": ".getall()"
     },
     {
@@ -10146,8 +10091,8 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "services_registration_service_registrationservice_create",
-      "community": 1,
-      "community_name": "student-attendance.service.ts",
+      "community": 15,
+      "community_name": "StudentDataStep.tsx",
       "norm_label": ".create()"
     },
     {
@@ -10157,8 +10102,8 @@
       "source_location": "L20",
       "_origin": "ast",
       "id": "services_registration_service_registrationservice_getbyid",
-      "community": 1,
-      "community_name": "student-attendance.service.ts",
+      "community": 15,
+      "community_name": "StudentDataStep.tsx",
       "norm_label": ".getbyid()"
     },
     {
@@ -10168,8 +10113,8 @@
       "source_location": "L24",
       "_origin": "ast",
       "id": "services_registration_service_registrationservice_updatedata",
-      "community": 1,
-      "community_name": "student-attendance.service.ts",
+      "community": 15,
+      "community_name": "StudentDataStep.tsx",
       "norm_label": ".updatedata()"
     },
     {
@@ -10179,8 +10124,8 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "services_registration_service_registrationservice_totalregistrations",
-      "community": 1,
-      "community_name": "student-attendance.service.ts",
+      "community": 15,
+      "community_name": "StudentDataStep.tsx",
       "norm_label": ".totalregistrations()"
     },
     {
@@ -10190,8 +10135,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "services_score_service",
-      "community": 19,
-      "community_name": "grade-subject.service.ts",
+      "community": 8,
+      "community_name": "komponen-nilai/page.tsx",
       "norm_label": "score.service.ts"
     },
     {
@@ -10201,8 +10146,8 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "services_score_service_scoreservice",
-      "community": 19,
-      "community_name": "grade-subject.service.ts",
+      "community": 8,
+      "community_name": "komponen-nilai/page.tsx",
       "norm_label": "scoreservice"
     },
     {
@@ -10212,8 +10157,8 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "services_score_service_scoreservice_getall",
-      "community": 19,
-      "community_name": "grade-subject.service.ts",
+      "community": 43,
+      "community_name": ".getAll",
       "norm_label": ".getall()"
     },
     {
@@ -10223,8 +10168,8 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "services_score_service_scoreservice_bulkcreate",
-      "community": 19,
-      "community_name": "grade-subject.service.ts",
+      "community": 8,
+      "community_name": "komponen-nilai/page.tsx",
       "norm_label": ".bulkcreate()"
     },
     {
@@ -10234,8 +10179,8 @@
       "source_location": "L18",
       "_origin": "ast",
       "id": "services_score_service_scoreservice_update",
-      "community": 19,
-      "community_name": "grade-subject.service.ts",
+      "community": 8,
+      "community_name": "komponen-nilai/page.tsx",
       "norm_label": ".update()"
     },
     {
@@ -10245,8 +10190,8 @@
       "source_location": "L25",
       "_origin": "ast",
       "id": "services_score_service_scoreservice_remove",
-      "community": 19,
-      "community_name": "grade-subject.service.ts",
+      "community": 8,
+      "community_name": "komponen-nilai/page.tsx",
       "norm_label": ".remove()"
     },
     {
@@ -10278,8 +10223,8 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "services_student_attendance_service_studentattendanceservice_create",
-      "community": 8,
-      "community_name": "komponen-nilai/page.tsx",
+      "community": 85,
+      "community_name": "export-presensi-csv.ts",
       "norm_label": ".create()"
     },
     {
@@ -10289,8 +10234,8 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "services_student_attendance_service_studentattendanceservice_getbygradeanddate",
-      "community": 43,
-      "community_name": ".getAll",
+      "community": 85,
+      "community_name": "export-presensi-csv.ts",
       "norm_label": ".getbygradeanddate()"
     },
     {
@@ -10300,8 +10245,8 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "services_student_attendance_service_studentattendanceservice_getreportbygrade",
-      "community": 43,
-      "community_name": ".getAll",
+      "community": 85,
+      "community_name": "export-presensi-csv.ts",
       "norm_label": ".getreportbygrade()"
     },
     {
@@ -10322,8 +10267,8 @@
       "source_location": "L28",
       "_origin": "ast",
       "id": "services_student_attendance_service_studentattendanceservice_getstudentcountbygrade",
-      "community": 28,
-      "community_name": "AdminDashboardView.tsx",
+      "community": 6,
+      "community_name": "IncompleteDataWidget.tsx",
       "norm_label": ".getstudentcountbygrade()"
     },
     {
@@ -10663,8 +10608,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "services_user_service",
-      "community": 8,
-      "community_name": "komponen-nilai/page.tsx",
+      "community": 85,
+      "community_name": "export-presensi-csv.ts",
       "norm_label": "user.service.ts"
     },
     {
@@ -10674,8 +10619,8 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "services_user_service_userservice",
-      "community": 24,
-      "community_name": "app/layout.tsx",
+      "community": 85,
+      "community_name": "export-presensi-csv.ts",
       "norm_label": "userservice"
     },
     {
@@ -10685,8 +10630,8 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "services_user_service_userservice_getteachers",
-      "community": 24,
-      "community_name": "app/layout.tsx",
+      "community": 85,
+      "community_name": "export-presensi-csv.ts",
       "norm_label": ".getteachers()"
     },
     {
@@ -10696,8 +10641,8 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "services_user_service_userservice_getstaffbyroles",
-      "community": 24,
-      "community_name": "app/layout.tsx",
+      "community": 85,
+      "community_name": "export-presensi-csv.ts",
       "norm_label": ".getstaffbyroles()"
     },
     {
@@ -10707,8 +10652,8 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "services_user_service_userservice_getteacherbygrade",
-      "community": 43,
-      "community_name": ".getAll",
+      "community": 85,
+      "community_name": "export-presensi-csv.ts",
       "norm_label": ".getteacherbygrade()"
     },
     {
@@ -10740,8 +10685,8 @@
       "source_location": "L25",
       "_origin": "ast",
       "id": "services_user_service_userservice_create",
-      "community": 24,
-      "community_name": "app/layout.tsx",
+      "community": 85,
+      "community_name": "export-presensi-csv.ts",
       "norm_label": ".create()"
     },
     {
@@ -10751,8 +10696,8 @@
       "source_location": "L40",
       "_origin": "ast",
       "id": "services_user_service_userservice_update",
-      "community": 24,
-      "community_name": "app/layout.tsx",
+      "community": 85,
+      "community_name": "export-presensi-csv.ts",
       "norm_label": ".update()"
     },
     {
@@ -10773,8 +10718,8 @@
       "source_location": "L63",
       "_origin": "ast",
       "id": "services_user_service_userservice_delete",
-      "community": 24,
-      "community_name": "app/layout.tsx",
+      "community": 85,
+      "community_name": "export-presensi-csv.ts",
       "norm_label": ".delete()"
     },
     {
@@ -10784,8 +10729,8 @@
       "source_location": "L69",
       "_origin": "ast",
       "id": "services_user_service_userservice_setsavingsholder",
-      "community": 24,
-      "community_name": "app/layout.tsx",
+      "community": 85,
+      "community_name": "export-presensi-csv.ts",
       "norm_label": ".setsavingsholder()"
     },
     {
@@ -10795,8 +10740,8 @@
       "source_location": "L76",
       "_origin": "ast",
       "id": "services_user_service_userservice_settreasurer",
-      "community": 24,
-      "community_name": "app/layout.tsx",
+      "community": 85,
+      "community_name": "export-presensi-csv.ts",
       "norm_label": ".settreasurer()"
     },
     {
@@ -11114,8 +11059,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "types_api",
-      "community": 3,
-      "community_name": "useAssessmentScore.ts",
+      "community": 58,
+      "community_name": "lib/api.ts",
       "norm_label": "types/api.ts"
     },
     {
@@ -11125,8 +11070,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "types_api_apistatus",
-      "community": 3,
-      "community_name": "useAssessmentScore.ts",
+      "community": 58,
+      "community_name": "lib/api.ts",
       "norm_label": "apistatus"
     },
     {
@@ -11136,8 +11081,8 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "types_api_apiresponse",
-      "community": 3,
-      "community_name": "useAssessmentScore.ts",
+      "community": 58,
+      "community_name": "lib/api.ts",
       "norm_label": "apiresponse"
     },
     {
@@ -11180,8 +11125,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "types_attendance",
-      "community": 8,
-      "community_name": "komponen-nilai/page.tsx",
+      "community": 6,
+      "community_name": "IncompleteDataWidget.tsx",
       "norm_label": "attendance.ts"
     },
     {
@@ -11191,8 +11136,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "types_attendance_masterstudenttype",
-      "community": 8,
-      "community_name": "komponen-nilai/page.tsx",
+      "community": 6,
+      "community_name": "IncompleteDataWidget.tsx",
       "norm_label": "masterstudenttype"
     },
     {
@@ -11202,8 +11147,8 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "types_attendance_studentattendancetype",
-      "community": 8,
-      "community_name": "komponen-nilai/page.tsx",
+      "community": 85,
+      "community_name": "export-presensi-csv.ts",
       "norm_label": "studentattendancetype"
     },
     {
@@ -11213,8 +11158,8 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "types_attendance_studentattendancerequesttype",
-      "community": 8,
-      "community_name": "komponen-nilai/page.tsx",
+      "community": 85,
+      "community_name": "export-presensi-csv.ts",
       "norm_label": "studentattendancerequesttype"
     },
     {
@@ -11224,8 +11169,8 @@
       "source_location": "L25",
       "_origin": "ast",
       "id": "types_attendance_attendancereportitem",
-      "community": 8,
-      "community_name": "komponen-nilai/page.tsx",
+      "community": 6,
+      "community_name": "IncompleteDataWidget.tsx",
       "norm_label": "attendancereportitem"
     },
     {
@@ -11268,8 +11213,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "types_character_assessment",
-      "community": 18,
-      "community_name": "detail/page.tsx",
+      "community": 5,
+      "community_name": "character-assessment.service.ts",
       "norm_label": "character-assessment.ts"
     },
     {
@@ -11279,8 +11224,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "types_character_assessment_habitentry",
-      "community": 18,
-      "community_name": "detail/page.tsx",
+      "community": 5,
+      "community_name": "character-assessment.service.ts",
       "norm_label": "habitentry"
     },
     {
@@ -11290,8 +11235,8 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "types_character_assessment_characterassessment",
-      "community": 18,
-      "community_name": "detail/page.tsx",
+      "community": 5,
+      "community_name": "character-assessment.service.ts",
       "norm_label": "characterassessment"
     },
     {
@@ -11301,8 +11246,8 @@
       "source_location": "L25",
       "_origin": "ast",
       "id": "types_character_assessment_assessmentlistitem",
-      "community": 18,
-      "community_name": "detail/page.tsx",
+      "community": 5,
+      "community_name": "character-assessment.service.ts",
       "norm_label": "assessmentlistitem"
     },
     {
@@ -11312,8 +11257,8 @@
       "source_location": "L38",
       "_origin": "ast",
       "id": "types_character_assessment_assessmentcreaterequest",
-      "community": 18,
-      "community_name": "detail/page.tsx",
+      "community": 5,
+      "community_name": "character-assessment.service.ts",
       "norm_label": "assessmentcreaterequest"
     },
     {
@@ -11323,8 +11268,8 @@
       "source_location": "L49",
       "_origin": "ast",
       "id": "types_character_assessment_assessmentupdaterequest",
-      "community": 18,
-      "community_name": "detail/page.tsx",
+      "community": 5,
+      "community_name": "character-assessment.service.ts",
       "norm_label": "assessmentupdaterequest"
     },
     {
@@ -11334,8 +11279,8 @@
       "source_location": "L60",
       "_origin": "ast",
       "id": "types_character_assessment_historyitem",
-      "community": 18,
-      "community_name": "detail/page.tsx",
+      "community": 5,
+      "community_name": "character-assessment.service.ts",
       "norm_label": "historyitem"
     },
     {
@@ -11455,8 +11400,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "types_final_score",
-      "community": 19,
-      "community_name": "grade-subject.service.ts",
+      "community": 26,
+      "community_name": "useRekapNilaiAkhir.ts",
       "norm_label": "final-score.ts"
     },
     {
@@ -11466,8 +11411,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "types_final_score_componentscoredto",
-      "community": 19,
-      "community_name": "grade-subject.service.ts",
+      "community": 26,
+      "community_name": "useRekapNilaiAkhir.ts",
       "norm_label": "componentscoredto"
     },
     {
@@ -11477,8 +11422,8 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "types_final_score_finalscoreentry",
-      "community": 19,
-      "community_name": "grade-subject.service.ts",
+      "community": 26,
+      "community_name": "useRekapNilaiAkhir.ts",
       "norm_label": "finalscoreentry"
     },
     {
@@ -11488,8 +11433,8 @@
       "source_location": "L24",
       "_origin": "ast",
       "id": "types_final_score_calculateresponse",
-      "community": 19,
-      "community_name": "grade-subject.service.ts",
+      "community": 26,
+      "community_name": "useRekapNilaiAkhir.ts",
       "norm_label": "calculateresponse"
     },
     {
@@ -11499,8 +11444,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "types_holiday",
-      "community": 60,
-      "community_name": "holiday.service.ts",
+      "community": 85,
+      "community_name": "export-presensi-csv.ts",
       "norm_label": "holiday.ts"
     },
     {
@@ -11510,8 +11455,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "types_holiday_holiday",
-      "community": 60,
-      "community_name": "holiday.service.ts",
+      "community": 85,
+      "community_name": "export-presensi-csv.ts",
       "norm_label": "holiday"
     },
     {
@@ -11521,8 +11466,8 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "types_holiday_holidaycheckresult",
-      "community": 60,
-      "community_name": "holiday.service.ts",
+      "community": 85,
+      "community_name": "export-presensi-csv.ts",
       "norm_label": "holidaycheckresult"
     },
     {
@@ -11598,8 +11543,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "types_nilai_harian",
-      "community": 19,
-      "community_name": "grade-subject.service.ts",
+      "community": 8,
+      "community_name": "komponen-nilai/page.tsx",
       "norm_label": "nilai-harian.ts"
     },
     {
@@ -11642,8 +11587,8 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "types_nilai_harian_gradesubject",
-      "community": 19,
-      "community_name": "grade-subject.service.ts",
+      "community": 26,
+      "community_name": "useRekapNilaiAkhir.ts",
       "norm_label": "gradesubject"
     },
     {
@@ -11697,8 +11642,8 @@
       "source_location": "L53",
       "_origin": "ast",
       "id": "types_nilai_harian_chapter",
-      "community": 19,
-      "community_name": "grade-subject.service.ts",
+      "community": 8,
+      "community_name": "komponen-nilai/page.tsx",
       "norm_label": "chapter"
     },
     {
@@ -11708,8 +11653,8 @@
       "source_location": "L63",
       "_origin": "ast",
       "id": "types_nilai_harian_chaptercreaterequest",
-      "community": 19,
-      "community_name": "grade-subject.service.ts",
+      "community": 14,
+      "community_name": "pmb/page.tsx",
       "norm_label": "chaptercreaterequest"
     },
     {
@@ -11719,8 +11664,8 @@
       "source_location": "L69",
       "_origin": "ast",
       "id": "types_nilai_harian_chapterupdaterequest",
-      "community": 19,
-      "community_name": "grade-subject.service.ts",
+      "community": 14,
+      "community_name": "pmb/page.tsx",
       "norm_label": "chapterupdaterequest"
     },
     {
@@ -11730,8 +11675,8 @@
       "source_location": "L75",
       "_origin": "ast",
       "id": "types_nilai_harian_reorderitem",
-      "community": 19,
-      "community_name": "grade-subject.service.ts",
+      "community": 14,
+      "community_name": "pmb/page.tsx",
       "norm_label": "reorderitem"
     },
     {
@@ -11741,8 +11686,8 @@
       "source_location": "L80",
       "_origin": "ast",
       "id": "types_nilai_harian_material",
-      "community": 19,
-      "community_name": "grade-subject.service.ts",
+      "community": 8,
+      "community_name": "komponen-nilai/page.tsx",
       "norm_label": "material"
     },
     {
@@ -11752,8 +11697,8 @@
       "source_location": "L90",
       "_origin": "ast",
       "id": "types_nilai_harian_materialcreaterequest",
-      "community": 19,
-      "community_name": "grade-subject.service.ts",
+      "community": 14,
+      "community_name": "pmb/page.tsx",
       "norm_label": "materialcreaterequest"
     },
     {
@@ -11763,8 +11708,8 @@
       "source_location": "L95",
       "_origin": "ast",
       "id": "types_nilai_harian_materialupdaterequest",
-      "community": 19,
-      "community_name": "grade-subject.service.ts",
+      "community": 14,
+      "community_name": "pmb/page.tsx",
       "norm_label": "materialupdaterequest"
     },
     {
@@ -11774,8 +11719,8 @@
       "source_location": "L100",
       "_origin": "ast",
       "id": "types_nilai_harian_score",
-      "community": 19,
-      "community_name": "grade-subject.service.ts",
+      "community": 8,
+      "community_name": "komponen-nilai/page.tsx",
       "norm_label": "score"
     },
     {
@@ -11785,8 +11730,8 @@
       "source_location": "L115",
       "_origin": "ast",
       "id": "types_nilai_harian_bulkscoreitem",
-      "community": 19,
-      "community_name": "grade-subject.service.ts",
+      "community": 8,
+      "community_name": "komponen-nilai/page.tsx",
       "norm_label": "bulkscoreitem"
     },
     {
@@ -11796,8 +11741,8 @@
       "source_location": "L121",
       "_origin": "ast",
       "id": "types_nilai_harian_bulkscorerequest",
-      "community": 19,
-      "community_name": "grade-subject.service.ts",
+      "community": 8,
+      "community_name": "komponen-nilai/page.tsx",
       "norm_label": "bulkscorerequest"
     },
     {
@@ -11807,8 +11752,8 @@
       "source_location": "L127",
       "_origin": "ast",
       "id": "types_nilai_harian_scoreentry",
-      "community": 40,
-      "community_name": "useAuth",
+      "community": 8,
+      "community_name": "komponen-nilai/page.tsx",
       "norm_label": "scoreentry"
     },
     {
@@ -11818,8 +11763,8 @@
       "source_location": "L136",
       "_origin": "ast",
       "id": "types_nilai_harian_chapterprogress",
-      "community": 19,
-      "community_name": "grade-subject.service.ts",
+      "community": 8,
+      "community_name": "komponen-nilai/page.tsx",
       "norm_label": "chapterprogress"
     },
     {
@@ -11829,8 +11774,8 @@
       "source_location": "L143",
       "_origin": "ast",
       "id": "types_nilai_harian_rekapmaterialdetail",
-      "community": 19,
-      "community_name": "grade-subject.service.ts",
+      "community": 8,
+      "community_name": "komponen-nilai/page.tsx",
       "norm_label": "rekapmaterialdetail"
     },
     {
@@ -11840,8 +11785,8 @@
       "source_location": "L149",
       "_origin": "ast",
       "id": "types_nilai_harian_rekapentry",
-      "community": 19,
-      "community_name": "grade-subject.service.ts",
+      "community": 8,
+      "community_name": "komponen-nilai/page.tsx",
       "norm_label": "rekapentry"
     },
     {
@@ -11851,8 +11796,8 @@
       "source_location": "L158",
       "_origin": "ast",
       "id": "types_nilai_harian_classaverageitem",
-      "community": 19,
-      "community_name": "grade-subject.service.ts",
+      "community": 8,
+      "community_name": "komponen-nilai/page.tsx",
       "norm_label": "classaverageitem"
     },
     {
@@ -11862,8 +11807,8 @@
       "source_location": "L165",
       "_origin": "ast",
       "id": "types_nilai_harian_assessmentcomponent",
-      "community": 19,
-      "community_name": "grade-subject.service.ts",
+      "community": 21,
+      "community_name": "nilai-harian.ts",
       "norm_label": "assessmentcomponent"
     },
     {
@@ -11873,8 +11818,8 @@
       "source_location": "L171",
       "_origin": "ast",
       "id": "types_nilai_harian_assessmentconfig",
-      "community": 19,
-      "community_name": "grade-subject.service.ts",
+      "community": 21,
+      "community_name": "nilai-harian.ts",
       "norm_label": "assessmentconfig"
     },
     {
@@ -11928,8 +11873,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "types_registration",
-      "community": 14,
-      "community_name": "pmb/page.tsx",
+      "community": 15,
+      "community_name": "StudentDataStep.tsx",
       "norm_label": "registration.ts"
     },
     {
@@ -11939,8 +11884,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "types_registration_address",
-      "community": 14,
-      "community_name": "pmb/page.tsx",
+      "community": 15,
+      "community_name": "StudentDataStep.tsx",
       "norm_label": "address"
     },
     {
@@ -11950,8 +11895,8 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "types_registration_parent",
-      "community": 14,
-      "community_name": "pmb/page.tsx",
+      "community": 15,
+      "community_name": "StudentDataStep.tsx",
       "norm_label": "parent"
     },
     {
@@ -11961,8 +11906,8 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "types_registration_guardian",
-      "community": 14,
-      "community_name": "pmb/page.tsx",
+      "community": 15,
+      "community_name": "StudentDataStep.tsx",
       "norm_label": "guardian"
     },
     {
@@ -11972,8 +11917,8 @@
       "source_location": "L25",
       "_origin": "ast",
       "id": "types_registration_student",
-      "community": 14,
-      "community_name": "pmb/page.tsx",
+      "community": 15,
+      "community_name": "StudentDataStep.tsx",
       "norm_label": "student"
     },
     {
@@ -11983,8 +11928,8 @@
       "source_location": "L40",
       "_origin": "ast",
       "id": "types_registration_registrant",
-      "community": 14,
-      "community_name": "pmb/page.tsx",
+      "community": 15,
+      "community_name": "StudentDataStep.tsx",
       "norm_label": "registrant"
     },
     {
@@ -12005,8 +11950,8 @@
       "source_location": "L102",
       "_origin": "ast",
       "id": "types_registration_paginatedregistrants",
-      "community": 14,
-      "community_name": "pmb/page.tsx",
+      "community": 15,
+      "community_name": "StudentDataStep.tsx",
       "norm_label": "paginatedregistrants"
     },
     {
@@ -12159,8 +12104,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "types_user",
-      "community": 8,
-      "community_name": "komponen-nilai/page.tsx",
+      "community": 85,
+      "community_name": "export-presensi-csv.ts",
       "norm_label": "user.ts"
     },
     {
@@ -12170,8 +12115,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "types_user_user",
-      "community": 8,
-      "community_name": "komponen-nilai/page.tsx",
+      "community": 85,
+      "community_name": "export-presensi-csv.ts",
       "norm_label": "user"
     },
     {
@@ -12181,8 +12126,8 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "types_user_teachertype",
-      "community": 8,
-      "community_name": "komponen-nilai/page.tsx",
+      "community": 85,
+      "community_name": "export-presensi-csv.ts",
       "norm_label": "teachertype"
     },
     {
@@ -14109,34 +14054,11 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "app/(admin)/dashboard-karakter/page.tsx",
-      "source_location": "L43",
+      "source_location": "L35",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_admin_dashboard_karakter_page",
       "target": "app_admin_dashboard_karakter_page_dashboardkarakterpage",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "app/(admin)/dashboard-karakter/page.tsx",
-      "source_location": "L36",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "app_admin_dashboard_karakter_page",
-      "target": "app_admin_dashboard_karakter_page_getscorecolor",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "app/(admin)/dashboard-karakter/page.tsx",
-      "source_location": "L32",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "app_admin_dashboard_karakter_page",
-      "target": "components_common_statcard",
       "confidence_score": 1.0
     },
     {
@@ -14148,6 +14070,18 @@
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_admin_dashboard_karakter_page",
+      "target": "components_common_statcard",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/(admin)/dashboard-karakter/page.tsx",
+      "source_location": "L30",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "app_admin_dashboard_karakter_page",
       "target": "components_layout_pagehero",
       "confidence_score": 1.0
     },
@@ -14156,7 +14090,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "app/(admin)/dashboard-karakter/page.tsx",
-      "source_location": "L33",
+      "source_location": "L32",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_admin_dashboard_karakter_page",
@@ -14168,7 +14102,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "app/(admin)/dashboard-karakter/page.tsx",
-      "source_location": "L34",
+      "source_location": "L33",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_admin_dashboard_karakter_page",
@@ -14332,60 +14266,12 @@
       "confidence_score": 1.0
     },
     {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "app/(admin)/dashboard-karakter/page.tsx",
-      "source_location": "L30",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "app_admin_dashboard_karakter_page",
-      "target": "lib_format",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "app/(admin)/dashboard-karakter/page.tsx",
-      "source_location": "L30",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "app_admin_dashboard_karakter_page",
-      "target": "lib_format_formatscore",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "app/(admin)/dashboard-karakter/page.tsx",
-      "source_location": "L30",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "app_admin_dashboard_karakter_page",
-      "target": "lib_format_months_id",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "app/(admin)/dashboard-karakter/page.tsx",
-      "source_location": "L294",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "app_admin_dashboard_karakter_page_dashboardkarakterpage",
-      "target": "app_admin_dashboard_karakter_page_getscorecolor",
-      "confidence_score": 1.0
-    },
-    {
       "relation": "calls",
       "context": "call",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "app/(admin)/dashboard-karakter/page.tsx",
-      "source_location": "L44",
+      "source_location": "L36",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_admin_dashboard_karakter_page_dashboardkarakterpage",
@@ -14397,35 +14283,11 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "app/(admin)/dashboard-karakter/page.tsx",
-      "source_location": "L68",
+      "source_location": "L59",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_admin_dashboard_karakter_page_dashboardkarakterpage",
       "target": "hooks_usedashboardkarakter_usedashboardkarakter"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "app/(admin)/dashboard-karakter/page.tsx",
-      "source_location": "L191",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "app_admin_dashboard_karakter_page_dashboardkarakterpage",
-      "target": "lib_format_formatscore"
-    },
-    {
-      "relation": "references",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "app/(admin)/dashboard-karakter/page.tsx",
-      "source_location": "L292",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "app_admin_dashboard_karakter_page_dashboardkarakterpage",
-      "target": "lib_format_months_id"
     },
     {
       "relation": "contains",
@@ -20082,7 +19944,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "app/(admin)/nilai-harian/page.tsx",
-      "source_location": "L26",
+      "source_location": "L25",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_admin_nilai_harian_page",
@@ -20094,31 +19956,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "app/(admin)/nilai-harian/page.tsx",
-      "source_location": "L9",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "app_admin_nilai_harian_page",
-      "target": "components_common_progressbadge",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "app/(admin)/nilai-harian/page.tsx",
-      "source_location": "L9",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "app_admin_nilai_harian_page",
-      "target": "components_common_progressbadge_progressbadge",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "app/(admin)/nilai-harian/page.tsx",
-      "source_location": "L12",
+      "source_location": "L11",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_admin_nilai_harian_page",
@@ -20130,7 +19968,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "app/(admin)/nilai-harian/page.tsx",
-      "source_location": "L13",
+      "source_location": "L12",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_admin_nilai_harian_page",
@@ -20166,7 +20004,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "app/(admin)/nilai-harian/page.tsx",
-      "source_location": "L14",
+      "source_location": "L13",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_admin_nilai_harian_page",
@@ -20190,7 +20028,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "app/(admin)/nilai-harian/page.tsx",
-      "source_location": "L15",
+      "source_location": "L14",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_admin_nilai_harian_page",
@@ -20202,7 +20040,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "app/(admin)/nilai-harian/page.tsx",
-      "source_location": "L15",
+      "source_location": "L14",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_admin_nilai_harian_page",
@@ -20214,7 +20052,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "app/(admin)/nilai-harian/page.tsx",
-      "source_location": "L16",
+      "source_location": "L15",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_admin_nilai_harian_page",
@@ -20226,7 +20064,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "app/(admin)/nilai-harian/page.tsx",
-      "source_location": "L16",
+      "source_location": "L15",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_admin_nilai_harian_page",
@@ -20238,7 +20076,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "app/(admin)/nilai-harian/page.tsx",
-      "source_location": "L16",
+      "source_location": "L15",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_admin_nilai_harian_page",
@@ -20250,7 +20088,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "app/(admin)/nilai-harian/page.tsx",
-      "source_location": "L16",
+      "source_location": "L15",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_admin_nilai_harian_page",
@@ -20262,7 +20100,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "app/(admin)/nilai-harian/page.tsx",
-      "source_location": "L16",
+      "source_location": "L15",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_admin_nilai_harian_page",
@@ -20274,7 +20112,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "app/(admin)/nilai-harian/page.tsx",
-      "source_location": "L16",
+      "source_location": "L15",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_admin_nilai_harian_page",
@@ -20286,7 +20124,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "app/(admin)/nilai-harian/page.tsx",
-      "source_location": "L16",
+      "source_location": "L15",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_admin_nilai_harian_page",
@@ -20298,7 +20136,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "app/(admin)/nilai-harian/page.tsx",
-      "source_location": "L10",
+      "source_location": "L9",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_admin_nilai_harian_page",
@@ -20310,7 +20148,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "app/(admin)/nilai-harian/page.tsx",
-      "source_location": "L10",
+      "source_location": "L9",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_admin_nilai_harian_page",
@@ -20323,7 +20161,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "app/(admin)/nilai-harian/page.tsx",
-      "source_location": "L43",
+      "source_location": "L42",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_admin_nilai_harian_page_nilaiharianpage",
@@ -20475,7 +20313,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "app/(admin)/penilaian-karakter/detail/page.tsx",
-      "source_location": "L32",
+      "source_location": "L30",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_admin_penilaian_karakter_detail_page",
@@ -20486,7 +20324,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "app/(admin)/penilaian-karakter/detail/page.tsx",
-      "source_location": "L19",
+      "source_location": "L17",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_admin_penilaian_karakter_detail_page",
@@ -20497,7 +20335,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "app/(admin)/penilaian-karakter/detail/page.tsx",
-      "source_location": "L48",
+      "source_location": "L44",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_admin_penilaian_karakter_detail_page",
@@ -20508,7 +20346,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "app/(admin)/penilaian-karakter/detail/page.tsx",
-      "source_location": "L25",
+      "source_location": "L23",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_admin_penilaian_karakter_detail_page",
@@ -20519,7 +20357,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "app/(admin)/penilaian-karakter/detail/page.tsx",
-      "source_location": "L41",
+      "source_location": "L37",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_admin_penilaian_karakter_detail_page",
@@ -20531,7 +20369,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "app/(admin)/penilaian-karakter/detail/page.tsx",
-      "source_location": "L16",
+      "source_location": "L14",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_admin_penilaian_karakter_detail_page",
@@ -20543,7 +20381,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "app/(admin)/penilaian-karakter/detail/page.tsx",
-      "source_location": "L16",
+      "source_location": "L14",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_admin_penilaian_karakter_detail_page",
@@ -20559,6 +20397,18 @@
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_admin_penilaian_karakter_detail_page",
+      "target": "components_common_datafield",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/(admin)/penilaian-karakter/detail/page.tsx",
+      "source_location": "L13",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "app_admin_penilaian_karakter_detail_page",
       "target": "components_layout_pagehero",
       "confidence_score": 1.0
     },
@@ -20567,7 +20417,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "app/(admin)/penilaian-karakter/detail/page.tsx",
-      "source_location": "L9",
+      "source_location": "L8",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_admin_penilaian_karakter_detail_page",
@@ -20579,7 +20429,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "app/(admin)/penilaian-karakter/detail/page.tsx",
-      "source_location": "L9",
+      "source_location": "L8",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_admin_penilaian_karakter_detail_page",
@@ -20591,7 +20441,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "app/(admin)/penilaian-karakter/detail/page.tsx",
-      "source_location": "L9",
+      "source_location": "L8",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_admin_penilaian_karakter_detail_page",
@@ -20603,7 +20453,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "app/(admin)/penilaian-karakter/detail/page.tsx",
-      "source_location": "L9",
+      "source_location": "L8",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_admin_penilaian_karakter_detail_page",
@@ -20615,7 +20465,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "app/(admin)/penilaian-karakter/detail/page.tsx",
-      "source_location": "L9",
+      "source_location": "L8",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_admin_penilaian_karakter_detail_page",
@@ -20627,7 +20477,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "app/(admin)/penilaian-karakter/detail/page.tsx",
-      "source_location": "L9",
+      "source_location": "L8",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_admin_penilaian_karakter_detail_page",
@@ -20639,7 +20489,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "app/(admin)/penilaian-karakter/detail/page.tsx",
-      "source_location": "L9",
+      "source_location": "L8",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_admin_penilaian_karakter_detail_page",
@@ -20651,55 +20501,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "app/(admin)/penilaian-karakter/detail/page.tsx",
-      "source_location": "L39",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "app_admin_penilaian_karakter_detail_page",
-      "target": "hooks_useauth",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "app/(admin)/penilaian-karakter/detail/page.tsx",
-      "source_location": "L39",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "app_admin_penilaian_karakter_detail_page",
-      "target": "hooks_useauth_useauth",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "app/(admin)/penilaian-karakter/detail/page.tsx",
-      "source_location": "L13",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "app_admin_penilaian_karakter_detail_page",
-      "target": "lib_format",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "app/(admin)/penilaian-karakter/detail/page.tsx",
-      "source_location": "L13",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "app_admin_penilaian_karakter_detail_page",
-      "target": "lib_format_formatscore",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "app/(admin)/penilaian-karakter/detail/page.tsx",
-      "source_location": "L12",
+      "source_location": "L11",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_admin_penilaian_karakter_detail_page",
@@ -20711,7 +20513,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "app/(admin)/penilaian-karakter/detail/page.tsx",
-      "source_location": "L12",
+      "source_location": "L11",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_admin_penilaian_karakter_detail_page",
@@ -20771,31 +20573,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "app/(admin)/penilaian-karakter/detail/page.tsx",
-      "source_location": "L8",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "app_admin_penilaian_karakter_detail_page",
-      "target": "services_user_service",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "app/(admin)/penilaian-karakter/detail/page.tsx",
-      "source_location": "L8",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "app_admin_penilaian_karakter_detail_page",
-      "target": "services_user_service_userservice",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "app/(admin)/penilaian-karakter/detail/page.tsx",
-      "source_location": "L10",
+      "source_location": "L9",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_admin_penilaian_karakter_detail_page",
@@ -20807,7 +20585,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "app/(admin)/penilaian-karakter/detail/page.tsx",
-      "source_location": "L10",
+      "source_location": "L9",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_admin_penilaian_karakter_detail_page",
@@ -20819,7 +20597,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "app/(admin)/penilaian-karakter/detail/page.tsx",
-      "source_location": "L11",
+      "source_location": "L10",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_admin_penilaian_karakter_detail_page",
@@ -20831,7 +20609,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "app/(admin)/penilaian-karakter/detail/page.tsx",
-      "source_location": "L11",
+      "source_location": "L10",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_admin_penilaian_karakter_detail_page",
@@ -20844,31 +20622,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "app/(admin)/penilaian-karakter/detail/page.tsx",
-      "source_location": "L52",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "app_admin_penilaian_karakter_detail_page_karakterdetailpage",
-      "target": "hooks_useauth_useauth"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "app/(admin)/penilaian-karakter/detail/page.tsx",
-      "source_location": "L260",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "app_admin_penilaian_karakter_detail_page_karakterdetailpage",
-      "target": "lib_format_formatscore"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "app/(admin)/penilaian-karakter/detail/page.tsx",
-      "source_location": "L66",
+      "source_location": "L60",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_admin_penilaian_karakter_detail_page_karakterdetailpage",
@@ -20880,7 +20634,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "app/(admin)/penilaian-karakter/detail/page.tsx",
-      "source_location": "L84",
+      "source_location": "L78",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_admin_penilaian_karakter_detail_page_karakterdetailpage",
@@ -20892,53 +20646,17 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "app/(admin)/penilaian-karakter/detail/page.tsx",
-      "source_location": "L85",
+      "source_location": "L79",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_admin_penilaian_karakter_detail_page_karakterdetailpage",
       "target": "services_character_habit_service_characterhabitservice_getall"
     },
     {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "app/(admin)/penilaian-karakter/detail/page.tsx",
-      "source_location": "L86",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "app_admin_penilaian_karakter_detail_page_karakterdetailpage",
-      "target": "services_user_service_userservice_getall"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "app/(admin)/penilaian-karakter/detail/page.tsx",
-      "source_location": "L87",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "app_admin_penilaian_karakter_detail_page_karakterdetailpage",
-      "target": "services_user_service_userservice_getme"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "app/(admin)/penilaian-karakter/detail/page.tsx",
-      "source_location": "L86",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "app_admin_penilaian_karakter_detail_page_karakterdetailpage",
-      "target": "services_user_service_userservice_getteachers"
-    },
-    {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "app/(admin)/penilaian-karakter/history/page.tsx",
-      "source_location": "L23",
+      "source_location": "L22",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_admin_penilaian_karakter_history_page",
@@ -20949,7 +20667,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "app/(admin)/penilaian-karakter/history/page.tsx",
-      "source_location": "L30",
+      "source_location": "L29",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_admin_penilaian_karakter_history_page",
@@ -20960,7 +20678,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "app/(admin)/penilaian-karakter/history/page.tsx",
-      "source_location": "L16",
+      "source_location": "L15",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_admin_penilaian_karakter_history_page",
@@ -20972,7 +20690,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "app/(admin)/penilaian-karakter/history/page.tsx",
-      "source_location": "L13",
+      "source_location": "L12",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_admin_penilaian_karakter_history_page",
@@ -20984,7 +20702,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "app/(admin)/penilaian-karakter/history/page.tsx",
-      "source_location": "L13",
+      "source_location": "L12",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_admin_penilaian_karakter_history_page",
@@ -20996,7 +20714,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "app/(admin)/penilaian-karakter/history/page.tsx",
-      "source_location": "L14",
+      "source_location": "L13",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_admin_penilaian_karakter_history_page",
@@ -21008,7 +20726,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "app/(admin)/penilaian-karakter/history/page.tsx",
-      "source_location": "L12",
+      "source_location": "L11",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_admin_penilaian_karakter_history_page",
@@ -21097,42 +20815,6 @@
       "_origin": "ast",
       "source": "app_admin_penilaian_karakter_history_page",
       "target": "components_ui_table_tablerow",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "app/(admin)/penilaian-karakter/history/page.tsx",
-      "source_location": "L10",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "app_admin_penilaian_karakter_history_page",
-      "target": "lib_format",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "app/(admin)/penilaian-karakter/history/page.tsx",
-      "source_location": "L10",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "app_admin_penilaian_karakter_history_page",
-      "target": "lib_format_formatscore",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "app/(admin)/penilaian-karakter/history/page.tsx",
-      "source_location": "L10",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "app_admin_penilaian_karakter_history_page",
-      "target": "lib_format_months_id",
       "confidence_score": 1.0
     },
     {
@@ -21212,7 +20894,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "app/(admin)/penilaian-karakter/history/page.tsx",
-      "source_location": "L156",
+      "source_location": "L159",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_admin_penilaian_karakter_history_page_karakterhistorypage",
@@ -21225,19 +20907,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "app/(admin)/penilaian-karakter/history/page.tsx",
-      "source_location": "L157",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "app_admin_penilaian_karakter_history_page_karakterhistorypage",
-      "target": "lib_format_formatscore"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "app/(admin)/penilaian-karakter/history/page.tsx",
-      "source_location": "L46",
+      "source_location": "L45",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_admin_penilaian_karakter_history_page_karakterhistorypage",
@@ -21249,7 +20919,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "app/(admin)/penilaian-karakter/history/page.tsx",
-      "source_location": "L63",
+      "source_location": "L62",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_admin_penilaian_karakter_history_page_karakterhistorypage",
@@ -21270,35 +20940,11 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "app/(admin)/penilaian-karakter/page.tsx",
-      "source_location": "L18",
+      "source_location": "L17",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_admin_penilaian_karakter_page",
       "target": "app_admin_penilaian_karakter_page_penilaiankarakterpage",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "app/(admin)/penilaian-karakter/page.tsx",
-      "source_location": "L16",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "app_admin_penilaian_karakter_page",
-      "target": "components_common_progressbadge",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "app/(admin)/penilaian-karakter/page.tsx",
-      "source_location": "L16",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "app_admin_penilaian_karakter_page",
-      "target": "components_common_progressbadge_progressbadge",
       "confidence_score": 1.0
     },
     {
@@ -21403,7 +21049,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "app/(admin)/penilaian-karakter/page.tsx",
-      "source_location": "L47",
+      "source_location": "L43",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_admin_penilaian_karakter_page_penilaiankarakterpage",
@@ -22315,7 +21961,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "app/(admin)/rekap-karakter/page.tsx",
-      "source_location": "L16",
+      "source_location": "L25",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_admin_rekap_karakter_page",
@@ -22375,7 +22021,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "app/(admin)/rekap-karakter/page.tsx",
-      "source_location": "L14",
+      "source_location": "L23",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_admin_rekap_karakter_page",
@@ -22387,11 +22033,11 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "app/(admin)/rekap-karakter/page.tsx",
-      "source_location": "L6",
+      "source_location": "L14",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_admin_rekap_karakter_page",
-      "target": "hooks_useauth",
+      "target": "components_ui_select",
       "confidence_score": 1.0
     },
     {
@@ -22399,11 +22045,71 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "app/(admin)/rekap-karakter/page.tsx",
-      "source_location": "L6",
+      "source_location": "L14",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_admin_rekap_karakter_page",
-      "target": "hooks_useauth_useauth",
+      "target": "components_ui_select_selectcontent",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/(admin)/rekap-karakter/page.tsx",
+      "source_location": "L14",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "app_admin_rekap_karakter_page",
+      "target": "components_ui_select_selectgroup",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/(admin)/rekap-karakter/page.tsx",
+      "source_location": "L14",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "app_admin_rekap_karakter_page",
+      "target": "components_ui_select_selectitem",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/(admin)/rekap-karakter/page.tsx",
+      "source_location": "L14",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "app_admin_rekap_karakter_page",
+      "target": "components_ui_select_selectlabel",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/(admin)/rekap-karakter/page.tsx",
+      "source_location": "L14",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "app_admin_rekap_karakter_page",
+      "target": "components_ui_select_selecttrigger",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/(admin)/rekap-karakter/page.tsx",
+      "source_location": "L14",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "app_admin_rekap_karakter_page",
+      "target": "components_ui_select_selectvalue",
       "confidence_score": 1.0
     },
     {
@@ -22511,7 +22217,19 @@
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_admin_rekap_karakter_page",
-      "target": "lib_format_formatscore",
+      "target": "lib_format_months_id",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/(admin)/rekap-karakter/page.tsx",
+      "source_location": "L6",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "app_admin_rekap_karakter_page",
+      "target": "lib_jwt",
       "confidence_score": 1.0
     },
     {
@@ -22519,11 +22237,11 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "app/(admin)/rekap-karakter/page.tsx",
-      "source_location": "L8",
+      "source_location": "L6",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_admin_rekap_karakter_page",
-      "target": "lib_format_months_id",
+      "target": "lib_jwt_decodejwt",
       "confidence_score": 1.0
     },
     {
@@ -22532,19 +22250,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "app/(admin)/rekap-karakter/page.tsx",
-      "source_location": "L17",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "app_admin_rekap_karakter_page_rekapkarapkterpage",
-      "target": "hooks_useauth_useauth"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "app/(admin)/rekap-karakter/page.tsx",
-      "source_location": "L35",
+      "source_location": "L53",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_admin_rekap_karakter_page_rekapkarapkterpage",
@@ -22556,7 +22262,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "app/(admin)/rekap-karakter/page.tsx",
-      "source_location": "L56",
+      "source_location": "L78",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_admin_rekap_karakter_page_rekapkarapkterpage",
@@ -22568,7 +22274,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "app/(admin)/rekap-karakter/page.tsx",
-      "source_location": "L45",
+      "source_location": "L65",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_admin_rekap_karakter_page_rekapkarapkterpage",
@@ -22580,23 +22286,11 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "app/(admin)/rekap-karakter/page.tsx",
-      "source_location": "L113",
+      "source_location": "L32",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_admin_rekap_karakter_page_rekapkarapkterpage",
-      "target": "lib_format_formatscore"
-    },
-    {
-      "relation": "references",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "app/(admin)/rekap-karakter/page.tsx",
-      "source_location": "L38",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "app_admin_rekap_karakter_page_rekapkarapkterpage",
-      "target": "lib_format_months_id"
+      "target": "lib_jwt_decodejwt"
     },
     {
       "relation": "contains",
@@ -27080,7 +26774,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "components/karakter/RekapKarakterTable.tsx",
-      "source_location": "L9",
+      "source_location": "L8",
       "weight": 1.0,
       "_origin": "ast",
       "source": "components_karakter_rekapkaraktertable",
@@ -27237,52 +26931,6 @@
       "_origin": "ast",
       "source": "components_common_presensistatusbadge",
       "target": "components_common_presensistatusbadge_statuscarditem",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "components/common/ProgressBadge.tsx",
-      "source_location": "L10",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "components_common_progressbadge",
-      "target": "components_common_progressbadge_progressbadge",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "components/common/ProgressBadge.tsx",
-      "source_location": "L3",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "components_common_progressbadge",
-      "target": "components_common_progressbadge_progressbadgeprops",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "components/nilai-harian/ScoreTable.tsx",
-      "source_location": "L6",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "components_nilai_harian_scoretable",
-      "target": "components_common_progressbadge",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "components/nilai-harian/ScoreTable.tsx",
-      "source_location": "L6",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "components_nilai_harian_scoretable",
-      "target": "components_common_progressbadge_progressbadge",
       "confidence_score": 1.0
     },
     {
@@ -27905,7 +27553,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "components/karakter/RekapKarakterTable.tsx",
-      "source_location": "L11",
+      "source_location": "L10",
       "weight": 1.0,
       "_origin": "ast",
       "source": "components_karakter_rekapkaraktertable",
@@ -27916,7 +27564,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "components/karakter/RekapKarakterTable.tsx",
-      "source_location": "L18",
+      "source_location": "L17",
       "weight": 1.0,
       "_origin": "ast",
       "source": "components_karakter_rekapkaraktertable",
@@ -27960,76 +27608,16 @@
       "confidence_score": 1.0
     },
     {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "components/karakter/RekapKarakterTable.tsx",
-      "source_location": "L8",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "components_karakter_rekapkaraktertable",
-      "target": "lib_format",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "components/karakter/RekapKarakterTable.tsx",
-      "source_location": "L8",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "components_karakter_rekapkaraktertable",
-      "target": "lib_format_formatscore",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "components/karakter/RekapKarakterTable.tsx",
-      "source_location": "L8",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "components_karakter_rekapkaraktertable",
-      "target": "lib_format_months_id",
-      "confidence_score": 1.0
-    },
-    {
       "relation": "references",
       "context": "field",
       "confidence": "EXTRACTED",
       "source_file": "components/karakter/RekapKarakterTable.tsx",
-      "source_location": "L12",
+      "source_location": "L11",
       "weight": 1.0,
       "_origin": "ast",
       "source": "components_karakter_rekapkaraktertable_props",
       "target": "hooks_userekapkarakter_recaprow",
       "confidence_score": 1.0
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "components/karakter/RekapKarakterTable.tsx",
-      "source_location": "L76",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "components_karakter_rekapkaraktertable_rekapkaraktertable",
-      "target": "lib_format_formatscore"
-    },
-    {
-      "relation": "references",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "components/karakter/RekapKarakterTable.tsx",
-      "source_location": "L35",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "components_karakter_rekapkaraktertable_rekapkaraktertable",
-      "target": "lib_format_months_id"
     },
     {
       "relation": "contains",
@@ -28046,7 +27634,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "components/karakter/StudentAssessmentTable.tsx",
-      "source_location": "L36",
+      "source_location": "L33",
       "weight": 1.0,
       "_origin": "ast",
       "source": "components_karakter_studentassessmenttable",
@@ -28660,7 +28248,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "components/nilai-harian/ScoreTable.tsx",
-      "source_location": "L10",
+      "source_location": "L9",
       "weight": 1.0,
       "_origin": "ast",
       "source": "components_nilai_harian_scoretable",
@@ -28671,7 +28259,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "components/nilai-harian/ScoreTable.tsx",
-      "source_location": "L26",
+      "source_location": "L25",
       "weight": 1.0,
       "_origin": "ast",
       "source": "components_nilai_harian_scoretable",
@@ -28683,7 +28271,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "components/nilai-harian/ScoreTable.tsx",
-      "source_location": "L7",
+      "source_location": "L6",
       "weight": 1.0,
       "_origin": "ast",
       "source": "components_nilai_harian_scoretable",
@@ -28719,7 +28307,7 @@
       "context": "field",
       "confidence": "EXTRACTED",
       "source_file": "components/nilai-harian/ScoreTable.tsx",
-      "source_location": "L11",
+      "source_location": "L10",
       "weight": 1.0,
       "_origin": "ast",
       "source": "components_nilai_harian_scoretable_props",
@@ -33361,18 +32949,6 @@
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "hooks/useRekapKarakter.ts",
-      "source_location": "L6",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "hooks_userekapkarakter",
-      "target": "hooks_useauth",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
       "source_file": "hooks/useRekapNilai.ts",
       "source_location": "L10",
       "weight": 1.0,
@@ -33595,30 +33171,6 @@
       "weight": 1.0,
       "_origin": "ast",
       "source": "hooks_useprofile_useprofile",
-      "target": "hooks_useauth_useauth"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "hooks/useRekapKarakter.ts",
-      "source_location": "L6",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "hooks_userekapkarakter",
-      "target": "hooks_useauth_useauth",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "hooks/useRekapKarakter.ts",
-      "source_location": "L24",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "hooks_userekapkarakter_userekapkarakter",
       "target": "hooks_useauth_useauth"
     },
     {
@@ -34175,7 +33727,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "hooks/useCharacterAssessment.ts",
-      "source_location": "L205",
+      "source_location": "L156",
       "weight": 1.0,
       "_origin": "ast",
       "source": "hooks_usecharacterassessment_usecharacterassessment",
@@ -34187,7 +33739,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "hooks/useCharacterAssessment.ts",
-      "source_location": "L226",
+      "source_location": "L177",
       "weight": 1.0,
       "_origin": "ast",
       "source": "hooks_usecharacterassessment_usecharacterassessment",
@@ -34199,7 +33751,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "hooks/useCharacterAssessment.ts",
-      "source_location": "L72",
+      "source_location": "L65",
       "weight": 1.0,
       "_origin": "ast",
       "source": "hooks_usecharacterassessment_usecharacterassessment",
@@ -34211,7 +33763,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "hooks/useCharacterAssessment.ts",
-      "source_location": "L134",
+      "source_location": "L89",
       "weight": 1.0,
       "_origin": "ast",
       "source": "hooks_usecharacterassessment_usecharacterassessment",
@@ -34223,7 +33775,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "hooks/useCharacterAssessment.ts",
-      "source_location": "L300",
+      "source_location": "L238",
       "weight": 1.0,
       "_origin": "ast",
       "source": "hooks_usecharacterassessment_usecharacterassessment",
@@ -34235,7 +33787,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "hooks/useCharacterAssessment.ts",
-      "source_location": "L225",
+      "source_location": "L176",
       "weight": 1.0,
       "_origin": "ast",
       "source": "hooks_usecharacterassessment_usecharacterassessment",
@@ -34247,7 +33799,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "hooks/useCharacterAssessment.ts",
-      "source_location": "L70",
+      "source_location": "L63",
       "weight": 1.0,
       "_origin": "ast",
       "source": "hooks_usecharacterassessment_usecharacterassessment",
@@ -34259,7 +33811,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "hooks/useCharacterAssessment.ts",
-      "source_location": "L71",
+      "source_location": "L64",
       "weight": 1.0,
       "_origin": "ast",
       "source": "hooks_usecharacterassessment_usecharacterassessment",
@@ -34457,7 +34009,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "hooks/useDashboardKarakter.ts",
-      "source_location": "L9",
+      "source_location": "L8",
       "weight": 1.0,
       "_origin": "ast",
       "source": "hooks_usedashboardkarakter",
@@ -34468,7 +34020,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "hooks/useDashboardKarakter.ts",
-      "source_location": "L19",
+      "source_location": "L18",
       "weight": 1.0,
       "_origin": "ast",
       "source": "hooks_usedashboardkarakter",
@@ -34480,7 +34032,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "hooks/useDashboardKarakter.ts",
-      "source_location": "L7",
+      "source_location": "L6",
       "weight": 1.0,
       "_origin": "ast",
       "source": "hooks_usedashboardkarakter",
@@ -34492,7 +34044,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "hooks/useDashboardKarakter.ts",
-      "source_location": "L7",
+      "source_location": "L6",
       "weight": 1.0,
       "_origin": "ast",
       "source": "hooks_usedashboardkarakter",
@@ -34504,7 +34056,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "hooks/useDashboardKarakter.ts",
-      "source_location": "L7",
+      "source_location": "L6",
       "weight": 1.0,
       "_origin": "ast",
       "source": "hooks_usedashboardkarakter",
@@ -34544,30 +34096,6 @@
       "weight": 1.0,
       "_origin": "ast",
       "source": "hooks_usedashboardkarakter",
-      "target": "services_student_attendance_service",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "hooks/useDashboardKarakter.ts",
-      "source_location": "L5",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "hooks_usedashboardkarakter",
-      "target": "services_student_attendance_service_studentattendanceservice",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "hooks/useDashboardKarakter.ts",
-      "source_location": "L6",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "hooks_usedashboardkarakter",
       "target": "types_character_assessment",
       "confidence_score": 1.0
     },
@@ -34576,7 +34104,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "hooks/useDashboardKarakter.ts",
-      "source_location": "L6",
+      "source_location": "L5",
       "weight": 1.0,
       "_origin": "ast",
       "source": "hooks_usedashboardkarakter",
@@ -34589,23 +34117,11 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "hooks/useDashboardKarakter.ts",
-      "source_location": "L52",
+      "source_location": "L49",
       "weight": 1.0,
       "_origin": "ast",
       "source": "hooks_usedashboardkarakter_usedashboardkarakter",
       "target": "services_character_assessment_service_characterassessmentservice_getall"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "hooks/useDashboardKarakter.ts",
-      "source_location": "L53",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "hooks_usedashboardkarakter_usedashboardkarakter",
-      "target": "services_student_attendance_service_studentattendanceservice_getstudentsbygrade"
     },
     {
       "relation": "contains",
@@ -37094,7 +36610,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "hooks/useRekapKarakter.ts",
-      "source_location": "L11",
+      "source_location": "L8",
       "weight": 1.0,
       "_origin": "ast",
       "source": "hooks_userekapkarakter",
@@ -37105,7 +36621,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "hooks/useRekapKarakter.ts",
-      "source_location": "L18",
+      "source_location": "L15",
       "weight": 1.0,
       "_origin": "ast",
       "source": "hooks_userekapkarakter",
@@ -37117,7 +36633,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "hooks/useRekapKarakter.ts",
-      "source_location": "L8",
+      "source_location": "L6",
       "weight": 1.0,
       "_origin": "ast",
       "source": "hooks_userekapkarakter",
@@ -37129,7 +36645,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "hooks/useRekapKarakter.ts",
-      "source_location": "L8",
+      "source_location": "L6",
       "weight": 1.0,
       "_origin": "ast",
       "source": "hooks_userekapkarakter",
@@ -37141,35 +36657,11 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "hooks/useRekapKarakter.ts",
-      "source_location": "L8",
+      "source_location": "L6",
       "weight": 1.0,
       "_origin": "ast",
       "source": "hooks_userekapkarakter",
       "target": "lib_constants_semesters",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "hooks/useRekapKarakter.ts",
-      "source_location": "L9",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "hooks_userekapkarakter",
-      "target": "lib_format",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "hooks/useRekapKarakter.ts",
-      "source_location": "L9",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "hooks_userekapkarakter",
-      "target": "lib_format_months_id",
       "confidence_score": 1.0
     },
     {
@@ -37205,30 +36697,6 @@
       "weight": 1.0,
       "_origin": "ast",
       "source": "hooks_userekapkarakter",
-      "target": "services_student_attendance_service",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "hooks/useRekapKarakter.ts",
-      "source_location": "L5",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "hooks_userekapkarakter",
-      "target": "services_student_attendance_service_studentattendanceservice",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "hooks/useRekapKarakter.ts",
-      "source_location": "L7",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "hooks_userekapkarakter",
       "target": "types_character_assessment",
       "confidence_score": 1.0
     },
@@ -37237,7 +36705,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "hooks/useRekapKarakter.ts",
-      "source_location": "L7",
+      "source_location": "L5",
       "weight": 1.0,
       "_origin": "ast",
       "source": "hooks_userekapkarakter",
@@ -37250,23 +36718,11 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "hooks/useRekapKarakter.ts",
-      "source_location": "L61",
+      "source_location": "L51",
       "weight": 1.0,
       "_origin": "ast",
       "source": "hooks_userekapkarakter_userekapkarakter",
       "target": "services_character_assessment_service_characterassessmentservice_getall"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "hooks/useRekapKarakter.ts",
-      "source_location": "L62",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "hooks_userekapkarakter_userekapkarakter",
-      "target": "services_student_attendance_service_studentattendanceservice_getstudentsbygrade"
     },
     {
       "relation": "contains",
@@ -40058,17 +39514,6 @@
       "_origin": "ast",
       "source": "lib_format",
       "target": "lib_format_formatdatewithdayid",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "lib/format.ts",
-      "source_location": "L50",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "lib_format",
-      "target": "lib_format_formatscore",
       "confidence_score": 1.0
     },
     {
@@ -46178,5 +45623,5 @@
       "source_file": "AGENTS.md"
     }
   ],
-  "built_at_commit": "36ddd36d947c74423783d15fd1438574ccf80bc2"
+  "built_at_commit": "b7527456551e91850cf2ff433baa29e82391bf98"
 }

@@ -3,37 +3,19 @@
 import { useEffect, useState } from "react";
 import { ClipboardList, AlertCircle, Download, Users, Hash, ArrowUp, ArrowDown } from "lucide-react";
 import { useRekapKarakter } from "@/hooks/useRekapKarakter";
-import { decodeJWT } from "@/lib/jwt";
+import { useAuth } from "@/hooks/useAuth";
 import { GRADES } from "@/lib/constants";
-import { MONTHS_ID } from "@/lib/format";
+import { MONTHS_ID, formatScore } from "@/lib/format";
 import { downloadCSV, wrap } from "@/lib/csv-utils";
 import PageHero from "@/components/layout/PageHero";
 import StatCard from "@/components/common/StatCard";
 import FilterBar from "@/components/shared/FilterBar";
 import RekapKarakterTable from "@/components/karakter/RekapKarakterTable";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import LoadingSkeleton from '@/components/shared/LoadingSkeleton';
 
 export default function RekapKarapkterPage() {
-  const [userRole, setUserRole] = useState<string | null>(null);
-  const [userGrade, setUserGrade] = useState<string | null>(null);
-
-  useEffect(() => {
-    const token = sessionStorage.getItem("user_session");
-    if (token) {
-      const payload = decodeJWT(token);
-      setUserRole(payload?.role || null);
-      setUserGrade(payload?.grade || null);
-    }
-  }, []);
+  const { payload } = useAuth();
+  const userRole = payload?.role as string | undefined;
 
   const {
     semester, setSemester,
@@ -50,25 +32,21 @@ export default function RekapKarapkterPage() {
     loading, initialLoading, error, retry,
     hasData,
     SEMESTERS, ACADEMIC_YEARS,
-  } = useRekapKarakter(userRole, userGrade);
+  } = useRekapKarakter();
 
   const handleExportCSV = () => {
-    const showMonthColumns = monthsToShow.length > 1;
-    const headers = ["No", "Nama"];
-    if (showMonthColumns) {
-      headers.push(...monthsToShow, "Rerata");
-    } else {
-      headers.push("Skor Karakter");
+    const formattedMonths = monthsToShow.map(m => MONTHS_ID.includes(m) ? m : MONTHS_ID[parseInt(m) - 1] || m);
+    const headers = ["No", "Nama", ...formattedMonths];
+    if (monthsToShow.length > 1) {
+      headers.push("Rerata");
     }
 
     const rows = recapRows.map((row, i) => {
       const cols = [String(i + 1), wrap(row.name)];
-      if (showMonthColumns) {
-        for (const m of monthsToShow) {
-          cols.push(row.monthlyScores[m] !== null ? String(row.monthlyScores[m]) : "-");
-        }
-        cols.push(row.studentAverage !== null ? String(row.studentAverage) : "-");
-      } else {
+      for (const m of monthsToShow) {
+        cols.push(row.monthlyScores[m] !== null ? String(row.monthlyScores[m]) : "-");
+      }
+      if (monthsToShow.length > 1) {
         cols.push(row.studentAverage !== null ? String(row.studentAverage) : "-");
       }
       return cols.join(",");
@@ -91,24 +69,10 @@ export default function RekapKarapkterPage() {
         onSemesterChange={(v) => v && setSemester(v)}
         grade={grade}
         onGradeChange={(v) => v && setGrade(v)}
-        gradeDisabled={userRole === "guru"}
-      >
-        <div>
-          <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 tracking-wider mb-2">Bulan</label>
-          <Select value={month || ""} onValueChange={(v) => setMonth(v != null ? (v === "__all__" ? "" : v) : "")}>
-            <SelectTrigger className="w-full h-auto rounded-xl border border-slate-300 bg-slate-50 px-4 py-2.5 text-sm focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100"><SelectValue placeholder="Semua Bulan" /></SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                <SelectLabel>Bulan</SelectLabel>
-                <SelectItem value="__all__">Semua Bulan</SelectItem>
-                {MONTHS_ID.map((m) => (
-                  <SelectItem key={m} value={m}>{m}</SelectItem>
-                ))}
-              </SelectGroup>
-            </SelectContent>
-          </Select>
-        </div>
-      </FilterBar>
+        gradeDisabled={userRole?.toLowerCase() !== "admin"}
+        gridClassName="grid-cols-2 md:grid-cols-3"
+        gradeClassName="col-span-2 md:col-span-1"
+      />
 
       {/* Content */}
       {error ? (
@@ -146,21 +110,21 @@ export default function RekapKarapkterPage() {
             />
             <StatCard
               label="Rerata Skor"
-              value={avgScore !== null ? avgScore.toFixed(2) : "-"}
+              value={formatScore(avgScore)}
               icon={Hash}
               color="teal"
               loading={loading}
             />
             <StatCard
               label="Skor Tertinggi"
-              value={highestScore !== null ? highestScore.toFixed(2) : "-"}
+              value={formatScore(highestScore)}
               icon={ArrowUp}
               color="emerald"
               loading={loading}
             />
             <StatCard
               label="Skor Terendah"
-              value={lowestScore !== null ? lowestScore.toFixed(2) : "-"}
+              value={formatScore(lowestScore)}
               icon={ArrowDown}
               color="yellow"
               loading={loading}

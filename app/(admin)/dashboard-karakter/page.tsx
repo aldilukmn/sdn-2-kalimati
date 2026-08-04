@@ -27,13 +27,23 @@ import {
 import { useDashboardKarakter } from "@/hooks/useDashboardKarakter";
 import { useAuth } from "@/hooks/useAuth";
 import { GRADES } from "@/lib/constants";
+import { formatScore, MONTHS_ID } from "@/lib/format";
 import PageHero from "@/components/layout/PageHero";
 import StatCard from "@/components/common/StatCard";
 import FilterBar from "@/components/shared/FilterBar";
 import LoadingSkeleton from "@/components/shared/LoadingSkeleton";
 
+const getScoreColor = (score: number) => {
+  if (score >= 85) return "text-emerald-600 dark:text-emerald-400";
+  if (score >= 70) return "text-blue-600 dark:text-blue-400";
+  if (score >= 55) return "text-amber-600 dark:text-amber-400";
+  return "text-red-500 dark:text-red-400";
+};
+
 export default function DashboardKarakterPage() {
-  const { role: userRole, grade: userGrade } = useAuth();
+  const { payload } = useAuth();
+  const userRole = payload?.role as string | undefined;
+  const userGrade = payload?.grade as string | undefined;
 
   const {
     semester,
@@ -43,7 +53,6 @@ export default function DashboardKarakterPage() {
     grade,
     setGrade,
     totalStudents,
-    totalAssessments,
     avgScore,
     highestScore,
     lowestScore,
@@ -115,7 +124,7 @@ export default function DashboardKarakterPage() {
         onSemesterChange={(v) => v && setSemester(v)}
         grade={grade}
         onGradeChange={(v) => v && setGrade(v)}
-        gradeDisabled={userRole === "guru"}
+        gradeDisabled={userRole?.toLowerCase() !== "admin"}
         gridClassName="grid-cols-2 md:grid-cols-3"
         gradeClassName="col-span-2 md:col-span-1"
       />
@@ -169,7 +178,7 @@ export default function DashboardKarakterPage() {
       ) : (
         <>
           {/* Summary Cards */}
-          <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
             <StatCard
               label="Total Murid"
               value={totalStudents}
@@ -178,29 +187,22 @@ export default function DashboardKarakterPage() {
               loading={loading}
             />
             <StatCard
-              label="Total Penilaian"
-              value={totalAssessments}
-              icon={FileText}
-              color="teal"
-              loading={loading}
-            />
-            <StatCard
-              label="Rata-rata Skor"
-              value={avgScore !== null ? avgScore.toFixed(2) : "-"}
+              label="Rerata Skor"
+              value={formatScore(avgScore)}
               icon={Hash}
               color="teal"
               loading={loading}
             />
             <StatCard
               label="Skor Tertinggi"
-              value={highestScore !== null ? highestScore.toFixed(2) : "-"}
+              value={formatScore(highestScore)}
               icon={ArrowUp}
               color="emerald"
               loading={loading}
             />
             <StatCard
               label="Skor Terendah"
-              value={lowestScore !== null ? lowestScore.toFixed(2) : "-"}
+              value={formatScore(lowestScore)}
               icon={ArrowDown}
               color="yellow"
               loading={loading}
@@ -287,18 +289,14 @@ export default function DashboardKarakterPage() {
                             </span>
                           </TableCell>
                           <TableCell className="text-center text-xs text-slate-600 dark:text-slate-400">
-                            {item.month}
+                            {MONTHS_ID.includes(item.month) ? item.month : (MONTHS_ID[parseInt(item.month) - 1] || item.month)}
                           </TableCell>
-                          <TableCell className="text-center">
-                            <span
-                              className={`text-sm font-bold ${item.characterScore >= 85 ? "text-emerald-600 dark:text-emerald-400" : item.characterScore >= 70 ? "text-blue-600 dark:text-blue-400" : item.characterScore >= 55 ? "text-amber-600 dark:text-amber-400" : "text-red-500 dark:text-red-400"}`}
-                            >
-                              {item.characterScore.toFixed(2)}
-                            </span>
+                          <TableCell className={`text-center text-sm font-bold ${getScoreColor(item.characterScore)}`}>
+                            {formatScore(item.characterScore)}
                           </TableCell>
                           <TableCell className="text-center">
                             <Link
-                              href={`/karakter/detail?id=${item._id}`}
+                              href={`/penilaian-karakter/detail?id=${item._id}`}
                               className="inline-flex items-center gap-1 text-xs font-medium text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 transition-colors"
                             >
                               <Eye size={14} />

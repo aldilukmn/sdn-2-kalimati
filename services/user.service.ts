@@ -2,8 +2,8 @@ import { api } from "@/lib/api";
 import type { TeacherType } from "@/types/user";
 
 export default class UserService {
-  static async getTeachers() {
-    return await api<TeacherType[]>("/user?role=guru");
+  static async getTeachers(skipAuthRedirect = false) {
+    return await api<TeacherType[]>("/user?role=guru", { skipAuthRedirect });
   }
 
   static async getStaffByRoles(roles: string, skipAuthRedirect = false) {
@@ -14,12 +14,12 @@ export default class UserService {
     return await api<TeacherType>(`/teacher-by-grade/${grade}`, { skipAuthRedirect });
   }
 
-  static async getAll() {
-    return await api<TeacherType[]>("/user");
+  static async getAll(skipAuthRedirect = false) {
+    return await api<TeacherType[]>("/user", { skipAuthRedirect });
   }
 
-  static async getMe() {
-    return await api<TeacherType>("/user/me");
+  static async getMe(skipAuthRedirect = false) {
+    return await api<TeacherType>("/user/me", { skipAuthRedirect });
   }
 
   static async create(data: {

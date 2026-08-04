@@ -46,3 +46,8 @@ export function getTodayLocal(): string {
   const day = String(d.getDate()).padStart(2, "0");
   return `${y}-${m}-${day}`;
 }
+
+export function formatScore(num: number | null): string {
+  if (num === null) return "-";
+  return parseFloat(num.toFixed(2)).toString().replace(".", ",");
+}

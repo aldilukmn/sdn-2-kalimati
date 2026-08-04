@@ -2,8 +2,8 @@ import { api } from "@/lib/api";
 import type { CharacterHabit, CharacterHabitCreateRequest, CharacterHabitUpdateRequest } from "@/types/character-habit";
 
 export default class CharacterHabitService {
-  static async getAll() {
-    return await api<CharacterHabit[]>("/character-habits");
+  static async getAll(skipAuthRedirect = false) {
+    return await api<CharacterHabit[]>("/character-habits", { skipAuthRedirect });
   }
 
   static async getById(id: string) {

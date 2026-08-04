@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useCallback } from "react";
 import CharacterAssessmentService from "@/services/character-assessment.service";
+import StudentAttendanceService from "@/services/student-attendance.service";
 import type { AssessmentListItem } from "@/types/character-assessment";
 import { SEMESTERS, ACADEMIC_YEARS } from "@/lib/constants";
 
@@ -21,6 +22,7 @@ export function useDashboardKarakter(userRole: string | null, userGrade: string 
   const [grade, setGrade] = useState(userGrade ?? "");
 
   const [assessments, setAssessments] = useState<AssessmentListItem[]>([]);
+  const [totalStudents, setTotalStudents] = useState(0);
   const [loading, setLoading] = useState(false);
   const [initialLoading, setInitialLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -32,7 +34,7 @@ export function useDashboardKarakter(userRole: string | null, userGrade: string 
   }, []);
 
   useEffect(() => {
-    if (userRole === "guru" && userGrade) {
+    if (userRole?.toLowerCase() !== "admin" && userGrade) {
       setGrade(userGrade);
     }
   }, [userRole, userGrade]);
@@ -46,10 +48,15 @@ export function useDashboardKarakter(userRole: string | null, userGrade: string 
       setError(null);
       try {
         const params = { grade, academicYear, semester };
-        const res = await CharacterAssessmentService.getAll(params);
-        setAssessments(res?.result || []);
+        const [assessmentsRes, studentsRes] = await Promise.all([
+          CharacterAssessmentService.getAll(params),
+          StudentAttendanceService.getStudentsByGrade(grade),
+        ]);
+        setAssessments(assessmentsRes?.result || []);
+        setTotalStudents(studentsRes?.result?.length || 0);
       } catch {
         setAssessments([]);
+        setTotalStudents(0);
         setError("Gagal memuat data dashboard.");
       } finally {
         setLoading(false);
@@ -59,7 +66,6 @@ export function useDashboardKarakter(userRole: string | null, userGrade: string 
     return () => ctrl.abort();
   }, [grade, semester, academicYear, retryCount]);
 
-  const totalStudents = new Map(assessments.map((a) => [a.studentId, a.name])).size;
   const totalAssessments = assessments.length;
   const allScores = assessments.map((a) => a.characterScore);
   const avgScore = allScores.length > 0

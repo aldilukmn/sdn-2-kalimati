@@ -26,6 +26,9 @@ interface Props {
   onDelete: (assessmentId: string, studentName: string) => void;
   onViewDetail?: (assessmentId: string) => void;
   saving: boolean;
+  loadingScores?: boolean;
+  currentPage: number;
+  onPageChange: (page: number) => void;
   saveButton?: React.ReactNode;
   headerSlot?: React.ReactNode;
 }
@@ -40,10 +43,12 @@ export default function StudentAssessmentTable({
   onDelete,
   onViewDetail,
   saving,
+  loadingScores,
+  currentPage,
+  onPageChange,
   saveButton,
   headerSlot,
 }: Props) {
-  const [currentPage, setCurrentPage] = useState(1);
   const [resettingId, setResettingId] = useState<string | null>(null);
   const totalPages = Math.ceil(students.length / ITEMS_PER_PAGE);
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
@@ -78,9 +83,9 @@ export default function StudentAssessmentTable({
           <thead>
             <tr className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-xs md:text-sm">
               <th className="px-3 py-3 text-center font-semibold w-12 whitespace-nowrap">No</th>
-              <th className="px-3 py-3 text-left font-semibold whitespace-nowrap">Nama</th>
+              <th className="px-3 py-3 text-left font-semibold whitespace-nowrap border-r border-gray-200/50 dark:border-gray-700/50">Nama</th>
               {habits.map((h) => (
-                <th key={h._id} className="px-3 py-3 text-center font-semibold whitespace-nowrap min-w-[60px] border-r border-gray-200/50 dark:border-gray-700/50 last:border-r-0">
+                <th key={h._id} className="px-3 py-3 text-center font-semibold whitespace-normal leading-tight w-[140px] min-w-[140px] border-r border-gray-200/50 dark:border-gray-700/50 last:border-r-0">
                   {h.name}
                 </th>
               ))}
@@ -103,16 +108,22 @@ export default function StudentAssessmentTable({
                     className="hover:bg-indigo-50/50 dark:hover:bg-indigo-900/20 transition-colors"
                   >
                     <td className="p-3 text-sm text-gray-800 dark:text-gray-300 text-center">{startIndex + idx + 1}</td>
-                    <td className="p-3">
+                    <td className="p-3 border-r border-gray-200/50 dark:border-gray-700/50">
                       <span className="text-sm text-gray-800 dark:text-gray-200 font-medium truncate">{student.name}</span>
                     </td>
                     {habits.map((h) => (
                       <td key={h._id} className="p-3 text-center border-r border-gray-200/50 dark:border-gray-700/50">
-                        <HabitRadioGroup
-                          value={scores[student.studentId]?.[h._id] || ""}
-                          onChange={(val) => onScoreChange(student.studentId, h._id, val)}
-                          disabled={saving}
-                        />
+                        {loadingScores && !scores[student.studentId] ? (
+                          <div className="flex justify-center">
+                            <div className="h-7 w-7 rounded-full bg-slate-200 dark:bg-slate-700 animate-pulse" />
+                          </div>
+                        ) : (
+                          <HabitRadioGroup
+                            value={scores[student.studentId]?.[h._id] || ""}
+                            onChange={(val) => onScoreChange(student.studentId, h._id, val)}
+                            disabled={saving}
+                          />
+                        )}
                       </td>
                     ))}
                     <td className="p-3 text-center">
@@ -168,7 +179,7 @@ export default function StudentAssessmentTable({
         <Pagination
           currentPage={currentPage}
           totalPages={totalPages}
-          onPageChange={setCurrentPage}
+          onPageChange={onPageChange}
           itemsPerPage={ITEMS_PER_PAGE}
           totalItems={students.length}
         />

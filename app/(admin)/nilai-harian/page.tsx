@@ -6,6 +6,7 @@ import { ClipboardEdit, Save, ClipboardList, ChevronRight, Info } from "lucide-r
 import ErrorState from "@/components/shared/ErrorState";
 import EmptyState from "@/components/shared/EmptyState";
 import LoadingSkeleton from "@/components/shared/LoadingSkeleton";
+import ProgressBadge from "@/components/common/ProgressBadge";
 import { useNilaiHarian } from "@/hooks/useNilaiHarian";
 import toast from "react-hot-toast";
 import PageHero from "@/components/layout/PageHero";
@@ -114,7 +115,16 @@ export default function NilaiHarianPage() {
                         : "bg-white/90 dark:bg-gray-800/80 border-transparent shadow-sm hover:border-indigo-200 dark:hover:border-indigo-800/50 hover:shadow"
                     }`}
                   >
-                    <button
+                    <div
+                      role="button"
+                      tabIndex={0}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                          e.preventDefault();
+                          if (isActive) setSelectedChapter(null);
+                          else { setSelectedChapter(ch); setSelectedMaterial(""); }
+                        }
+                      }}
                       onClick={() => {
                         if (isActive) {
                           setSelectedChapter(null);
@@ -157,66 +167,21 @@ export default function NilaiHarianPage() {
                         </span>
                       </div>
                       
-                      {/* Desktop: bar indicator */}
+                      {/* Bar indicator */}
                       {prog && ch.inputMode === "per_chapter" && (
-                        <div className="hidden sm:flex flex-1 items-center gap-2">
-                          <div className="w-28 md:w-40 h-2 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden shrink-0">
-                            <div
-                              className={`h-full rounded-full transition-all duration-500 ${
-                                prog.percentage === 100
-                                  ? "bg-emerald-500"
-                                  : prog.percentage > 0
-                                  ? "bg-amber-500"
-                                  : "bg-slate-300 dark:bg-slate-600"
-                              }`}
-                              style={{ width: `${prog.percentage}%` }}
-                            />
-                          </div>
-                          <span className="text-[11px] font-medium text-slate-500 dark:text-slate-400 whitespace-nowrap">
-                            {prog.gradedStudents}/{prog.totalStudents}
-                          </span>
-                          {prog.percentage === 100 && (
-                            <span className="inline-flex items-center p-0.5 rounded-full text-emerald-700 bg-emerald-100 dark:bg-emerald-900/40 dark:text-emerald-300" title="Semua nilai tersimpan">
-                              <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                                <circle cx="12" cy="12" r="10" />
-                                <path d="m9 12 2 2 4-4" />
-                              </svg>
-                            </span>
-                          )}
-                        </div>
+                        <ProgressBadge 
+                          completed={prog.gradedStudents} 
+                          total={prog.totalStudents} 
+                          label="" 
+                        />
                       )}
-                      {/* Mobile: icon indicator */}
-                      {prog && ch.inputMode === "per_chapter" && (
-                        <div className="sm:hidden flex items-center">
-                          {prog.percentage === 100 ? (
-                            <span 
-                              title="Semua nilai tersimpan"
-                              className="inline-flex items-center p-1 rounded-full text-emerald-700 bg-emerald-100 dark:bg-emerald-900/40 dark:text-emerald-300"
-                            >
-                              <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                                <circle cx="12" cy="12" r="10" />
-                                <path d="m9 12 2 2 4-4" />
-                              </svg>
-                            </span>
-                          ) : (
-                            <span 
-                              title={`${prog.gradedStudents} dari ${prog.totalStudents} nilai tersimpan`}
-                              className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-medium bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300"
-                            >
-                              <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                                <circle cx="12" cy="12" r="10" />
-                                <polyline points="12 6 12 12 16 14" />
-                              </svg>
-                              {prog.gradedStudents}/{prog.totalStudents}
-                            </span>
-                          )}
-                        </div>
-                      )}
+                      
                       {isActive && ch.inputMode === "per_chapter" && (
                         <span className="text-[11px] text-indigo-500 dark:text-indigo-400 font-medium shrink-0">(Sedang aktif)</span>
                       )}
                     </div>
-                    </button>
+                    </div>
+
                     <div
                       className="grid transition-all duration-300 ease-in-out"
                       style={{ gridTemplateRows: isActive && ch.inputMode === "per_material" ? "1fr" : "0fr" }}
@@ -238,8 +203,17 @@ export default function NilaiHarianPage() {
                             materials.map((mat, idx) => {
                               const mProg = materialProgress[mat._id];
                               return (
-                                <button
+                                <div
                                   key={mat._id}
+                                  role="button"
+                                  tabIndex={0}
+                                  onKeyDown={(e) => {
+                                    if (e.key === 'Enter' || e.key === ' ') {
+                                      e.preventDefault();
+                                      e.stopPropagation();
+                                      setSelectedMaterial(mat._id);
+                                    }
+                                  }}
                                   onClick={(e) => {
                                     e.stopPropagation();
                                     setSelectedMaterial(mat._id);
@@ -267,40 +241,17 @@ export default function NilaiHarianPage() {
                                   )}
                                   
                                   {mProg && selectedMaterial !== mat._id && (
-                                    <div className="hidden sm:flex items-center gap-2 shrink-0 ml-2">
-                                      <div className="w-16 md:w-24 h-1.5 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden shrink-0">
-                                        <div
-                                          className={`h-full rounded-full transition-all duration-500 ${
-                                            mProg.percentage === 100
-                                              ? "bg-emerald-500"
-                                              : mProg.percentage > 0
-                                              ? "bg-amber-500"
-                                              : "bg-slate-300 dark:bg-slate-600"
-                                          }`}
-                                          style={{ width: `${mProg.percentage}%` }}
-                                        />
-                                      </div>
-                                      <span className="text-[10px] font-medium text-slate-500 dark:text-slate-400 whitespace-nowrap text-right">
-                                        {mProg.gradedStudents}/{mProg.totalStudents} murid ({mProg.percentage}%)
-                                      </span>
-                                    </div>
-                                  )}
-                                  {mProg && selectedMaterial !== mat._id && (
-                                    <div className="sm:hidden flex items-center shrink-0 ml-1">
-                                      <span className={`inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded text-[9px] font-medium whitespace-nowrap ${
-                                        mProg.percentage === 100
-                                          ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300"
-                                          : "bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300"
-                                      }`}>
-                                        {mProg.gradedStudents}/{mProg.totalStudents} murid ({mProg.percentage}%)
-                                      </span>
-                                    </div>
+                                    <ProgressBadge 
+                                      completed={mProg.gradedStudents} 
+                                      total={mProg.totalStudents} 
+                                      className="ml-2 shrink-0" 
+                                    />
                                   )}
 
                                   {selectedMaterial === mat._id && (
                                     <span className="text-[10px] font-semibold text-indigo-500 dark:text-indigo-400 shrink-0 uppercase tracking-wider ml-2 hidden md:inline">Dipilih</span>
                                   )}
-                                </button>
+                                </div>
                               );
                             })
                           )}

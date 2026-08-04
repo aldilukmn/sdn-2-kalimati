@@ -7,6 +7,7 @@ import CharacterAssessmentService from "@/services/character-assessment.service"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import type { HistoryItem } from "@/types/character-assessment";
 import { decodeJWT } from "@/lib/jwt";
+import { formatScore, MONTHS_ID } from "@/lib/format";
 import toast from "react-hot-toast";
 import PageHero from "@/components/layout/PageHero";
 import BackButton from "@/components/common/BackButton";
@@ -110,12 +111,6 @@ export default function KarakterHistoryPage() {
         </div>
       ) : (
         <>
-          {/* Info cards */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-            <DataField label="Nama" value={studentName} />
-            <DataField label="Kelas" value={studentGrade} />
-          </div>
-
           {/* History table */}
           {loading ? (
             <div className="animate-pulse space-y-2">
@@ -140,24 +135,26 @@ export default function KarakterHistoryPage() {
           ) : (
             <div className="bg-white/70 dark:bg-gray-800/40 border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
               <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-4">Riwayat per Bulan</h3>
-              <div className="overflow-x-auto">
+              <div className="overflow-x-auto rounded-xl border border-gray-200 dark:border-gray-700 bg-white/80 dark:bg-gray-800/30">
                 <Table>
                   <TableHeader>
                     <TableRow className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white">
                       <TableHead className="w-12 text-center text-xs font-semibold text-white">No</TableHead>
                       <TableHead className="text-xs font-semibold text-white">Bulan</TableHead>
-                      <TableHead className="text-center text-xs font-semibold text-white">Character Score</TableHead>
+                      <TableHead className="text-center text-xs font-semibold text-white">Skor Karakter</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
                     {historyData
                       .sort((a, b) => a.monthOrder - b.monthOrder)
                       .map((item, idx) => (
-                        <TableRow key={idx} className="hover:bg-slate-50 dark:hover:bg-slate-800/30">
+                        <TableRow key={idx} className="hover:bg-indigo-50/50 dark:hover:bg-indigo-900/20 transition-colors">
                           <TableCell className="text-center text-xs text-slate-500">{idx + 1}</TableCell>
-                          <TableCell className="text-xs font-medium text-slate-700 dark:text-slate-200">{item.month}</TableCell>
-                          <TableCell className={`text-center text-sm ${getScoreColor(item.characterScore)}`}>
-                            {item.characterScore.toFixed(2)}
+                          <TableCell className="text-xs font-medium text-slate-700 dark:text-slate-200">
+                            {MONTHS_ID[parseInt(item.month) - 1] || item.month}
+                          </TableCell>
+                          <TableCell className={`text-center text-sm font-bold ${getScoreColor(item.characterScore)}`}>
+                            {formatScore(item.characterScore)}
                           </TableCell>
                         </TableRow>
                       ))}
@@ -173,19 +170,19 @@ export default function KarakterHistoryPage() {
               <div className="bg-white/70 dark:bg-gray-800/40 border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 text-center">
                 <p className="text-[10px] uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-1">Rata-rata</p>
                 <p className="text-lg font-bold text-slate-700 dark:text-slate-200">
-                  {(historyData.reduce((sum, h) => sum + h.characterScore, 0) / historyData.length).toFixed(2)}
+                  {formatScore(historyData.reduce((sum, h) => sum + h.characterScore, 0) / historyData.length)}
                 </p>
               </div>
               <div className="bg-white/70 dark:bg-gray-800/40 border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 text-center">
                 <p className="text-[10px] uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-1">Tertinggi</p>
                 <p className="text-lg font-bold text-emerald-600 dark:text-emerald-400">
-                  {Math.max(...historyData.map((h) => h.characterScore)).toFixed(2)}
+                  {formatScore(Math.max(...historyData.map((h) => h.characterScore)))}
                 </p>
               </div>
               <div className="bg-white/70 dark:bg-gray-800/40 border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 text-center">
                 <p className="text-[10px] uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-1">Terendah</p>
                 <p className="text-lg font-bold text-red-600 dark:text-red-400">
-                  {Math.min(...historyData.map((h) => h.characterScore)).toFixed(2)}
+                  {formatScore(Math.min(...historyData.map((h) => h.characterScore)))}
                 </p>
               </div>
             </div>

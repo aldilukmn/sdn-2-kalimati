@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Eye } from "lucide-react";
 import type { RecapRow } from "@/hooks/useRekapKarakter";
 import { ITEMS_PER_PAGE } from "@/lib/constants";
+import { MONTHS_ID, formatScore } from "@/lib/format";
 import Pagination from "@/components/common/Pagination";
 
 interface Props {
@@ -20,8 +21,6 @@ export default function RekapKarakterTable({ recapRows, monthsToShow, classAvera
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const paginatedRows = recapRows.slice(startIndex, startIndex + ITEMS_PER_PAGE);
 
-  const showMonthColumns = monthsToShow.length > 1;
-
   return (
     <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5 overflow-hidden">
       <div className="overflow-x-auto  rounded-xl border border-gray-200 dark:border-gray-700 bg-white/80 dark:bg-gray-800/30 ">
@@ -32,21 +31,18 @@ export default function RekapKarakterTable({ recapRows, monthsToShow, classAvera
               <th className="px-3 py-3 text-left font-semibold whitespace-nowrap">
                 Nama
               </th>
-              {showMonthColumns ? (
-                monthsToShow.map((m) => (
+              {monthsToShow.map((m) => {
+                const monthName = MONTHS_ID.includes(m) ? m : MONTHS_ID[parseInt(m) - 1] || m;
+                return (
                   <th
                     key={m}
                     className="px-3 py-3 text-center font-semibold whitespace-nowrap min-w-[90px]"
                   >
-                    {m}
+                    {monthName}
                   </th>
-                ))
-              ) : (
-                <th className="px-3 py-3 text-center font-semibold whitespace-nowrap min-w-[90px]">
-                  Skor Karakter
-                </th>
-              )}
-              {showMonthColumns && (
+                );
+              })}
+              {monthsToShow.length > 1 && (
                 <th className="px-3 py-3 text-center font-semibold whitespace-nowrap min-w-[80px]">
                   Rerata
                 </th>
@@ -70,37 +66,26 @@ export default function RekapKarakterTable({ recapRows, monthsToShow, classAvera
                     {row.name}
                   </span>
                 </td>
-                {showMonthColumns ? (
-                  monthsToShow.map((m) => {
-                    const score = row.monthlyScores[m];
-                    return (
-                      <td key={m} className="p-3 text-center">
-                        <span
-                          className={`text-sm font-semibold ${score !== null ? "text-gray-800 dark:text-gray-200" : "text-gray-300 dark:text-gray-600"}`}
-                        >
-                          {score !== null ? score.toFixed(2) : "-"}
-                        </span>
-                      </td>
-                    );
-                  })
-                ) : (
+                {monthsToShow.map((m) => {
+                  const score = row.monthlyScores[m];
+                  return (
+                    <td key={m} className="p-3 text-center">
+                      <span
+                        className={`text-sm font-semibold ${score !== null ? "text-gray-800 dark:text-gray-200" : "text-gray-300 dark:text-gray-600"}`}
+                      >
+                        {formatScore(score)}
+                      </span>
+                    </td>
+                  );
+                })}
+                {monthsToShow.length > 1 && (
                   <td className="p-3 text-center">
                     <span className="text-sm font-semibold text-gray-800 dark:text-gray-200">
-                      {row.studentAverage !== null
-                        ? row.studentAverage.toFixed(2)
-                        : "-"}
+                      {formatScore(row.studentAverage)}
                     </span>
                   </td>
                 )}
-                {showMonthColumns && (
-                  <td className="p-3 text-center">
-                    <span className="text-sm font-bold text-indigo-600 dark:text-indigo-400">
-                      {row.studentAverage !== null
-                        ? row.studentAverage.toFixed(2)
-                        : "-"}
-                    </span>
-                  </td>
-                )}
+
                 <td className="p-3 text-center">
                   <Link
                     href={`/penilaian-karakter/history?studentId=${row.studentId}&name=${encodeURIComponent(row.name)}&grade=${grade}`}
@@ -121,28 +106,17 @@ export default function RekapKarakterTable({ recapRows, monthsToShow, classAvera
                   Rerata Kelas
                 </span>
               </td>
-              {showMonthColumns ? (
-                monthsToShow.map((m) => {
-                  const avg = classAverages[m];
-                  return (
-                    <td key={m} className="p-3 text-center">
-                      <span className="text-sm font-bold text-indigo-600 dark:text-indigo-400">
-                        {avg !== null ? avg.toFixed(2) : "-"}
-                      </span>
-                    </td>
-                  );
-                })
-              ) : (
-                <td className="p-3 text-center">
-                  <span className="text-sm font-bold text-indigo-600 dark:text-indigo-400">
-                    {monthsToShow.length > 0 &&
-                    classAverages[monthsToShow[0]] !== null
-                      ? classAverages[monthsToShow[0]]!.toFixed(2)
-                      : "-"}
-                  </span>
-                </td>
-              )}
-              {showMonthColumns && (
+              {monthsToShow.map((m) => {
+                const avg = classAverages[m];
+                return (
+                  <td key={m} className="p-3 text-center">
+                    <span className="text-sm font-bold text-indigo-600 dark:text-indigo-400">
+                      {formatScore(avg)}
+                    </span>
+                  </td>
+                );
+              })}
+              {monthsToShow.length > 1 && (
                 <td className="p-3 text-center">
                   <span className="text-sm font-bold text-indigo-700 dark:text-indigo-300">
                     {(() => {
@@ -150,12 +124,12 @@ export default function RekapKarakterTable({ recapRows, monthsToShow, classAvera
                         (r) => r.studentAverage !== null,
                       );
                       return validRows.length > 0
-                        ? (
+                        ? formatScore(
                             validRows.reduce(
                               (sum, r) => sum + r.studentAverage!,
                               0,
                             ) / validRows.length
-                          ).toFixed(2)
+                          )
                         : "-";
                     })()}
                   </span>

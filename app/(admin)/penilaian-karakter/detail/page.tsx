@@ -2,17 +2,19 @@
 
 import { useEffect, useState, useCallback } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
-import { FileText, AlertCircle, History } from "lucide-react";
+import { FileText, AlertCircle, History, User, Calendar, Award, Star, CheckCircle } from "lucide-react";
 import CharacterAssessmentService from "@/services/character-assessment.service";
 import CharacterHabitService from "@/services/character-habit.service";
+import UserService from "@/services/user.service";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import type { CharacterAssessment } from "@/types/character-assessment";
 import type { CharacterHabit } from "@/types/character-habit";
 import { decodeJWT } from "@/lib/jwt";
+import { formatScore } from "@/lib/format";
 import toast from "react-hot-toast";
 import PageHero from "@/components/layout/PageHero";
 import BackButton from "@/components/common/BackButton";
-import DataField from "@/components/common/DataField";
+// Removed DataField import
 
 interface HabitDisplay {
   name: string;
@@ -34,6 +36,8 @@ function getScoreColor(score: number): string {
   return SCORE_COLORS.veryLow;
 }
 
+import { useAuth } from "@/hooks/useAuth";
+
 const VALUE_COLORS: Record<string, string> = {
   A: "bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300",
   B: "bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300",
@@ -45,8 +49,10 @@ export default function KarakterDetailPage() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const id = searchParams.get("id");
+  const { payload } = useAuth();
 
   const [data, setData] = useState<CharacterAssessment | null>(null);
+  const [recorderName, setRecorderName] = useState<string>("");
   const [habitMap, setHabitMap] = useState<Record<string, string>>({});
   const [habitDisplays, setHabitDisplays] = useState<HabitDisplay[]>([]);
   const [loading, setLoading] = useState(true);
@@ -74,12 +80,17 @@ export default function KarakterDetailPage() {
       setLoading(true);
       setError(null);
       try {
-        const [assessmentRes, habitsRes] = await Promise.all([
+        const [assessmentRes, habitsRes, usersRes, meRes] = await Promise.all([
           CharacterAssessmentService.getById(id),
-          CharacterHabitService.getAll(),
+          CharacterHabitService.getAll(true).catch(() => null),
+          UserService.getAll(true).catch(() => UserService.getTeachers(true).catch(() => null)),
+          UserService.getMe(true).catch(() => null),
         ]);
-        const assessment = assessmentRes?.result;
-        const habits: CharacterHabit[] = habitsRes?.result || [];
+        const assessment = assessmentRes?.result || (assessmentRes as any)?.data || (assessmentRes as any);
+        const habits = Array.isArray(habitsRes) ? habitsRes : (habitsRes?.result || (habitsRes as any)?.data || []);
+        // @ts-ignore
+        const users = Array.isArray(usersRes) ? usersRes : (usersRes?.result || usersRes?.data || []);
+        const me = meRes?.result || (meRes as any)?.data || (meRes as any);
 
         if (!assessment) {
           toast.error("Data penilaian tidak ditemukan");
@@ -88,6 +99,31 @@ export default function KarakterDetailPage() {
         }
 
         setData(assessment);
+        
+        const recorder = users.find(u => 
+          u.username === assessment.recordedBy || 
+          u._id === assessment.recordedBy || 
+          (u.username && assessment.recordedBy && u.username.toLowerCase() === assessment.recordedBy.toLowerCase())
+        );
+        
+        let foundName = "";
+        if (recorder) {
+          // @ts-ignore
+          foundName = recorder.fullName || recorder.name;
+        }
+        
+        if (!foundName && payload && (payload.username === assessment.recordedBy || payload.id === assessment.recordedBy || payload._id === assessment.recordedBy)) {
+          // @ts-ignore
+          foundName = payload.fullName || payload.name;
+        }
+        
+        if (!foundName && me && (me.username === assessment.recordedBy || me._id === assessment.recordedBy)) {
+          foundName = me.fullName || me.name;
+        }
+
+        if (foundName) {
+          setRecorderName(foundName);
+        }
 
         const map: Record<string, string> = {};
         for (const h of habits) {
@@ -173,34 +209,97 @@ export default function KarakterDetailPage() {
         </div>
       ) : data ? (
         <>
-          {/* Info cards */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
-            <DataField label="Nama" value={data.name} />
-            <DataField label="Kelas" value={data.grade} />
-            <DataField label="Tahun Ajaran" value={data.academicYear} />
-            <DataField label="Semester" value={`Semester ${data.semester}`} />
-            <DataField label="Bulan" value={data.month} />
-          </div>
+          {/* Version 4: Modern Bento Box Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+            
+            {/* Bento Item 1: Main Profile (Spans 2 columns, 2 rows) */}
+            <div className="md:col-span-2 md:row-span-2 flex flex-col justify-between bg-gradient-to-br from-indigo-500 via-indigo-600 to-purple-600 dark:from-indigo-900 dark:via-indigo-800 dark:to-purple-900 rounded-[2rem] p-8 text-white shadow-lg shadow-indigo-500/20 relative overflow-hidden group">
+              <div className="absolute top-0 right-0 -mr-8 -mt-8 w-40 h-40 bg-white opacity-10 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-700"></div>
+              
+              <div className="relative z-10 flex items-start gap-4 mb-8">
+                <div className="w-16 h-16 rounded-full bg-white/20 backdrop-blur-md border border-white/30 flex items-center justify-center shadow-inner">
+                  <User size={32} className="text-white" />
+                </div>
+                <div>
+                  <p className="text-indigo-100 font-semibold tracking-wider uppercase text-xs mb-1">
+                    Data Siswa
+                  </p>
+                  <h2 className="text-3xl font-bold leading-tight">
+                    {data.name}
+                  </h2>
+                </div>
+              </div>
+              
+              <div className="relative z-10 flex flex-wrap gap-2">
+                <span className="bg-black/20 backdrop-blur-md border border-white/10 px-3 py-1.5 rounded-xl text-sm font-medium flex items-center gap-1.5">
+                  <FileText size={14} /> Semester {data.semester}
+                </span>
+                <span className="bg-black/20 backdrop-blur-md border border-white/10 px-3 py-1.5 rounded-xl text-sm font-medium flex items-center gap-1.5">
+                  <Calendar size={14} /> {(() => {
+                    const months = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+                    const m = parseInt(data.month);
+                    return !isNaN(m) && m >= 1 && m <= 12 ? months[m - 1] : data.month;
+                  })()}
+                </span>
+                <span className="bg-black/20 backdrop-blur-md border border-white/10 px-3 py-1.5 rounded-xl text-sm font-medium flex items-center gap-1.5">
+                  <User size={14} /> Kelas {data.grade}
+                </span>
+              </div>
+            </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-            <DataField
-              label="Character Score"
-              value={`${data.characterScore.toFixed(2)}`}
-              grade={
-                data.characterScore >= 85
-                  ? "Sangat Baik"
-                  : data.characterScore >= 70
-                    ? "Baik"
-                    : data.characterScore >= 55
-                      ? "Memadai"
-                      : "Kurang"
-              }
-            />
-            <DataField
-              label="Total Bobot"
-              value={`${data.totalWeight} / ${data.maxWeight}`}
-            />
-            <DataField label="Dicatat oleh" value={data.recordedBy || "-"} />
+            {/* Bento Item 2: Main Score (Spans 1 column, 2 rows) */}
+            <div className="md:col-span-1 md:row-span-2 flex flex-col items-center justify-center text-center bg-white dark:bg-slate-800 rounded-[2rem] p-6 border border-slate-100 dark:border-slate-700 shadow-sm relative overflow-hidden group">
+              <div className="absolute inset-0 bg-gradient-to-b from-transparent to-indigo-50/50 dark:to-indigo-900/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              <div className="relative z-10 w-16 h-16 mx-auto bg-indigo-50 dark:bg-indigo-900/30 rounded-full flex items-center justify-center mb-4 text-indigo-500">
+                <Award size={32} />
+              </div>
+              <p className="relative z-10 text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-2">
+                Nilai Karakter
+              </p>
+              <h3 className="relative z-10 text-5xl font-black bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-400 dark:to-purple-400">
+                {formatScore(data.characterScore)}
+              </h3>
+            </div>
+
+            {/* Bento Item 3: Predicate (Spans 1 column, 1 row) */}
+            <div className={`md:col-span-1 md:row-span-1 flex flex-col justify-center rounded-[2rem] p-6 text-white shadow-sm relative overflow-hidden ${
+              data.characterScore >= 85 ? 'bg-emerald-500 shadow-emerald-500/20' : data.characterScore >= 70 ? 'bg-blue-500 shadow-blue-500/20' : data.characterScore >= 55 ? 'bg-yellow-500 shadow-yellow-500/20' : 'bg-red-500 shadow-red-500/20'
+            }`}>
+              <p className="text-white/70 font-semibold uppercase tracking-wider text-xs mb-1">
+                Predikat
+              </p>
+              <h3 className="text-2xl font-bold">
+                {data.characterScore >= 85 ? "Sangat Baik" : data.characterScore >= 70 ? "Baik" : data.characterScore >= 55 ? "Memadai" : "Kurang"}
+              </h3>
+            </div>
+
+            {/* Bento Item 4: Total Bobot (Spans 1 column, 1 row) */}
+            <div className="md:col-span-1 md:row-span-1 flex flex-col justify-center bg-white dark:bg-slate-800 rounded-[2rem] p-6 border border-slate-100 dark:border-slate-700 shadow-sm relative overflow-hidden group">
+              <div className="absolute inset-0 bg-gradient-to-r from-blue-50/50 to-transparent dark:from-blue-900/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              <p className="relative z-10 text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1">
+                Total Bobot
+              </p>
+              <div className="relative z-10 flex items-baseline gap-1">
+                <span className="text-3xl font-black text-slate-800 dark:text-white">
+                  {data.totalWeight}
+                </span>
+                <span className="text-sm font-medium text-slate-400">
+                  / {data.maxWeight}
+                </span>
+              </div>
+            </div>
+            
+            {/* Bento Item 5: Metadata Footer (Spans full width or remaining space) */}
+            <div className="md:col-span-4 flex flex-col sm:flex-row items-center justify-between gap-4 bg-white/50 dark:bg-slate-800/50 backdrop-blur-sm rounded-[1.5rem] p-4 border border-slate-200/60 dark:border-slate-700/60">
+              <div className="flex items-center gap-2 text-sm font-medium text-slate-600 dark:text-slate-300">
+                <CheckCircle size={16} className="text-emerald-500" />
+                <span>Tervalidasi & Dicatat oleh <strong className="text-indigo-600 dark:text-indigo-400">{recorderName || data.recordedBy || "-"}</strong></span>
+              </div>
+              <div className="text-xs font-medium text-slate-400">
+                Tahun Ajaran {data.academicYear}
+              </div>
+            </div>
+
           </div>
 
           {/* Habits table */}
@@ -209,7 +308,7 @@ export default function KarakterDetailPage() {
               <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-4">
                 Rincian Kebiasaan
               </h3>
-              <div className="overflow-x-auto">
+              <div className="overflow-x-auto rounded-xl border border-gray-200 dark:border-gray-700 bg-white/80 dark:bg-gray-800/30">
                 <Table>
                   <TableHeader>
                     <TableRow className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white">
@@ -231,7 +330,7 @@ export default function KarakterDetailPage() {
                     {habitDisplays.map((h, idx) => (
                       <TableRow
                         key={idx}
-                        className="hover:bg-slate-50 dark:hover:bg-slate-800/30"
+                        className="hover:bg-indigo-50/50 dark:hover:bg-indigo-900/20 transition-colors"
                       >
                         <TableCell className="text-center text-xs text-slate-500">
                           {idx + 1}

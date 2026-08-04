@@ -3,6 +3,7 @@
 import { useCallback, useRef, type KeyboardEvent } from "react";
 import type { ScoreEntry } from "@/types/nilai-harian";
 import Pagination from "@/components/common/Pagination";
+import ProgressBadge from "@/components/common/ProgressBadge";
 import { ITEMS_PER_PAGE } from "@/lib/constants";
 import { ClipboardEdit } from "lucide-react";
 
@@ -152,23 +153,7 @@ export default function ScoreTable({
           </h2>
           
           <div className="shrink-0 flex justify-end">
-            <div className="flex flex-col bg-white dark:bg-slate-800/80 border border-indigo-200 dark:border-indigo-800/60 rounded-md overflow-hidden shadow-sm w-[130px] sm:w-[150px]">
-              {/* Text Content */}
-              <div className="px-2 sm:px-3 py-1 text-[10px] sm:text-xs font-semibold text-indigo-700 dark:text-indigo-300 flex items-center justify-center whitespace-nowrap">
-                {filledCount}/{entries.length} murid <span className="ml-1 opacity-80">({entries.length > 0 ? Math.round((filledCount / entries.length) * 100) : 0}%)</span>
-              </div>
-              {/* Tiny Progress Bar Inside Badge */}
-              <div className="h-1 w-full bg-slate-100 dark:bg-slate-700/50">
-                <div 
-                  className={`h-full transition-all duration-500 ${
-                    isComplete
-                      ? "bg-emerald-500"
-                      : "bg-indigo-500 dark:bg-indigo-400"
-                  }`}
-                  style={{ width: `${entries.length > 0 ? (filledCount / entries.length) * 100 : 0}%` }}
-                />
-              </div>
-            </div>
+            <ProgressBadge completed={filledCount} total={entries.length} />
           </div>
         </div>
       )}

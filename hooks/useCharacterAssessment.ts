@@ -5,7 +5,7 @@ import CharacterAssessmentService from "@/services/character-assessment.service"
 import StudentAttendanceService from "@/services/student-attendance.service";
 import CharacterHabitService from "@/services/character-habit.service";
 import { useAuth } from "@/hooks/useAuth";
-import { GRADES, SEMESTERS, ACADEMIC_YEARS } from "@/lib/constants";
+import { GRADES, SEMESTERS, ACADEMIC_YEARS, ITEMS_PER_PAGE } from "@/lib/constants";
 import { MONTHS_ID } from "@/lib/format";
 import type { CharacterHabit } from "@/types/character-habit";
 import toast from "react-hot-toast";
@@ -24,19 +24,24 @@ export function useCharacterAssessment() {
   const [academicYear, setAcademicYear] = useState("2026/2027");
   const [month, setMonth] = useState("");
   const [grade, setGrade] = useState("");
-  const { role, grade: authGrade } = useAuth();
+  const { payload } = useAuth();
+  const role = payload?.role as string | undefined;
+  const authGrade = payload?.grade as string | undefined;
 
   useEffect(() => {
-    if (role === "guru" && authGrade) setGrade(authGrade);
-    else if (role && role !== "guru") setGrade("1");
+    if (role?.toLowerCase() !== "admin" && authGrade) setGrade(authGrade);
+    else if (role && role?.toLowerCase() === "admin") setGrade("1");
   }, [role, authGrade]);
 
   const [students, setStudents] = useState<StudentRow[]>([]);
   const [habits, setHabits] = useState<CharacterHabit[]>([]);
   const [assessments, setAssessments] = useState<Record<string, string>>({});
   const [scores, setScores] = useState<Record<string, StudentScore>>({});
+  const [currentPage, setCurrentPage] = useState(1);
+  const [modifiedStudents, setModifiedStudents] = useState<Set<string>>(new Set());
   const [saving, setSaving] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [loadingScores, setLoadingScores] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [retryCount, setRetryCount] = useState(0);
 
@@ -51,6 +56,8 @@ export function useCharacterAssessment() {
     setStudents([]);
     setAssessments({});
     setScores({});
+    setCurrentPage(1);
+    setModifiedStudents(new Set());
     setError(null);
   }, []);
 
@@ -84,24 +91,10 @@ export function useCharacterAssessment() {
         }
       }
 
-      if (assessmentsData.length > 0) {
-        const detailPromises = assessmentsData.map((a: { _id: string; studentId: string }) =>
-          CharacterAssessmentService.getById(a._id).then((res) => ({ studentId: a.studentId, data: res?.result })).catch(() => null)
-        );
-        const details = await Promise.all(detailPromises);
-        for (const d of details) {
-          if (d?.data?.habits) {
-            const habitScores: StudentScore = {};
-            for (const h of d.data.habits) {
-              habitScores[h.habitId] = h.value;
-            }
-            scoreMap[d.studentId] = habitScores;
-          }
-        }
-      }
-
       setAssessments(assessmentMap);
       setScores(scoreMap);
+      setModifiedStudents(new Set());
+      setCurrentPage(1);
     } catch (e: unknown) {
       const message = e instanceof Error ? e.message : "Gagal memuat data penilaian";
       setError(message);
@@ -115,7 +108,61 @@ export function useCharacterAssessment() {
     fetchAll();
   }, [fetchAll, retryCount]);
 
+  // Lazy load assessment details for the current page
+  useEffect(() => {
+    if (students.length === 0) {
+      setLoadingScores(false);
+      return;
+    }
+
+    const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+    const paginatedStudents = students.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+
+    const studentsToFetch = paginatedStudents.filter(
+      (s) => assessments[s.studentId] && !scores[s.studentId]
+    );
+
+    if (studentsToFetch.length === 0) {
+      setLoadingScores(false);
+      return;
+    }
+
+    const fetchPageDetails = async () => {
+      setLoadingScores(true);
+      try {
+        const detailPromises = studentsToFetch.map((s) =>
+          CharacterAssessmentService.getById(assessments[s.studentId])
+            .then((res) => ({ studentId: s.studentId, data: res?.result }))
+            .catch(() => null)
+        );
+
+        const details = await Promise.all(detailPromises);
+        
+        setScores((prev) => {
+          const newScores = { ...prev };
+          for (const d of details) {
+            if (d?.data?.habits) {
+              const habitScores: StudentScore = {};
+              for (const h of d.data.habits) {
+                habitScores[h.habitId] = h.value;
+              }
+              newScores[d.studentId] = habitScores;
+            }
+          }
+          return newScores;
+        });
+      } catch (e) {
+        console.error("Failed to load page details", e);
+      } finally {
+        setLoadingScores(false);
+      }
+    };
+
+    fetchPageDetails();
+  }, [currentPage, students, assessments, scores]);
+
   const handleScoreChange = (studentId: string, habitId: string, value: "A" | "B" | "C" | "D") => {
+    setModifiedStudents(prev => new Set(prev).add(studentId));
     setScores((prev) => ({
       ...prev,
       [studentId]: {
@@ -125,7 +172,7 @@ export function useCharacterAssessment() {
     }));
   };
 
-  const handleSave = async () => {
+  const handleSave = useCallback(async (isAutoSave?: boolean) => {
     if (savingRef.current) return;
     savingRef.current = true;
     setSaving(true);
@@ -133,6 +180,8 @@ export function useCharacterAssessment() {
     const studentsToSave: { studentId: string; name: string; habits: { habitId: string; value: "A" | "B" | "C" | "D" }[] }[] = [];
 
     for (const student of students) {
+      if (!modifiedStudents.has(student.studentId)) continue;
+
       const studentScores = scores[student.studentId];
       if (!studentScores) continue;
       const habitEntries = habits
@@ -190,7 +239,10 @@ export function useCharacterAssessment() {
       }
 
       if (failed === 0) {
-        toast.success(`${succeeded} penilaian berhasil disimpan`);
+        if (!isAutoSave) {
+          toast.success(`${succeeded} penilaian berhasil disimpan`);
+        }
+        setModifiedStudents(new Set());
       } else if (succeeded > 0) {
         toast.error(`${succeeded} berhasil, ${failed} gagal`);
         for (const msg of failedMessages) {
@@ -199,9 +251,9 @@ export function useCharacterAssessment() {
       } else {
         toast.error(failedMessages[0] || "Gagal menyimpan penilaian");
       }
-      } catch (e) {
-        console.error("Gagal menyimpan penilaian:", e);
-      }
+    } catch (e) {
+      console.error("Gagal menyimpan penilaian:", e);
+    }
 
     try {
       await fetchAll();
@@ -211,7 +263,17 @@ export function useCharacterAssessment() {
 
     savingRef.current = false;
     setSaving(false);
-  };
+  }, [students, modifiedStudents, scores, habits, month, grade, academicYear, semester, assessments, fetchAll]);
+
+  // Auto-Save
+  useEffect(() => {
+    const hasPendingChanges = modifiedStudents.size > 0;
+    if (!hasPendingChanges) return;
+    const timer = setTimeout(() => {
+      handleSave(true);
+    }, 2500);
+    return () => clearTimeout(timer);
+  }, [modifiedStudents.size, modifiedStudents, scores, handleSave]);
 
   const handleEdit = async (assessmentId: string) => {
     try {
@@ -243,11 +305,12 @@ export function useCharacterAssessment() {
     }
   };
 
-  const hasChanges = students.some((s) => {
-    const studentScores = scores[s.studentId];
-    if (!studentScores) return false;
-    return habits.some((h) => studentScores[h._id]);
-  });
+  const handlePageChange = useCallback((page: number) => {
+    setLoadingScores(true);
+    setCurrentPage(page);
+  }, []);
+
+  const hasChanges = modifiedStudents.size > 0;
 
   return {
     semester, setSemester,
@@ -257,7 +320,8 @@ export function useCharacterAssessment() {
     role,
     students, habits,
     assessments, scores,
-    saving, loading, error, retry,
+    currentPage, setCurrentPage: handlePageChange,
+    saving, loading, loadingScores, error, retry,
     hasChanges,
     handleScoreChange,
     handleSave,
