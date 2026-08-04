@@ -131,7 +131,7 @@ export default function KarakterDetailPage() {
         }
         setHabitMap(map);
 
-        const displays: HabitDisplay[] = (assessment.habits || []).map((h) => ({
+        const displays: HabitDisplay[] = (assessment.habits || []).map((h: any) => ({
           name: map[h.habitId] || h.habitId,
           value: h.value,
           weight: h.weight,

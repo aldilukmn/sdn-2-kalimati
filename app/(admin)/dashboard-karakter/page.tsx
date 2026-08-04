@@ -42,8 +42,8 @@ const getScoreColor = (score: number) => {
 
 export default function DashboardKarakterPage() {
   const { payload } = useAuth();
-  const userRole = payload?.role as string | undefined;
-  const userGrade = payload?.grade as string | undefined;
+  const userRole = (payload?.role as string) || null;
+  const userGrade = (payload?.grade as string) || null;
 
   const {
     semester,
