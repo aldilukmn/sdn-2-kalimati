@@ -32,6 +32,7 @@ export default function PenilaianKarakterPage() {
     scores,
     assessments,
     saving,
+    savingIds,
     loading,
     error,
     retry,
@@ -152,7 +153,7 @@ export default function PenilaianKarakterPage() {
             onEdit={handleEdit}
             onDelete={(id, name) => setDeleteTarget({ id, name })}
             onViewDetail={handleViewDetail}
-            saving={saving}
+            savingIds={savingIds}
             headerSlot={
               habits.length > 0 && (
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
@@ -182,25 +183,6 @@ export default function PenilaianKarakterPage() {
                   )}
                 </div>
               )
-            }
-            saveButton={
-              <button
-                onClick={onSave}
-                disabled={saving || !hasChanges}
-                className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-xl text-sm font-medium transition-colors cursor-pointer"
-              >
-                {saving ? (
-                  <>
-                    <Loader2 size={16} className="animate-spin" />
-                    Menyimpan...
-                  </>
-                ) : (
-                  <>
-                    <Save size={16} />
-                    Simpan Penilaian
-                  </>
-                )}
-              </button>
             }
           />
         </>

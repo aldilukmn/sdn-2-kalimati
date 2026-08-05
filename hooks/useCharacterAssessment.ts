@@ -40,6 +40,7 @@ export function useCharacterAssessment() {
   const [currentPage, setCurrentPage] = useState(1);
   const [modifiedStudents, setModifiedStudents] = useState<Set<string>>(new Set());
   const [saving, setSaving] = useState(false);
+  const [savingIds, setSavingIds] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
   const [loadingScores, setLoadingScores] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -178,6 +179,7 @@ export function useCharacterAssessment() {
     setSaving(true);
 
     const studentsToSave: { studentId: string; name: string; habits: { habitId: string; value: "A" | "B" | "C" | "D" }[] }[] = [];
+    const incompleteStudents: string[] = [];
 
     for (const student of students) {
       if (!modifiedStudents.has(student.studentId)) continue;
@@ -187,7 +189,14 @@ export function useCharacterAssessment() {
       const habitEntries = habits
         .filter((h) => studentScores[h._id])
         .map((h) => ({ habitId: h._id, value: studentScores[h._id] as "A" | "B" | "C" | "D" }));
+      
       if (habitEntries.length === 0) continue;
+
+      if (habitEntries.length < habits.length) {
+        incompleteStudents.push(student.name);
+        continue;
+      }
+
       studentsToSave.push({
         studentId: student.studentId,
         name: student.name,
@@ -196,11 +205,20 @@ export function useCharacterAssessment() {
     }
 
     if (studentsToSave.length === 0) {
-      toast.error("Tidak ada data untuk disimpan");
+      if (!isAutoSave) {
+        if (incompleteStudents.length > 0) {
+          toast.error(`Selesaikan pengisian semua (${habits.length}) kebiasaan untuk: ${incompleteStudents.join(', ')}`);
+        } else {
+          toast.error("Tidak ada data baru untuk disimpan");
+        }
+      }
       savingRef.current = false;
       setSaving(false);
       return;
     }
+
+    const currentSavingIds = studentsToSave.map(s => s.studentId);
+    setSavingIds((prev) => [...prev, ...currentSavingIds]);
 
     const monthOrder = MONTHS_ID.indexOf(month) + 1;
 
@@ -227,22 +245,41 @@ export function useCharacterAssessment() {
         })
       );
 
-      const succeeded = results.filter((r) => r.status === "fulfilled").length;
-      const failed = results.filter((r) => r.status === "rejected").length;
-
+      const succeededIds: string[] = [];
+      let succeeded = 0;
+      let failed = 0;
       const failedMessages: string[] = [];
-      for (const r of results) {
-        if (r.status === "rejected") {
+
+      const newAssessments: Record<string, string> = {};
+
+      results.forEach((r, idx) => {
+        if (r.status === "fulfilled") {
+          succeeded++;
+          succeededIds.push(studentsToSave[idx].studentId);
+          
+          const newId = r.value?.result?._id;
+          if (newId) {
+            newAssessments[studentsToSave[idx].studentId] = newId;
+          }
+        } else {
+          failed++;
           const msg = r.reason instanceof Error ? r.reason.message : "Gagal menyimpan";
           if (!failedMessages.includes(msg)) failedMessages.push(msg);
         }
+      });
+
+      if (Object.keys(newAssessments).length > 0) {
+        setAssessments((prev) => ({ ...prev, ...newAssessments }));
       }
 
       if (failed === 0) {
         if (!isAutoSave) {
-          toast.success(`${succeeded} penilaian berhasil disimpan`);
+          if (incompleteStudents.length > 0) {
+            toast.success(`${succeeded} siswa tersimpan. (Siswa belum lengkap: ${incompleteStudents.join(', ')})`);
+          } else {
+            toast.success(`${succeeded} penilaian berhasil disimpan`);
+          }
         }
-        setModifiedStudents(new Set());
       } else if (succeeded > 0) {
         toast.error(`${succeeded} berhasil, ${failed} gagal`);
         for (const msg of failedMessages) {
@@ -251,19 +288,20 @@ export function useCharacterAssessment() {
       } else {
         toast.error(failedMessages[0] || "Gagal menyimpan penilaian");
       }
+
+      setModifiedStudents((prev) => {
+        const next = new Set(prev);
+        succeededIds.forEach(id => next.delete(id));
+        return next;
+      });
     } catch (e) {
       console.error("Gagal menyimpan penilaian:", e);
+    } finally {
+      savingRef.current = false;
+      setSaving(false);
+      setSavingIds((prev) => prev.filter(id => !currentSavingIds.includes(id)));
     }
-
-    try {
-      await fetchAll();
-    } catch (e) {
-      console.error("Gagal fetch ulang setelah simpan:", e);
-    }
-
-    savingRef.current = false;
-    setSaving(false);
-  }, [students, modifiedStudents, scores, habits, month, grade, academicYear, semester, assessments, fetchAll]);
+  }, [students, modifiedStudents, scores, habits, month, grade, academicYear, semester, assessments]);
 
   // Auto-Save
   useEffect(() => {
@@ -296,12 +334,38 @@ export function useCharacterAssessment() {
   };
 
   const handleDelete = async (assessmentId: string, studentName: string) => {
+    const studentId = Object.keys(assessments).find((key) => assessments[key] === assessmentId);
+    if (studentId) {
+      setSavingIds((prev) => [...prev, studentId]);
+    }
+
     try {
       await CharacterAssessmentService.remove(assessmentId);
       toast.success(`Penilaian ${studentName} berhasil dihapus`);
-      await fetchAll();
+      
+      if (studentId) {
+        setAssessments((prev) => {
+          const next = { ...prev };
+          delete next[studentId];
+          return next;
+        });
+        setScores((prev) => {
+          const next = { ...prev };
+          delete next[studentId];
+          return next;
+        });
+        setModifiedStudents((prev) => {
+          const next = new Set(prev);
+          next.delete(studentId);
+          return next;
+        });
+      }
     } catch {
       toast.error("Gagal menghapus penilaian");
+    } finally {
+      if (studentId) {
+        setSavingIds((prev) => prev.filter((id) => id !== studentId));
+      }
     }
   };
 
@@ -321,7 +385,12 @@ export function useCharacterAssessment() {
     students, habits,
     assessments, scores,
     currentPage, setCurrentPage: handlePageChange,
-    saving, loading, loadingScores, error, retry,
+    saving,
+    loading,
+    loadingScores,
+    savingIds,
+    error,
+    retry,
     hasChanges,
     handleScoreChange,
     handleSave,

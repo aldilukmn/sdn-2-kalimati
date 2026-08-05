@@ -22,14 +22,13 @@ interface Props {
   scores: Record<string, StudentScore>;
   existingAssessments: Record<string, string>;
   onScoreChange: (studentId: string, habitId: string, value: "A" | "B" | "C" | "D") => void;
-  onEdit: (assessmentId: string) => void;
+  onEdit: (assessmentId: string) => Promise<void>;
   onDelete: (assessmentId: string, studentName: string) => void;
   onViewDetail?: (assessmentId: string) => void;
-  saving: boolean;
+  savingIds?: string[];
   loadingScores?: boolean;
   currentPage: number;
   onPageChange: (page: number) => void;
-  saveButton?: React.ReactNode;
   headerSlot?: React.ReactNode;
 }
 
@@ -42,11 +41,10 @@ export default function StudentAssessmentTable({
   onEdit,
   onDelete,
   onViewDetail,
-  saving,
+  savingIds,
   loadingScores,
   currentPage,
   onPageChange,
-  saveButton,
   headerSlot,
 }: Props) {
   const [resettingId, setResettingId] = useState<string | null>(null);
@@ -102,6 +100,7 @@ export default function StudentAssessmentTable({
             ) : (
               paginatedStudents.map((student, idx) => {
                 const assessmentId = existingAssessments[student.studentId];
+                const isRowSaving = savingIds?.includes(student.studentId);
                 return (
                   <tr
                     key={student.studentId}
@@ -113,7 +112,7 @@ export default function StudentAssessmentTable({
                     </td>
                     {habits.map((h) => (
                       <td key={h._id} className="p-3 text-center border-r border-gray-200/50 dark:border-gray-700/50">
-                        {loadingScores && !scores[student.studentId] ? (
+                        {(loadingScores && !scores[student.studentId]) || isRowSaving ? (
                           <div className="flex justify-center">
                             <div className="h-7 w-7 rounded-full bg-slate-200 dark:bg-slate-700 animate-pulse" />
                           </div>
@@ -121,51 +120,56 @@ export default function StudentAssessmentTable({
                           <HabitRadioGroup
                             value={scores[student.studentId]?.[h._id] || ""}
                             onChange={(val) => onScoreChange(student.studentId, h._id, val)}
-                            disabled={saving}
+                            disabled={isRowSaving}
                           />
                         )}
                       </td>
                     ))}
                     <td className="p-3 text-center">
-                      <div className="flex items-center justify-center gap-1">
-                        {assessmentId ? (
-                          <>
-                            {onViewDetail && (
+                      {(loadingScores && !scores[student.studentId]) || isRowSaving ? (
+                        <div className="flex justify-center">
+                          <div className="h-7 w-16 rounded-md bg-slate-200 dark:bg-slate-700 animate-pulse" />
+                        </div>
+                      ) : (
+                        <div className="flex items-center justify-center gap-1">
+                          {assessmentId ? (
+                            <>
+                              {onViewDetail && (
+                                <button
+                                  type="button"
+                                  onClick={() => onViewDetail(assessmentId)}
+                                  className="p-1.5 rounded-lg text-slate-600 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-700/50 transition-colors"
+                                  title="Detail"
+                                  aria-label={`Lihat detail penilaian ${student.name}`}
+                                >
+                                  <Eye size={14} aria-hidden="true" />
+                                </button>
+                              )}
                               <button
                                 type="button"
-                                onClick={() => onViewDetail(assessmentId)}
-                                className="p-1.5 rounded-lg text-slate-600 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-700/50 transition-colors"
-                                title="Detail"
-                                aria-label={`Lihat detail penilaian ${student.name}`}
+                                onClick={() => handleReset(assessmentId)}
+                                disabled={resettingId === assessmentId}
+                                className="p-1.5 rounded-lg text-slate-600 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-700/50 transition-colors disabled:opacity-50"
+                                title="Reset"
+                                aria-label={`Reset penilaian ${student.name}`}
                               >
-                                <Eye size={14} aria-hidden="true" />
+                                <RotateCcw size={14} aria-hidden="true" className={resettingId === assessmentId ? "animate-spin" : ""} style={resettingId === assessmentId ? { animationDirection: "reverse" } : undefined} />
                               </button>
-                            )}
-                            <button
-                              type="button"
-                              onClick={() => handleReset(assessmentId)}
-                              disabled={saving || resettingId === assessmentId}
-                              className="p-1.5 rounded-lg text-slate-600 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-700/50 transition-colors disabled:opacity-50"
-                              title="Reset"
-                              aria-label={`Reset penilaian ${student.name}`}
-                            >
-                              <RotateCcw size={14} aria-hidden="true" className={resettingId === assessmentId ? "animate-spin" : ""} style={resettingId === assessmentId ? { animationDirection: "reverse" } : undefined} />
-                            </button>
-                            <button
-                              type="button"
-                              onClick={() => onDelete(assessmentId, student.name)}
-                              disabled={saving}
-                              className="p-1.5 rounded-lg text-red-600 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-900/30 transition-colors disabled:opacity-50"
-                              title="Hapus"
-                              aria-label={`Hapus penilaian ${student.name}`}
-                            >
-                              <Trash2 size={14} aria-hidden="true" />
-                            </button>
-                          </>
-                        ) : (
-                          <span className="text-[10px] text-slate-400 italic">Baru</span>
-                        )}
-                      </div>
+                              <button
+                                type="button"
+                                onClick={() => onDelete(assessmentId, student.name)}
+                                className="p-1.5 rounded-lg text-red-600 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-900/30 transition-colors disabled:opacity-50"
+                                title="Hapus"
+                                aria-label={`Hapus penilaian ${student.name}`}
+                              >
+                                <Trash2 size={14} aria-hidden="true" />
+                              </button>
+                            </>
+                          ) : (
+                            <span className="text-xs text-slate-400 dark:text-slate-500 italic">Baru</span>
+                          )}
+                        </div>
+                      )}
                     </td>
                   </tr>
                 );
@@ -184,8 +188,6 @@ export default function StudentAssessmentTable({
           totalItems={students.length}
         />
       )}
-
-      {saveButton && <div className="mt-4">{saveButton}</div>}
     </div>
   );
 }

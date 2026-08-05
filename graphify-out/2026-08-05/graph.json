@@ -3678,8 +3678,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "components_common_datepickerfield",
-      "community": 81,
-      "community_name": "PresensiTable.tsx",
+      "community": 15,
+      "community_name": "StudentDataStep.tsx",
       "norm_label": "datepickerfield.tsx"
     },
     {
@@ -3689,8 +3689,8 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "components_common_datepickerfield_datepickerfieldprops",
-      "community": 81,
-      "community_name": "PresensiTable.tsx",
+      "community": 15,
+      "community_name": "StudentDataStep.tsx",
       "norm_label": "datepickerfieldprops"
     },
     {
@@ -3700,8 +3700,8 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "components_common_datepickerfield_datepickerfield",
-      "community": 81,
-      "community_name": "PresensiTable.tsx",
+      "community": 15,
+      "community_name": "StudentDataStep.tsx",
       "norm_label": "datepickerfield()"
     },
     {
@@ -3744,8 +3744,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "components_common_exportwordbutton",
-      "community": 60,
-      "community_name": "holiday.service.ts",
+      "community": 8,
+      "community_name": "komponen-nilai/page.tsx",
       "norm_label": "exportwordbutton.tsx"
     },
     {
@@ -4489,7 +4489,7 @@
       "label": "StudentAssessmentTable()",
       "file_type": "code",
       "source_file": "components/karakter/StudentAssessmentTable.tsx",
-      "source_location": "L35",
+      "source_location": "L36",
       "_origin": "ast",
       "id": "components_karakter_studentassessmenttable_studentassessmenttable",
       "community": 5,
@@ -5185,8 +5185,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "components_tables_presensitable",
-      "community": 8,
-      "community_name": "komponen-nilai/page.tsx",
+      "community": 81,
+      "community_name": "PresensiTable.tsx",
       "norm_label": "presensitable.tsx"
     },
     {
@@ -5196,8 +5196,8 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "components_tables_presensitable_props",
-      "community": 8,
-      "community_name": "komponen-nilai/page.tsx",
+      "community": 81,
+      "community_name": "PresensiTable.tsx",
       "norm_label": "props"
     },
     {
@@ -5207,8 +5207,8 @@
       "source_location": "L21",
       "_origin": "ast",
       "id": "components_tables_presensitable_status_list",
-      "community": 8,
-      "community_name": "komponen-nilai/page.tsx",
+      "community": 81,
+      "community_name": "PresensiTable.tsx",
       "norm_label": "status_list"
     },
     {
@@ -5218,8 +5218,8 @@
       "source_location": "L23",
       "_origin": "ast",
       "id": "components_tables_presensitable_presensitable",
-      "community": 8,
-      "community_name": "komponen-nilai/page.tsx",
+      "community": 81,
+      "community_name": "PresensiTable.tsx",
       "norm_label": "presensitable()"
     },
     {
@@ -7055,8 +7055,8 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "hooks_usepresensi_entry",
-      "community": 8,
-      "community_name": "komponen-nilai/page.tsx",
+      "community": 81,
+      "community_name": "PresensiTable.tsx",
       "norm_label": "entry"
     },
     {
@@ -7066,8 +7066,8 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "hooks_usepresensi_status_label",
-      "community": 8,
-      "community_name": "komponen-nilai/page.tsx",
+      "community": 81,
+      "community_name": "PresensiTable.tsx",
       "norm_label": "status_label"
     },
     {
@@ -7077,8 +7077,8 @@
       "source_location": "L26",
       "_origin": "ast",
       "id": "hooks_usepresensi_status_btn",
-      "community": 8,
-      "community_name": "komponen-nilai/page.tsx",
+      "community": 81,
+      "community_name": "PresensiTable.tsx",
       "norm_label": "status_btn"
     },
     {
@@ -7858,8 +7858,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "lib_export_presensi_word",
-      "community": 60,
-      "community_name": "holiday.service.ts",
+      "community": 8,
+      "community_name": "komponen-nilai/page.tsx",
       "norm_label": "export-presensi-word.ts"
     },
     {
@@ -7869,8 +7869,8 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "lib_export_presensi_word_exportpresensimatrikstoword",
-      "community": 60,
-      "community_name": "holiday.service.ts",
+      "community": 8,
+      "community_name": "komponen-nilai/page.tsx",
       "norm_label": "exportpresensimatrikstoword()"
     },
     {
@@ -9541,8 +9541,8 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "services_dashboard_service_dashboardservice_getsummary",
-      "community": 28,
-      "community_name": "AdminDashboardView.tsx",
+      "community": 43,
+      "community_name": ".getAll",
       "norm_label": ".getsummary()"
     },
     {
@@ -10267,8 +10267,8 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "services_student_attendance_service_studentattendanceservice",
-      "community": 43,
-      "community_name": ".getAll",
+      "community": 8,
+      "community_name": "komponen-nilai/page.tsx",
       "norm_label": "studentattendanceservice"
     },
     {
@@ -10278,8 +10278,8 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "services_student_attendance_service_studentattendanceservice_create",
-      "community": 43,
-      "community_name": ".getAll",
+      "community": 8,
+      "community_name": "komponen-nilai/page.tsx",
       "norm_label": ".create()"
     },
     {
@@ -10663,8 +10663,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "services_user_service",
-      "community": 60,
-      "community_name": "holiday.service.ts",
+      "community": 8,
+      "community_name": "komponen-nilai/page.tsx",
       "norm_label": "user.service.ts"
     },
     {
@@ -12159,8 +12159,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "types_user",
-      "community": 60,
-      "community_name": "holiday.service.ts",
+      "community": 8,
+      "community_name": "komponen-nilai/page.tsx",
       "norm_label": "user.ts"
     },
     {
@@ -12170,8 +12170,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "types_user_user",
-      "community": 60,
-      "community_name": "holiday.service.ts",
+      "community": 8,
+      "community_name": "komponen-nilai/page.tsx",
       "norm_label": "user"
     },
     {
@@ -12181,8 +12181,8 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "types_user_teachertype",
-      "community": 60,
-      "community_name": "holiday.service.ts",
+      "community": 8,
+      "community_name": "komponen-nilai/page.tsx",
       "norm_label": "teachertype"
     },
     {
@@ -21403,7 +21403,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "app/(admin)/penilaian-karakter/page.tsx",
-      "source_location": "L48",
+      "source_location": "L47",
       "weight": 1.0,
       "_origin": "ast",
       "source": "app_admin_penilaian_karakter_page_penilaiankarakterpage",
@@ -28046,7 +28046,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "components/karakter/StudentAssessmentTable.tsx",
-      "source_location": "L35",
+      "source_location": "L36",
       "weight": 1.0,
       "_origin": "ast",
       "source": "components_karakter_studentassessmenttable",
@@ -34175,7 +34175,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "hooks/useCharacterAssessment.ts",
-      "source_location": "L223",
+      "source_location": "L205",
       "weight": 1.0,
       "_origin": "ast",
       "source": "hooks_usecharacterassessment_usecharacterassessment",
@@ -34187,7 +34187,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "hooks/useCharacterAssessment.ts",
-      "source_location": "L244",
+      "source_location": "L226",
       "weight": 1.0,
       "_origin": "ast",
       "source": "hooks_usecharacterassessment_usecharacterassessment",
@@ -34199,7 +34199,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "hooks/useCharacterAssessment.ts",
-      "source_location": "L73",
+      "source_location": "L72",
       "weight": 1.0,
       "_origin": "ast",
       "source": "hooks_usecharacterassessment_usecharacterassessment",
@@ -34211,7 +34211,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "hooks/useCharacterAssessment.ts",
-      "source_location": "L135",
+      "source_location": "L134",
       "weight": 1.0,
       "_origin": "ast",
       "source": "hooks_usecharacterassessment_usecharacterassessment",
@@ -34223,7 +34223,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "hooks/useCharacterAssessment.ts",
-      "source_location": "L343",
+      "source_location": "L300",
       "weight": 1.0,
       "_origin": "ast",
       "source": "hooks_usecharacterassessment_usecharacterassessment",
@@ -34235,7 +34235,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "hooks/useCharacterAssessment.ts",
-      "source_location": "L243",
+      "source_location": "L225",
       "weight": 1.0,
       "_origin": "ast",
       "source": "hooks_usecharacterassessment_usecharacterassessment",
@@ -34247,7 +34247,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "hooks/useCharacterAssessment.ts",
-      "source_location": "L71",
+      "source_location": "L70",
       "weight": 1.0,
       "_origin": "ast",
       "source": "hooks_usecharacterassessment_usecharacterassessment",
@@ -34259,7 +34259,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "hooks/useCharacterAssessment.ts",
-      "source_location": "L72",
+      "source_location": "L71",
       "weight": 1.0,
       "_origin": "ast",
       "source": "hooks_usecharacterassessment_usecharacterassessment",
@@ -46178,5 +46178,5 @@
       "source_file": "AGENTS.md"
     }
   ],
-  "built_at_commit": "96cb35906ddbad92529e84be7c6631a1f69cf220"
+  "built_at_commit": "36ddd36d947c74423783d15fd1438574ccf80bc2"
 }

@@ -1,16 +1,16 @@
-# Graph Report - sdn-2-kalimati  (2026-08-05)
+# Graph Report - sdn-2-kalimati  (2026-08-04)
 
 ## Corpus Check
-- 281 files · ~127,469 words
+- 281 files · ~127,320 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 1166 nodes · 2831 edges · 93 communities (59 shown, 34 thin omitted)
+- 1166 nodes · 2831 edges · 93 communities (60 shown, 33 thin omitted)
 - Extraction: 99% EXTRACTED · 1% INFERRED · 0% AMBIGUOUS · INFERRED: 16 edges (avg confidence: 0.84)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `96cb3590`
+- Built from commit: `36ddd36d`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -134,7 +134,7 @@
 - **Refactor Phase Sequence** — docs_fe_refactor_plan_phase_1, docs_fe_refactor_plan_phase_2, docs_fe_refactor_plan_phase_3, docs_fe_refactor_plan_phase_4, docs_fe_refactor_plan_phase_5, docs_fe_refactor_plan_phase_6, docs_fe_refactor_plan_phase_7 [EXTRACTED 1.00]
 - **Refactoring Roadmap Cluster** — agents_refactoring_roadmap, agents_statcard, agents_pagehero, agents_modal, agents_grades_constant, agents_items_per_page, agents_type_cleanup, agents_tabungan_murid [EXTRACTED 1.00]
 
-## Communities (93 total, 34 thin omitted)
+## Communities (93 total, 33 thin omitted)
 
 ### Community 0 - "select.tsx"
 Cohesion: 0.19
@@ -170,7 +170,7 @@ Nodes (34): lib/api.ts API Client, ApiResponse T Type, DashboardSidebar Componen
 
 ### Community 8 - "komponen-nilai/page.tsx"
 Cohesion: 0.29
-Nodes (9): Props, STATUS_LIST, Entry, STATUS_BTN, STATUS_LABEL, AttendanceReportItem, MasterStudentType, StudentAttendanceRequestType (+1 more)
+Nodes (8): exportPresensiMatriksToWord(), StudentAttendanceService, AttendanceReportItem, MasterStudentType, StudentAttendanceRequestType, StudentAttendanceType, TeacherType, User
 
 ### Community 9 - "Pagination.tsx"
 Cohesion: 0.17
@@ -197,8 +197,8 @@ Cohesion: 0.20
 Nodes (12): DataPendaftar(), formatDateTime(), HolidayInfoCard(), HolidayInfoCardProps, formatDateID(), printRegistrantForm(), Address, Guardian (+4 more)
 
 ### Community 15 - "StudentDataStep.tsx"
-Cohesion: 0.16
-Nodes (14): InputField, InputFieldProps, SelectField, SelectFieldProps, GuardianDataStepProps, ParentDataStepProps, StudentDataStepProps, CardTitle() (+6 more)
+Cohesion: 0.13
+Nodes (15): DatePickerFieldProps, InputField, InputFieldProps, SelectField, SelectFieldProps, GuardianDataStepProps, ParentDataStepProps, StudentDataStepProps (+7 more)
 
 ### Community 17 - "cn"
 Cohesion: 0.33
@@ -245,7 +245,7 @@ Cohesion: 0.20
 Nodes (7): AssignModal(), ConfirmDeleteModalProps, Modal, Modal, SubjectModal(), SubjectModalProps, MasterMapelPage()
 
 ### Community 28 - "AdminDashboardView.tsx"
-Cohesion: 0.19
+Cohesion: 0.21
 Nodes (8): AdminDashboardView(), CARDS, DashboardStatCards(), Props, StatCardKey, Props, DashboardSummary, useDashboard()
 
 ### Community 29 - "proxy.ts"
@@ -289,8 +289,8 @@ Cohesion: 0.11
 Nodes (13): Modal, Modal, ProgressBadge(), ProgressBadgeProps, PageHeroProps, Props, EmptyStateProps, ErrorStateProps (+5 more)
 
 ### Community 43 - ".getAll"
-Cohesion: 0.32
-Nodes (6): RekapPresensi(), ExportWordButton(), useDashboardPresensi(), useHolidays(), usePresensi(), StudentAttendanceService
+Cohesion: 0.31
+Nodes (5): RekapPresensi(), ExportWordButton(), useDashboardPresensi(), useHolidays(), usePresensi()
 
 ### Community 57 - "IncompleteDataWidget.tsx"
 Cohesion: 0.15
@@ -301,12 +301,16 @@ Cohesion: 0.25
 Nodes (6): DashboardKarakterPage(), getScoreColor(), PenilaianKarakterPage(), useCharacterAssessment(), useDashboardKarakter(), CharacterAssessmentService
 
 ### Community 60 - "holiday.service.ts"
-Cohesion: 0.18
-Nodes (8): PresensiMuridPage(), HolidayItem, exportPresensiMatriksToWord(), HolidayService, Holiday, HolidayCheckResult, TeacherType, User
+Cohesion: 0.29
+Nodes (5): PresensiMuridPage(), HolidayItem, HolidayService, Holiday, HolidayCheckResult
 
 ### Community 70 - "useDashboardPresensi.ts"
 Cohesion: 0.39
 Nodes (6): MonthlyPresensiPoster, Props, AttendanceSummary, GradeAttendanceRow, StudentAbsenceRow, ViewMode
+
+### Community 81 - "PresensiTable.tsx"
+Cohesion: 0.33
+Nodes (5): Props, STATUS_LIST, Entry, STATUS_BTN, STATUS_LABEL
 
 ### Community 85 - "export-presensi-csv.ts"
 Cohesion: 0.16
@@ -343,7 +347,7 @@ Nodes (4): menuItems, JumlahMurid(), NamaMurid(), WaliKelas()
 ## Knowledge Gaps
 - **267 isolated node(s):** `Modal`, `NilaiStatCardsProps`, `RecentActivity`, `RecentActivitiesProps`, `AttendanceTrendChart` (+262 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **34 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **33 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
