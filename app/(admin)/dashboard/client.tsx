@@ -32,7 +32,7 @@ export default function DashboardClient({
   guruInitialHasAttendance,
   adminInitialSummary,
 }: Props) {
-  const { isLoading } = useAuth();
+  const { isLoading, role: clientRole, userName: clientName, grade: clientGrade } = useAuth();
 
   if (isLoading) {
     return (
@@ -42,7 +42,11 @@ export default function DashboardClient({
     );
   }
 
-  if (userRole === "guru") {
+  const effectiveRole = userRole || clientRole;
+  const effectiveName = userName || clientName;
+  const effectiveGrade = userGrade || clientGrade;
+
+  if (effectiveRole === "guru") {
     return (
       <GuruDashboardView
         initialSummary={guruInitialSummary}
@@ -50,9 +54,9 @@ export default function DashboardClient({
         initialHasAttendance={guruInitialHasAttendance}
         initialMonth={initialMonth}
         initialYear={initialYear}
-        userName={userName}
-        userGrade={userGrade}
-        userRole={userRole}
+        userName={effectiveName}
+        userGrade={effectiveGrade}
+        userRole={effectiveRole}
         isSavingsHolder={isSavingsHolder}
       />
     );
@@ -63,7 +67,7 @@ export default function DashboardClient({
       initialSummary={adminInitialSummary}
       initialMonth={initialMonth}
       initialYear={initialYear}
-      userRole={userRole}
+      userRole={effectiveRole}
     />
   );
 }

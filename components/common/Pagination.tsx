@@ -69,8 +69,9 @@ export default function Pagination({
   const endItem = Math.min(currentPage * itemsPerPage, totalItems);
 
   return (
-    <div className="flex flex-row items-center justify-between gap-2 mt-6 text-gray-900 dark:text-gray-200 w-full">
-      <div className="text-xs sm:text-sm opacity-70 whitespace-nowrap">
+    <div className="@container w-full mt-6">
+      <div className="flex flex-row items-center justify-between gap-3 text-gray-900 dark:text-gray-200 w-full">
+        <div className="text-xs sm:text-sm opacity-70 whitespace-nowrap">
         {totalItems > 0 ? (
           <p>
             <span className="hidden sm:inline">Menampilkan </span>
@@ -91,7 +92,7 @@ export default function Pagination({
         )}
       </div>
 
-      <div className="flex items-center gap-1 overflow-x-auto pb-1 sm:pb-0">
+      <div className="flex items-center gap-1">
         <Button
           variant="outline"
           size="icon-sm"
@@ -109,7 +110,7 @@ export default function Pagination({
               key={page}
               variant={page === currentPage ? "default" : "outline"}
               size="icon-sm"
-              className={`shrink-0 ${page === currentPage ? "" : "hidden sm:inline-flex"}`}
+              className={`shrink-0 ${page === currentPage ? "" : "hidden @md:inline-flex"}`}
               onClick={() => handlePageClick(page)}
               aria-label={`Go to page ${page}`}
               aria-current={page === currentPage ? "page" : undefined}
@@ -130,6 +131,7 @@ export default function Pagination({
           <ChevronRight size={16} />
         </Button>
       </div>
+    </div>
     </div>
   );
 }

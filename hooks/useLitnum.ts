@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { GRADES, SEMESTERS, ACADEMIC_YEARS } from "@/lib/constants";
 import { LitnumTaskService, LitnumScoreService } from "@/services/litnum.service";
@@ -22,6 +22,10 @@ export function useLitnum() {
   const [scores, setScores] = useState<LitnumScore[]>([]);
   const [students, setStudents] = useState<MasterStudentType[]>([]);
   const [scoreInputs, setScoreInputs] = useState<Record<string, string>>({});
+  const [modifiedStudents, setModifiedStudents] = useState<Set<string>>(new Set());
+  const [savingIds, setSavingIds] = useState<string[]>([]);
+  const [activeStudentId, setActiveStudentId] = useState<string | null>(null);
+  const savingRef = useRef(false);
 
   const [loading, setLoading] = useState(false);
   const [initialLoading, setInitialLoading] = useState(true);
@@ -108,6 +112,7 @@ export function useLitnum() {
     if (!selectedTaskId) {
       setScores([]);
       setScoreInputs({});
+      setModifiedStudents(new Set());
       return;
     }
     const ctrl = new AbortController();
@@ -123,6 +128,7 @@ export function useLitnum() {
           inputs[s.studentId] = String(s.score);
         }
         setScoreInputs(inputs);
+        setModifiedStudents(new Set());
 
         setTasks((prev) =>
           prev.map((t) =>
@@ -178,41 +184,80 @@ export function useLitnum() {
     }
   }, [selectedTaskId]);
 
-  const saveScores = useCallback(async () => {
+  const saveScores = useCallback(async (isAutoSave?: boolean | any) => {
+    const autoSave = isAutoSave === true;
     if (!selectedTaskId) return;
+    if (autoSave && modifiedStudents.size === 0) return;
+    if (savingRef.current) return;
+
+    savingRef.current = true;
     setSaving(true);
-    const entries = students
-      .filter((s) => scoreInputs[s.studentId] !== undefined && scoreInputs[s.studentId] !== "")
-      .map((s) => ({
-        studentId: s.studentId,
-        score: Number(scoreInputs[s.studentId]),
-      }));
+    const modifiedEntries = students.filter(s => modifiedStudents.has(s.studentId));
+    const toDelete = modifiedEntries.filter(s => scoreInputs[s.studentId] === undefined || scoreInputs[s.studentId] === "");
+    const toUpsert = modifiedEntries
+      .filter(s => scoreInputs[s.studentId] !== undefined && scoreInputs[s.studentId] !== "")
+      .map(s => ({ studentId: s.studentId, score: Number(scoreInputs[s.studentId]) }));
+
+    const currentSavingIds = [...toDelete, ...toUpsert].map(s => s.studentId);
+    setSavingIds((prev) => [...prev, ...currentSavingIds]);
+
     try {
-      const res = await LitnumScoreService.bulkCreate({
-        litnumId: selectedTaskId,
-        scores: entries,
-      });
-      if (res?.result) {
-        const scoreList = res.result as LitnumScore[];
-        setScores(scoreList);
-        const inputs: Record<string, string> = {};
-        for (const s of scoreList) {
-          inputs[s.studentId] = String(s.score);
+      for (const s of toDelete) {
+        const existingScore = scores.find((sc) => sc.studentId === s.studentId);
+        if (existingScore) {
+          await LitnumScoreService.remove(existingScore._id);
         }
-        setScoreInputs(inputs);
-        setTasks(prev => prev.map(t => t._id === selectedTaskId ? { ...t, inputtedCount: scoreList.length } : t));
       }
-      toast.success("Nilai LitNum berhasil disimpan");
+
+      if (toUpsert.length > 0) {
+        await LitnumScoreService.bulkCreate({
+          litnumId: selectedTaskId,
+          scores: toUpsert,
+        });
+      }
+
+      const res = await LitnumScoreService.getAll(selectedTaskId);
+      const scoreList = res?.result || [];
+      setScores(scoreList);
+      const savedIds = new Set([...toDelete.map(s => s.studentId), ...toUpsert.map(s => s.studentId)]);
+      setModifiedStudents((prev) => {
+        const next = new Set(prev);
+        savedIds.forEach((id) => next.delete(id));
+        return next;
+      });
+      setTasks(prev => prev.map(t => t._id === selectedTaskId ? { ...t, inputtedCount: scoreList.length } : t));
+      if (!autoSave) toast.success("Nilai LitNum berhasil disimpan");
     } catch {
-      toast.error("Gagal menyimpan nilai LitNum");
+      if (!autoSave) toast.error("Gagal menyimpan nilai LitNum");
     } finally {
+      savingRef.current = false;
       setSaving(false);
+      setSavingIds((prev) => prev.filter((id) => !currentSavingIds.includes(id)));
     }
-  }, [selectedTaskId, students, scoreInputs]);
+  }, [selectedTaskId, students, scoreInputs, modifiedStudents.size]);
 
   const updateScoreInput = useCallback((studentId: string, value: string) => {
     setScoreInputs((prev) => ({ ...prev, [studentId]: value }));
+    setModifiedStudents((prev) => {
+      const newSet = new Set(prev);
+      newSet.add(studentId);
+      return newSet;
+    });
   }, []);
+
+  // Auto-Save
+  useEffect(() => {
+    if (modifiedStudents.size === 0) return;
+
+    // Do not auto-save if the user is currently focused on a student they modified.
+    // Wait until they blur or move to another student.
+    if (activeStudentId && modifiedStudents.has(activeStudentId)) return;
+
+    const timer = setTimeout(() => {
+      saveScores(true);
+    }, 1500); // Reduced to 1.5s since we already know they moved away
+    return () => clearTimeout(timer);
+  }, [modifiedStudents.size, modifiedStudents, saveScores, activeStudentId]);
 
   return {
     role,
@@ -222,7 +267,8 @@ export function useLitnum() {
     grade, setGrade, GRADES, availableGrades,
     tasks, selectedTaskId, setSelectedTaskId,
     scores, students, scoreInputs,
-    loading, initialLoading, scoresLoading, saving, error,
+    loading, initialLoading, scoresLoading, saving, savingIds, error,
+    activeStudentId, setActiveStudentId,
     addTask, editTask, removeTask,
     saveScores, updateScoreInput,
   };

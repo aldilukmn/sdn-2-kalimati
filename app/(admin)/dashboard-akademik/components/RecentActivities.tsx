@@ -81,7 +81,7 @@ export function RecentActivities({ title = "Aktivitas Terbaru", activities = [],
   if (loading) {
     return (
       <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 p-6 flex flex-col min-h-[400px]">
-        <h3 className="text-lg font-bold text-slate-800 dark:text-slate-100 mb-6 flex items-center gap-2">
+        <h3 className="text-sm md:text-base font-bold text-slate-800 dark:text-slate-100 mb-6 flex items-center gap-2">
           <Activity className="w-5 h-5 text-indigo-500" />
           {title}
         </h3>
@@ -102,18 +102,19 @@ export function RecentActivities({ title = "Aktivitas Terbaru", activities = [],
 
   return (
     <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden flex flex-col h-fit">
-      <div className="p-3 md:p-4 flex items-center justify-between gap-2 bg-linear-to-r from-blue-500 to-indigo-600 border-b border-slate-100 dark:border-slate-700/50 md:border-b md:border-slate-100 md:dark:border-slate-700/50">
-        <div className="flex items-center gap-2">
-          <div className="p-1.5 md:p-2 bg-white/20 rounded-lg ">
-            <Activity className="w-4 h-4 md:w-5 md:h-5 text-white" />
-          </div>
-          <h3 className="text-sm md:text-base font-bold text-white">Aktivitas Terbaru</h3>
-        </div>
+      <div className="p-4 md:p-5 flex items-center justify-between gap-4 border-b border-slate-100 dark:border-slate-700/50">
         <div className="flex items-center gap-3">
-          <span className="text-xs font-medium bg-white/20 text-white px-2.5 py-1 rounded-full ">
-            {activities.length} aktivitas
-          </span>
+          <div className="p-2 bg-indigo-50 dark:bg-indigo-500/10 rounded-xl border border-indigo-100 dark:border-indigo-500/20">
+            <Activity className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+          </div>
+          <div>
+            <h3 className="text-base font-bold text-slate-800 dark:text-slate-100">{title}</h3>
+            <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5 hidden sm:block">Ringkasan log sistem</p>
+          </div>
         </div>
+        <span className="text-xs font-semibold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 px-3 py-1.5 rounded-full border border-slate-200 dark:border-slate-700/60">
+          {activities.length} total
+        </span>
       </div>
 
       <div className="flex flex-col">
@@ -133,33 +134,37 @@ export function RecentActivities({ title = "Aktivitas Terbaru", activities = [],
             </div>
           </div>
         ) : (
-          <div className="space-y-2 pb-2">
+          <div className="space-y-4 pb-2 relative">
+            {paginatedActivities.length > 0 && (
+               <div className="absolute left-[27px] top-6 bottom-4 w-[2px] bg-slate-100 dark:bg-slate-700/50 hidden sm:block" />
+            )}
             {paginatedActivities.map((activity) => (
             <div
               key={activity.id}
-              className="group flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 p-2.5 rounded-xl border border-transparent hover:border-slate-200 dark:hover:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-all cursor-default"
+              className="group relative flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 px-2 py-1.5 rounded-xl transition-all cursor-default"
             >
-              <div className="flex items-center gap-3 w-full sm:w-auto flex-1 min-w-0">
-                <div className="w-8 h-8 shrink-0 rounded-full bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-700 shadow-sm flex items-center justify-center group-hover:scale-110 transition-transform">
+              <div className="flex items-center gap-3 sm:gap-4 w-full sm:w-auto flex-1 min-w-0 z-10">
+                <div className="hidden sm:flex w-10 h-10 shrink-0 rounded-full bg-white dark:bg-slate-800 border-2 border-slate-100 dark:border-slate-700 shadow-sm items-center justify-center group-hover:scale-110 group-hover:border-indigo-300 dark:group-hover:border-indigo-500/50 transition-all duration-300">
                   {getIcon(activity.category)}
                 </div>
                 
-                <div className="flex-1 min-w-0 flex flex-col justify-center">
+                <div className="flex-1 min-w-0 flex flex-col justify-center sm:group-hover:translate-x-1 transition-transform duration-300">
                   <div className="flex items-center gap-1.5 min-w-0">
                     <TruncatedTextWithInfo 
                       text={activity.title} 
-                      className="font-semibold text-sm text-slate-800 dark:text-slate-200"
+                      className="font-bold text-sm text-slate-800 dark:text-slate-100"
                       iconSize={16}
                       as="h4"
                     />
                   </div>
-                  <div className="flex items-center gap-2 mt-1">
-                    <span className={`w-max text-[10px] font-semibold px-2 py-0.5 rounded-full ${getBadgeColor(activity.category)}`}>
+                  <div className="flex items-center gap-2 mt-1.5">
+                    <span className={`w-max text-[10px] font-bold px-2 py-0.5 rounded-full ${getBadgeColor(activity.category)}`}>
                       {activity.category}
                     </span>
+                    <span className="w-1 h-1 rounded-full bg-slate-300 dark:bg-slate-600 hidden sm:block" />
                     <TruncatedTextWithInfo 
                       text={activity.subject} 
-                      className="text-xs text-slate-500 dark:text-slate-400"
+                      className="text-xs font-medium text-slate-500 dark:text-slate-400"
                       iconSize={14}
                     />
                   </div>

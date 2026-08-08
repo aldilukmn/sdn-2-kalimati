@@ -28,6 +28,9 @@ export function usePenilaian(category: string) {
   const [scores, setScores] = useState<TaskScore[]>([]);
   const [students, setStudents] = useState<MasterStudentType[]>([]);
   const [scoreInputs, setScoreInputs] = useState<Record<string, string>>({});
+  const [modifiedStudents, setModifiedStudents] = useState<Set<string>>(new Set());
+  const [savingIds, setSavingIds] = useState<string[]>([]);
+  const [activeStudentId, setActiveStudentId] = useState<string | null>(null);
 
   const [loading, setLoading] = useState(false);
   const [initialLoading, setInitialLoading] = useState(true);
@@ -168,47 +171,77 @@ export function usePenilaian(category: string) {
     }
   }, [selectedTaskId]);
 
-  const saveScores = useCallback(async () => {
+  const saveScores = useCallback(async (isAutoSave = false) => {
     if (!selectedTaskId) return;
-    setSaving(true);
+
+    const modifiedArray = Array.from(modifiedStudents);
+    if (modifiedArray.length === 0) return;
+
+    if (!isAutoSave) {
+      setSaving(true);
+    }
+    setSavingIds((prev) => [...prev, ...modifiedArray]);
+
     const entries = students
-      .filter((s) => scoreInputs[s.studentId] !== undefined && scoreInputs[s.studentId] !== "")
+      .filter((s) => modifiedArray.includes(s.studentId) && scoreInputs[s.studentId] !== undefined && scoreInputs[s.studentId] !== "")
       .map((s) => ({
         studentId: s.studentId,
         score: Number(scoreInputs[s.studentId]),
       }));
+
     try {
-      const res = await TaskScoreService.bulkCreate({
-        taskId: selectedTaskId,
-        scores: entries,
-      });
-      if (res?.result) {
-        const scoreList = res.result as TaskScore[];
-        setScores(scoreList);
-        const inputs: Record<string, string> = {};
-        for (const s of scoreList) {
-          inputs[s.studentId] = String(s.score);
+      if (entries.length > 0) {
+        const res = await TaskScoreService.bulkCreate({
+          taskId: selectedTaskId,
+          scores: entries,
+        });
+        if (res?.result) {
+          const scoreList = res.result as TaskScore[];
+          setScores(scoreList);
+          
+          setTasks((prev) =>
+            prev.map((t) =>
+              t._id === selectedTaskId
+                ? { ...t, inputtedCount: scoreList.length }
+                : t
+            )
+          );
         }
-        setScoreInputs(inputs);
-        setTasks((prev) =>
-          prev.map((t) =>
-            t._id === selectedTaskId
-              ? { ...t, inputtedCount: scoreList.length }
-              : t
-          )
-        );
-        toast.success("Berhasil menyimpan nilai");
       }
+      setModifiedStudents((prev) => {
+        const next = new Set(prev);
+        modifiedArray.forEach((id) => next.delete(id));
+        return next;
+      });
+      if (!isAutoSave) toast.success("Berhasil menyimpan nilai");
     } catch {
       toast.error("Gagal menyimpan nilai");
     } finally {
-      setSaving(false);
+      if (!isAutoSave) setSaving(false);
+      setSavingIds((prev) => prev.filter((id) => !modifiedArray.includes(id)));
     }
-  }, [selectedTaskId, students, scoreInputs]);
+  }, [selectedTaskId, students, scoreInputs, modifiedStudents]);
 
   const updateScoreInput = useCallback((studentId: string, value: string) => {
     setScoreInputs((prev) => ({ ...prev, [studentId]: value }));
+    setModifiedStudents((prev) => {
+      const next = new Set(prev);
+      next.add(studentId);
+      return next;
+    });
   }, []);
+
+  // Auto-Save Effect
+  useEffect(() => {
+    if (modifiedStudents.size === 0) return;
+
+    if (activeStudentId && modifiedStudents.has(activeStudentId)) return;
+
+    const timer = setTimeout(() => {
+      saveScores(true);
+    }, 1500);
+    return () => clearTimeout(timer);
+  }, [modifiedStudents.size, modifiedStudents, saveScores, activeStudentId]);
 
   return {
     role,
@@ -218,8 +251,9 @@ export function usePenilaian(category: string) {
     grade, setGrade, GRADES,
     subjects, subjectId, setSubjectId,
     tasks, selectedTaskId, setSelectedTaskId,
-    scores, students, scoreInputs,
-    loading, initialLoading, scoresLoading, saving, error,
+    scores, students, scoreInputs, modifiedStudents,
+    loading, initialLoading, scoresLoading, saving, savingIds, error,
+    activeStudentId, setActiveStudentId,
     selectedSubjectFirst,
     addTask, editTask, removeTask,
     saveScores, updateScoreInput,

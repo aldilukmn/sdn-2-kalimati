@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { X } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface ModalProps {
   open: boolean;
@@ -29,20 +30,28 @@ export default function Modal({ open, onClose, title, children, className = "" }
     return () => document.removeEventListener("keydown", handler);
   }, [open, onClose]);
 
-  if (!open) return null;
-
   return (
-    <div
-      className="fixed inset-0 bg-black/40  z-50 flex items-center justify-center p-4"
-      onClick={onClose}
-      role="dialog"
-      aria-modal="true"
-      aria-label={title}
-    >
-      <div
-        className={`bg-white dark:bg-gray-900 rounded-2xl shadow-xl w-full shrink-0 border border-white/20 dark:border-gray-700/50 p-5 ${className}`}
-        onClick={(e) => e.stopPropagation()}
-      >
+    <AnimatePresence>
+      {open && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.2 }}
+          className="fixed inset-0 bg-black/40 z-50 flex items-center justify-center p-4"
+          onClick={onClose}
+          role="dialog"
+          aria-modal="true"
+          aria-label={title}
+        >
+          <motion.div
+            initial={{ scale: 0.95, opacity: 0, y: 10 }}
+            animate={{ scale: 1, opacity: 1, y: 0 }}
+            exit={{ scale: 0.95, opacity: 0, y: 10 }}
+            transition={{ type: "spring", duration: 0.4, bounce: 0.1 }}
+            className={`bg-white dark:bg-gray-900 rounded-2xl shadow-xl w-full shrink-0 border border-white/20 dark:border-gray-700/50 p-5 ${className}`}
+            onClick={(e) => e.stopPropagation()}
+          >
         {title !== undefined && (
           <div className="flex items-center justify-between mb-4">
             <h3 className="font-semibold text-gray-800 dark:text-slate-100">{title}</h3>
@@ -56,7 +65,9 @@ export default function Modal({ open, onClose, title, children, className = "" }
           </div>
         )}
         {children}
-      </div>
-    </div>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 }

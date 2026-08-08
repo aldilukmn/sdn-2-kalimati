@@ -9,6 +9,9 @@ import {
   Save,
   FileText,
   ClipboardList,
+  Loader2,
+  Check,
+  MoreVertical,
 } from "lucide-react";
 import PageHero from "@/components/layout/PageHero";
 import FilterBar from "@/components/shared/FilterBar";
@@ -20,6 +23,7 @@ const Modal = dynamic(() => import("@/components/modals/Modal"), { ssr: false })
 import Pagination from "@/components/common/Pagination";
 import { useLitnum } from "@/hooks/useLitnum";
 import { ITEMS_PER_PAGE } from "@/lib/constants";
+import { motion } from "framer-motion";
 
 export default function NilaiLitnumPage() {
   const {
@@ -41,6 +45,9 @@ export default function NilaiLitnumPage() {
     initialLoading,
     scoresLoading,
     saving,
+    savingIds,
+    activeStudentId,
+    setActiveStudentId,
     error,
     addTask,
     editTask,
@@ -84,6 +91,8 @@ export default function NilaiLitnumPage() {
   useEffect(() => {
     setCurrentPage(1);
   }, [selectedTaskId]);
+
+  const [openMenuId, setOpenMenuId] = useState<string | null>(null);
 
   const openAdd = () => {
     setTaskName("");
@@ -176,14 +185,16 @@ export default function NilaiLitnumPage() {
             <h2 className="font-semibold text-slate-700 dark:text-slate-200">
               Daftar Penilaian
             </h2>
-            <button
+            <motion.button
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.95 }}
               onClick={openAdd}
               disabled={loading || saving}
-              className="flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 text-white text-sm font-medium rounded-lg transition-colors cursor-pointer disabled:cursor-not-allowed"
+              className="flex items-center justify-center gap-2 w-9 h-9 p-0 sm:w-auto sm:h-auto sm:px-4 sm:py-2 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 text-white text-sm font-medium rounded-lg transition-colors cursor-pointer disabled:cursor-not-allowed border-0 outline-none focus:outline-none"
             >
               <Plus size={16} />
-              Tambah Penilaian
-            </button>
+              <span className="hidden sm:inline">Tambah Penilaian</span>
+            </motion.button>
           </div>
           <div className="space-y-2">
             {tasks.length === 0 ? (
@@ -208,7 +219,7 @@ export default function NilaiLitnumPage() {
                     }`}
                   >
                     <div className="flex items-center gap-3 flex-1 min-w-0">
-                      <span className="text-lg shrink-0">
+                      <span className="hidden sm:inline text-lg shrink-0">
                         {isActive ? "📘" : "📕"}
                       </span>
                       <span
@@ -221,7 +232,7 @@ export default function NilaiLitnumPage() {
                         <span className="hidden sm:inline text-xs font-normal opacity-70 shrink-0">
                           ({new Date(t.createdAt).toLocaleDateString("id-ID", {
                             day: "numeric",
-                            month: "short",
+                            month: "long",
                             year: "numeric",
                           })})
                         </span>
@@ -229,33 +240,32 @@ export default function NilaiLitnumPage() {
                     </div>
                     <div className="flex items-center gap-3 sm:gap-4">
                       {/* Desktop: progress bar */}
-                      <div className="hidden sm:flex items-center gap-2 flex-1 sm:flex-none">
-                        {students.length > 0 && (
-                          <div className="w-24 sm:w-28 h-2 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden shrink-0">
-                            <div
-                              className={`h-full rounded-full transition-all duration-500 ${
-                                currentInputted >= students.length
-                                  ? "bg-emerald-500"
-                                  : currentInputted > 0
-                                  ? "bg-amber-500"
-                                  : "bg-slate-300 dark:bg-slate-600"
-                              }`}
-                              style={{ width: `${students.length > 0 ? (currentInputted / students.length) * 100 : 0}%` }}
-                            />
-                          </div>
-                        )}
-                        <span className="text-[11px] font-medium text-slate-500 dark:text-slate-400 whitespace-nowrap">
-                          {currentInputted}/{students.length}
-                        </span>
-                        {currentInputted >= students.length && students.length > 0 && (
-                          <span className="inline-flex items-center p-0.5 rounded-full text-emerald-700 bg-emerald-100 dark:bg-emerald-900/40 dark:text-emerald-300" title="Semua nilai tersimpan">
-                            <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                              <circle cx="12" cy="12" r="10" />
-                              <path d="m9 12 2 2 4-4" />
-                            </svg>
+                      {!isActive && (
+                        <div className="hidden sm:flex items-center gap-2 flex-1 sm:flex-none">
+                          {students.length > 0 && (
+                            <div className="w-24 sm:w-28 h-2 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden shrink-0">
+                              <div
+                                className={`h-full rounded-full transition-all duration-500 ${
+                                  currentInputted >= students.length
+                                    ? "bg-emerald-500"
+                                    : currentInputted > 0
+                                    ? "bg-amber-500"
+                                    : "bg-slate-300 dark:bg-slate-600"
+                                }`}
+                                style={{ width: `${students.length > 0 ? (currentInputted / students.length) * 100 : 0}%` }}
+                              />
+                            </div>
+                          )}
+                          <span className="text-[11px] font-medium text-slate-500 dark:text-slate-400 whitespace-nowrap">
+                            {currentInputted}/{students.length}
                           </span>
-                        )}
-                      </div>
+                          {currentInputted >= students.length && students.length > 0 && (
+                            <span className="inline-flex items-center text-[11px] font-semibold p-1 rounded-full bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300" title="Semua nilai tersimpan">
+                              <Check size={12} strokeWidth={3} />
+                            </span>
+                          )}
+                        </div>
+                      )}
                       {/* Mobile: icon indicator & date */}
                       <div className="sm:hidden flex items-center gap-1.5">
                         {t.createdAt && (
@@ -263,50 +273,98 @@ export default function NilaiLitnumPage() {
                             ({new Date(t.createdAt).toLocaleDateString("id-ID", {
                               day: "numeric",
                               month: "numeric",
-                              year: "numeric",
+                              year: "2-digit",
                             })})
                           </span>
                         )}
-                        {currentInputted >= students.length && students.length > 0 ? (
-                          <span 
-                            title="Semua nilai tersimpan"
-                            className="inline-flex items-center p-1 rounded-full text-emerald-700 bg-emerald-100 dark:bg-emerald-900/40 dark:text-emerald-300"
-                          >
-                            <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                              <circle cx="12" cy="12" r="10" />
-                              <path d="m9 12 2 2 4-4" />
-                            </svg>
-                          </span>
-                        ) : (
-                          <span 
-                            title={`${currentInputted} dari ${students.length} nilai tersimpan`}
-                            className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-medium bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300"
-                          >
-                            <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                              <circle cx="12" cy="12" r="10" />
-                              <polyline points="12 6 12 12 16 14" />
-                            </svg>
-                            {currentInputted}/{students.length}
-                          </span>
+                        {!isActive && (
+                          currentInputted >= students.length && students.length > 0 ? (
+                            <span 
+                              title="Semua nilai tersimpan"
+                              className="inline-flex items-center text-[11px] font-semibold p-1 rounded-full bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300"
+                            >
+                              <Check size={12} strokeWidth={3} />
+                            </span>
+                          ) : (
+                            <span 
+                              title={`${currentInputted} dari ${students.length} nilai tersimpan`}
+                              className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-medium bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300"
+                            >
+                              <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                                <circle cx="12" cy="12" r="10" />
+                                <polyline points="12 6 12 12 16 14" />
+                              </svg>
+                              {currentInputted}/{students.length}
+                            </span>
+                          )
                         )}
                       </div>
-                      <div
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          openEdit(t);
-                        }}
-                        className="p-1.5 rounded-lg hover:bg-slate-200 dark:hover:bg-gray-600 text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors cursor-pointer"
-                      >
-                        <Pencil size={14} />
+                      {/* Desktop actions */}
+                      <div className="hidden sm:flex items-center gap-1">
+                        <div
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            openEdit(t);
+                          }}
+                          className="p-1.5 rounded-lg hover:bg-slate-200 dark:hover:bg-gray-600 text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors cursor-pointer"
+                        >
+                          <Pencil size={14} />
+                        </div>
+                        <div
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setConfirmDelete(t._id);
+                          }}
+                          className="p-1.5 rounded-lg hover:bg-slate-200 dark:hover:bg-gray-600 text-slate-400 hover:text-red-500 transition-colors cursor-pointer"
+                        >
+                          <Trash2 size={14} />
+                        </div>
                       </div>
-                      <div
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setConfirmDelete(t._id);
-                        }}
-                        className="p-1.5 rounded-lg hover:bg-slate-200 dark:hover:bg-gray-600 text-slate-400 hover:text-red-500 transition-colors cursor-pointer"
-                      >
-                        <Trash2 size={14} />
+
+                      {/* Mobile action menu */}
+                      <div className="sm:hidden relative">
+                        <div
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setOpenMenuId(openMenuId === t._id ? null : t._id);
+                          }}
+                          className="p-1 rounded-lg text-slate-400 hover:bg-slate-200 dark:hover:bg-gray-700 active:bg-slate-300 transition-colors cursor-pointer"
+                        >
+                          <MoreVertical size={16} />
+                        </div>
+                        {openMenuId === t._id && (
+                          <>
+                            <div 
+                              className="fixed inset-0 z-40"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setOpenMenuId(null);
+                              }}
+                            />
+                            <div className="absolute right-0 top-full mt-1 w-32 bg-white dark:bg-gray-800 border border-slate-200 dark:border-gray-700 rounded-lg shadow-xl z-50 py-1 overflow-hidden animate-in fade-in zoom-in duration-150">
+                              <div
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  setOpenMenuId(null);
+                                  openEdit(t);
+                                }}
+                                className="w-full text-left px-4 py-2.5 text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-gray-700 flex items-center gap-3 cursor-pointer"
+                              >
+                                <Pencil size={14} className="text-slate-400" /> Edit
+                              </div>
+                              <div
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  setOpenMenuId(null);
+                                  setConfirmDelete(t._id);
+                                }}
+                                className="w-full text-left px-4 py-2.5 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 flex items-center gap-3 cursor-pointer"
+                              >
+                                <Trash2 size={14} className="opacity-80" /> Hapus
+                              </div>
+                            </div>
+                          </>
+                        )}
                       </div>
                       {isActive && (
                         <span className="text-[11px] text-indigo-500 dark:text-indigo-400 font-medium shrink-0 ml-2 hidden sm:inline">
@@ -339,8 +397,8 @@ export default function NilaiLitnumPage() {
                   {selectedTask.name}
                 </h2>
                 
-                <div className="shrink-0 flex justify-end">
-                  <div className="flex flex-col bg-white dark:bg-slate-800/80 border border-indigo-200 dark:border-indigo-800/60 rounded-md overflow-hidden shadow-sm w-[130px] sm:w-[150px]">
+                <div className="shrink-0 flex justify-end items-center gap-3">
+                  <div className="flex flex-col bg-white dark:bg-slate-800/80 border border-indigo-200 dark:border-indigo-800/60 rounded-md overflow-hidden shadow-sm w-[110px] sm:w-[150px]">
                     {/* Text Content */}
                     <div className="px-2 sm:px-3 py-1 text-[10px] sm:text-xs font-semibold text-indigo-700 dark:text-indigo-300 flex items-center justify-center whitespace-nowrap">
                       {activeInputtedCount}/{students.length} murid <span className="ml-1 opacity-80">({students.length > 0 ? Math.round((activeInputtedCount / students.length) * 100) : 0}%)</span>
@@ -395,12 +453,16 @@ export default function NilaiLitnumPage() {
                           );
                           const currentVal = scoreInputs[s.studentId];
                           const isSaved =
-                            originalScore &&
+                      originalScore &&
                             String(originalScore.score) === currentVal;
                           return (
                             <tr
                               key={s.studentId}
-                              className="border-b border-slate-100 dark:border-slate-800/50 hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-colors"
+                              className={`border-b transition-colors relative ${
+                                savingIds.includes(s.studentId)
+                                  ? "border-indigo-100 dark:border-indigo-900/50 bg-indigo-50/80 dark:bg-indigo-900/20 opacity-60 animate-pulse"
+                                  : "border-slate-100 dark:border-slate-800/60 hover:bg-slate-50/50 dark:hover:bg-slate-800/50"
+                              }`}
                             >
                               <td className="px-4 py-2.5 text-center text-slate-500 dark:text-slate-400">
                                 {startIndex + i + 1}
@@ -409,44 +471,48 @@ export default function NilaiLitnumPage() {
                                 {s.name}
                               </td>
                               <td className="px-4 py-2.5 text-center">
-                                <input
-                                  type="number"
-                                  min={0}
-                                  max={100}
-                                  disabled={saving}
-                                  value={scoreInputs[s.studentId] ?? ""}
-                                  onChange={(e) =>
-                                    updateScoreInput(
-                                      s.studentId,
-                                      e.target.value,
-                                    )
-                                  }
-                                  className="w-fit px-0 mx-auto block text-center rounded-lg border border-slate-300 bg-slate-50 py-1.5 text-sm focus:outline-none focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100 dark:focus:border-blue-400 disabled:opacity-50 disabled:cursor-not-allowed transition-colors [&::-webkit-inner-spin-button]:appearance-none [&::-moz-appearance]:textfield"
-                                />
+                                <div className="relative inline-block">
+                                  <input
+                                    type="number"
+                                    min={0}
+                                    max={100}
+                                    disabled={savingIds.includes(s.studentId)}
+                                    value={scoreInputs[s.studentId] ?? ""}
+                                    onChange={(e) =>
+                                      updateScoreInput(
+                                        s.studentId,
+                                        e.target.value,
+                                      )
+                                    }
+                                    onFocus={() => setActiveStudentId(s.studentId)}
+                                    onBlur={() => setActiveStudentId(null)}
+                                    className="w-fit px-0 mx-auto block text-center rounded-lg border border-slate-300 bg-slate-50 py-1.5 text-sm focus:outline-none focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100 dark:focus:border-blue-400 disabled:bg-slate-200 dark:disabled:bg-slate-800 disabled:border-slate-300 dark:disabled:border-slate-700 disabled:text-slate-500 dark:disabled:text-slate-400 disabled:opacity-80 disabled:cursor-not-allowed transition-colors [&::-webkit-inner-spin-button]:appearance-none [&::-moz-appearance]:textfield"
+                                  />
+                                </div>
                               </td>
                               <td className="px-4 py-2.5 text-center">
                                 <span
-                                  className={`inline-flex items-center text-[11px] font-semibold p-1.5 rounded-full ${
-                                    isSaved
+                                  className={`inline-flex items-center text-[11px] font-semibold p-1 rounded-full ${
+                                    savingIds.includes(s.studentId)
+                                      ? "bg-indigo-100 text-indigo-700 dark:bg-indigo-900/40 dark:text-indigo-300"
+                                      : isSaved
                                       ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300"
                                       : "bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300"
                                   }`}
                                 >
-                                  {isSaved ? (
+                                  {savingIds.includes(s.studentId) ? (
+                                    <span
+                                      title="Menyimpan..."
+                                      className="inline-flex items-center"
+                                    >
+                                      <Loader2 size={16} className="animate-spin" />
+                                    </span>
+                                  ) : isSaved ? (
                                     <span
                                       title="Tersimpan"
                                       className="inline-flex items-center"
                                     >
-                                      <svg
-                                        className="w-4 h-4"
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        strokeWidth="2"
-                                      >
-                                        <circle cx="12" cy="12" r="10" />
-                                        <path d="m9 12 2 2 4-4" />
-                                      </svg>
+                                      <Check size={16} strokeWidth={3} />
                                     </span>
                                   ) : (
                                     <span
@@ -485,20 +551,6 @@ export default function NilaiLitnumPage() {
                 </div>
               )}
 
-              <button
-                onClick={saveScores}
-                disabled={
-                  saving || loading || scoresLoading || students.length === 0
-                }
-                className="mt-6 flex items-center justify-center gap-2 px-4 py-3 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-xl text-sm font-medium transition-colors cursor-pointer w-full"
-              >
-                {saving ? (
-                  <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                ) : (
-                  <Save size={16} />
-                )}
-                {saving ? "Menyimpan..." : "Simpan Semua Nilai"}
-              </button>
             </div>
           )}
         </>

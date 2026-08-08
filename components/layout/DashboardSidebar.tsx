@@ -20,13 +20,14 @@ export default function DashboardSidebar({
   userRole,
 }: SidebarProps) {
   const pathname = usePathname();
-  const { grade: userGrade } = useAuth();
+  const { role: clientRole, grade: userGrade } = useAuth();
   const [openGroups, setOpenGroups] = useState<Record<string, boolean>>({
     "Nilai Akademik": true,
     Karakter: true,
   });
 
-  const { filteredMenuItems, guruAllowedHrefs } = useSidebarData(userRole, userGrade);
+  const effectiveRole = userRole || clientRole;
+  const { filteredMenuItems, guruAllowedHrefs } = useSidebarData(effectiveRole, userGrade);
 
   const isActive = (href: string) => {
     if (href === "/daftar-mapel") {

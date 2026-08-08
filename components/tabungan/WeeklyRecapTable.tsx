@@ -42,7 +42,7 @@ export default function WeeklyRecapTable({ data, monthlySummary, loading }: Week
   const totalDiff = totalDeposits - totalWithdrawals;
 
   return (
-    <div className="flex flex-col gap-4">
+    <div>
       <div className="overflow-x-auto rounded-xl border border-gray-200 dark:border-gray-700 bg-white/80 dark:bg-gray-800/30">
         <Table>
             <TableHeader>
