@@ -25,9 +25,9 @@ export function useNotes(userGrade: string | null) {
         const res = await GradeSubjectService.getAll({ grade: userGrade });
         const subjects = res.result || [];
         setGradeSubjects(subjects);
-      } catch (e: unknown) {
+      } catch (e: any) {
         if (e instanceof Error) {
-          toast.error(e.message || "Gagal memuat mata pelajaran");
+          toast.error((e as any).message || "Gagal memuat mata pelajaran");
         }
       } finally {
         setIsFetchingSubjects(false);
@@ -45,9 +45,9 @@ export function useNotes(userGrade: string | null) {
     try {
       const res = await NoteService.getAll(selectedGradeSubject, parseInt(month), parseInt(year));
       setNotes(res.result || []);
-    } catch (e: unknown) {
+    } catch (e: any) {
       if (e instanceof Error) {
-        toast.error(e.message || "Gagal memuat catatan");
+        toast.error((e as any).message || "Gagal memuat catatan");
       }
     } finally {
       setLoading(false);
@@ -72,9 +72,9 @@ export function useNotes(userGrade: string | null) {
       });
       toast.success("Catatan berhasil ditambahkan");
       fetchNotes();
-    } catch (e: unknown) {
+    } catch (e: any) {
       if (e instanceof Error) {
-        toast.error(e.message || "Gagal menambahkan catatan");
+        toast.error((e as any).message || "Gagal menambahkan catatan");
       }
     }
   };
@@ -89,9 +89,9 @@ export function useNotes(userGrade: string | null) {
       await NoteService.update(id, { content });
       toast.success("Catatan berhasil diupdate");
       fetchNotes();
-    } catch (e: unknown) {
+    } catch (e: any) {
       if (e instanceof Error) {
-        toast.error(e.message || "Gagal mengupdate catatan");
+        toast.error((e as any).message || "Gagal mengupdate catatan");
       }
     }
   };
@@ -101,9 +101,9 @@ export function useNotes(userGrade: string | null) {
       await NoteService.remove(id);
       toast.success("Catatan berhasil dihapus");
       fetchNotes();
-    } catch (e: unknown) {
+    } catch (e: any) {
       if (e instanceof Error) {
-        toast.error(e.message || "Gagal menghapus catatan");
+        toast.error((e as any).message || "Gagal menghapus catatan");
       }
     }
   };

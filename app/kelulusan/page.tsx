@@ -169,7 +169,7 @@ export default function Kelulusan() {
               mt-6
               rounded-3xl
               border border-green-400/20
-              bg-gradient-to-br
+              bg-linear-to-br
               from-green-500/10
               to-emerald-500/5
               p-6

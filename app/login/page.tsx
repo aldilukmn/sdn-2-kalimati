@@ -66,8 +66,8 @@ export default function LoginPage() {
 
   return (
     <div className="relative flex flex-col items-center justify-center gap-5 md:gap-10 px-5 py-7 xl:py-10 min-h-screen overflow-hidden">
-      <div className="absolute -top-40 -left-40 h-80 w-80 rounded-full bg-gradient-to-br from-blue-400/20 to-indigo-400/10 blur-3xl dark:from-blue-500/20 dark:to-indigo-500/10" />
-      <div className="absolute -bottom-40 -right-40 h-80 w-80 rounded-full bg-gradient-to-br from-indigo-400/20 to-blue-400/10 blur-3xl dark:from-indigo-500/20 dark:to-blue-500/10" />
+      <div className="absolute -top-40 -left-40 h-80 w-80 rounded-full bg-linear-to-br from-blue-400/20 to-indigo-400/10 blur-3xl dark:from-blue-500/20 dark:to-indigo-500/10" />
+      <div className="absolute -bottom-40 -right-40 h-80 w-80 rounded-full bg-linear-to-br from-indigo-400/20 to-blue-400/10 blur-3xl dark:from-indigo-500/20 dark:to-blue-500/10" />
       <div className="absolute top-1/3 right-10 h-40 w-40 rounded-full bg-purple-400/10 blur-2xl dark:bg-purple-500/10" />
       <div className="absolute bottom-1/3 left-10 h-40 w-40 rounded-full bg-cyan-400/10 blur-2xl dark:bg-cyan-500/10" />
 
@@ -125,7 +125,7 @@ export default function LoginPage() {
 
             <button
               type="submit"
-              className={`group relative flex w-full items-center justify-center gap-2 overflow-hidden rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-600 px-5 py-3 text-sm font-semibold text-white shadow-md transition duration-300 hover:from-blue-700 hover:to-indigo-700 focus:outline-none ${
+              className={`group relative flex w-full items-center justify-center gap-2 overflow-hidden rounded-2xl bg-linear-to-r from-blue-600 to-indigo-600 px-5 py-3 text-sm font-semibold text-white shadow-md transition duration-300 hover:from-blue-700 hover:to-indigo-700 focus:outline-none ${
                 submitting || !identifier || !password
                   ? "opacity-50 disabled:cursor-not-allowed"
                   : "cursor-pointer"

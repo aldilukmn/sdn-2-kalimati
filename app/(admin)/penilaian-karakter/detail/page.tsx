@@ -137,8 +137,8 @@ export default function KarakterDetailPage() {
           weight: h.weight,
         }));
         setHabitDisplays(displays);
-      } catch (e: unknown) {
-        const message = e instanceof Error ? e.message : "Gagal memuat data penilaian";
+      } catch (e: any) {
+        const message = e instanceof Error ? (e as any).message : "Gagal memuat data penilaian";
         if (message.includes("403") || message.includes("tidak dapat mengakses")) {
           toast.error("Anda hanya dapat mengakses kelas sendiri");
           router.push("/karakter");
@@ -213,11 +213,11 @@ export default function KarakterDetailPage() {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
             
             {/* Bento Item 1: Main Profile (Spans 2 columns, 2 rows) */}
-            <div className="md:col-span-2 md:row-span-2 flex flex-col justify-between bg-gradient-to-br from-indigo-500 via-indigo-600 to-purple-600 dark:from-indigo-900 dark:via-indigo-800 dark:to-purple-900 rounded-[2rem] p-8 text-white shadow-lg shadow-indigo-500/20 relative overflow-hidden group">
+            <div className="md:col-span-2 md:row-span-2 flex flex-col justify-between bg-linear-to-br from-indigo-500 via-indigo-600 to-purple-600 dark:from-indigo-900 dark:via-indigo-800 dark:to-purple-900 rounded-[2rem] p-8 text-white shadow-lg shadow-indigo-500/20 relative overflow-hidden group">
               <div className="absolute top-0 right-0 -mr-8 -mt-8 w-40 h-40 bg-white opacity-10 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-700"></div>
               
               <div className="relative z-10 flex items-start gap-4 mb-8">
-                <div className="w-16 h-16 rounded-full bg-white/20 backdrop-blur-md border border-white/30 flex items-center justify-center shadow-inner">
+                <div className="w-16 h-16 rounded-full bg-white/20  border border-white/30 flex items-center justify-center shadow-inner">
                   <User size={32} className="text-white" />
                 </div>
                 <div>
@@ -231,17 +231,17 @@ export default function KarakterDetailPage() {
               </div>
               
               <div className="relative z-10 flex flex-wrap gap-2">
-                <span className="bg-black/20 backdrop-blur-md border border-white/10 px-3 py-1.5 rounded-xl text-sm font-medium flex items-center gap-1.5">
+                <span className="bg-black/20  border border-white/10 px-3 py-1.5 rounded-xl text-sm font-medium flex items-center gap-1.5">
                   <FileText size={14} /> Semester {data.semester}
                 </span>
-                <span className="bg-black/20 backdrop-blur-md border border-white/10 px-3 py-1.5 rounded-xl text-sm font-medium flex items-center gap-1.5">
+                <span className="bg-black/20  border border-white/10 px-3 py-1.5 rounded-xl text-sm font-medium flex items-center gap-1.5">
                   <Calendar size={14} /> {(() => {
                     const months = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
                     const m = parseInt(data.month);
                     return !isNaN(m) && m >= 1 && m <= 12 ? months[m - 1] : data.month;
                   })()}
                 </span>
-                <span className="bg-black/20 backdrop-blur-md border border-white/10 px-3 py-1.5 rounded-xl text-sm font-medium flex items-center gap-1.5">
+                <span className="bg-black/20  border border-white/10 px-3 py-1.5 rounded-xl text-sm font-medium flex items-center gap-1.5">
                   <User size={14} /> Kelas {data.grade}
                 </span>
               </div>
@@ -249,14 +249,14 @@ export default function KarakterDetailPage() {
 
             {/* Bento Item 2: Main Score (Spans 1 column, 2 rows) */}
             <div className="md:col-span-1 md:row-span-2 flex flex-col items-center justify-center text-center bg-white dark:bg-slate-800 rounded-[2rem] p-6 border border-slate-100 dark:border-slate-700 shadow-sm relative overflow-hidden group">
-              <div className="absolute inset-0 bg-gradient-to-b from-transparent to-indigo-50/50 dark:to-indigo-900/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              <div className="absolute inset-0 bg-linear-to-b from-transparent to-indigo-50/50 dark:to-indigo-900/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               <div className="relative z-10 w-16 h-16 mx-auto bg-indigo-50 dark:bg-indigo-900/30 rounded-full flex items-center justify-center mb-4 text-indigo-500">
                 <Award size={32} />
               </div>
               <p className="relative z-10 text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-2">
                 Nilai Karakter
               </p>
-              <h3 className="relative z-10 text-5xl font-black bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-400 dark:to-purple-400">
+              <h3 className="relative z-10 text-5xl font-black bg-clip-text text-transparent bg-linear-to-r from-indigo-600 to-purple-600 dark:from-indigo-400 dark:to-purple-400">
                 {formatScore(data.characterScore)}
               </h3>
             </div>
@@ -275,7 +275,7 @@ export default function KarakterDetailPage() {
 
             {/* Bento Item 4: Total Bobot (Spans 1 column, 1 row) */}
             <div className="md:col-span-1 md:row-span-1 flex flex-col justify-center bg-white dark:bg-slate-800 rounded-[2rem] p-6 border border-slate-100 dark:border-slate-700 shadow-sm relative overflow-hidden group">
-              <div className="absolute inset-0 bg-gradient-to-r from-blue-50/50 to-transparent dark:from-blue-900/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              <div className="absolute inset-0 bg-linear-to-r from-blue-50/50 to-transparent dark:from-blue-900/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               <p className="relative z-10 text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1">
                 Total Bobot
               </p>
@@ -290,7 +290,7 @@ export default function KarakterDetailPage() {
             </div>
             
             {/* Bento Item 5: Metadata Footer (Spans full width or remaining space) */}
-            <div className="md:col-span-4 flex flex-col sm:flex-row items-center justify-between gap-4 bg-white/50 dark:bg-slate-800/50 backdrop-blur-sm rounded-[1.5rem] p-4 border border-slate-200/60 dark:border-slate-700/60">
+            <div className="md:col-span-4 flex flex-col sm:flex-row items-center justify-between gap-4 bg-white/50 dark:bg-slate-800/50  rounded-[1.5rem] p-4 border border-slate-200/60 dark:border-slate-700/60">
               <div className="flex items-center gap-2 text-sm font-medium text-slate-600 dark:text-slate-300">
                 <CheckCircle size={16} className="text-emerald-500" />
                 <span>Tervalidasi & Dicatat oleh <strong className="text-indigo-600 dark:text-indigo-400">{recorderName || data.recordedBy || "-"}</strong></span>
@@ -311,7 +311,7 @@ export default function KarakterDetailPage() {
               <div className="overflow-x-auto rounded-xl border border-gray-200 dark:border-gray-700 bg-white/80 dark:bg-gray-800/30">
                 <Table>
                   <TableHeader>
-                    <TableRow className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white">
+                    <TableRow className="bg-linear-to-r from-indigo-600 to-purple-600 text-white">
                       <TableHead className="w-12 text-center text-xs font-semibold text-white">
                         No
                       </TableHead>

@@ -102,15 +102,15 @@ export function RecentActivities({ title = "Aktivitas Terbaru", activities = [],
 
   return (
     <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden flex flex-col h-fit">
-      <div className="p-3 md:p-4 flex items-center justify-between gap-2 bg-gradient-to-r from-blue-500 to-indigo-600 border-b border-slate-100 dark:border-slate-700/50 md:border-b md:border-slate-100 md:dark:border-slate-700/50">
+      <div className="p-3 md:p-4 flex items-center justify-between gap-2 bg-linear-to-r from-blue-500 to-indigo-600 border-b border-slate-100 dark:border-slate-700/50 md:border-b md:border-slate-100 md:dark:border-slate-700/50">
         <div className="flex items-center gap-2">
-          <div className="p-1.5 md:p-2 bg-white/20 rounded-lg backdrop-blur-sm">
+          <div className="p-1.5 md:p-2 bg-white/20 rounded-lg ">
             <Activity className="w-4 h-4 md:w-5 md:h-5 text-white" />
           </div>
           <h3 className="text-sm md:text-base font-bold text-white">Aktivitas Terbaru</h3>
         </div>
         <div className="flex items-center gap-3">
-          <span className="text-xs font-medium bg-white/20 text-white px-2.5 py-1 rounded-full backdrop-blur-sm">
+          <span className="text-xs font-medium bg-white/20 text-white px-2.5 py-1 rounded-full ">
             {activities.length} aktivitas
           </span>
         </div>

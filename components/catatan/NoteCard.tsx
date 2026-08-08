@@ -33,7 +33,7 @@ export default function NoteCard({ note, onUpdate, onDelete }: NoteCardProps) {
   };
 
   return (
-    <div className="bg-white/70 dark:bg-slate-800/70 backdrop-blur-xl border border-slate-200/50 dark:border-slate-700/50 rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow">
+    <div className="bg-white/70 dark:bg-slate-800/70  border border-slate-200/50 dark:border-slate-700/50 rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow">
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-1.5 text-xs font-medium text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-900/30 px-2.5 py-1 rounded-md">
           <Calendar size={14} />

@@ -246,7 +246,7 @@ export default function DashboardKarakterPage() {
               <div className="overflow-x-auto  rounded-xl border border-gray-200 dark:border-gray-700 bg-white/80 dark:bg-gray-800/30 ">
                 <Table>
                   <TableHeader>
-                    <TableRow className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white">
+                    <TableRow className="bg-linear-to-r from-indigo-600 to-purple-600 text-white">
                       <TableHead className="w-12 text-center text-xs font-semibold text-white">
                         No
                       </TableHead>

@@ -63,8 +63,8 @@ export default function KarakterHistoryPage() {
         const res = await CharacterAssessmentService.getHistory(studentId);
         const items = res?.result || [];
         setHistoryData(items);
-      } catch (e: unknown) {
-        const message = e instanceof Error ? e.message : "Gagal memuat data riwayat";
+      } catch (e: any) {
+        const message = e instanceof Error ? (e as any).message : "Gagal memuat data riwayat";
         if (message.includes("403") || message.includes("tidak dapat mengakses")) {
           toast.error("Anda hanya dapat mengakses kelas sendiri");
           router.push("/karakter");
@@ -138,7 +138,7 @@ export default function KarakterHistoryPage() {
               <div className="overflow-x-auto rounded-xl border border-gray-200 dark:border-gray-700 bg-white/80 dark:bg-gray-800/30">
                 <Table>
                   <TableHeader>
-                    <TableRow className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white">
+                    <TableRow className="bg-linear-to-r from-indigo-600 to-purple-600 text-white">
                       <TableHead className="w-12 text-center text-xs font-semibold text-white">No</TableHead>
                       <TableHead className="text-xs font-semibold text-white">Bulan</TableHead>
                       <TableHead className="text-center text-xs font-semibold text-white">Skor Karakter</TableHead>

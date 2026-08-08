@@ -96,8 +96,8 @@ export function useCharacterAssessment() {
       setScores(scoreMap);
       setModifiedStudents(new Set());
       setCurrentPage(1);
-    } catch (e: unknown) {
-      const message = e instanceof Error ? e.message : "Gagal memuat data penilaian";
+    } catch (e: any) {
+      const message = e instanceof Error ? (e as any).message : "Gagal memuat data penilaian";
       setError(message);
       resetForm();
     } finally {

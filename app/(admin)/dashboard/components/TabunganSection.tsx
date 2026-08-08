@@ -49,14 +49,14 @@ export default function TabunganSection({
             Rekapitulasi Tabungan
           </h3>
         </div>
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-1.5 w-full md:flex md:w-auto md:items-center md:gap-2.5 md:ml-auto">
+        <div className="flex flex-nowrap overflow-x-auto pb-2 -mr-4 pr-4 md:pb-0 md:mr-0 md:pr-0 gap-2 md:gap-2.5 w-[calc(100%+1rem)] md:w-auto md:items-center md:ml-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
           {userRole === "guru" && !isSavingsHolder ? (
             <Select
               value={filterGrade}
               onValueChange={(v) => { if (v !== null) setFilterGrade(v); }}
               disabled
             >
-              <SelectTrigger className="h-auto w-full md:w-32 rounded-lg border border-slate-300 bg-slate-50 px-2.5 py-1.5 text-xs focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100">
+              <SelectTrigger className="shrink-0 h-auto w-28 md:w-32 rounded-lg border border-slate-300 bg-slate-50 px-2.5 py-1.5 text-xs focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100">
                 <SelectValue placeholder="Semua Kelas" className="sr-only" />
                 {filterGrade ? `Kelas ${filterGrade}` : "Semua Kelas"}
               </SelectTrigger>
@@ -75,7 +75,7 @@ export default function TabunganSection({
               value={filterGrade}
               onValueChange={(v) => { if (v !== null) setFilterGrade(v); }}
             >
-              <SelectTrigger className="h-auto w-full md:w-32 rounded-lg border border-slate-300 bg-slate-50 px-2.5 py-1.5 text-xs focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100">
+              <SelectTrigger className="shrink-0 h-auto w-28 md:w-32 rounded-lg border border-slate-300 bg-slate-50 px-2.5 py-1.5 text-xs focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100">
                 <SelectValue placeholder="Semua Kelas" className="sr-only" />
                 {filterGrade ? `Kelas ${filterGrade}` : "Semua Kelas"}
               </SelectTrigger>
@@ -90,7 +90,9 @@ export default function TabunganSection({
               </SelectContent>
             </Select>
           )}
-          <MonthYearFilter month={month} onMonthChange={setMonth} year={year} onYearChange={setYear} variant="dashboard" className='w-full' />
+          <div className="shrink-0">
+            <MonthYearFilter month={month} onMonthChange={setMonth} year={year} onYearChange={setYear} variant="dashboard" className='w-full' />
+          </div>
         </div>
       </div>
 

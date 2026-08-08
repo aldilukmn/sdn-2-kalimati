@@ -45,10 +45,10 @@ export function useDeleteTransaction({
           text: res?.status?.message || "Gagal menghapus transaksi",
         });
       }
-    } catch (e: unknown) {
+    } catch (e: any) {
       setMessage({
         type: "error",
-        text: e instanceof Error ? e.message : "Gagal menghapus transaksi",
+        text: e instanceof Error ? (e as any).message : "Gagal menghapus transaksi",
       });
     } finally {
       setDeletingId(null);

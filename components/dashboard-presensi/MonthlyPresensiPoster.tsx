@@ -30,7 +30,7 @@ export const MonthlyPresensiPoster = forwardRef<HTMLDivElement, Props>(({
       style={{ position: 'absolute', top: 0, left: 0, zIndex: -9999, opacity: 0.001, pointerEvents: 'none' }}
     >
       {/* HEADER */}
-      <div className="bg-gradient-to-br from-indigo-600 to-purple-700 p-10 text-white relative overflow-hidden rounded-b-[40px] shadow-lg">
+      <div className="bg-linear-to-br from-indigo-600 to-purple-700 p-10 text-white relative overflow-hidden rounded-b-[40px] shadow-lg">
         <div className="absolute top-0 right-0 opacity-10">
           <CalendarCheck size={300} className="transform translate-x-1/4 -translate-y-1/4" />
         </div>
@@ -39,7 +39,7 @@ export const MonthlyPresensiPoster = forwardRef<HTMLDivElement, Props>(({
             <h1 className="text-4xl font-extrabold mb-2 tracking-tight">Rekapitulasi Kehadiran</h1>
             <h2 className="text-2xl font-medium text-indigo-100">Kelas {grade} - {monthName} {year}</h2>
           </div>
-          <div className="bg-white/20 backdrop-blur-md px-6 py-4 rounded-2xl border border-white/30 text-center">
+          <div className="bg-white/20  px-6 py-4 rounded-2xl border border-white/30 text-center">
             <p className="text-sm font-medium text-indigo-100 uppercase tracking-wider mb-1">Tingkat Kehadiran</p>
             <p className="text-5xl font-black">{summary ? summary.hadirRate : 0}%</p>
           </div>

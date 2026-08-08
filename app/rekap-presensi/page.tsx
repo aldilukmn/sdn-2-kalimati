@@ -282,7 +282,7 @@ export default function RekapPresensi() {
               ) : (
                 <table className="w-full">
                   <thead>
-                    <tr className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-xs md:text-sm">
+                    <tr className="bg-linear-to-r from-indigo-600 to-purple-600 text-white text-xs md:text-sm">
                       <th className="px-4 py-3 text-left text-xs font-semibold">
                         No
                       </th>

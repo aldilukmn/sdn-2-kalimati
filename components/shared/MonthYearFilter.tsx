@@ -32,15 +32,15 @@ export default function MonthYearFilter({
   const isDashboard = variant === "dashboard";
 
   const triggerClass = isDashboard
-    ? "h-auto rounded-lg border border-slate-300 bg-slate-50 px-4 py-1.5 text-xs focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100 flex-1"
-    : "h-auto rounded-lg border border-slate-300 bg-slate-50 px-2.5 py-1.5 text-xs focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100 flex-1";
+    ? "h-auto rounded-lg border border-slate-300 bg-slate-50 px-4 py-1.5 text-xs focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100 shrink-0"
+    : "h-auto rounded-lg border border-slate-300 bg-slate-50 px-2.5 py-1.5 text-xs focus:border-blue-500 dark:border-gray-700 dark:bg-gray-950 dark:text-slate-100 shrink-0";
 
   const content = (
     <div className={`flex items-center gap-1.5 md:gap-2.5 ${className}`}>
       <Select value={String(month)} onValueChange={(v) => { if (v !== null) onMonthChange(Number(v)); }}>
-        <SelectTrigger className={triggerClass}>
+        <SelectTrigger className={`${triggerClass} w-[110px]`}>
           <SelectValue placeholder="Bulan" className="sr-only" />
-          {MONTHS_ID[month - 1]}
+          <span className="truncate">{MONTHS_ID[month - 1]}</span>
         </SelectTrigger>
         <SelectContent>
           <SelectGroup>
@@ -52,7 +52,7 @@ export default function MonthYearFilter({
         </SelectContent>
       </Select>
       <Select value={String(year)} onValueChange={(v) => { if (v !== null) onYearChange(Number(v)); }}>
-        <SelectTrigger className={triggerClass}>
+        <SelectTrigger className={`${triggerClass} w-[80px]`}>
           <SelectValue placeholder="Tahun" className="sr-only" />
           {year}
         </SelectTrigger>

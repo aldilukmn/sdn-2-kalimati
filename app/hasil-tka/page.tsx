@@ -156,7 +156,7 @@ export default function HasilTKA() {
               mt-6
               rounded-3xl
               border border-blue-400/30
-              bg-gradient-to-br
+              bg-linear-to-br
               from-blue-500/10
               to-cyan-500/5
               p-6

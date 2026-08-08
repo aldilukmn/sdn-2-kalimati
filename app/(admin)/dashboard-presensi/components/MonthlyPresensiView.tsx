@@ -20,7 +20,7 @@ const ABSEN_COLOR = (n: number) => {
 interface MonthlyPresensiViewProps {
   grade: string;
   isAdminOrKepala: boolean;
-  gradeRows: any[];
+  gradeRows: { grade: string; rate: number; studentCount: number }[];
   loading: boolean;
   topAbsen: any[];
   topLowHadir: any[];

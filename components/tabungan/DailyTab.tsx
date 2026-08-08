@@ -5,6 +5,7 @@ import {
   Plus,
   Minus,
   History,
+  Users,
 } from "lucide-react";
 import { StudentWithBalance } from "@/hooks/useStudentList";
 import { ITEMS_PER_PAGE } from "@/lib/constants";
@@ -38,106 +39,150 @@ export default function DailyTab({
 }: DailyTabProps) {
   return (
     <div className="bg-white/90 md:bg-white/70 dark:bg-gray-800/40 md: border border-white/20 dark:border-gray-700/50 shadow-lg rounded-2xl p-4 md:p-5">
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="text-sm md:text-base font-semibold text-gray-500 dark:text-gray-400 tracking-wider">
+      <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center gap-2.5">
+          <div className="w-8 h-8 bg-indigo-100 dark:bg-indigo-900/40 rounded-lg flex shrink-0 items-center justify-center">
+            <Users size={16} className="text-indigo-600 dark:text-indigo-300" />
+          </div>
+          <h2 className="text-sm md:text-base font-semibold text-gray-700 dark:text-gray-300 tracking-wider">
             Daftar Tabungan Murid
           </h2>
-          <button
-            onClick={exportExcel}
-            disabled={loading || students.length === 0}
-            className="flex items-center gap-1.5 text-xs font-medium text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-200 transition-colors disabled:opacity-40 cursor-pointer"
-          >
-            <FileDown size={16} />
-            Export Excel
-          </button>
         </div>
+        <button
+          onClick={exportExcel}
+          disabled={loading || students.length === 0}
+          title="Export Excel"
+          className="flex items-center justify-center p-2 md:p-0 bg-indigo-50 dark:bg-indigo-900/30 md:bg-transparent rounded-lg md:rounded-none gap-1.5 text-xs font-medium text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-200 hover:bg-indigo-100 dark:hover:bg-indigo-900/50 md:hover:bg-transparent transition-colors disabled:opacity-40 cursor-pointer"
+        >
+          <FileDown size={18} className="md:w-4 md:h-4" />
+          <span className="hidden md:inline">Export Excel</span>
+        </button>
+      </div>
 
-        <div className="overflow-x-auto rounded-xl border border-slate-200 dark:border-gray-700">
-          <table className="w-full">
-            <thead>
-              <tr className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-xs md:text-sm">
-                <th className="px-3 py-3 text-left font-semibold whitespace-nowrap">No</th>
-                <th className="px-3 py-3 text-left font-semibold whitespace-nowrap">Nama</th>
-                <th className="px-3 py-3 text-center font-semibold whitespace-nowrap">Saldo</th>
-                <th className="px-3 py-3 text-center font-semibold whitespace-nowrap">Setoran</th>
-                <th className="px-3 py-3 text-center font-semibold whitespace-nowrap">Penarikan</th>
-                <th className="px-3 py-3 text-center font-semibold whitespace-nowrap">Aksi</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
-              {loading ? (
-                Array.from({ length: 5 }).map((_, i) => (
-                  <tr key={i} className="animate-pulse">
-                    <td className="px-3 py-3"><div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-6" /></td>
-                    <td className="px-3 py-3"><div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-40" /></td>
-                    <td className="px-3 py-3"><div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-20 mx-auto" /></td>
-                    <td className="px-3 py-3"><div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-20 mx-auto" /></td>
-                    <td className="px-3 py-3"><div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-20 mx-auto" /></td>
-                    <td className="px-3 py-3"><div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-24 md:w-32 mx-auto" /></td>
-                  </tr>
-                ))
-              ) : paginatedStudents.length === 0 ? (
-                <tr>
-                  <td colSpan={6} className="px-3 py-12 text-center text-gray-400">
-                    Belum ada data tabungan untuk kelas ini
+      <div className="overflow-x-auto rounded-xl border border-slate-200 dark:border-gray-700">
+        <table className="w-full">
+          <thead>
+            <tr className="bg-linear-to-r from-indigo-600 to-purple-600 text-white text-xs md:text-sm">
+              <th className="px-3 py-3 text-center font-semibold whitespace-nowrap">
+                No
+              </th>
+              <th className="px-3 py-3 text-center font-semibold whitespace-nowrap">
+                Nama
+              </th>
+              <th className="px-3 py-3 text-center font-semibold whitespace-nowrap">
+                Saldo
+              </th>
+              <th className="px-3 py-3 text-center font-semibold whitespace-nowrap">
+                Setoran
+              </th>
+              <th className="px-3 py-3 text-center font-semibold whitespace-nowrap">
+                Penarikan
+              </th>
+              <th className="px-3 py-3 text-center font-semibold whitespace-nowrap">
+                Aksi
+              </th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
+            {loading ? (
+              Array.from({ length: 5 }).map((_, i) => (
+                <tr key={i} className="animate-pulse">
+                  <td className="px-3 py-3">
+                    <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-6" />
+                  </td>
+                  <td className="px-3 py-3">
+                    <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-40" />
+                  </td>
+                  <td className="px-3 py-3">
+                    <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-20 mx-auto" />
+                  </td>
+                  <td className="px-3 py-3">
+                    <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-20 mx-auto" />
+                  </td>
+                  <td className="px-3 py-3">
+                    <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-20 mx-auto" />
+                  </td>
+                  <td className="px-3 py-3">
+                    <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-24 md:w-32 mx-auto" />
                   </td>
                 </tr>
-              ) : (
-                paginatedStudents.map((s, i) => (
-                  <tr key={s.studentId} className="hover:bg-indigo-50/50 dark:hover:bg-indigo-900/20 transition-colors">
-                    <td className="px-3 py-3 text-sm text-gray-600 dark:text-gray-400 whitespace-nowrap">{startIndex + i + 1}</td>
-                    <td className="px-3 py-3 text-sm font-medium text-gray-800 dark:text-slate-100 whitespace-nowrap">{s.name}</td>
-                    <td className="px-3 py-3 text-sm text-center font-semibold text-gray-800 dark:text-slate-100 whitespace-nowrap">{formatCompactRupiah(s.balance)}</td>
-                    <td className="px-3 py-3 text-sm text-center text-emerald-700 dark:text-emerald-300 font-medium whitespace-nowrap">
-                      {s.todayDeposit ? formatCompactRupiah(s.todayDeposit) : "-"}
-                    </td>
-                    <td className="px-3 py-3 text-sm text-center text-orange-600 dark:text-orange-400 font-medium whitespace-nowrap">
-                      {s.todayWithdrawal ? formatCompactRupiah(s.todayWithdrawal) : "-"}
-                    </td>
-                    <td className="px-3 py-3 whitespace-nowrap">
-                      <div className="flex items-center justify-center gap-1.5">
-                        <button
-                          title="Simpan"
-                          onClick={() => openTxModal(s, "simpan")}
-                          className="flex items-center gap-1 p-1.5 md:px-2.5 md:py-1.5 rounded-lg text-xs font-medium text-white bg-emerald-500 hover:bg-emerald-600 transition-colors cursor-pointer"
-                        >
-                          <Plus size={14} />
-                          <span className="hidden md:inline">Simpan</span>
-                        </button>
-                        <button
-                          title="Tarik"
-                          onClick={() => openTxModal(s, "tarik")}
-                          className="flex items-center gap-1 p-1.5 md:px-2.5 md:py-1.5 rounded-lg text-xs font-medium text-white bg-orange-500 hover:bg-orange-600 transition-colors cursor-pointer"
-                        >
-                          <Minus size={14} />
-                          <span className="hidden md:inline">Tarik</span>
-                        </button>
-                        <button
-                          title="Riwayat"
-                          onClick={() => openHistoryModal(s)}
-                          className="flex items-center gap-1 p-1.5 md:px-2.5 md:py-1.5 rounded-lg text-xs font-medium bg-blue-500 hover:bg-blue-600 text-white transition-colors cursor-pointer"
-                        >
-                          <History size={14} />
-                          <span className="hidden md:inline">Riwayat</span>
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))
-              )}
-            </tbody>
-          </table>
-        </div>
-
-        {!loading && paginatedStudents.length > 0 && (
-          <Pagination
-            currentPage={currentPage}
-            totalPages={totalPages}
-            onPageChange={setCurrentPage}
-            totalItems={students.length}
-            itemsPerPage={ITEMS_PER_PAGE}
-          />
-        )}
+              ))
+            ) : paginatedStudents.length === 0 ? (
+              <tr>
+                <td
+                  colSpan={6}
+                  className="px-3 py-12 text-center text-gray-400"
+                >
+                  Belum ada data tabungan untuk kelas ini
+                </td>
+              </tr>
+            ) : (
+              paginatedStudents.map((s, i) => (
+                <tr
+                  key={s.studentId}
+                  className="hover:bg-indigo-50/50 dark:hover:bg-indigo-900/20 transition-colors"
+                >
+                  <td className="px-3 py-3 text-sm text-gray-600 dark:text-gray-400 whitespace-nowrap">
+                    {startIndex + i + 1}
+                  </td>
+                  <td className="px-3 py-3 text-sm font-medium text-gray-800 dark:text-slate-100 whitespace-nowrap">
+                    {s.name}
+                  </td>
+                  <td className="px-3 py-3 text-sm text-center font-semibold text-gray-800 dark:text-slate-100 whitespace-nowrap">
+                    {formatCompactRupiah(s.balance)}
+                  </td>
+                  <td className="px-3 py-3 text-sm text-center text-emerald-700 dark:text-emerald-300 font-medium whitespace-nowrap">
+                    {s.todayDeposit ? formatCompactRupiah(s.todayDeposit) : "-"}
+                  </td>
+                  <td className="px-3 py-3 text-sm text-center text-orange-600 dark:text-orange-400 font-medium whitespace-nowrap">
+                    {s.todayWithdrawal
+                      ? formatCompactRupiah(s.todayWithdrawal)
+                      : "-"}
+                  </td>
+                  <td className="px-3 py-3 whitespace-nowrap">
+                    <div className="flex items-center justify-center gap-1.5">
+                      <button
+                        title="Simpan"
+                        onClick={() => openTxModal(s, "simpan")}
+                        className="flex items-center gap-1 p-1.5 md:px-2.5 md:py-1.5 rounded-lg text-xs font-medium text-white bg-emerald-500 hover:bg-emerald-600 transition-colors cursor-pointer"
+                      >
+                        <Plus size={14} />
+                        <span className="hidden md:inline">Simpan</span>
+                      </button>
+                      <button
+                        title="Tarik"
+                        onClick={() => openTxModal(s, "tarik")}
+                        className="flex items-center gap-1 p-1.5 md:px-2.5 md:py-1.5 rounded-lg text-xs font-medium text-white bg-orange-500 hover:bg-orange-600 transition-colors cursor-pointer"
+                      >
+                        <Minus size={14} />
+                        <span className="hidden md:inline">Tarik</span>
+                      </button>
+                      <button
+                        title="Riwayat"
+                        onClick={() => openHistoryModal(s)}
+                        className="flex items-center gap-1 p-1.5 md:px-2.5 md:py-1.5 rounded-lg text-xs font-medium bg-blue-500 hover:bg-blue-600 text-white transition-colors cursor-pointer"
+                      >
+                        <History size={14} />
+                        <span className="hidden md:inline">Riwayat</span>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))
+            )}
+          </tbody>
+        </table>
       </div>
+
+      {!loading && paginatedStudents.length > 0 && (
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={setCurrentPage}
+          totalItems={students.length}
+          itemsPerPage={ITEMS_PER_PAGE}
+        />
+      )}
+    </div>
   );
 }

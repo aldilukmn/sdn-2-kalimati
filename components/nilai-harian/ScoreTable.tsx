@@ -119,7 +119,7 @@ export default function ScoreTable({
         <div className="overflow-x-auto  rounded-xl border border-gray-200 dark:border-gray-700 bg-white/80 md:bg-white/60 dark:bg-gray-800/30 ">
           <table className="w-full text-sm">
             <thead>
-              <tr className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-xs md:text-sm text-center">
+              <tr className="bg-linear-to-r from-indigo-600 to-purple-600 text-white text-xs md:text-sm text-center">
                 <th className="px-4 py-3 font-semibold w-12 whitespace-nowrap">No</th>
                 <th className="text-left px-4 py-3 font-semibold whitespace-nowrap">Nama</th>
                 <th className="px-4 py-3 font-semibold w-32 whitespace-nowrap">Nilai (0-100)</th>
@@ -161,7 +161,7 @@ export default function ScoreTable({
       <div className="overflow-x-auto rounded-xl border border-gray-200 dark:border-gray-700 bg-white/80 md:bg-white/60 dark:bg-gray-800/30">
         <table className="w-full text-sm">
           <thead>
-            <tr className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-xs md:text-sm text-center">
+            <tr className="bg-linear-to-r from-indigo-600 to-purple-600 text-white text-xs md:text-sm text-center">
               <th className="px-4 py-3 font-semibold w-12 whitespace-nowrap">No</th>
               <th className="text-left px-4 py-3 font-semibold whitespace-nowrap">Nama</th>
               <th className="px-4 py-3 font-semibold w-32 whitespace-nowrap">Nilai (0-100)</th>

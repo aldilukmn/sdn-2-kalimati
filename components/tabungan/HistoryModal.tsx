@@ -163,7 +163,7 @@ export default function HistoryModal({
             <div className="rounded-xl border border-slate-200 dark:border-gray-700 overflow-hidden">
               <Table>
                 <TableHeader>
-                  <TableRow className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-xs md:text-sm hover:from-indigo-600 hover:to-purple-600">
+                  <TableRow className="bg-linear-to-r from-indigo-600 to-purple-600 text-white text-xs md:text-sm hover:from-indigo-600 hover:to-purple-600">
                     <TableHead className="font-semibold text-white">Tanggal</TableHead>
                     <TableHead className="font-semibold text-white">Tipe</TableHead>
                     <TableHead className="font-semibold text-white">Jumlah</TableHead>

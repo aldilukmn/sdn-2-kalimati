@@ -71,8 +71,8 @@ export default function MasterStrukturPage() {
       const svc = (await import("@/services/chapter.service")).default;
       await svc.reorder(selectedGS, reorderPayload);
       toast.success("Urutan bab berhasil diperbarui");
-    } catch (e: unknown) {
-      toast.error(e instanceof Error ? e.message : "Gagal mengubah urutan");
+    } catch (e: any) {
+      toast.error(e instanceof Error ? (e as any).message : "Gagal mengubah urutan");
     }
     dragItem.current = null;
     dragOverItem.current = null;
@@ -83,8 +83,8 @@ export default function MasterStrukturPage() {
     try {
       await saveChapter();
       toast.success(chapterModal.edit ? "Bab berhasil diperbarui" : "Bab berhasil ditambahkan");
-    } catch (e: unknown) {
-      toast.error(e instanceof Error ? e.message : "Gagal menyimpan bab");
+    } catch (e: any) {
+      toast.error(e instanceof Error ? (e as any).message : "Gagal menyimpan bab");
     }
   };
 
@@ -94,8 +94,8 @@ export default function MasterStrukturPage() {
     try {
       await deleteChapter(confirmDelete.id);
       toast.success("Bab berhasil dihapus");
-    } catch (e: unknown) {
-      toast.error(e instanceof Error ? e.message : "Gagal menghapus bab");
+    } catch (e: any) {
+      toast.error(e instanceof Error ? (e as any).message : "Gagal menghapus bab");
     } finally {
       setDeleting(false);
       setConfirmDelete(null);
@@ -108,8 +108,8 @@ export default function MasterStrukturPage() {
     try {
       await deleteMaterial(confirmDelete.chapterId, confirmDelete.id);
       toast.success("Materi berhasil dihapus");
-    } catch (e: unknown) {
-      toast.error(e instanceof Error ? e.message : "Gagal menghapus materi");
+    } catch (e: any) {
+      toast.error(e instanceof Error ? (e as any).message : "Gagal menghapus materi");
     } finally {
       setDeleting(false);
       setConfirmDelete(null);
@@ -121,8 +121,8 @@ export default function MasterStrukturPage() {
     try {
       await saveMaterial();
       toast.success(materialModal.edit ? "Materi berhasil diperbarui" : "Materi berhasil ditambahkan");
-    } catch (e: unknown) {
-      toast.error(e instanceof Error ? e.message : "Gagal menyimpan materi");
+    } catch (e: any) {
+      toast.error(e instanceof Error ? (e as any).message : "Gagal menyimpan materi");
     }
   };
 
@@ -138,8 +138,8 @@ export default function MasterStrukturPage() {
     try {
       await reorderMaterials(chapterId, reorderPayload);
       toast.success("Urutan materi berhasil diperbarui");
-    } catch (e: unknown) {
-      toast.error(e instanceof Error ? e.message : "Gagal mengubah urutan");
+    } catch (e: any) {
+      toast.error(e instanceof Error ? (e as any).message : "Gagal mengubah urutan");
     }
   };
 

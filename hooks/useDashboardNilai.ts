@@ -56,7 +56,7 @@ export function useDashboardNilai(userRole: string | null, userGrade: string | n
         setData(resultData);
       } catch (err: any) {
         if (!cancelled) {
-          setError(err.message || "Gagal mengambil data dashboard akademik");
+          setError((err as any).message || "Gagal mengambil data dashboard akademik");
           setData(null);
         }
       } finally {

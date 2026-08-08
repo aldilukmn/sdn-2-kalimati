@@ -128,8 +128,8 @@ export default function PresensiMuridPage() {
       } else {
         toast.error("Tidak ada hari kerja yang bisa ditambahkan sebagai libur (hanya Minggu)");
       }
-    } catch (e: unknown) {
-      toast.error(e instanceof Error ? e.message : "Gagal menambah hari libur");
+    } catch (e: any) {
+      toast.error(e instanceof Error ? (e as any).message : "Gagal menambah hari libur");
     } finally {
       setAddSaving(false);
     }
@@ -141,8 +141,8 @@ export default function PresensiMuridPage() {
       await HolidayService.remove(date);
       await refreshHolidays();
       toast.success("Hari libur berhasil dihapus");
-    } catch (e: unknown) {
-      toast.error(e instanceof Error ? e.message : "Gagal menghapus hari libur");
+    } catch (e: any) {
+      toast.error(e instanceof Error ? (e as any).message : "Gagal menghapus hari libur");
     } finally {
       setRemovingDate(null);
     }
@@ -234,7 +234,7 @@ export default function PresensiMuridPage() {
                 <button
                   onClick={handleSave}
                   disabled={saving || isHoliday}
-                  className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white rounded-xl text-sm font-semibold transition-all duration-300 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+                  className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-linear-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white rounded-xl text-sm font-semibold transition-all duration-300 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
                 >
                   {saving ? (
                     <Loader2 size={18} className="animate-spin" />

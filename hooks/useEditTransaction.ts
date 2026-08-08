@@ -76,10 +76,10 @@ export function useEditTransaction({
           text: res?.status?.message || "Gagal memperbarui transaksi",
         });
       }
-    } catch (e: unknown) {
+    } catch (e: any) {
       setMessage({
         type: "error",
-        text: e instanceof Error ? e.message : "Gagal memperbarui transaksi",
+        text: e instanceof Error ? (e as any).message : "Gagal memperbarui transaksi",
       });
     } finally {
       setEditSaving(false);

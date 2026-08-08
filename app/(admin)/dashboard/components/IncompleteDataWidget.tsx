@@ -37,9 +37,10 @@ interface ChecklistItem {
 function extractArray<T>(res: any): T[] {
   if (!res) return [];
   if (Array.isArray(res)) return res;
-  if (Array.isArray(res.data)) return res.data;
-  if (Array.isArray(res.result)) return res.result;
-  if (res.data && Array.isArray(res.data.result)) return res.data.result;
+  const r = res as Record<string, any>;
+  if (Array.isArray(r.data)) return r.data;
+  if (Array.isArray(r.result)) return r.result;
+  if (r.data && Array.isArray(r.data.result)) return r.data.result;
   return [];
 }
 
@@ -133,14 +134,14 @@ export default function IncompleteDataWidget({ userGrade }: IncompleteDataWidget
 
       // 2. Subjects (Tasks & Chapters)
       if (data.subjects && data.subjects.length > 0) {
-        data.subjects.forEach((subj: any) => {
+        data.subjects.forEach((subj: Record<string, any>) => {
           let itemDetails: string[] = [];
           let firstIncompleteHref = "";
           let totalScoresFilled = 0;
           let expectedMaxScores = 0;
           
           if (subj.incompleteTasks && subj.incompleteTasks.length > 0) {
-            subj.incompleteTasks.forEach((t: any) => {
+            subj.incompleteTasks.forEach((t: Record<string, any>) => {
               const catLabel = formatCategoryLabel(t.category);
               itemDetails.push(`${catLabel}: "${t.name}" - (${t.filled}/${data.totalStudents} nilai)`);
               if (!firstIncompleteHref) {
@@ -152,7 +153,7 @@ export default function IncompleteDataWidget({ userGrade }: IncompleteDataWidget
           }
 
           if (subj.incompleteChapters && subj.incompleteChapters.length > 0) {
-            subj.incompleteChapters.forEach((c: any) => {
+            subj.incompleteChapters.forEach((c: Record<string, any>) => {
               itemDetails.push(`Bab "${c.name}" - (${c.filled}/${data.totalStudents} nilai)`);
               if (!firstIncompleteHref) {
                 firstIncompleteHref = `/nilai-harian?subjectId=${subj.actualSubjectId}&chapterId=${c.chapterId}`;
@@ -184,7 +185,7 @@ export default function IncompleteDataWidget({ userGrade }: IncompleteDataWidget
       // 3. Litnum
       if (data.litnum?.incompleteTasks && data.litnum.incompleteTasks.length > 0) {
         let incompleteLitnumDetails: string[] = [];
-        data.litnum.incompleteTasks.forEach((t: any) => {
+        data.litnum.incompleteTasks.forEach((t: Record<string, any>) => {
           incompleteLitnumDetails.push(`Tugas "${t.name}" - (${t.filled}/${data.totalStudents} nilai)`);
         });
 

@@ -89,10 +89,10 @@ export function useTransactionModal({
           text: res?.status?.message || "Gagal menyimpan transaksi",
         });
       }
-    } catch (e: unknown) {
+    } catch (e: any) {
       setMessage({
         type: "error",
-        text: e instanceof Error ? e.message : "Gagal menyimpan transaksi",
+        text: e instanceof Error ? (e as any).message : "Gagal menyimpan transaksi",
       });
     } finally {
       setSaving(false);

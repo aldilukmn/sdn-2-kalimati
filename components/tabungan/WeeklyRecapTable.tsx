@@ -46,7 +46,7 @@ export default function WeeklyRecapTable({ data, monthlySummary, loading }: Week
       <div className="overflow-x-auto rounded-xl border border-gray-200 dark:border-gray-700 bg-white/80 dark:bg-gray-800/30">
         <Table>
             <TableHeader>
-              <TableRow className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white">
+              <TableRow className="bg-linear-to-r from-indigo-600 to-purple-600 text-white">
                 <TableHead className="w-10 text-center text-xs font-semibold text-white">No</TableHead>
                 <TableHead className="text-xs font-semibold text-white">Tanggal</TableHead>
                 <TableHead className="text-center text-xs font-semibold text-white">Penabung</TableHead>
@@ -86,19 +86,19 @@ export default function WeeklyRecapTable({ data, monthlySummary, loading }: Week
                       key={idx}
                       className="hover:bg-indigo-50/50 dark:hover:bg-indigo-900/20 transition-colors"
                     >
-                      <TableCell className="text-center text-xs text-slate-500">{displayIdx}</TableCell>
+                      <TableCell className="text-center text-xs text-slate-500 dark:text-slate-200">{displayIdx}</TableCell>
                       <TableCell className="whitespace-nowrap">
                         {/* Mobile view */}
                         <span className="md:hidden text-sm text-gray-800 dark:text-gray-200 font-medium">
                           {dateObj.toLocaleDateString("id-ID", {
-                            weekday: "short",
-                            day: "numeric",
-                            month: "short",
-                            year: "numeric",
+                            weekday: "long",
+                            day: "2-digit",
+                            month: "2-digit",
+                            year: "2-digit",
                           })}
                         </span>
                         {/* Desktop view */}
-                        <span className="hidden md:inline text-sm text-gray-800 dark:text-gray-200 font-medium">
+                        <span className="hidden md:inline text-xs md:text-sm text-gray-800 dark:text-gray-200 font-medium">
                           {dateObj.toLocaleDateString("id-ID", {
                             weekday: "long",
                             day: "numeric",
@@ -108,8 +108,8 @@ export default function WeeklyRecapTable({ data, monthlySummary, loading }: Week
                         </span>
                       </TableCell>
                       <TableCell className="text-center">
-                        <span className="text-sm font-medium text-slate-700 dark:text-slate-300">
-                          {row.recap?.totalStudents || 0} Murid
+                        <span className="text-xs md:text-sm font-medium text-slate-700 dark:text-slate-300">
+                          {row.recap?.totalStudents || 0} murid
                         </span>
                       </TableCell>
                       <TableCell className="text-center">
@@ -143,7 +143,7 @@ export default function WeeklyRecapTable({ data, monthlySummary, loading }: Week
             {!loading && (filteredData.length > 0 || (totalDeposits > 0 || totalWithdrawals > 0)) && (
               <TableFooter className="bg-slate-100 dark:bg-slate-800/80">
                 <TableRow>
-                  <TableCell colSpan={3} className="text-right pr-6 font-bold text-indigo-800 dark:text-indigo-300 text-sm">
+                  <TableCell colSpan={3} className="text-right md:text-center pr-6 font-bold text-indigo-800 dark:text-indigo-300 text-xs md:text-sm">
                     Total Keseluruhan (Bulan Ini)
                   </TableCell>
                   <TableCell className="text-center">

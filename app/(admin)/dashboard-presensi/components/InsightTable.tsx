@@ -44,7 +44,7 @@ export function InsightTable({
       <div className="overflow-x-auto rounded-xl border border-gray-200 dark:border-gray-700 bg-white/80 dark:bg-gray-800/30 mt-2">
         <Table>
           <TableHeader>
-            <TableRow className={`bg-gradient-to-r ${headerClass} text-white`}>
+            <TableRow className={`bg-linear-to-r ${headerClass} text-white`}>
               <TableHead className="w-10 text-center text-xs font-semibold text-white">No</TableHead>
               <TableHead className="text-xs font-semibold text-white">Nama</TableHead>
               <TableHead className="text-center text-xs font-semibold text-white w-14">{col3Label}</TableHead>

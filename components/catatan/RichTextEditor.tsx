@@ -62,7 +62,7 @@ export default function RichTextEditor({
 
   return (
     <div
-      className={`border border-slate-200 dark:border-slate-700 rounded-xl overflow-hidden bg-white/50 dark:bg-slate-800/50 backdrop-blur-sm ${className}`}
+      className={`border border-slate-200 dark:border-slate-700 rounded-xl overflow-hidden bg-white/50 dark:bg-slate-800/50  ${className}`}
     >
       <div className="flex flex-wrap items-center gap-1 p-2 border-b border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800/80">
         <button

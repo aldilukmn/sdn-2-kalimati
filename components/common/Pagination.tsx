@@ -69,53 +69,67 @@ export default function Pagination({
   const endItem = Math.min(currentPage * itemsPerPage, totalItems);
 
   return (
-      <div className="flex flex-col items-center gap-2 md:gap-4 mt-6 text-gray-900 dark:text-gray-200 ">
-        <div className="flex items-center justify-center gap-1">
-          <Button
-            variant="outline"
-            size="icon-sm"
-            onClick={handlePreviousPage}
-            disabled={!hasPreviousPage}
-            aria-label="Previous page"
-          >
-            <ChevronLeft size={16} />
-          </Button>
+    <div className="flex flex-row items-center justify-between gap-2 mt-6 text-gray-900 dark:text-gray-200 w-full">
+      <div className="text-xs sm:text-sm opacity-70 whitespace-nowrap">
+        {totalItems > 0 ? (
+          <p>
+            <span className="hidden sm:inline">Menampilkan </span>
+            {startItem}-{endItem} 
+            <span className="hidden sm:inline"> dari </span>
+            <span className="sm:hidden"> / </span>
+            {totalItems}
+            <span className="hidden sm:inline"> data</span>
+          </p>
+        ) : (
+          <p>
+            <span className="hidden sm:inline">Halaman </span>
+            {currentPage} 
+            <span className="hidden sm:inline"> dari </span>
+            <span className="sm:hidden"> / </span>
+            {totalPages}
+          </p>
+        )}
+      </div>
 
-          <div className="flex items-center gap-1">
-            {pageNumbers.map((page) => (
-              <Button
-                key={page}
-                variant={page === currentPage ? "default" : "outline"}
-                size="icon-sm"
-                onClick={() => handlePageClick(page)}
-                aria-label={`Go to page ${page}`}
-                aria-current={page === currentPage ? "page" : undefined}
-              >
-                {page}
-              </Button>
-            ))}
-          </div>
+      <div className="flex items-center gap-1 overflow-x-auto pb-1 sm:pb-0">
+        <Button
+          variant="outline"
+          size="icon-sm"
+          className="shrink-0"
+          onClick={handlePreviousPage}
+          disabled={!hasPreviousPage}
+          aria-label="Previous page"
+        >
+          <ChevronLeft size={16} />
+        </Button>
 
-          <Button
-            variant="outline"
-            size="icon-sm"
-            onClick={handleNextPage}
-            disabled={!hasNextPage}
-            aria-label="Next page"
-          >
-            <ChevronRight size={16} />
-          </Button>
+        <div className="flex items-center gap-1">
+          {pageNumbers.map((page) => (
+            <Button
+              key={page}
+              variant={page === currentPage ? "default" : "outline"}
+              size="icon-sm"
+              className={`shrink-0 ${page === currentPage ? "" : "hidden sm:inline-flex"}`}
+              onClick={() => handlePageClick(page)}
+              aria-label={`Go to page ${page}`}
+              aria-current={page === currentPage ? "page" : undefined}
+            >
+              {page}
+            </Button>
+          ))}
         </div>
 
-      {totalItems > 0 && (
-        <p className="text-xs md:text-sm opacity-60">
-          Menampilkan {startItem} - {endItem} dari {totalItems} data
-        </p>
-      )}
-
-      <p className="text-xs md:text-sm opacity-60">
-        Halaman {currentPage} dari {totalPages}
-      </p>
+        <Button
+          variant="outline"
+          size="icon-sm"
+          className="shrink-0"
+          onClick={handleNextPage}
+          disabled={!hasNextPage}
+          aria-label="Next page"
+        >
+          <ChevronRight size={16} />
+        </Button>
+      </div>
     </div>
   );
 }

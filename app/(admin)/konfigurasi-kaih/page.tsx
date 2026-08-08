@@ -55,8 +55,8 @@ export default function KonfigurasiKaihPage() {
     try {
       const res = await CharacterHabitService.getAll();
       setHabits(res.result || []);
-    } catch (e: unknown) {
-      const msg = e instanceof Error ? e.message : "Gagal memuat data";
+    } catch (e: any) {
+      const msg = e instanceof Error ? (e as any).message : "Gagal memuat data";
       setError(msg);
     } finally {
       setLoading(false);
@@ -89,8 +89,8 @@ export default function KonfigurasiKaihPage() {
       toast.success("Kebiasaan berhasil ditambahkan");
       setCreateOpen(false);
       fetchHabits();
-    } catch (e: unknown) {
-      const msg = e instanceof Error ? e.message : "Gagal menyimpan";
+    } catch (e: any) {
+      const msg = e instanceof Error ? (e as any).message : "Gagal menyimpan";
       toast.error(msg);
     } finally {
       setSaving(false);
@@ -122,8 +122,8 @@ export default function KonfigurasiKaihPage() {
       setEditOpen(false);
       setEditId(null);
       fetchHabits();
-    } catch (e: unknown) {
-      const msg = e instanceof Error ? e.message : "Gagal menyimpan";
+    } catch (e: any) {
+      const msg = e instanceof Error ? (e as any).message : "Gagal menyimpan";
       toast.error(msg);
     } finally {
       setSaving(false);
@@ -146,8 +146,8 @@ export default function KonfigurasiKaihPage() {
       setDeleteId(null);
       setDeleteName("");
       fetchHabits();
-    } catch (e: unknown) {
-      const msg = e instanceof Error ? e.message : "Gagal menghapus";
+    } catch (e: any) {
+      const msg = e instanceof Error ? (e as any).message : "Gagal menghapus";
       toast.error(msg);
     } finally {
       setDeleting(false);
@@ -167,7 +167,7 @@ export default function KonfigurasiKaihPage() {
         <div className="flex justify-end">
           <button
             onClick={openCreate}
-            className="inline-flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white text-sm font-semibold rounded-xl transition-all cursor-pointer"
+            className="inline-flex items-center gap-2 px-4 py-2.5 bg-linear-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white text-sm font-semibold rounded-xl transition-all cursor-pointer"
           >
             <Plus size={16} />
             Tambah Kebiasaan
@@ -208,7 +208,7 @@ export default function KonfigurasiKaihPage() {
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white">
+                <tr className="bg-linear-to-r from-indigo-600 to-purple-600 text-white">
                   <th className="text-center px-4 py-3 font-semibold w-12 whitespace-nowrap">
                     No
                   </th>
@@ -305,7 +305,7 @@ export default function KonfigurasiKaihPage() {
             <button
               onClick={handleCreate}
               disabled={saving}
-              className="flex-1 px-4 py-2.5 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white text-sm font-semibold disabled:opacity-50 disabled:cursor-not-allowed transition-all cursor-pointer"
+              className="flex-1 px-4 py-2.5 rounded-xl bg-linear-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white text-sm font-semibold disabled:opacity-50 disabled:cursor-not-allowed transition-all cursor-pointer"
             >
               {saving ? (
                 <span className="inline-flex items-center gap-2">
@@ -353,7 +353,7 @@ export default function KonfigurasiKaihPage() {
             <button
               onClick={handleEdit}
               disabled={saving}
-              className="flex-1 px-4 py-2.5 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white text-sm font-semibold disabled:opacity-50 disabled:cursor-not-allowed transition-all cursor-pointer"
+              className="flex-1 px-4 py-2.5 rounded-xl bg-linear-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white text-sm font-semibold disabled:opacity-50 disabled:cursor-not-allowed transition-all cursor-pointer"
             >
               {saving ? (
                 <span className="inline-flex items-center gap-2">

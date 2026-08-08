@@ -1,7 +1,7 @@
 'use client';
 
 import { ElementType, useEffect, useRef, useState, createElement, useMemo, useCallback } from 'react';
-import { gsap } from 'gsap';
+import { motion } from 'framer-motion';
 import './TextType.css';
 
 interface TextTypeProps {
@@ -51,7 +51,6 @@ const TextType = ({
   const [isDeleting, setIsDeleting] = useState(false);
   const [currentTextIndex, setCurrentTextIndex] = useState(0);
   const [isVisible, setIsVisible] = useState(!startOnVisible);
-  const cursorRef = useRef<HTMLSpanElement>(null);
   const containerRef = useRef<HTMLElement>(null);
 
   const textArray = useMemo(() => (Array.isArray(text) ? text : [text]), [text]);
@@ -85,18 +84,7 @@ const TextType = ({
     return () => observer.disconnect();
   }, [startOnVisible]);
 
-  useEffect(() => {
-    if (showCursor && cursorRef.current) {
-      gsap.set(cursorRef.current, { opacity: 1 });
-      gsap.to(cursorRef.current, {
-        opacity: 0,
-        duration: cursorBlinkDuration,
-        repeat: -1,
-        yoyo: true,
-        ease: 'power2.inOut'
-      });
-    }
-  }, [showCursor, cursorBlinkDuration]);
+
 
   useEffect(() => {
     if (!isVisible) return;
@@ -177,16 +165,23 @@ const TextType = ({
       className: `inline-block whitespace-pre-wrap text-gray-500 dark:text-gray-300 ${className}`,
       ...props,
     },
-    <span className="text-type__content text-stroke bg-gradient-to-t from-[#1e429f] to-[#1c64f2] bg-clip-text text-transparent dark:from-[#76a9fa] dark:to-[#3f83f8]">
+    <span className="text-type__content text-stroke bg-linear-to-t from-[#1e429f] to-[#1c64f2] bg-clip-text text-transparent dark:from-[#76a9fa] dark:to-[#3f83f8]">
       {displayedText}
     </span>,
     showCursor && (
-      <span
-        ref={cursorRef}
+      <motion.span
+        initial={{ opacity: 1 }}
+        animate={{ opacity: 0 }}
+        transition={{
+          duration: cursorBlinkDuration,
+          repeat: Infinity,
+          repeatType: "reverse",
+          ease: "easeInOut"
+        }}
         className={`text-type__cursor ${cursorClassName} ${shouldHideCursor ? "text-type__cursor--hidden" : ""}`}
       >
         {cursorCharacter}
-      </span>
+      </motion.span>
     ),
   );
 };

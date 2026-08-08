@@ -286,7 +286,7 @@ export function useNilaiHarian() {
           },
         };
       });
-    } catch (e: unknown) {
+    } catch (e: any) {
       setEntries((prev) =>
         prev.map((e) =>
           e.status === "unsaved" ? { ...e, status: "error" as const } : e

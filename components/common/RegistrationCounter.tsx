@@ -33,7 +33,7 @@ export default function RegistrationCounter() {
 
   return (
     <div className="w-full mb-8">
-      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-blue-600 via-blue-500 to-blue-700 shadow-lg">
+      <div className="relative overflow-hidden rounded-2xl bg-linear-to-r from-blue-600 via-blue-500 to-blue-700 shadow-lg">
         {/* Animated Background Elements */}
         <div className="absolute inset-0 overflow-hidden">
           <div className="absolute -right-20 -top-20 w-40 h-40 bg-white/10 rounded-full blur-3xl animate-pulse" />
@@ -77,7 +77,7 @@ export default function RegistrationCounter() {
         </div>
 
         {/* Bottom Accent Line */}
-        <div className="h-1 bg-gradient-to-r from-blue-400 via-transparent to-blue-400" />
+        <div className="h-1 bg-linear-to-r from-blue-400 via-transparent to-blue-400" />
       </div>
     </div>
   );

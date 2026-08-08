@@ -70,10 +70,10 @@ export function useStudentList() {
           setStudents(res?.result || []);
           setCurrentPage(1);
         }
-      } catch (e: unknown) {
+      } catch (e: any) {
         if (!signal.aborted) {
           setStudents([]);
-          setMessage({ type: "error", text: e instanceof Error ? e.message : "Gagal memuat data" });
+          setMessage({ type: "error", text: e instanceof Error ? (e as any).message : "Gagal memuat data" });
         }
       } finally {
         if (!signal.aborted) setLoading(false);

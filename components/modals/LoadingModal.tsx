@@ -26,13 +26,13 @@ export default function LoadingModal({
   return (
     <div className="fixed inset-0 z-50">
       {/* Overlay dengan gradient */}
-      <div className="absolute inset-0 bg-gradient-to-br from-black/50 via-black/40 to-black/50 " />
+      <div className="absolute inset-0 bg-linear-to-br from-black/50 via-black/40 to-black/50 " />
 
       {/* Modal Container */}
       <div className="absolute inset-0 flex items-center justify-center p-4">
         <div className="relative bg-gray-100 dark:bg-gray-800 rounded-2xl shadow-2xl p-8 md:p-12 max-w-md w-full transform transition-all duration-300">
           {/* Animated Border Accent */}
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-1 bg-gradient-to-r from-transparent via-blue-500 to-transparent rounded-full animate-pulse" />
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-1 bg-linear-to-r from-transparent via-blue-500 to-transparent rounded-full animate-pulse" />
 
           {/* Content */}
           <div className="flex flex-col items-center text-center space-y-4">
@@ -41,7 +41,7 @@ export default function LoadingModal({
               {status === "loading" && (
                 <>
                   {/* Background animated circle */}
-                  <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-blue-600 rounded-full animate-spin opacity-20" />
+                  <div className="absolute inset-0 bg-linear-to-r from-blue-400 to-blue-600 rounded-full animate-spin opacity-20" />
                   {/* Animated pulses */}
                   <div className="absolute inset-2 border-4 border-transparent border-t-blue-500 border-r-blue-500 rounded-full animate-spin" />
                   {/* Center icon */}
@@ -100,7 +100,7 @@ export default function LoadingModal({
           </div>
 
           {/* Optional: Animated bottom accent line */}
-          <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-blue-500 to-transparent rounded-b-2xl opacity-50" />
+          <div className="absolute bottom-0 left-0 right-0 h-1 bg-linear-to-r from-transparent via-blue-500 to-transparent rounded-b-2xl opacity-50" />
         </div>
       </div>
     </div>

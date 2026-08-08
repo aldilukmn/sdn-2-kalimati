@@ -26,7 +26,7 @@ export default function RekapKarakterTable({ recapRows, monthsToShow, classAvera
       <div className="overflow-x-auto  rounded-xl border border-gray-200 dark:border-gray-700 bg-white/80 dark:bg-gray-800/30 ">
         <table className="w-full">
           <thead>
-            <tr className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-xs md:text-sm">
+            <tr className="bg-linear-to-r from-indigo-600 to-purple-600 text-white text-xs md:text-sm">
               <th className="px-3 py-3 text-center w-10">No</th>
               <th className="px-3 py-3 text-left font-semibold whitespace-nowrap">
                 Nama

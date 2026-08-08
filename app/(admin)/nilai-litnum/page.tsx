@@ -362,7 +362,7 @@ export default function NilaiLitnumPage() {
               <div className="overflow-x-auto rounded-xl border border-gray-200 dark:border-gray-700 bg-white/80 dark:bg-gray-800/30">
                 <table className="w-full text-sm">
                   <thead>
-                    <tr className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-xs md:text-sm text-center">
+                    <tr className="bg-linear-to-r from-indigo-600 to-purple-600 text-white text-xs md:text-sm text-center">
                       <th className="px-4 py-3 font-semibold w-12 whitespace-nowrap">
                         No
                       </th>

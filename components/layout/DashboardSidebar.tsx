@@ -72,7 +72,7 @@ export default function DashboardSidebar({
               />
             </div>
             <span className="text-sm font-bold tracking-wide truncate">
-              <span className="bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-300 dark:to-purple-300 bg-clip-text text-transparent">
+              <span className="bg-linear-to-r from-indigo-600 to-purple-600 dark:from-indigo-300 dark:to-purple-300 bg-clip-text text-transparent">
                 SDN 2 Kalimati
               </span>
             </span>

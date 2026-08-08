@@ -61,7 +61,7 @@ export default function RegistrationCard({name}: {name: string}) {
       {/* The Card Element to be captured */}
       <div
         ref={cardRef}
-        className="relative bg-gradient-to-br from-blue-600 to-blue-800 text-white p-6 rounded-2xl shadow-2xl w-full max-w-sm overflow-hidden border border-blue-400/30"
+        className="relative bg-linear-to-br from-blue-600 to-blue-800 text-white p-6 rounded-2xl shadow-2xl w-full max-w-sm overflow-hidden border border-blue-400/30"
       >
         {/* Decorative elements */}
         <div className="absolute top-0 right-0 w-40 h-40 bg-white/10 rounded-full blur-3xl -mr-10 -mt-10 pointer-events-none"></div>

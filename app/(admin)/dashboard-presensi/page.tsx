@@ -32,6 +32,7 @@ import ExportWordButton from "@/components/common/ExportWordButton";
 import ExportImageButton from "@/components/common/ExportImageButton";
 import MonthlyPresensiPoster from "@/components/dashboard-presensi/MonthlyPresensiPoster";
 import { useRef } from "react";
+import { motion } from "framer-motion";
 
 const AttendanceDonutChart = dynamic(() => import("@/components/charts/AttendanceDonutChart"), { ssr: false });
 
@@ -53,18 +54,25 @@ function ViewToggle({
     <button
       key={m}
       onClick={() => onChange(m)}
-      className={`flex-1 flex justify-center items-center gap-2 h-full rounded-lg text-sm font-semibold transition-all duration-200 cursor-pointer ${
+      className={`relative z-10 flex-1 flex justify-center items-center gap-2 h-full rounded-lg text-sm font-semibold transition-colors duration-300 cursor-pointer ${
         mode === m
-          ? "bg-indigo-600 text-white shadow"
-          : "text-slate-500 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700"
+          ? "text-white"
+          : "text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200"
       }`}
     >
       <Icon size={16} />
       {label}
     </button>
   );
+  
   return (
-    <div className="flex w-full h-[42px] items-center gap-1 p-1 bg-slate-100 dark:bg-gray-800/80 rounded-xl border border-slate-300 dark:border-gray-700 shadow-inner">
+    <div className="relative flex w-full h-[42px] items-center p-1 bg-slate-100 dark:bg-gray-800/80 rounded-xl border border-slate-300 dark:border-gray-700 shadow-inner overflow-hidden">
+      <motion.div
+        initial={false}
+        animate={{ x: mode === "harian" ? "0%" : "100%" }}
+        transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+        className="absolute left-1 top-1 bottom-1 w-[calc(50%-0.25rem)] bg-indigo-600 rounded-lg shadow-md pointer-events-none"
+      />
       {btn("harian", "Harian", CalendarDays)}
       {btn("bulanan", "Bulanan", Calendar)}
     </div>

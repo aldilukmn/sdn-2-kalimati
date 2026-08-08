@@ -44,7 +44,7 @@ export default function DataMuridPage() {
       setStudents(response.result || response.data || []);
       setCurrentPage(1);
     } catch (e: any) {
-      setError(e.message || "Gagal mengambil data murid");
+      setError((e as any).message || "Gagal mengambil data murid");
     } finally {
       setLoading(false);
     }
@@ -79,7 +79,7 @@ export default function DataMuridPage() {
       setModalOpen(false);
       fetchStudents();
     } catch (e: any) {
-      toast.error(e.message || "Gagal menyimpan data");
+      toast.error((e as any).message || "Gagal menyimpan data");
     } finally {
       setSaving(false);
     }
@@ -92,7 +92,7 @@ export default function DataMuridPage() {
       toast.success("Murid berhasil dihapus");
       fetchStudents();
     } catch (e: any) {
-      toast.error(e.message || "Gagal menghapus murid");
+      toast.error((e as any).message || "Gagal menghapus murid");
     }
   };
 
@@ -107,7 +107,7 @@ export default function DataMuridPage() {
       const worksheet = workbook.Sheets[workbook.SheetNames[0]];
       const jsonData = XLSX.utils.sheet_to_json(worksheet) as any[];
 
-      const newStudents: Partial<MasterStudentType>[] = jsonData.map((row: any) => ({
+      const newStudents: Partial<MasterStudentType>[] = jsonData.map((row: Record<string, any>) => ({
         studentId: String(row["NIS"] || row["NIS/ID"] || row["studentId"] || row["ID"] || "").trim(),
         name: String(row["Nama"] || row["name"] || "").trim(),
         gender: String(row["L/P"] || row["gender"] || row["Jenis Kelamin"] || "L").trim().toUpperCase(),
@@ -124,7 +124,7 @@ export default function DataMuridPage() {
       toast.success(`${newStudents.length} murid berhasil diimpor`);
       fetchStudents();
     } catch (err: any) {
-      toast.error(err.message || "Gagal mengimpor file Excel");
+      toast.error((err as any).message || "Gagal mengimpor file Excel");
     } finally {
       setImporting(false);
       if (fileInputRef.current) {
@@ -194,7 +194,7 @@ export default function DataMuridPage() {
           <div className="overflow-x-auto  rounded-xl border border-gray-200 dark:border-gray-700 bg-white/80 md:bg-white/60 dark:bg-gray-800/30 shadow-lg">
             <table className="w-full">
               <thead>
-                <tr className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-xs md:text-sm">
+                <tr className="bg-linear-to-r from-indigo-600 to-purple-600 text-white text-xs md:text-sm">
                   <th className="px-4 py-3 text-center font-semibold whitespace-nowrap">NIS/ID</th>
                   <th className="px-4 py-3 text-left font-semibold whitespace-nowrap">Nama</th>
                   <th className="px-4 py-3 text-center font-semibold whitespace-nowrap">L/P</th>
@@ -258,7 +258,7 @@ export default function DataMuridPage() {
             <button onClick={() => setModalOpen(false)} className="flex-1 px-4 py-2.5 rounded-xl border border-slate-300 text-sm text-gray-600 hover:bg-slate-100 transition-colors dark:border-gray-700 dark:text-slate-300 dark:hover:bg-gray-800 cursor-pointer">
               Batal
             </button>
-            <button onClick={handleSave} disabled={saving} className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white text-sm font-semibold transition-all disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer">
+            <button onClick={handleSave} disabled={saving} className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-linear-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white text-sm font-semibold transition-all disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer">
               {saving ? <Loader2 size={16} className="animate-spin" /> : null}
               {saving ? "Menyimpan..." : (editMode ? "Simpan" : "Tambah")}
             </button>

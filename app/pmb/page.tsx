@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useEffect, useState } from "react";
 import { ArrowLeft, ArrowRight } from "lucide-react";
@@ -165,7 +165,7 @@ export default function Pmb() {
               <div className="flex justify-between items-start relative">
                 <div className="absolute top-5 left-1/2 -translate-x-1/2 w-2/3 h-1 bg-gray-300 dark:bg-gray-200">
                   <div
-                    className="h-full bg-gradient-to-r from-blue-600 to-blue-500 transition-all duration-700 ease-out"
+                    className="h-full bg-linear-to-r from-blue-600 to-blue-500 transition-all duration-700 ease-out"
                     style={{ width: `${((currentStep - 1) / 2) * 100}%` }}
                   />
                 </div>
@@ -253,7 +253,7 @@ export default function Pmb() {
                       disabled={isLoading}
                       className={`flex-1 py-3 px-4 font-semibold rounded-lg transition flex items-center justify-center gap-2 ${
                         isLoading
-                          ? "bg-gradient-to-r from-blue-400 to-blue-500 text-white cursor-not-allowed dark:from-blue-600 dark:to-blue-700 shadow-lg"
+                          ? "bg-linear-to-r from-blue-400 to-blue-500 text-white cursor-not-allowed dark:from-blue-600 dark:to-blue-700 shadow-lg"
                           : "bg-green-500 hover:bg-green-600 text-gray-100 dark:bg-green-600 dark:hover:bg-green-500 cursor-pointer"
                       }`}
                     >

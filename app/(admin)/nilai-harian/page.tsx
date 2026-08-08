@@ -74,8 +74,8 @@ export default function NilaiHarianPage() {
     try {
       await handleSave();
       toast.success("Nilai berhasil disimpan");
-    } catch (e: unknown) {
-      toast.error(e instanceof Error ? e.message : "Gagal menyimpan nilai");
+    } catch (e: any) {
+      toast.error(e instanceof Error ? (e as any).message : "Gagal menyimpan nilai");
     }
   };
 

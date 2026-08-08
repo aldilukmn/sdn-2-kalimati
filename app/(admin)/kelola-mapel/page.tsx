@@ -58,8 +58,8 @@ export default function MasterMapelPage() {
     try {
       await saveSubject();
       toast.success(subjectModal.edit ? "Mata pelajaran berhasil diperbarui" : "Mata pelajaran berhasil ditambahkan");
-    } catch (e: unknown) {
-      toast.error(e instanceof Error ? e.message : "Gagal menyimpan mata pelajaran");
+    } catch (e: any) {
+      toast.error(e instanceof Error ? (e as any).message : "Gagal menyimpan mata pelajaran");
     }
   };
 
@@ -68,8 +68,8 @@ export default function MasterMapelPage() {
     try {
       await deleteSubject(confirmDelete.id);
       toast.success("Mata pelajaran berhasil dihapus");
-    } catch (e: unknown) {
-      toast.error(e instanceof Error ? e.message : "Gagal menghapus mata pelajaran");
+    } catch (e: any) {
+      toast.error(e instanceof Error ? (e as any).message : "Gagal menghapus mata pelajaran");
     } finally {
       setConfirmDelete(null);
     }
@@ -80,8 +80,8 @@ export default function MasterMapelPage() {
     try {
       await deleteGradeSubject(confirmDelete.id);
       toast.success("Penetapan berhasil dihapus");
-    } catch (e: unknown) {
-      toast.error(e instanceof Error ? e.message : "Gagal menghapus penetapan");
+    } catch (e: any) {
+      toast.error(e instanceof Error ? (e as any).message : "Gagal menghapus penetapan");
     } finally {
       setConfirmDelete(null);
     }
@@ -99,8 +99,8 @@ export default function MasterMapelPage() {
     try {
       await saveAssign();
       toast.success(`Mata pelajaran berhasil ditetapkan ke ${assignGrades.length} kelas`);
-    } catch (e: unknown) {
-      toast.error(e instanceof Error ? e.message : "Gagal menetapkan mata pelajaran");
+    } catch (e: any) {
+      toast.error(e instanceof Error ? (e as any).message : "Gagal menetapkan mata pelajaran");
     }
   };
 

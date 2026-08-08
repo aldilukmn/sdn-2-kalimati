@@ -77,7 +77,7 @@ export function ComponentBreakdown({
     <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden flex flex-col h-full">
       <div className="p-3 md:p-4 flex items-center justify-between gap-2 bg-indigo-500 border-b border-slate-100 dark:border-slate-700/50 md:border-b md:border-slate-100 md:dark:border-slate-700/50">
         <div className="flex items-center gap-2">
-          <div className="p-1.5 md:p-2 bg-white/20 rounded-lg backdrop-blur-sm">
+          <div className="p-1.5 md:p-2 bg-white/20 rounded-lg ">
             <BarChart2 className="w-4 h-4 md:w-5 md:h-5 text-white" />
           </div>
           <h3 className="text-sm md:text-base font-bold text-white">Breakdown per Komponen</h3>
