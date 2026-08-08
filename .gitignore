@@ -50,3 +50,10 @@ testing/
 /.gemini/
 /docs
 .vscode
+
+# graphify
+/graphify-out/
+
+# windows
+Thumbs.db
+desktop.ini
